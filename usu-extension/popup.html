@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>USUClassMap Sync</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      width: 320px;
+      padding: 16px;
+      background-color: #F9FAFB;
+      color: #1F2937;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    .icon-box {
+      width: 36px;
+      height: 36px;
+      background-color: #10A760;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+    .title-box h1 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #10A760;
+    }
+    .title-box p {
+      font-size: 11px;
+      color: #6B7280;
+    }
+    .status-card {
+      background: white;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-bottom: 14px;
+      font-size: 12px;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #9CA3AF;
+    }
+    .status-dot.active {
+      background-color: #10A760;
+    }
+    .status-dot.error {
+      background-color: #EF4444;
+    }
+    .btn-sync {
+      width: 100%;
+      padding: 10px 16px;
+      background-color: #10A760;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+    .btn-sync:hover {
+      background-color: #0D8A4E;
+    }
+    .btn-sync:active {
+      transform: scale(0.98);
+    }
+    .btn-sync:disabled {
+      background-color: #9CA3AF;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .log-box {
+      margin-top: 12px;
+      padding: 8px 10px;
+      background-color: #F3F4F6;
+      border-radius: 6px;
+      font-size: 11px;
+      color: #4B5563;
+      max-height: 90px;
+      overflow-y: auto;
+      line-height: 1.4;
+      display: none;
+    }
+    .footer {
+      margin-top: 14px;
+      text-align: center;
+      font-size: 10px;
+      color: #9CA3AF;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="icon-box">📍</div>
+    <div class="title-box">
+      <h1>USUClassMap Sync</h1>
+      <p>Sinkronisasi Jadwal Portal SATU USU</p>
+    </div>
+  </div>
+
+  <div class="status-card">
+    <div class="status-badge">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-text">Memeriksa halaman portal...</span>
+    </div>
+  </div>
+
+  <button id="btn-sync" class="btn-sync" disabled>
+    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+    </svg>
+    Tarik Jadwal Sekarang
+  </button>
+
+  <div id="log-box" class="log-box"></div>
+
+  <div class="footer">
+    USUClassMap &copy; 2024 - Kelompok 3 Web Semantik
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

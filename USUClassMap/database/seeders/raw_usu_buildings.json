@@ -1,0 +1,262 @@
+[
+  {
+    "name": "Gedung Biro Pusat Administrasi (Rektorat USU)",
+    "latitude": 3.5627,
+    "longitude": 98.6578
+  },
+  {
+    "name": "Perpustakaan Pusat Universitas Sumatera Utara",
+    "latitude": 3.567,
+    "longitude": 98.658
+  },
+  {
+    "name": "Auditorium Universitas Sumatera Utara",
+    "latitude": 3.5638,
+    "longitude": 98.6592
+  },
+  {
+    "name": "Pusat Bahasa & Kantor Urusan Internasional USU",
+    "latitude": 3.5656,
+    "longitude": 98.6582
+  },
+  {
+    "name": "Gedung Kuliah Bersama 1 (GK1 / MKWK)",
+    "latitude": 3.565245,
+    "longitude": 98.65652
+  },
+  {
+    "name": "Gedung Kuliah Bersama 2 (GK2 / MKWU)",
+    "latitude": 3.56612,
+    "longitude": 98.65734
+  },
+  {
+    "name": "Pusat Inkubator Bisnis & Kewirausahaan (CIE USU)",
+    "latitude": 3.5648,
+    "longitude": 98.6586
+  },
+  {
+    "name": "Masjid Dakwah USU",
+    "latitude": 3.565,
+    "longitude": 98.6605
+  },
+  {
+    "name": "Asrama Mahasiswa USU",
+    "latitude": 3.5595,
+    "longitude": 98.6535
+  },
+  {
+    "name": "Rumah Sakit Universitas Sumatera Utara (RS USU)",
+    "latitude": 3.5602,
+    "longitude": 98.6525
+  },
+  {
+    "name": "Poliklinik USU",
+    "latitude": 3.5615,
+    "longitude": 98.654
+  },
+  {
+    "name": "Stadion Mini Universitas Sumatera Utara",
+    "latitude": 3.568,
+    "longitude": 98.6595
+  },
+  {
+    "name": "Gelanggang Mahasiswa USU (Gelanma)",
+    "latitude": 3.5676,
+    "longitude": 98.6601
+  },
+  {
+    "name": "FASILKOM-TI Gedung A (Dekanat & Laboratorium)",
+    "latitude": 3.5645,
+    "longitude": 98.6558
+  },
+  {
+    "name": "FASILKOM-TI Gedung B (Ruang Kuliah & Lab AI)",
+    "latitude": 3.56475,
+    "longitude": 98.6555
+  },
+  {
+    "name": "Fakultas Kedokteran USU (Dekanat)",
+    "latitude": 3.5618,
+    "longitude": 98.6555
+  },
+  {
+    "name": "Gedung Kuliah Pendidikan Dokter FK USU",
+    "latitude": 3.5621,
+    "longitude": 98.6552
+  },
+  {
+    "name": "Gedung Laboratorium Terpadu & Anatomi FK USU",
+    "latitude": 3.5624,
+    "longitude": 98.6549
+  },
+  {
+    "name": "Fakultas Hukum USU (Dekanat & Peradilan Semu)",
+    "latitude": 3.564,
+    "longitude": 98.6572
+  },
+  {
+    "name": "Gedung Kuliah Utama Fakultas Hukum USU",
+    "latitude": 3.5643,
+    "longitude": 98.6569
+  },
+  {
+    "name": "Fakultas Pertanian USU (Dekanat)",
+    "latitude": 3.5635,
+    "longitude": 98.653
+  },
+  {
+    "name": "Gedung Kuliah Agroteknologi & Agribisnis FP USU",
+    "latitude": 3.5638,
+    "longitude": 98.6527
+  },
+  {
+    "name": "Laboratorium Riset Terpadu Pertanian USU",
+    "latitude": 3.5632,
+    "longitude": 98.6533
+  },
+  {
+    "name": "Fakultas Teknik USU (Dekanat & Administrasi)",
+    "latitude": 3.5668,
+    "longitude": 98.6535
+  },
+  {
+    "name": "Departemen Teknik Mesin & Industri FT USU",
+    "latitude": 3.5672,
+    "longitude": 98.6532
+  },
+  {
+    "name": "Departemen Teknik Elektro FT USU",
+    "latitude": 3.5675,
+    "longitude": 98.6528
+  },
+  {
+    "name": "Departemen Teknik Sipil & Lingkungan FT USU",
+    "latitude": 3.5671,
+    "longitude": 98.6541
+  },
+  {
+    "name": "Departemen Teknik Kimia & Arsitektur FT USU",
+    "latitude": 3.5665,
+    "longitude": 98.6525
+  },
+  {
+    "name": "Fakultas Ekonomi dan Bisnis USU (Dekanat)",
+    "latitude": 3.5658,
+    "longitude": 98.6542
+  },
+  {
+    "name": "Gedung Kuliah Manajemen & Akuntansi FEB USU",
+    "latitude": 3.5661,
+    "longitude": 98.6539
+  },
+  {
+    "name": "Gedung Pascasarjana FEB USU (MM & MAksi)",
+    "latitude": 3.5655,
+    "longitude": 98.6545
+  },
+  {
+    "name": "Fakultas Kedokteran Gigi USU (Dekanat)",
+    "latitude": 3.5608,
+    "longitude": 98.6568
+  },
+  {
+    "name": "Rumah Sakit Gigi dan Mulut (RSGM USU)",
+    "latitude": 3.5611,
+    "longitude": 98.6565
+  },
+  {
+    "name": "Fakultas Ilmu Budaya USU (Dekanat)",
+    "latitude": 3.5651,
+    "longitude": 98.6588
+  },
+  {
+    "name": "Gedung Kuliah Sastra & Ilmu Sejarah FIB USU",
+    "latitude": 3.5654,
+    "longitude": 98.6585
+  },
+  {
+    "name": "Fakultas MIPA USU (Dekanat & Aula)",
+    "latitude": 3.568,
+    "longitude": 98.6552
+  },
+  {
+    "name": "Departemen Fisika & Kimia FMIPA USU",
+    "latitude": 3.5678,
+    "longitude": 98.6548
+  },
+  {
+    "name": "Departemen Biologi & Matematika FMIPA USU",
+    "latitude": 3.5675,
+    "longitude": 98.6558
+  },
+  {
+    "name": "Fakultas Ilmu Sosial dan Ilmu Politik (FISIP USU)",
+    "latitude": 3.5642,
+    "longitude": 98.6582
+  },
+  {
+    "name": "Gedung Kuliah Ilmu Komunikasi & Adm Publik FISIP",
+    "latitude": 3.5645,
+    "longitude": 98.6579
+  },
+  {
+    "name": "Fakultas Kesehatan Masyarakat (FKM USU)",
+    "latitude": 3.5629,
+    "longitude": 98.6542
+  },
+  {
+    "name": "Gedung Kuliah & Lab Epidemiologi FKM USU",
+    "latitude": 3.5631,
+    "longitude": 98.6539
+  },
+  {
+    "name": "Fakultas Psikologi USU (Dekanat)",
+    "latitude": 3.5636,
+    "longitude": 98.655
+  },
+  {
+    "name": "Laboratorium Psikodiagnostika & Konseling USU",
+    "latitude": 3.5638,
+    "longitude": 98.6547
+  },
+  {
+    "name": "Fakultas Kehutanan USU (Dekanat)",
+    "latitude": 3.5679,
+    "longitude": 98.6535
+  },
+  {
+    "name": "Gedung Kuliah & Lab Silvikultur Kehutanan USU",
+    "latitude": 3.5677,
+    "longitude": 98.6532
+  },
+  {
+    "name": "Fakultas Farmasi USU (Dekanat)",
+    "latitude": 3.5622,
+    "longitude": 98.6538
+  },
+  {
+    "name": "Gedung Kuliah & Lab Farmakologi FF USU",
+    "latitude": 3.5625,
+    "longitude": 98.6535
+  },
+  {
+    "name": "Fakultas Keperawatan USU (Dekanat)",
+    "latitude": 3.5612,
+    "longitude": 98.6532
+  },
+  {
+    "name": "Laboratorium Praktik Klinik FKEP USU",
+    "latitude": 3.5615,
+    "longitude": 98.6529
+  },
+  {
+    "name": "Fakultas Vokasi USU (Dekanat & Kuliah Terpadu)",
+    "latitude": 3.5664,
+    "longitude": 98.659
+  },
+  {
+    "name": "Laboratorium Terapan & Bengkel Vokasi USU",
+    "latitude": 3.5667,
+    "longitude": 98.6587
+  }
+]

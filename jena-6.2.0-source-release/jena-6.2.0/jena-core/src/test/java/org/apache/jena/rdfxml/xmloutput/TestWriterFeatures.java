@@ -1,0 +1,87 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ *   SPDX-License-Identifier: Apache-2.0
+ */
+
+package org.apache.jena.rdfxml.xmloutput;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelTestLib;
+import org.apache.jena.rdf.model.RDFWriterI;
+import org.apache.jena.util.FileManager;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+public class TestWriterFeatures
+{
+
+    private static String testFileBase = "file:testing/abbreviated";
+
+    private void checkReadWriteRead(String filename, String writerName,
+                                    String propertyName, String propertyValue)
+    {
+            Model model = ModelTestLib.createMemModel();
+            FileManager.getInternal().readModelInternal(model, filename );
+
+            String contents = null;
+
+            try ( StringWriter sw = new StringWriter() ) {
+                @SuppressWarnings("deprecation")
+                RDFWriterI w =  model.getWriter(writerName);
+                if ( propertyName != null )
+                    w.setProperty(propertyName, propertyValue);
+                w.write(model, sw, null);
+                contents = sw.toString();
+            } catch (IOException ex) { /* ignore : StringWriter */ }
+
+            try ( StringReader sr = new StringReader( contents ) ) {
+                Model model2 = ModelTestLib.createMemModel();
+                model2.read( new StringReader( contents ), filename );
+                assertTrue( model.isIsomorphicWith( model2 ) );
+            }
+    }
+
+    private void checkReadWriteRead(String filename, String propertyName, String propertyValue)
+    {
+        checkReadWriteRead(filename, "RDF/XML", propertyName, propertyValue);
+        checkReadWriteRead(filename, "RDF/XML-ABBREV", propertyName, propertyValue);
+    }
+
+    // test the tests !
+    @Test
+    public void testEntity_0()
+    { checkReadWriteRead(testFileBase+"/entities_1.ttl", "showXmlDeclaration", "true"); }
+
+    @Test
+    public void testEntity_1()
+    { checkReadWriteRead(testFileBase+"/entities_1.ttl", "showDoctypeDeclaration", "true"); }
+
+    @Test
+    public void testEntity_2()
+    { checkReadWriteRead(testFileBase+"/entities_2.ttl", "showDoctypeDeclaration", "true"); }
+
+    @Test
+    public void testEntity_3()
+    { checkReadWriteRead(testFileBase+"/entities_3.ttl", "showDoctypeDeclaration", "true"); }
+}

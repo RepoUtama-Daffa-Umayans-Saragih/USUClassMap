@@ -1,0 +1,210 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ *   SPDX-License-Identifier: Apache-2.0
+ */
+
+package org.apache.jena.rdfxml.xmloutput;
+
+import java.io.*;
+
+import org.apache.jena.rdf.model.*;
+import org.apache.jena.rdfxml.xmloutput.impl.RDFXML_Abbrev;
+import org.apache.jena.rdfxml.xmloutput.impl.BaseXMLWriter;
+import org.apache.jena.rdfxml.xmloutput.impl.RDFXML_Basic;
+import org.apache.jena.vocabulary.RDF;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+    Tests for entities being created corresponding to prefixes.
+*/
+public class TestEntityOutput {
+
+    @Test
+    public void testSettingWriterEntityProperty()
+        {
+        FakeBaseWriter w = new FakeBaseWriter();
+        assertEquals( false, w.getShowDoctypeDeclaration() );
+        assertEquals( "false", w.setProperty( "showDoctypeDeclaration", "true" ) );
+        assertEquals( true, w.getShowDoctypeDeclaration() );
+        assertEquals( "true", w.setProperty( "showDoctypeDeclaration", "false" ) );
+        assertEquals( false, w.getShowDoctypeDeclaration() );
+    //
+        assertEquals( "false", w.setProperty( "showDoctypeDeclaration", Boolean.TRUE ) );
+        assertEquals( true, w.getShowDoctypeDeclaration() );
+        assertEquals( "true", w.setProperty( "showDoctypeDeclaration", Boolean.FALSE ) );
+        assertEquals( false, w.getShowDoctypeDeclaration() );
+        }
+
+    @Test
+    public void testKnownEntityNames()
+        {
+        BaseXMLWriter w = new FakeBaseWriter();
+        assertEquals( true, w.isPredefinedEntityName( "lt" ) );
+        assertEquals( true, w.isPredefinedEntityName( "gt" ) );
+        assertEquals( true, w.isPredefinedEntityName( "amp" ) );
+        assertEquals( true, w.isPredefinedEntityName( "apos" ) );
+        assertEquals( true, w.isPredefinedEntityName( "quot" ) );
+    //
+        assertEquals( false, w.isPredefinedEntityName( "alt" ) );
+        assertEquals( false, w.isPredefinedEntityName( "amper" ) );
+        assertEquals( false, w.isPredefinedEntityName( "tapost" ) );
+        assertEquals( false, w.isPredefinedEntityName( "gte" ) );
+    //
+        assertEquals( false, w.isPredefinedEntityName( "rdf" ) );
+        assertEquals( false, w.isPredefinedEntityName( "smerp" ) );
+        assertEquals( false, w.isPredefinedEntityName( "nl" ) );
+        assertEquals( false, w.isPredefinedEntityName( "acute" ) );
+        }
+
+    @Test
+    public void testRDFNamespaceMissing()
+        {
+        Model m = ModelTestLib.createMemModel();
+        ModelTestLib.modelAdd( m, "x R fake:uri#bogus" );
+        m.setNsPrefix( "spoo", "fake:uri#" );
+        m.setNsPrefix( "eh", "eh:/" );
+        String s = checkedModelToString( m );
+        assertMatches( "<!DOCTYPE rdf:RDF \\[", s );
+        assertMatches( "<!ENTITY spoo 'fake:uri#'>", s );
+        assertMatches( "rdf:resource=\"&spoo;bogus\"", s );
+        }
+
+    @Test
+    public void testUsesEntityForPrefix()
+        {
+        Model m = ModelTestLib.modelWithStatements( "x R fake:uri#bogus" );
+        m.setNsPrefix( "spoo", "fake:uri#" );
+        m.setNsPrefix( "eh", "eh:/" );
+        String s = checkedModelToString( m );
+        assertMatches( "<!DOCTYPE rdf:RDF \\[", s );
+        assertMatches( "<!ENTITY spoo 'fake:uri#'>", s );
+        assertMatches( "rdf:resource=\"&spoo;bogus\"", s );
+        }
+
+    @Test
+    public void testCatchesBadEntities()
+        {
+        testCatchesBadEntity( "amp" );
+        testCatchesBadEntity( "lt" );
+        testCatchesBadEntity( "gt" );
+        testCatchesBadEntity( "apos" );
+        testCatchesBadEntity( "quot" );
+        }
+
+    /**
+     * See
+     * http://www.w3.org/TR/xml/#NT-EntityValue
+     * " & and % ' are all legal URI chars, but illegal
+     * in entity defn.
+     */
+    @Test
+    public void testDifficultChars() throws IOException
+    {
+        Model m = ModelTestLib.createMemModel();
+        m.read("file:testing/abbreviated/entities.rdf");
+        try ( StringWriter w = new StringWriter() ) {
+            @SuppressWarnings("deprecation")
+            org.apache.jena.rdf.model.RDFWriterI wr = new RDFXML_Basic();
+            wr.setProperty("showDoctypeDeclaration", "true");
+            wr.write(m, w, "http://example.org/");
+            Reader r = new StringReader(w.toString());
+            Model m2 = ModelTestLib.createMemModel();
+            m2.read(r,"http://example.org/");
+            org.apache.jena.rdf.model.ModelTestLib.assertIsoModels("showDoctypeDeclaration problem", m, m2);
+        }
+    }
+
+    @Test
+    public void testCRinLiterals()
+    {
+        Model m = ModelTestLib.createMemModel();
+        Resource r = m.createResource("http://example/r");
+        Property p = m.createProperty("http://example/p");
+        m.add(r, p, "abc\r\nxyz");
+        StringWriter w = new StringWriter();
+        m.write(w, "RDF/XML");
+        Model m2 = ModelTestLib.createMemModel();
+        m2.read(new StringReader(w.toString()), "RDF/XML");
+        assertTrue(m.isIsomorphicWith(m2));
+    }
+
+    private void testCatchesBadEntity( String bad )
+        {
+        Model m = ModelTestLib.modelWithStatements( "ampsersand spelt '&'; x R goo:spoo/noo" );
+        m.setNsPrefix( "rdf", RDF.getURI() );
+        m.setNsPrefix( bad, "goo:spoo" );
+        m.setNsPrefix( "eh", "eh:/" );
+        String s = checkedModelToString( m );
+        assertTrue( s.toString().contains( "<!DOCTYPE rdf:RDF [" ) );
+        assertMismatches( "<!ENTITY " + bad + " ", s );
+        assertMismatches( "rdf:resource=\"&" + bad + ";noo\"", s );
+        }
+
+    private void checkModelFromXML( Model shouldBe, String s )
+        {
+        Model m = ModelTestLib.createMemModel();
+        m.read( new StringReader( s ), null, "RDF/XML" );
+        org.apache.jena.rdf.model.ModelTestLib.assertIsoModels( "model should be read back correctly", shouldBe, m );
+        }
+
+    private String checkedModelToString( Model m )
+        {
+        String result = modelToString( m );
+        checkModelFromXML( m, result );
+        return result;
+        }
+
+    private String modelToString( Model m )
+        {
+        StringWriter s = new StringWriter();
+        @SuppressWarnings("deprecation")
+        org.apache.jena.rdf.model.RDFWriterI w = new RDFXML_Abbrev();
+        w.setProperty( "showDoctypeDeclaration", Boolean.TRUE );
+        w.write( m, s, null );
+        return s.toString();
+        }
+
+    private void assertMatches( String pattern, String x )
+        {
+        if (!x.matches( "(?s).*(" + pattern + ").*" ) )
+                fail( "pattern {" + pattern + "} does not match string {" + x + "}" );
+        }
+
+    private void assertMismatches( String pattern, String x )
+        {
+        if (x.matches( "(?s).*(" + pattern + ").*" ) )
+                fail( "pattern {" + pattern + "} should not match string {" + x + "}" );
+        }
+
+    private final static class FakeBaseWriter extends BaseXMLWriter
+        {
+        @Override
+        protected void unblockAll() {}
+
+        @Override
+        protected void blockRule( Resource r ) {}
+
+        @Override
+        protected void writeBody( Model mdl, PrintWriter pw, String baseUri, boolean inclXMLBase ) {}
+
+        protected boolean getShowDoctypeDeclaration() { return showDoctypeDeclaration.booleanValue(); }
+        }
+    }

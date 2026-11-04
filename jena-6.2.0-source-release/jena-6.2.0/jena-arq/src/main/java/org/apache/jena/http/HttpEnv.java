@@ -1,0 +1,111 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ *   SPDX-License-Identifier: Apache-2.0
+ */
+
+package org.apache.jena.http;
+
+import java.net.http.HttpClient;
+import java.net.http.HttpClient.Redirect;
+import java.time.Duration;
+
+import org.apache.jena.http.sys.RegistryRequestModifier;
+import org.apache.jena.query.ARQ;
+import org.apache.jena.riot.RDFFormat;
+
+/**
+ * JVM wide settings.
+ */
+public class HttpEnv {
+
+    // These preserve prefixes.
+    public static final RDFFormat defaultTriplesFormat = RDFFormat.TURTLE_BLOCKS;
+    public static final RDFFormat defaultQuadsFormat = RDFFormat.TRIG_BLOCKS;
+
+    /**
+     * Maximum length of URL for GET requests for SPARQL queries
+     * (<a href="https://www.w3.org/TR/sparql11-protocol/">SPARQL 1.1 Protocol</a>).
+     * Above this limit, the code switches to using the HTTP POST form.
+     */
+    public static /* final */ int urlLimit = 2 * 1024;
+
+    public static HttpClient getDftHttpClient() { return getBuildDftHttpClient(); }
+    public static void setDftHttpClient(HttpClient dftHttpClient) { httpClient = dftHttpClient; }
+
+    /** Return the {@link HttpClient} based on URL and a possible pre-selected {@link HttpClient}. */
+    public static HttpClient getHttpClient(String url, HttpClient specificHttpClient) {
+        if ( specificHttpClient != null )
+             return specificHttpClient;
+        return getHttpClient(url);
+    }
+
+    /** Return the {@link HttpClient} based on URL or the system default ({@link HttpEnv#getDftHttpClient}). */
+    public static HttpClient getHttpClient(String url) {
+        HttpClient requestHttpClient = RegistryHttpClient.get().find(url);
+        if ( requestHttpClient == null )
+            requestHttpClient = getDftHttpClient();
+        return requestHttpClient;
+    }
+
+    // Delay initialization until runtime even if doing GraalVM native code of Java AOT caching.
+    // The HTTP subsystem must be initialized at runtime.
+    // The LazyHolder pattern (Bill Pugh singleton pattern) does not work, The class
+    // is findable by class analysis and a candidate for build-time execution.
+    //
+    // An AtomicReference could be used if there was a Supplier version of
+    // compareAndSet (c.f ConcurrentHashMap.computeIfAbsent).
+
+    private static volatile HttpClient httpClient = null;
+
+    // Get httpClient, building it (at runtime) if it is not initialized.
+    private static HttpClient getBuildDftHttpClient() {
+        if ( httpClient == null ) {
+            synchronized(HttpEnv.class) {
+                if ( httpClient == null )
+                    httpClient = httpClientBuilder().build();
+            }
+        }
+        return httpClient;
+    }
+
+    public static final String UserAgent = ARQ.VERSION.contains("devel") ? "ApacheJena" : "ApacheJena/"+ARQ.VERSION;
+
+    /** Build an {@link HttpClient}, which follows redirects for https-http redirects */
+    public static HttpClient.Builder httpClientBuilder() {
+        return HttpClient.newBuilder()
+                // By default, the client has polling and connection-caching.
+                // Version HTTP/2 is the default, negotiating up from HTTP 1.1.
+                //.version(Version.HTTP_2)
+                .connectTimeout(Duration.ofSeconds(10))
+                // Redirect.NORMAL - this does not follow https to http 3xx.
+                // (Dec 2021) http://purl.org first switches to https://purl.org, then will redirect to an http: URL.
+                .followRedirects(Redirect.ALWAYS)
+                //.sslContext
+                //.sslParameters
+                //.proxy
+                //.authenticator
+                ;
+    }
+
+    /** Reset any Jena system state related to HTTP */
+    public static void reset() {
+        RegistryHttpClient.get().clear();
+        RegistryRequestModifier.get().clear();
+    }
+}

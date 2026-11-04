@@ -1,0 +1,69 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ *   SPDX-License-Identifier: Apache-2.0
+ */
+
+package org.apache.jena.tdb1.transaction;
+
+import org.apache.jena.atlas.lib.FileOps;
+import org.apache.jena.atlas.logging.LogCtl;
+import org.apache.jena.query.Dataset;
+import org.apache.jena.sparql.transaction.AbstractTestTransactionLifecycle;
+import org.apache.jena.tdb1.ConfigTest;
+import org.apache.jena.tdb1.TDB1Factory;
+import org.apache.jena.tdb1.sys.SystemTDB;
+import org.apache.jena.tdb1.sys.TDBInternal;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+
+@SuppressWarnings("removal")
+public class TestTransactionTDB1 extends AbstractTestTransactionLifecycle {
+    private String DIR = null;
+    private static String level = null;
+
+    @BeforeAll
+    public static void beforeClassLoggingOff() {
+        level = LogCtl.getLevel(SystemTDB.errlog.getName());
+        LogCtl.setLevel(SystemTDB.errlog.getName(), "OFF");
+    }
+
+    @AfterAll
+    public static void afterClassLoggingOn() {
+        LogCtl.setLevel(SystemTDB.errlog.getName(), level);
+    }
+
+    @BeforeEach
+    public void before() {
+        TDBInternal.reset();
+        DIR = ConfigTest.getCleanDir();
+    }
+
+    @AfterEach
+    public void after() {
+        TDBInternal.reset();
+        FileOps.clearDirectory(DIR);
+    }
+
+    @Override
+    protected Dataset create() {
+        return TDB1Factory.createDataset(DIR);
+    }
+}

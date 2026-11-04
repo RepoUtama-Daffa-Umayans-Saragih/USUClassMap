@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Leaflet Full-Bleed Popup & Custom Scrollbar Overrides (Phase 6.2 & 6.3)
+   ========================================================================== */
+
+/* Full-bleed Leaflet Popup wrapper */
+.custom-popup .leaflet-popup-content-wrapper,
+.usu-custom-popup .leaflet-popup-content-wrapper {
+    padding: 0 !important;
+    overflow: hidden !important;
+    border-radius: 12px !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.18), 0 10px 10px -5px rgba(0, 0, 0, 0.08) !important;
+    border: 1px solid rgba(229, 231, 235, 0.9) !important;
+    background: #ffffff !important;
+}
+
+.custom-popup .leaflet-popup-content,
+.usu-custom-popup .leaflet-popup-content {
+    margin: 0 !important;
+    width: 340px !important;
+    max-width: 340px !important;
+    line-height: 1.4 !important;
+}
+
+.custom-popup .leaflet-popup-tip-container,
+.usu-custom-popup .leaflet-popup-tip-container {
+    margin-top: -1px;
+}
+
+.custom-popup .leaflet-popup-tip,
+.usu-custom-popup .leaflet-popup-tip {
+    background: #ffffff !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+.custom-popup a.leaflet-popup-close-button,
+.usu-custom-popup a.leaflet-popup-close-button {
+    top: 8px !important;
+    right: 8px !important;
+    padding: 4px !important;
+    color: #9ca3af !important;
+    font-size: 16px !important;
+    width: 24px !important;
+    height: 24px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #f3f4f6 !important;
+    border-radius: 9999px !important;
+    transition: all 0.15s ease-in-out !important;
+}
+
+.custom-popup a.leaflet-popup-close-button:hover,
+.usu-custom-popup a.leaflet-popup-close-button:hover {
+    color: #ef4444 !important;
+    background: #fee2e2 !important;
+}
+
+/* Custom Elegant Thin Webkit Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}

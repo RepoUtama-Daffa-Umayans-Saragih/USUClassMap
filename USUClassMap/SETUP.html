@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SETUP GUIDE — USUClassMap</title>
+  <style>
+    /* ============================================================
+       PRINT & PDF SETTINGS
+    ============================================================ */
+    @page {
+      size: A4;
+      margin: 18mm 18mm 18mm 18mm;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { font-size: 10.5pt; }
+      .page-break { page-break-before: always; }
+      .card { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+      header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .step-num, .badge, .tag, .section-icon, .warning-box, .info-box, .success-box, .cmd-block { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+
+    /* ============================================================
+       BASE
+    ============================================================ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #f1f5f9;
+      color: #1e293b;
+      line-height: 1.65;
+    }
+    .container {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    /* ============================================================
+       HEADER
+    ============================================================ */
+    header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 60%, #3b82f6 100%);
+      color: white;
+      border-radius: 16px;
+      padding: 40px 36px 36px;
+      margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 50%;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: 60px;
+      width: 260px; height: 260px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
+    .header-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #93c5fd;
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    header h1 span { color: #93c5fd; }
+    header p {
+      font-size: 13px;
+      color: rgba(255,255,255,0.78);
+      max-width: 560px;
+    }
+    .header-badges {
+      display: flex;
+      gap: 8px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: white;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    /* ============================================================
+       TOC
+    ============================================================ */
+    .toc {
+      background: white;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      border-left: 4px solid #2563eb;
+    }
+    .toc h2 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #2563eb;
+      margin-bottom: 14px;
+    }
+    .toc ol {
+      padding-left: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4px 20px;
+    }
+    .toc ol li {
+      font-size: 12.5px;
+      color: #374151;
+    }
+    .toc ol li a { color: #2563eb; text-decoration: none; }
+
+    /* ============================================================
+       SECTION
+    ============================================================ */
+    .section {
+      background: white;
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+    .section-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .icon-blue   { background: #eff6ff; }
+    .icon-green  { background: #f0fdf4; }
+    .icon-purple { background: #faf5ff; }
+    .icon-orange { background: #fff7ed; }
+    .section-header h2 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .section-header p {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+    .part-label {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #94a3b8;
+      margin-bottom: 6px;
+    }
+
+    /* ============================================================
+       TABLE
+    ============================================================ */
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+      margin-top: 4px;
+    }
+    .styled-table thead th {
+      background: #1e3a5f;
+      color: white;
+      text-align: left;
+      padding: 10px 14px;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+    .styled-table thead th:first-child { border-radius: 8px 0 0 0; }
+    .styled-table thead th:last-child  { border-radius: 0 8px 0 0; }
+    .styled-table tbody tr:nth-child(even) { background: #f8fafc; }
+    .styled-table tbody td {
+      padding: 9px 14px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
+    .tag-required { background: #fee2e2; color: #b91c1c; }
+    .tag-optional { background: #dcfce7; color: #15803d; }
+
+    /* ============================================================
+       STEPS
+    ============================================================ */
+    .steps { display: flex; flex-direction: column; gap: 0; }
+    .step {
+      display: flex;
+      gap: 18px;
+      position: relative;
+    }
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 19px;
+      top: 46px;
+      bottom: 0;
+      width: 2px;
+      background: #e2e8f0;
+    }
+    .step-num {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: white;
+      font-size: 15px;
+      font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 4px;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+    }
+    .step-num.green  { background: #16a34a; box-shadow: 0 2px 8px rgba(22,163,74,0.3); }
+    .step-num.purple { background: #7c3aed; box-shadow: 0 2px 8px rgba(124,58,237,0.3); }
+    .step-num.orange { background: #ea580c; box-shadow: 0 2px 8px rgba(234,88,12,0.3); }
+    .step-num.red    { background: #dc2626; box-shadow: 0 2px 8px rgba(220,38,38,0.3); }
+    .step-body { flex: 1; padding-bottom: 24px; }
+    .step-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+    .step-desc {
+      font-size: 12px;
+      color: #475569;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       CODE BLOCKS
+    ============================================================ */
+    .cmd-block {
+      background: #0f172a;
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .cmd-block .cmd-label {
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #64748b;
+      margin-bottom: 8px;
+    }
+    .cmd-block code {
+      display: block;
+      font-family: 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+      font-size: 12px;
+      color: #e2e8f0;
+      line-height: 1.8;
+      white-space: pre;
+    }
+    .cmd-block code .cmt  { color: #64748b; }
+    .cmd-block code .kw   { color: #93c5fd; }
+    .cmd-block code .str  { color: #86efac; }
+    .cmd-block code .path { color: #fde68a; }
+    .cmd-block code .cmd  { color: #f9a8d4; }
+    .inline-code {
+      background: #f1f5f9;
+      color: #1e3a5f;
+      font-family: 'Consolas', monospace;
+      font-size: 11.5px;
+      padding: 1px 6px;
+      border-radius: 4px;
+      border: 1px solid #e2e8f0;
+    }
+
+    /* ============================================================
+       CALLOUT BOXES
+    ============================================================ */
+    .warning-box {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-left: 4px solid #ea580c;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #7c2d12;
+      margin-top: 10px;
+    }
+    .warning-box strong { color: #c2410c; }
+    .info-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid #2563eb;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #1e3a5f;
+      margin-top: 10px;
+    }
+    .info-box strong { color: #1d4ed8; }
+    .success-box {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #16a34a;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: #14532d;
+      margin-top: 10px;
+    }
+
+    /* ============================================================
+       INSTALL CARDS
+    ============================================================ */
+    .install-grid { display: flex; flex-direction: column; gap: 16px; }
+    .install-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .install-card-header {
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .install-card-icon { font-size: 18px; }
+    .install-card-title { font-size: 13px; font-weight: 700; color: #1e293b; }
+    .install-card-sub   { font-size: 11px; color: #64748b; }
+    .install-card-body  { padding: 14px 16px; }
+
+    /* ============================================================
+       VERIFY TABLE
+    ============================================================ */
+    .verify-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 12px; }
+    .verify-table th { background: #f8fafc; padding: 8px 12px; text-align: left; font-size: 11px; color: #64748b; border-bottom: 2px solid #e2e8f0; }
+    .verify-table td { padding: 9px 12px; border-bottom: 1px solid #f1f5f9; }
+    .verify-table tr:last-child td { border-bottom: none; }
+    .check { color: #16a34a; font-weight: 700; }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    /* ============================================================
+       PRINT BUTTON (no-print)
+    ============================================================ */
+    .print-btn {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 14px 24px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(37,99,235,0.4);
+      display: flex; align-items: center; gap: 8px;
+      z-index: 999;
+      transition: all 0.2s;
+    }
+    .print-btn:hover { background: #1d4ed8; transform: translateY(-2px); box-shadow: 0 6px 24px rgba(37,99,235,0.5); }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ===================== HEADER ===================== -->
+  <header>
+    <div class="header-eyebrow">📋 Panduan Teknis · Kelompok 3 Web Semantik</div>
+    <h1>Setup Guide<br><span>USUClassMap</span></h1>
+    <p>Peta Jadwal Kelas Interaktif Berbasis Semantic Web — Universitas Sumatera Utara</p>
+    <div class="header-badges">
+      <span class="badge">🐘 PHP 8.2+</span>
+      <span class="badge">⚡ Laravel 11</span>
+      <span class="badge">🎨 Tailwind CSS v4</span>
+      <span class="badge">🗺️ Leaflet.js</span>
+      <span class="badge">🔗 Apache Jena Fuseki</span>
+      <span class="badge">🔵 SQLite</span>
+    </div>
+  </header>
+
+  <!-- ===================== TOC ===================== -->
+  <div class="toc">
+    <h2>📌 Daftar Isi</h2>
+    <ol>
+      <li><a href="#software">Daftar Software yang Dibutuhkan</a></li>
+      <li><a href="#install">Cara Install Software</a></li>
+      <li><a href="#run">Tahapan Menjalankan Proyek</a></li>
+      <li><a href="#verify">Verifikasi Instalasi</a></li>
+    </ol>
+  </div>
+
+  <!-- ===================== BAGIAN 1: SOFTWARE ===================== -->
+  <div class="section" id="software">
+    <div class="section-header">
+      <div class="section-icon icon-blue">📦</div>
+      <div>
+        <div class="part-label">Bagian 1</div>
+        <h2>Daftar Software yang Dibutuhkan</h2>
+        <p>Pastikan semua software berikut terinstal sebelum memulai</p>
+      </div>
+    </div>
+
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Software</th>
+          <th>Versi Min.</th>
+          <th>Status</th>
+          <th>Fungsi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><strong>PHP</strong></td>
+          <td><span class="inline-code">8.2+</span></td>
+          <td><span class="tag tag-required">Wajib</span></td>
+          <td>Runtime backend Laravel</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><strong>Composer</strong></td>
+          <td><span class="inline-code">2.x</span></td>
+          <td><span class="tag tag-required">Wajib</span></td>
+          <td>Package manager PHP (install Laravel, EasyRdf, dll)</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><strong>Node.js</strong></td>
+          <td><span class="inline-code">18+</span></td>
+          <td><span class="tag tag-required">Wajib</span></td>
+          <td>Build frontend (Vite, Tailwind CSS)</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><strong>npm</strong></td>
+          <td><span class="inline-code">9+</span></td>
+          <td><span class="tag tag-required">Wajib</span></td>
+          <td>Package manager JS, sudah termasuk di Node.js</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><strong>Git</strong></td>
+          <td>Terbaru</td>
+          <td><span class="tag tag-required">Wajib</span></td>
+          <td>Clone repository proyek</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><strong>SQLite</strong></td>
+          <td><span class="inline-code">3.x</span></td>
+          <td><span class="tag tag-required">Wajib</span></td>
+          <td>Database default (biasanya sudah bawaan PHP)</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><strong>Apache Jena Fuseki</strong></td>
+          <td><span class="inline-code">4.x+</span></td>
+          <td><span class="tag tag-optional">Opsional</span></td>
+          <td>Triplestore untuk fitur SPARQL Semantic Web</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box" style="margin-top:14px;">
+      <strong>ℹ️ Catatan Fuseki:</strong> Jika Fuseki tidak diinstal, aplikasi tetap berjalan normal menggunakan <strong>fallback otomatis ke MySQL/SQLite</strong>. Fuseki hanya diperlukan untuk mengaktifkan fitur pencarian SPARQL penuh.
+    </div>
+  </div>
+
+  <!-- ===================== BAGIAN 2: INSTALL ===================== -->
+  <div class="section" id="install">
+    <div class="section-header">
+      <div class="section-icon icon-green">⚙️</div>
+      <div>
+        <div class="part-label">Bagian 2</div>
+        <h2>Cara Install Software</h2>
+        <p>Panduan instalasi yang disesuaikan dengan kebutuhan proyek ini</p>
+      </div>
+    </div>
+
+    <div class="install-grid">
+
+      <!-- PHP -->
+      <div class="install-card">
+        <div class="install-card-header">
+          <span class="install-card-icon">🐘</span>
+          <div>
+            <div class="install-card-title">PHP 8.2+</div>
+            <div class="install-card-sub">Verifikasi: <span class="inline-code">php -v</span></div>
+          </div>
+        </div>
+        <div class="install-card-body">
+          <p style="font-size:12px;color:#475569;margin-bottom:10px;"><strong>Windows:</strong> Download dari <span class="inline-code">windows.php.net/download</span> (pilih versi Thread Safe). Ekstrak ke <span class="inline-code">C:\php</span>, tambahkan ke PATH. Lalu aktifkan ekstensi berikut di <span class="inline-code">php.ini</span>:</p>
+          <div class="cmd-block">
+            <div class="cmd-label">php.ini — hapus tanda titik koma (;) di depan baris berikut</div>
+            <code><span class="str">extension=curl
+extension=fileinfo
+extension=mbstring
+extension=openssl
+extension=pdo_sqlite
+extension=sqlite3
+extension=zip
+extension=gd</span></code>
+          </div>
+          <div class="cmd-block" style="margin-top:8px;">
+            <div class="cmd-label">Linux / Ubuntu</div>
+            <code><span class="kw">sudo</span> apt update
+<span class="kw">sudo</span> apt install php8.2 php8.2-cli php8.2-curl php8.2-mbstring \
+     php8.2-xml php8.2-zip php8.2-sqlite3 php8.2-gd</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Composer -->
+      <div class="install-card">
+        <div class="install-card-header">
+          <span class="install-card-icon">🎵</span>
+          <div>
+            <div class="install-card-title">Composer 2.x</div>
+            <div class="install-card-sub">Verifikasi: <span class="inline-code">composer -V</span></div>
+          </div>
+        </div>
+        <div class="install-card-body">
+          <p style="font-size:12px;color:#475569;margin-bottom:10px;"><strong>Windows:</strong> Download installer <span class="inline-code">.exe</span> dari <span class="inline-code">getcomposer.org/download</span> dan jalankan wizard instalasi.</p>
+          <div class="cmd-block">
+            <div class="cmd-label">Linux / macOS</div>
+            <code>php -r <span class="str">"copy('https://getcomposer.org/installer', 'composer-setup.php');"</span>
+php composer-setup.php
+<span class="kw">sudo</span> mv composer.phar /usr/local/bin/composer</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Node.js -->
+      <div class="install-card">
+        <div class="install-card-header">
+          <span class="install-card-icon">💚</span>
+          <div>
+            <div class="install-card-title">Node.js 18+ &amp; npm</div>
+            <div class="install-card-sub">Verifikasi: <span class="inline-code">node -v</span> &amp; <span class="inline-code">npm -v</span></div>
+          </div>
+        </div>
+        <div class="install-card-body">
+          <p style="font-size:12px;color:#475569;">Download installer LTS dari <span class="inline-code">nodejs.org</span> (npm sudah termasuk di dalamnya). Ikuti wizard instalasi — tidak ada konfigurasi tambahan.</p>
+        </div>
+      </div>
+
+      <!-- SQLite -->
+      <div class="install-card">
+        <div class="install-card-header">
+          <span class="install-card-icon">🗄️</span>
+          <div>
+            <div class="install-card-title">SQLite — Buat File Database Kosong</div>
+            <div class="install-card-sub">Ini adalah langkah khusus proyek, bukan instalasi software baru</div>
+          </div>
+        </div>
+        <div class="install-card-body">
+          <div class="cmd-block">
+            <div class="cmd-label">Windows (CMD) — jalankan dari folder USUClassMap</div>
+            <code><span class="cmt">REM Buat file database kosong</span>
+<span class="cmd">type nul</span> > <span class="path">database\database.sqlite</span></code>
+          </div>
+          <div class="cmd-block" style="margin-top:8px;">
+            <div class="cmd-label">Linux / macOS</div>
+            <code><span class="kw">touch</span> <span class="path">database/database.sqlite</span></code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fuseki -->
+      <div class="install-card">
+        <div class="install-card-header">
+          <span class="install-card-icon">🔗</span>
+          <div>
+            <div class="install-card-title">Apache Jena Fuseki <span class="tag tag-optional" style="margin-left:6px;">Opsional</span></div>
+            <div class="install-card-sub">Hanya jika ingin mengaktifkan fitur SPARQL</div>
+          </div>
+        </div>
+        <div class="install-card-body">
+          <ol style="font-size:12px;color:#475569;padding-left:18px;line-height:2;">
+            <li>Download dari <span class="inline-code">jena.apache.org/download</span></li>
+            <li>Ekstrak arsip ke folder yang diinginkan</li>
+            <li>Jalankan Fuseki dengan perintah berikut:</li>
+          </ol>
+          <div class="cmd-block">
+            <div class="cmd-label">Jalankan Fuseki (dari folder hasil ekstrak)</div>
+            <code><span class="cmt"># Windows</span>
+<span class="cmd">fuseki-server.bat</span> --update --mem <span class="str">/usuclassmap</span>
+
+<span class="cmt"># Linux / macOS</span>
+<span class="cmd">./fuseki-server</span> --update --mem <span class="str">/usuclassmap</span></code>
+          </div>
+          <div class="info-box">
+            <strong>Langkah selanjutnya:</strong> Buka <span class="inline-code">http://localhost:3030</span>, pilih dataset <span class="inline-code">usuclassmap</span>, lalu upload file <span class="inline-code">storage/app/rdf/schedules.rdf</span>.
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /install-grid -->
+  </div>
+
+  <!-- ===================== BAGIAN 3: RUN ===================== -->
+  <div class="section page-break" id="run">
+    <div class="section-header">
+      <div class="section-icon icon-purple">🚀</div>
+      <div>
+        <div class="part-label">Bagian 3</div>
+        <h2>Tahapan Menjalankan Proyek</h2>
+        <p>Ikuti langkah-langkah ini secara berurutan</p>
+      </div>
+    </div>
+
+    <div class="warning-box" style="margin-bottom:20px;">
+      <strong>⚠️ Penting — Lokasi Folder!</strong><br>
+      Semua perintah di bawah ini dijalankan dari dalam folder proyek:<br>
+      <span class="inline-code">d:\Documents\TUBES WEB SEMANTIK\Kelompok 3 Web Semantik\USUClassMap\</span><br><br>
+      Buka terminal / Command Prompt, lalu ketik:<br>
+      <span class="inline-code">cd "d:\Documents\TUBES WEB SEMANTIK\Kelompok 3 Web Semantik\USUClassMap"</span>
+    </div>
+
+    <div class="steps">
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Clone Repository</div>
+          <div class="step-desc">Unduh kode sumber proyek dari Git. Lewati langkah ini jika sudah punya folder proyeknya.</div>
+          <div class="cmd-block">
+            <code><span class="kw">git</span> clone &lt;URL_REPOSITORY&gt; USUClassMap
+<span class="kw">cd</span> <span class="path">"d:\Documents\TUBES WEB SEMANTIK\Kelompok 3 Web Semantik\USUClassMap"</span></code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Install Dependensi PHP (Backend)</div>
+          <div class="step-desc">Mengunduh semua library PHP termasuk Laravel 11, EasyRdf, Maatwebsite Excel, dan lainnya.</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📂 d:\...\USUClassMap\</div>
+            <code><span class="kw">composer</span> install</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Install Dependensi JavaScript (Frontend)</div>
+          <div class="step-desc">Mengunduh Tailwind CSS v4, Alpine.js, Vite, dan Axios.</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📂 d:\...\USUClassMap\</div>
+            <code><span class="kw">npm</span> install</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Buat File Environment (.env)</div>
+          <div class="step-desc">Salin file contoh konfigurasi, lalu generate Application Key secara otomatis.</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📂 d:\...\USUClassMap\ — Windows CMD</div>
+            <code><span class="cmt">REM Salin file env</span>
+<span class="kw">copy</span> .env.example .env
+
+<span class="cmt">REM Generate application key</span>
+<span class="kw">php artisan</span> key:generate</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title">Konfigurasi File .env</div>
+          <div class="step-desc">Buka file <span class="inline-code">.env</span> dengan teks editor, pastikan baris-baris penting berikut sudah benar:</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📄 .env — Konfigurasi Penting</div>
+            <code><span class="cmt"># Nama aplikasi dan URL</span>
+<span class="str">APP_NAME</span>=<span class="kw">"USUClassMap"</span>
+<span class="str">APP_TIMEZONE</span>=<span class="kw">Asia/Jakarta</span>
+
+<span class="cmt"># Database SQLite (default, tidak perlu diubah)</span>
+<span class="str">DB_CONNECTION</span>=<span class="kw">sqlite</span>
+
+<span class="cmt"># Queue untuk job regenerasi RDF otomatis</span>
+<span class="str">QUEUE_CONNECTION</span>=<span class="kw">database</span>
+
+<span class="cmt"># Fuseki SPARQL (opsional — hapus # jika pakai Fuseki)</span>
+<span class="cmt"># SPARQL_ENDPOINT=http://localhost:3030/usuclassmap/query</span></code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="step">
+        <div class="step-num green">6</div>
+        <div class="step-body">
+          <div class="step-title">Buat File Database SQLite</div>
+          <div class="step-desc">Laravel membutuhkan file <span class="inline-code">database.sqlite</span> yang sudah ada sebelum migrasi bisa dijalankan.</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📂 d:\...\USUClassMap\ — Windows CMD</div>
+            <code><span class="kw">type nul</span> > <span class="path">database\database.sqlite</span></code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="step">
+        <div class="step-num green">7</div>
+        <div class="step-body">
+          <div class="step-title">Jalankan Migrasi Database</div>
+          <div class="step-desc">Membuat semua tabel di database: users, buildings, rooms, lecturers, courses, schedules, room_media, jobs, cache, dll.</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📂 d:\...\USUClassMap\</div>
+            <code><span class="kw">php artisan</span> migrate</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 8 -->
+      <div class="step">
+        <div class="step-num green">8</div>
+        <div class="step-body">
+          <div class="step-title">Jalankan Seeder (Data Awal)</div>
+          <div class="step-desc">Mengisi database dengan data awal: akun admin, gedung USU (dengan koordinat), ruangan, dosen, mata kuliah, jadwal, dan 100 data dummy FIB.</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📂 d:\...\USUClassMap\</div>
+            <code><span class="kw">php artisan</span> db:seed</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 9 -->
+      <div class="step">
+        <div class="step-num red">9</div>
+        <div class="step-body">
+          <div class="step-title">Buat Storage Symlink</div>
+          <div class="step-desc">Membuat link dari <span class="inline-code">public/storage</span> ke <span class="inline-code">storage/app/public</span>. Tanpa ini, foto 360° tidak akan muncul!</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📂 d:\...\USUClassMap\</div>
+            <code><span class="kw">php artisan</span> storage:link</code>
+          </div>
+          <div class="warning-box">
+            <strong>⚠️ WAJIB dijalankan sekali!</strong> Jika dilewati, semua foto ruangan dan media 360° tidak akan bisa diakses via URL browser.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 10 -->
+      <div class="step">
+        <div class="step-num purple">10</div>
+        <div class="step-body">
+          <div class="step-title">Generate File RDF <span class="tag tag-optional" style="margin-left:6px;">Opsional</span></div>
+          <div class="step-desc">Membuat file <span class="inline-code">storage/app/rdf/schedules.rdf</span>. Diperlukan jika menggunakan Apache Jena Fuseki.</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📂 d:\...\USUClassMap\</div>
+            <code><span class="kw">php artisan</span> rdf:generate</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 11 -->
+      <div class="step">
+        <div class="step-num orange">11</div>
+        <div class="step-body">
+          <div class="step-title">Build Aset Frontend</div>
+          <div class="step-desc">Kompilasi Tailwind CSS dan JavaScript menggunakan Vite.</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📂 d:\...\USUClassMap\ — Pilih salah satu</div>
+            <code><span class="cmt"># Development (dengan hot-reload, tetap berjalan di background)</span>
+<span class="kw">npm run dev</span>
+
+<span class="cmt"># ATAU: Production (sekali build, hasilkan file statis)</span>
+<span class="kw">npm run build</span></code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 12 -->
+      <div class="step">
+        <div class="step-num orange">12</div>
+        <div class="step-body">
+          <div class="step-title">Jalankan Web Server Laravel</div>
+          <div class="step-desc">Buka terminal <strong>baru</strong> (jangan tutup terminal <span class="inline-code">npm run dev</span>), lalu jalankan:</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📂 d:\...\USUClassMap\ — Terminal Baru</div>
+            <code><span class="kw">php artisan</span> serve</code>
+          </div>
+          <div class="success-box">
+            ✅ Aplikasi akan berjalan di: <strong>http://localhost:8000</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 13 -->
+      <div class="step">
+        <div class="step-num orange">13</div>
+        <div class="step-body">
+          <div class="step-title">Jalankan Queue Worker</div>
+          <div class="step-desc">Diperlukan agar job regenerasi RDF berjalan otomatis saat data jadwal berubah. Buka terminal <strong>ketiga</strong>:</div>
+          <div class="cmd-block">
+            <div class="cmd-label">📂 d:\...\USUClassMap\ — Terminal Ketiga</div>
+            <code><span class="kw">php artisan</span> queue:listen --tries=1</code>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /steps -->
+
+    <!-- Shortcut -->
+    <div style="margin-top:28px;padding:20px;background:#f8fafc;border-radius:12px;border:2px dashed #cbd5e1;">
+      <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:8px;">⚡ Cara Cepat — Jalankan Semua Sekaligus</div>
+      <div style="font-size:12px;color:#475569;margin-bottom:10px;">Sebagai alternatif langkah 11–13, gunakan satu perintah berikut yang menjalankan semua service secara paralel:</div>
+      <div class="cmd-block">
+        <div class="cmd-label">📂 d:\...\USUClassMap\</div>
+        <code><span class="kw">composer</span> dev</code>
+      </div>
+      <div style="font-size:11.5px;color:#64748b;margin-top:10px;">Perintah ini menjalankan: <span class="inline-code">php artisan serve</span> + <span class="inline-code">queue:listen</span> + <span class="inline-code">pail</span> (log viewer) + <span class="inline-code">npm run dev</span> secara bersamaan.</div>
+    </div>
+  </div>
+
+  <!-- ===================== BAGIAN 4: VERIFY ===================== -->
+  <div class="section" id="verify">
+    <div class="section-header">
+      <div class="section-icon icon-orange">✅</div>
+      <div>
+        <div class="part-label">Bagian 4</div>
+        <h2>Verifikasi Instalasi</h2>
+        <p>Pastikan semua halaman ini bisa diakses setelah setup selesai</p>
+      </div>
+    </div>
+
+    <table class="verify-table">
+      <thead>
+        <tr>
+          <th>URL</th>
+          <th>Yang Diharapkan</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="inline-code">http://localhost:8000</span></td>
+          <td>Landing page USUClassMap</td>
+          <td><span class="check">☐ OK</span></td>
+        </tr>
+        <tr>
+          <td><span class="inline-code">http://localhost:8000/map</span></td>
+          <td>Peta interaktif dengan marker gedung</td>
+          <td><span class="check">☐ OK</span></td>
+        </tr>
+        <tr>
+          <td><span class="inline-code">http://localhost:8000/login</span></td>
+          <td>Halaman login</td>
+          <td><span class="check">☐ OK</span></td>
+        </tr>
+        <tr>
+          <td><span class="inline-code">http://localhost:8000/admin/dashboard</span></td>
+          <td>Dashboard admin (login terlebih dahulu)</td>
+          <td><span class="check">☐ OK</span></td>
+        </tr>
+        <tr>
+          <td><span class="inline-code">http://localhost:8000/admin-sementara-/map</span></td>
+          <td>Admin Spatial Map Dashboard</td>
+          <td><span class="check">☐ OK</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:16px;">
+      <div style="font-size:13px;font-weight:700;color:#1e293b;margin-bottom:8px;">🧪 Jalankan Test Suite</div>
+      <div class="cmd-block">
+        <div class="cmd-label">📂 d:\...\USUClassMap\</div>
+        <code><span class="kw">php artisan</span> test</code>
+      </div>
+      <div class="success-box" style="margin-top:8px;">
+        ✅ Hasil yang diharapkan: <strong>49 tests, 219 assertions — semua PASS</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer>
+    <p>📘 USUClassMap Setup Guide · Kelompok 3 Web Semantik · November 2026</p>
+    <p style="margin-top:4px;">Laravel 11 · PHP 8.2 · Tailwind CSS v4 · Leaflet.js · Apache Jena Fuseki</p>
+  </footer>
+
+</div><!-- /container -->
+
+<!-- PRINT BUTTON -->
+<button class="print-btn no-print" onclick="window.print()">
+  🖨️ Simpan sebagai PDF
+</button>
+
+</body>
+</html>

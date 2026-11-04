@@ -1,0 +1,212 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ *   SPDX-License-Identifier: Apache-2.0
+ */
+package org.apache.jena.mem.collection;
+
+import static org.apache.jena.junit.GraphHelper.node;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.function.UnaryOperator;
+
+import org.junit.jupiter.api.Test;
+
+import org.apache.jena.graph.Node;
+
+public class FastHashMapTest2 {
+
+    @Test
+    public void testConstructWithInitialSizeAndAdd() {
+        var sut = new FastNodeHashMap(3);
+        sut.put(node("s"), "v");
+        sut.put(node("s1"), "v1");
+        sut.put(node("s2"), "v2");
+        sut.put(node("s3"), "v3");
+        sut.put(node("s4"), "v4");
+        assertEquals(5, sut.size());
+    }
+
+    @Test
+    public void testGetValueAt() {
+        var sut = new FastNodeHashMap();
+        sut.put(node("s"), 0);
+        sut.put(node("s1"), 1);
+        sut.put(node("s2"), 2);
+
+        assertEquals(0, (int) sut.getValueAt(0));
+        assertEquals(1, (int) sut.getValueAt(1));
+        assertEquals(2, (int) sut.getValueAt(2));
+    }
+
+    @Test
+    public void testCopyConstructor() {
+        var original = new FastNodeHashMap();
+        original.put(node("s"), 0);
+        original.put(node("s1"), 1);
+        original.put(node("s2"), 2);
+        assertEquals(3, original.size());
+
+        var copy = new FastNodeHashMap(original);
+        assertEquals(3, copy.size());
+        assertEquals(0, (int) copy.get(node("s")));
+        assertEquals(1, (int) copy.get(node("s1")));
+        assertEquals(2, (int) copy.get(node("s2")));
+    }
+
+    @Test
+    public void testCopyConstructorWithValueMapping() {
+        var original = new FastNodeHashMap();
+        original.put(node("s"), 0);
+        original.put(node("s1"), 1);
+        original.put(node("s2"), 2);
+        assertEquals(3, original.size());
+
+        var copy = new FastNodeHashMap(original, i -> (int) i + 1);
+        assertEquals(3, copy.size());
+        assertEquals(1, (int) copy.get(node("s")));
+        assertEquals(2, (int) copy.get(node("s1")));
+        assertEquals(3, (int) copy.get(node("s2")));
+
+        assertEquals(0, (int) original.get(node("s")));
+        assertEquals(1, (int) original.get(node("s1")));
+        assertEquals(2, (int) original.get(node("s2")));
+    }
+
+    @Test
+    public void testCopyConstructorAddAndDeleteHasNoSideEffects() {
+        var original = new FastNodeHashMap();
+        original.put(node("s"), 0);
+        original.put(node("s1"), 1);
+        original.put(node("s2"), 2);
+        assertEquals(3, original.size());
+
+        var copy = new FastNodeHashMap(original);
+        copy.removeAndGetIndex(node("s1"));
+        copy.put(node("s3"), 3);
+        copy.put(node("s4"), 4);
+
+        assertEquals(4, copy.size());
+        assertEquals(0, (int) copy.get(node("s")));
+        assertEquals(2, (int) copy.get(node("s2")));
+        assertEquals(3, (int) copy.get(node("s3")));
+        assertEquals(4, (int) copy.get(node("s4")));
+
+
+        assertEquals(3, original.size());
+        assertEquals(0, (int) original.get(node("s")));
+        assertEquals(1, (int) original.get(node("s1")));
+        assertEquals(2, (int) original.get(node("s2")));
+    }
+
+    @Test
+    public void testPutAndGetIndexAssignsSequentialIndicesAndReturnsExistingForRepeats() {
+        var sut = new FastNodeHashMap();
+        // First-time puts assign new indices.
+        final int i0 = sut.putAndGetIndex(node("s"), 100);
+        final int i1 = sut.putAndGetIndex(node("s1"), 200);
+        final int i2 = sut.putAndGetIndex(node("s2"), 300);
+        assertEquals(0, i0);
+        assertEquals(1, i1);
+        assertEquals(2, i2);
+        assertEquals(100, (int) sut.getValueAt(i0));
+        assertEquals(200, (int) sut.getValueAt(i1));
+        assertEquals(300, (int) sut.getValueAt(i2));
+    }
+
+    @Test
+    public void testPutAndGetIndexOverwritesValueForExistingKey() {
+        var sut = new FastNodeHashMap();
+        final int i0 = sut.putAndGetIndex(node("s"), 100);
+        // Re-putting the same key returns the SAME index but with the new value.
+        final int i0Again = sut.putAndGetIndex(node("s"), 999);
+        assertEquals(i0, i0Again);
+        assertEquals(999, (int) sut.get(node("s")));
+        assertEquals(1, sut.size());
+    }
+
+    @Test
+    public void testForEachKeyVisitsEveryEntryWithItsIndex() {
+        var sut = new FastNodeHashMap();
+        sut.putAndGetIndex(node("a"), 0);
+        sut.putAndGetIndex(node("b"), 1);
+        sut.putAndGetIndex(node("c"), 2);
+
+        final HashMap<Node, Integer> seen = new HashMap<>();
+        sut.forEachKey(seen::put);
+
+        assertEquals(3, seen.size());
+        assertEquals(Integer.valueOf(0), seen.get(node("a")));
+        assertEquals(Integer.valueOf(1), seen.get(node("b")));
+        assertEquals(Integer.valueOf(2), seen.get(node("c")));
+    }
+
+    @Test
+    public void testForEachKeySkipsRemovedSlots() {
+        var sut = new FastNodeHashMap();
+        sut.putAndGetIndex(node("a"), 0);
+        sut.putAndGetIndex(node("b"), 1);
+        sut.putAndGetIndex(node("c"), 2);
+        sut.tryRemove(node("b"));
+
+        final HashSet<Node> visited = new HashSet<>();
+        sut.forEachKey((k, i) -> visited.add(k));
+        assertEquals(2, visited.size());
+        assertTrue(visited.contains(node("a")));
+        assertTrue(visited.contains(node("c")));
+    }
+
+    @Test
+    public void testForEachKeyOnEmptyMapIsNoOp() {
+        var sut = new FastNodeHashMap();
+        sut.forEachKey((k, i) -> fail("consumer must not be called on an empty map"));
+    }
+
+    private static class FastNodeHashMap extends FastHashMap<Node, Object> {
+
+        public FastNodeHashMap() {
+            super();
+        }
+
+        public FastNodeHashMap(int initialSize) {
+            super(initialSize);
+        }
+
+        public FastNodeHashMap(FastHashMap<Node, Object> mapToCopy) {
+            super(mapToCopy);
+        }
+
+        public FastNodeHashMap(FastHashMap<Node, Object> mapToCopy, UnaryOperator<Object> valueProcessor) {
+            super(mapToCopy, valueProcessor);
+        }
+
+        @Override
+        protected Object[] newValuesArray(int size) {
+            return new Object[size];
+        }
+
+        @Override
+        protected Node[] newKeysArray(int size) {
+            return new Node[size];
+        }
+    }
+}

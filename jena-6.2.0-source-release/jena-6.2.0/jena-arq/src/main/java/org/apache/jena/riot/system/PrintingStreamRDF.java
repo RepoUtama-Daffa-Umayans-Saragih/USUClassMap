@@ -1,0 +1,140 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ *   SPDX-License-Identifier: Apache-2.0
+ */
+
+package org.apache.jena.riot.system;
+
+import java.io.OutputStream ;
+
+import org.apache.jena.atlas.io.AWriter;
+import org.apache.jena.atlas.io.IO;
+import org.apache.jena.graph.Triple;
+import org.apache.jena.riot.out.NodeFormatter;
+import org.apache.jena.riot.out.NodeFormatterTTL;
+import org.apache.jena.riot.out.NodeToLabel;
+import org.apache.jena.riot.writer.WriterStreamRDFFlat;
+import org.apache.jena.riot.writer.WriterStreamRDFPlain;
+import org.apache.jena.sparql.core.Quad;
+
+/**
+ * A {@link StreamRDF} which displays the items sent to the stream.
+ * It is primarily for development purposes.
+ * <p>
+ * The output is not a legal syntax.
+ * Do not consider this format to be stable.
+ * <p>
+ * It is not optimized for throughput and it flushes every line.
+ * Consider using {@link WriterStreamRDFFlat} for performance.
+ * <p>
+ * Use via
+ * <pre>
+ *    StreamRDF stream = StreamRDFLib.print(System.out);
+ * </pre>
+ */
+public class PrintingStreamRDF extends WriterStreamRDFPlain
+{
+    // This is a development helper.
+
+    private final PrefixMap prefixMap = PrefixMapFactory.create();
+    private final NodeToLabel nodeMapper = NodeToLabel.createScopeByDocument();
+    private NodeFormatter pretty = new NodeFormatterTTL(null, prefixMap, nodeMapper);
+
+    public PrintingStreamRDF(OutputStream out) {
+        this(out, null);
+        // Always flush on each items.
+        // Too many points provide buffering or automatic newline
+        // handling in different ways to get implicit consistent behaviour.
+    }
+
+    public PrintingStreamRDF(AWriter out) {
+        this(out, null);
+    }
+
+    /**
+     * Print, with prefixes already loaded (not printed).
+     */
+    public PrintingStreamRDF(OutputStream out, PrefixMap prefixes) {
+        super(IO.wrapUTF8(out));
+        if ( prefixMap != null )
+            prefixMap.putAll(prefixes);
+    }
+
+    /**
+     * Print, with prefixes already loaded (not printed).
+     */
+    public PrintingStreamRDF(AWriter out, PrefixMap prefixes) {
+        super(out);
+        if ( prefixMap != null )
+            prefixMap.putAll(prefixes);
+    }
+
+    @Override
+    protected NodeFormatter getFmt() { return pretty; }
+
+    // No prefix formatting.
+    private static void printDirectURI(AWriter out, String iriStr) {
+        out.print("<") ;
+        out.print(iriStr) ;
+        out.print(">") ;
+    }
+
+    @Override
+    public void base(String base) {
+        out.print("BASE") ;
+        out.print("  ") ;
+        printDirectURI(out, base);
+        out.println();
+        flush();
+        // Reset the formatter because of the new base URI.
+        pretty = new NodeFormatterTTL(base, prefixMap, nodeMapper);
+    }
+
+    @Override
+    public void version(String version) {
+        out.print("VERSION") ;
+        out.print(" ") ;
+        out.print(version);
+        out.println();
+    }
+
+    @Override
+    public void prefix(String prefix, String iri) {
+        out.print("PREFIX") ;
+        out.print("  ") ;
+        out.print(prefix) ;
+        out.print(":  ") ;
+        printDirectURI(out, iri);
+        out.println();
+        prefixMap.add(prefix, iri);
+        flush();
+    }
+
+    @Override
+    public void triple(Triple triple) {
+        super.triple(triple);
+        flushOutput();
+    }
+
+    @Override
+    public void quad(Quad quad) {
+        super.quad(quad);
+        flushOutput();
+    }
+}
