@@ -48,6 +48,12 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
                 Import Excel
             </a>
+            <div class="pt-2 mt-2 border-t border-white/20">
+                <a href="{{ route('fotocopy.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors hover:bg-white/10 text-white {{ request()->routeIs('fotocopy*') ? 'bg-white/20 font-semibold' : '' }}">
+                    <svg class="w-5 h-5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 12v2H8v-4h8v2zm2-2v-2H6v2H4v-4c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v4h-2z"/></svg>
+                    <span>Layanan Fotocopy</span>
+                </a>
+            </div>
         </nav>
 
         <!-- Logout -->

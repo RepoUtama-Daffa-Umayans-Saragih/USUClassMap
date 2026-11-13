@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\AdminMapController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\PhotocopyController;
 use App\Http\Controllers\PhotoInspectorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,11 @@ Route::get('/bookmarks', function () {
 })->name('bookmarks');
 
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
+
+// Fotocopy Services (Integrasi Layanan Kampus)
+Route::get('/fotocopy', [PhotocopyController::class, 'index'])->name('fotocopy.index');
+Route::get('/fotocopy/{id}', [PhotocopyController::class, 'show'])->name('fotocopy.show');
+Route::get('/fotocopy/{id}/order', [PhotocopyController::class, 'order'])->name('fotocopy.order');
 
 // 360 Photo Inspector & SPARQL Calibration (No Auth Required)
 Route::get('/admin/cek-foto', [PhotoInspectorController::class, 'index'])->name('admin.cek-foto');

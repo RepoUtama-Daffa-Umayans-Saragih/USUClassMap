@@ -45,9 +45,17 @@
         </div>
     </div>
 
-    <div class="bg-[#10A760] rounded-lg shadow mb-8 text-white p-6">
-        <h2 class="text-xl font-bold mb-2">Selamat Datang di Admin Panel USUClassMap</h2>
-        <p class="opacity-90">Kelola data jadwal perkuliahan MKWK/MKWU, dosen, gedung, dan ruangan untuk ditampilkan pada aplikasi peta interaktif.</p>
+    <div class="bg-[#10A760] rounded-2xl shadow-sm mb-6 text-white p-6 relative overflow-hidden">
+        <div class="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+                <h2 class="text-xl font-bold mb-1">Selamat Datang di Admin Panel USUClassMap</h2>
+                <p class="text-green-100 text-sm max-w-2xl">Kelola data jadwal perkuliahan MKWK/MKWU, dosen, gedung, ruangan, serta layanan mahasiswa terintegrasi kampus.</p>
+            </div>
+            <a href="{{ route('fotocopy.index') }}" target="_blank" class="bg-white text-[#10A760] hover:bg-green-50 px-4 py-2 rounded-xl text-xs font-bold transition shadow-xs shrink-0 flex items-center gap-2">
+                <span>Lihat Layanan Fotocopy</span>
+                <span>&rarr;</span>
+            </a>
+        </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">

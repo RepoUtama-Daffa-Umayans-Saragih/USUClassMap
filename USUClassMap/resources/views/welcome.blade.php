@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>USUClassMap - Peta Ruang Kelas Kampus USU</title>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
@@ -65,6 +67,9 @@
                 </a>
                 <a href="/faq" class="text-gray-600 hover:text-[#10A760] font-semibold text-sm transition-colors {{ request()->is('faq*') ? 'text-[#10A760]' : '' }}">
                     FAQ
+                </a>
+                <a href="{{ route('fotocopy.index') }}" class="text-gray-600 hover:text-[#10A760] font-semibold text-sm transition-colors {{ request()->routeIs('fotocopy*') ? 'text-[#10A760]' : '' }}">
+                    Fotocopy
                 </a>
             </div>
 
@@ -163,6 +168,9 @@
                     <span x-show="bookmarkCount > 0" x-text="bookmarkCount" class="px-2 py-0.5 text-xs font-bold text-white bg-[#10A760] rounded-full"></span>
                 </a>
                 <a href="/faq" class="block px-3 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:text-[#10A760] hover:bg-gray-50 {{ request()->is('faq*') ? 'bg-green-50 text-[#10A760]' : '' }}">FAQ</a>
+                <a href="{{ route('fotocopy.index') }}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:text-[#10A760] hover:bg-gray-50 {{ request()->routeIs('fotocopy*') ? 'bg-green-50 text-[#10A760]' : '' }}">
+                    Fotocopy
+                </a>
             </div>
 
             @guest
@@ -223,6 +231,9 @@
                     <a href="/map" class="w-full sm:w-auto px-8 py-3.5 bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all">
                         Buka Peta Interaktif
                     </a>
+                    <a href="{{ route('fotocopy.index') }}" class="w-full sm:w-auto px-8 py-3.5 bg-[#D4A017] hover:bg-[#B8880F] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
+                        Layanan Fotocopy
+                    </a>
                     <a href="/faq" class="w-full sm:w-auto px-8 py-3.5 bg-white text-[#10A760] border-2 border-[#10A760] hover:bg-green-50 font-bold rounded-xl shadow-xs transition-all">
                         Lihat FAQ
                     </a>
@@ -230,44 +241,60 @@
             </div>
 
             <!-- Feature Cards Grid -->
-            <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Feature 1 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center border-t-4 border-[#10A760] hover:shadow-md transition-shadow">
-                    <div class="inline-flex justify-center items-center w-14 h-14 rounded-2xl bg-green-50 text-[#10A760] mb-5">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center border-t-4 border-[#10A760] hover:shadow-md transition-shadow">
+                    <div class="inline-flex justify-center items-center w-12 h-12 rounded-2xl bg-green-50 text-[#10A760] mb-4">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Peta Interaktif</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Jelajahi kampus USU dan temukan lokasi fakultas serta ruangan kelas dengan presisi melalui peta interaktif OpenStreetMap.
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Peta Interaktif</h3>
+                    <p class="text-gray-600 text-xs leading-relaxed">
+                        Jelajahi kampus USU dan temukan lokasi fakultas serta ruangan kelas dengan presisi melalui peta OpenStreetMap.
                     </p>
                 </div>
                 
                 <!-- Feature 2 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center border-t-4 border-[#D4A017] hover:shadow-md transition-shadow">
-                    <div class="inline-flex justify-center items-center w-14 h-14 rounded-2xl bg-amber-50 text-[#D4A017] mb-5">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center border-t-4 border-[#D4A017] hover:shadow-md transition-shadow">
+                    <div class="inline-flex justify-center items-center w-12 h-12 rounded-2xl bg-amber-50 text-[#D4A017] mb-4">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Tur 360°</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Lihat pratinjau pemandangan sekitar bangunan secara imersif dengan fitur panorama 360 derajat untuk memudahkan navigasi.
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Tur 360°</h3>
+                    <p class="text-gray-600 text-xs leading-relaxed">
+                        Lihat pratinjau pemandangan sekitar bangunan secara imersif dengan panorama 360 derajat untuk navigasi kelas.
                     </p>
                 </div>
                 
                 <!-- Feature 3 -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 text-center border-t-4 border-[#10A760] hover:shadow-md transition-shadow">
-                    <div class="inline-flex justify-center items-center w-14 h-14 rounded-2xl bg-green-50 text-[#10A760] mb-5">
-                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center border-t-4 border-[#10A760] hover:shadow-md transition-shadow">
+                    <div class="inline-flex justify-center items-center w-12 h-12 rounded-2xl bg-green-50 text-[#10A760] mb-4">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">Smart Search</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        Cari jadwal, dosen, atau mata kuliah dengan cepat dan dapatkan hasil pencarian semantik SPARQL yang relevan seketika.
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Smart Search</h3>
+                    <p class="text-gray-600 text-xs leading-relaxed">
+                        Cari jadwal, dosen, atau mata kuliah dengan cepat dan dapatkan hasil pencarian semantik SPARQL seketika.
                     </p>
+                </div>
+
+                <!-- Feature 4 (Fotocopy) -->
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 text-center border-t-4 border-[#D4A017] hover:shadow-md transition-shadow relative">
+                    <div class="inline-flex justify-center items-center w-12 h-12 rounded-2xl bg-amber-50 text-[#D4A017] mb-4">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 12v2H8v-4h8v2zm2-2v-2H6v2H4v-4c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v4h-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Jasa Fotocopy</h3>
+                    <p class="text-gray-600 text-xs leading-relaxed mb-3">
+                        Pesan cetak dokumen, jilid skripsi, & fotocopy online langsung ke tempat terdekat dengan pesan WA otomatis.
+                    </p>
+                    <a href="{{ route('fotocopy.index') }}" class="text-xs font-bold text-[#10A760] hover:text-[#0D8A4E]">
+                        Jelajahi Fotocopy &rarr;
+                    </a>
                 </div>
             </div>
         </div>
