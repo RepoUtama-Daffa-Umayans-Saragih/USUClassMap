@@ -73,7 +73,8 @@ class PhotocopyPlace extends Model
      */
     public function getWhatsappUrl(?string $customMessage = null): string
     {
-        $phone = preg_replace('/[^0-9]/', '', (string)$this->whatsapp);
+        $raw = !empty($this->whatsapp) ? $this->whatsapp : '6285769737410';
+        $phone = preg_replace('/[^0-9]/', '', (string)$raw);
         if (str_starts_with($phone, '08')) {
             $phone = '62' . substr($phone, 1);
         }

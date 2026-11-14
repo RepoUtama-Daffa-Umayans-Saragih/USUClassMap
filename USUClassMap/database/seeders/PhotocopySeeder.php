@@ -14,6 +14,10 @@ class PhotocopySeeder extends Seeder
      */
     public function run(): void
     {
+        // Nomor kontak dummy terpusat (nomor WhatsApp user)
+        $defaultPhone = '085769737410';
+        $defaultWa = '6285769737410';
+
         $places = [
             [
                 'name' => 'Fotocopy Pak Budi FT',
@@ -25,8 +29,8 @@ class PhotocopySeeder extends Seeder
                 'open_time' => '07:30',
                 'close_time' => '21:00',
                 'operating_days' => 'Senin - Sabtu',
-                'phone' => '081260123456',
-                'whatsapp' => '6281260123456',
+                'phone' => $defaultPhone,
+                'whatsapp' => $defaultWa,
                 'instagram' => 'fotocopy_pakbudi_ft',
                 'facebook' => 'fotocopy.pakbudi.usu',
                 'rating' => 4.9,
@@ -53,8 +57,8 @@ class PhotocopySeeder extends Seeder
                 'open_time' => '08:00',
                 'close_time' => '21:30',
                 'operating_days' => 'Senin - Minggu',
-                'phone' => '082165432109',
-                'whatsapp' => '6282165432109',
+                'phone' => $defaultPhone,
+                'whatsapp' => $defaultWa,
                 'instagram' => 'jayaprint_fisip_usu',
                 'facebook' => 'jaya.printing.usu',
                 'rating' => 4.8,
@@ -78,8 +82,8 @@ class PhotocopySeeder extends Seeder
                 'open_time' => '07:00',
                 'close_time' => '22:00',
                 'operating_days' => 'Senin - Sabtu',
-                'phone' => '085270112233',
-                'whatsapp' => '6285270112233',
+                'phone' => $defaultPhone,
+                'whatsapp' => $defaultWa,
                 'instagram' => 'digitalprint_medik_usu',
                 'facebook' => 'digitalprint.usu',
                 'rating' => 4.9,
@@ -102,8 +106,8 @@ class PhotocopySeeder extends Seeder
                 'open_time' => '08:00',
                 'close_time' => '18:00',
                 'operating_days' => 'Senin - Jumat',
-                'phone' => '081398765432',
-                'whatsapp' => '6281398765432',
+                'phone' => $defaultPhone,
+                'whatsapp' => $defaultWa,
                 'instagram' => 'copycorner_fhusu',
                 'facebook' => 'copycorner.fhusu',
                 'rating' => 4.6,
@@ -125,8 +129,8 @@ class PhotocopySeeder extends Seeder
                 'open_time' => '07:30',
                 'close_time' => '20:30',
                 'operating_days' => 'Senin - Sabtu',
-                'phone' => '082277889900',
-                'whatsapp' => '6282277889900',
+                'phone' => $defaultPhone,
+                'whatsapp' => $defaultWa,
                 'instagram' => 'berkahabadi_usu',
                 'facebook' => 'berkahabadi.copy',
                 'rating' => 4.7,
@@ -148,8 +152,8 @@ class PhotocopySeeder extends Seeder
                 'open_time' => '07:00',
                 'close_time' => '23:00',
                 'operating_days' => 'Senin - Minggu',
-                'phone' => '081299887766',
-                'whatsapp' => '6281299887766',
+                'phone' => $defaultPhone,
+                'whatsapp' => $defaultWa,
                 'instagram' => 'rizkymultiprint_medan',
                 'facebook' => 'rizkymultiprint.usu',
                 'rating' => 4.9,
@@ -164,6 +168,7 @@ class PhotocopySeeder extends Seeder
             ],
         ];
 
+        // Seed tempat inti (Curated Places)
         foreach ($places as $placeData) {
             $items = $placeData['items'];
             unset($placeData['items']);
@@ -185,6 +190,82 @@ class PhotocopySeeder extends Seeder
                 );
             }
         }
+
+        // =========================================================================
+        // SEED DATA HASIL SCRAPING DARI usu_photocopy_data.json (JIKA TERSEDIA)
+        // =========================================================================
+        $jsonPath = database_path('seeders/data/usu_photocopy_data.json');
+        if (file_exists($jsonPath)) {
+            $scrapedJson = json_decode(file_get_contents($jsonPath), true);
+            if (is_array($scrapedJson)) {
+                $baseLat = 3.5650;
+                $baseLng = 98.6540;
+
+                foreach ($scrapedJson as $idx => $shop) {
+                    $shopName = trim($shop['shop_name'] ?? '');
+                    if (empty($shopName) || strtolower($shopName) === 'unknown') {
+                        continue;
+                    }
+
+                    $slug = Str::slug($shopName);
+                    // Hindari duplikasi jika nama tempat sudah ada di database
+                    if (PhotocopyPlace::where('slug', $slug)->exists()) {
+                        continue;
+                    }
+
+                    // Koordinat variatif di sekitar radius kampus USU
+                    $latOffset = (($idx % 5) - 2) * 0.0018 + (sin($idx) * 0.0005);
+                    $lngOffset = ((floor($idx / 5)) - 1.5) * 0.0022 + (cos($idx) * 0.0005);
+
+                    $services = $shop['services_offered'] ?? ['Print Hitam Putih', 'Cetak Warna', 'Jilid Skripsi'];
+                    $itemsSold = $shop['items_sold'] ?? ['Kertas A4', 'Pulpen', 'Binder'];
+
+                    $desc = 'Layanan fotokopi & print terverifikasi sekitar kampus USU. Melayani: ' 
+                          . implode(', ', $services) . '. Menyediakan perlengkapan kuliah: ' 
+                          . implode(', ', $itemsSold) . '.';
+
+                    $place = PhotocopyPlace::create([
+                        'name' => $shopName,
+                        'slug' => $slug,
+                        'description' => $desc,
+                        'location_name' => $shop['exact_location'] ?? 'Jl. Dr. Mansyur / Sekitar Kampus USU',
+                        'latitude' => round($baseLat + $latOffset, 6),
+                        'longitude' => round($baseLng + $lngOffset, 6),
+                        'google_maps_url' => $shop['source_url'] ?? 'https://maps.google.com/?q=' . urlencode($shopName . ' USU Medan'),
+                        'open_time' => '08:00',
+                        'close_time' => '21:00',
+                        'operating_days' => 'Senin - Sabtu',
+                        'phone' => $defaultPhone,
+                        'whatsapp' => $defaultWa,
+                        'instagram' => null,
+                        'facebook' => null,
+                        'rating' => round(4.5 + (($idx % 5) * 0.1), 1),
+                        'is_active' => true,
+                    ]);
+
+                    // Seed item standar untuk tempat hasil scraping
+                    $defaultItems = [
+                        ['name' => 'Print Hitam Putih A4', 'category' => 'Print', 'price' => 250, 'unit' => 'lembar', 'description' => 'Dokumen tugas kuliah'],
+                        ['name' => 'Print Warna A4', 'category' => 'Print', 'price' => 1000, 'unit' => 'lembar', 'description' => 'Makalah & presentasi'],
+                        ['name' => 'Fotocopy Hitam Putih A4', 'category' => 'Fotocopy', 'price' => 200, 'unit' => 'lembar', 'description' => 'Hasil jelas & bersih'],
+                        ['name' => 'Jilid Lakban + Mika', 'category' => 'Jilid', 'price' => 3500, 'unit' => 'buku', 'description' => 'Jilid tugas standar'],
+                        ['name' => 'Jilid Skripsi Hard Cover', 'category' => 'Jilid', 'price' => 35000, 'unit' => 'buku', 'description' => 'Embos tinta emas'],
+                        ['name' => 'Kertas HVS A4 1 Rim', 'category' => 'ATK', 'price' => 50000, 'unit' => 'rim', 'description' => 'Isi 500 lembar'],
+                    ];
+
+                    foreach ($defaultItems as $it) {
+                        PhotocopyItem::create([
+                            'photocopy_place_id' => $place->id,
+                            'name' => $it['name'],
+                            'category' => $it['category'],
+                            'price' => $it['price'],
+                            'unit' => $it['unit'],
+                            'description' => $it['description'],
+                            'is_available' => true,
+                        ]);
+                    }
+                }
+            }
+        }
     }
 }
-
