@@ -9,6 +9,8 @@
             customerPhone: '',
             orderNotes: '',
             paymentMethod: 'qris',
+            selectedBank: 'BCA',
+            submitting: false,
             placeName: '{{ addslashes($place->name) }}',
             placeWa: '{{ $place->whatsapp }}',
 
@@ -58,33 +60,66 @@
                     return;
                 }
 
-                let itemsText = '';
-                Object.values(this.cart).forEach((item, index) => {
-                    itemsText += `${index + 1}. ${item.name} (${item.qty} ${item.unit}) = ${this.formatRupiah(item.price * item.qty)}\n`;
-                });
-
-                let paymentLabel = 'QRIS';
-                if (this.paymentMethod === 'cod') paymentLabel = 'Tunai / Bayar di Tempat';
-                if (this.paymentMethod === 'transfer') paymentLabel = 'Transfer Bank';
-
-                let notes = this.orderNotes ? `\n*Catatan Khusus:*\n${this.orderNotes}\n` : '';
-                let cust = this.customerName ? `\n*Nama Pemesan:* ${this.customerName}` : '';
-
-                let message = `Halo *${this.placeName}*, saya ingin memesan jasa cetak/fotokopi melalui *USUClassMap*:\n`
-                    + cust
-                    + `\n\n*Rincian Pesanan:*\n${itemsText}`
-                    + `\n*Total Pembayaran:* ${this.formatRupiah(this.getSubtotal())}`
-                    + `\n*Metode Pembayaran:* ${paymentLabel}`
-                    + notes
-                    + `\nMohon dikonfirmasi proses dan estimasi waktu selesainya. Terima kasih!`;
-
-                let phone = this.placeWa.replace(/[^0-9]/g, '');
-                if (phone.startsWith('08')) {
-                    phone = '62' + phone.substring(1);
+                if (!this.customerName.trim()) {
+                    alert('Silakan masukkan nama pemesan terlebih dahulu.');
+                    return;
                 }
 
-                let waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-                window.open(waUrl, '_blank');
+                this.submitting = true;
+
+                // Map paymentMethod to strategy keys: 'qris', 'bank_transfer', 'cash'
+                let backendMethod = 'qris';
+                let paymentChannel = null;
+
+                if (this.paymentMethod === 'cod') {
+                    backendMethod = 'cash';
+                    paymentChannel = 'CASHIER';
+                } else if (this.paymentMethod === 'transfer') {
+                    backendMethod = 'bank_transfer';
+                    paymentChannel = this.selectedBank || 'BCA';
+                } else {
+                    backendMethod = 'qris';
+                    paymentChannel = 'QRIS';
+                }
+
+                let orderItems = Object.values(this.cart).map(item => ({
+                    service_id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    quantity: item.qty,
+                    category: 'Fotocopy'
+                }));
+
+                fetch('{{ route('fotocopy.order.store', $place->id) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        customer_name: this.customerName,
+                        customer_phone: this.customerPhone || null,
+                        notes: this.orderNotes || null,
+                        payment_method: backendMethod,
+                        payment_channel: paymentChannel,
+                        items: orderItems
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.payment_url) {
+                        window.location.href = data.payment_url;
+                    } else {
+                        alert(data.message || 'Terjadi kesalahan saat memproses pesanan.');
+                        this.submitting = false;
+                    }
+                })
+                .catch(err => {
+                    console.error('Error submitting order:', err);
+                    alert('Gagal menghubungi server. Silakan coba lagi.');
+                    this.submitting = false;
+                });
             }
         }"
     >
@@ -267,24 +302,61 @@
                     </div>
 
                     <!-- PEMBAYARAN -->
-                    <div class="space-y-1.5 pt-2 border-t border-gray-100">
-                        <label class="block text-[11px] font-bold text-gray-700">Pilihan Pembayaran:</label>
+                    <div class="space-y-2 pt-2 border-t border-gray-100">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-[11px] font-bold text-gray-700">Metode Pembayaran:</label>
+                            <span class="text-[10px] text-gray-400 font-medium">Pilih salah satu</span>
+                        </div>
                         <div class="grid grid-cols-3 gap-1.5 text-[11px]">
-                            <label class="flex flex-col items-center p-2 rounded-xl border cursor-pointer text-center transition" :class="paymentMethod === 'qris' ? 'border-[#10A760] bg-green-50/60 font-bold text-[#10A760]' : 'border-gray-200 text-gray-600'">
+                            <label class="flex flex-col items-center p-2 rounded-xl border cursor-pointer text-center transition" :class="paymentMethod === 'qris' ? 'border-[#10A760] bg-green-50/70 font-bold text-[#10A760] shadow-sm' : 'border-gray-200 text-gray-600 hover:border-gray-300'">
                                 <input type="radio" value="qris" x-model="paymentMethod" class="sr-only">
-                                <i class="fa-solid fa-qrcode text-sm mb-1"></i>
+                                <i class="fa-solid fa-qrcode text-base mb-1"></i>
                                 <span>QRIS</span>
+                                <span class="text-[9px] font-normal text-emerald-600 mt-0.5">Otomatis</span>
                             </label>
-                            <label class="flex flex-col items-center p-2 rounded-xl border cursor-pointer text-center transition" :class="paymentMethod === 'cod' ? 'border-[#10A760] bg-green-50/60 font-bold text-[#10A760]' : 'border-gray-200 text-gray-600'">
-                                <input type="radio" value="cod" x-model="paymentMethod" class="sr-only">
-                                <i class="fa-solid fa-money-bill-wave text-sm mb-1"></i>
-                                <span>Tunai</span>
-                            </label>
-                            <label class="flex flex-col items-center p-2 rounded-xl border cursor-pointer text-center transition" :class="paymentMethod === 'transfer' ? 'border-[#10A760] bg-green-50/60 font-bold text-[#10A760]' : 'border-gray-200 text-gray-600'">
+                            <label class="flex flex-col items-center p-2 rounded-xl border cursor-pointer text-center transition" :class="paymentMethod === 'transfer' ? 'border-[#10A760] bg-green-50/70 font-bold text-[#10A760] shadow-sm' : 'border-gray-200 text-gray-600 hover:border-gray-300'">
                                 <input type="radio" value="transfer" x-model="paymentMethod" class="sr-only">
-                                <i class="fa-solid fa-building-columns text-sm mb-1"></i>
-                                <span>Transfer</span>
+                                <i class="fa-solid fa-building-columns text-base mb-1"></i>
+                                <span>Bank Transfer</span>
+                                <span class="text-[9px] font-normal text-blue-600 mt-0.5">Virtual Acc</span>
                             </label>
+                            <label class="flex flex-col items-center p-2 rounded-xl border cursor-pointer text-center transition" :class="paymentMethod === 'cod' ? 'border-[#10A760] bg-green-50/70 font-bold text-[#10A760] shadow-sm' : 'border-gray-200 text-gray-600 hover:border-gray-300'">
+                                <input type="radio" value="cod" x-model="paymentMethod" class="sr-only">
+                                <i class="fa-solid fa-money-bill-wave text-base mb-1"></i>
+                                <span>Tunai</span>
+                                <span class="text-[9px] font-normal text-amber-600 mt-0.5">Di Kasir</span>
+                            </label>
+                        </div>
+
+                        <!-- Sub-opsi Bank Transfer -->
+                        <div x-show="paymentMethod === 'transfer'" x-cloak class="mt-2 p-2.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+                            <div class="flex items-center justify-between text-[11px]">
+                                <span class="font-bold text-slate-700">Pilih Bank Tujuan:</span>
+                                <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold border border-emerald-200">PoC Static VA</span>
+                            </div>
+                            <div class="grid grid-cols-5 gap-1 text-[11px] font-semibold text-center">
+                                <button type="button" @click="selectedBank = 'BCA'" class="py-1.5 px-1 rounded-lg border text-xs transition" :class="selectedBank === 'BCA' ? 'bg-[#005EAA] text-white border-[#005EAA] shadow-sm font-bold' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'">BCA</button>
+                                <button type="button" @click="selectedBank = 'Mandiri'" class="py-1.5 px-1 rounded-lg border text-xs transition" :class="selectedBank === 'Mandiri' ? 'bg-[#003366] text-white border-[#003366] shadow-sm font-bold' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'">Mandiri</button>
+                                <button type="button" @click="selectedBank = 'BNI'" class="py-1.5 px-1 rounded-lg border text-xs transition" :class="selectedBank === 'BNI' ? 'bg-[#E05A2B] text-white border-[#E05A2B] shadow-sm font-bold' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'">BNI</button>
+                                <button type="button" @click="selectedBank = 'BRI'" class="py-1.5 px-1 rounded-lg border text-xs transition" :class="selectedBank === 'BRI' ? 'bg-[#00529C] text-white border-[#00529C] shadow-sm font-bold' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'">BRI</button>
+                                <button type="button" @click="selectedBank = 'BSI'" class="py-1.5 px-1 rounded-lg border text-xs transition" :class="selectedBank === 'BSI' ? 'bg-[#00A39D] text-white border-[#00A39D] shadow-sm font-bold' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100'">BSI</button>
+                            </div>
+                            <div class="text-[10px] text-gray-500 flex items-center gap-1.5 pt-1">
+                                <i class="fa-solid fa-circle-info text-blue-500"></i>
+                                <span>No. VA: <strong class="font-mono text-gray-700">88019920260001</strong> a.n. USUClassMap Fotokopi</span>
+                            </div>
+                        </div>
+
+                        <!-- Info singkat QRIS -->
+                        <div x-show="paymentMethod === 'qris'" x-cloak class="p-2 bg-emerald-50/60 border border-emerald-100 rounded-xl text-[11px] text-emerald-800 flex items-center gap-2">
+                            <i class="fa-solid fa-qrcode text-emerald-600 text-sm"></i>
+                            <span>QR Code EMVCo unik akan otomatis digenerate saat klik lanjut pembayaran.</span>
+                        </div>
+
+                        <!-- Info singkat Tunai -->
+                        <div x-show="paymentMethod === 'cod'" x-cloak class="p-2 bg-amber-50/70 border border-amber-100 rounded-xl text-[11px] text-amber-800 flex items-center gap-2">
+                            <i class="fa-solid fa-store text-amber-600 text-sm"></i>
+                            <span>Bayar tunai langsung di kasir toko saat mengambil dokumen/cetakan Anda.</span>
                         </div>
                     </div>
 
@@ -296,14 +368,16 @@
 
                     <!-- BUTTONS: PESAN & LOKASI (SEJAJAR) -->
                     <div class="pt-2 flex items-center gap-2">
-                        <!-- Button Pesan (Laman Baru / WA Otomatis) -->
+                        <!-- Button Pesan & Bayar -->
                         <button
                             type="button"
                             @click="submitOrder()"
-                            class="flex-1 bg-[#10A760] hover:bg-[#0D8A4E] text-white py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                            :disabled="submitting"
+                            class="flex-1 bg-[#10A760] hover:bg-[#0D8A4E] text-white py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                         >
-                            <i class="fa-brands fa-whatsapp text-sm sm:text-base"></i>
-                            <span>Pesan via WhatsApp</span>
+                            <i class="fa-solid fa-spinner fa-spin" x-show="submitting"></i>
+                            <i class="fa-solid fa-credit-card" x-show="!submitting"></i>
+                            <span x-text="submitting ? 'Memproses Pesanan...' : 'Lanjut ke Pembayaran'"></span>
                         </button>
 
                         <!-- Button Lokasi (Sejajar dengan Button Pesan -> Ke Maps) -->
@@ -319,7 +393,7 @@
                     </div>
 
                     <p class="text-[10px] text-gray-400 text-center">
-                        Pesanan dan rincian item akan otomatis terisi ke WhatsApp pemilik toko.
+                        Pesanan dicatat di sistem USUClassMap dan terintegrasi langsung dengan kasir toko.
                     </p>
                 </div>
 

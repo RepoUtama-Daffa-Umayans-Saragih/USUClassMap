@@ -39,12 +39,16 @@ Route::get('/fotocopy', [PhotocopyController::class, 'index'])->name('fotocopy.i
 Route::get('/fotocopy/{id}', [PhotocopyController::class, 'show'])->name('fotocopy.show');
 Route::get('/fotocopy/{id}/order', [PhotocopyController::class, 'order'])->name('fotocopy.order');
 Route::post('/fotocopy/{id}/order', [PhotocopyController::class, 'storeOrder'])->name('fotocopy.order.store');
+Route::get('/fotocopy/orders/{orderCode}/payment', [PhotocopyController::class, 'paymentInstructions'])->name('fotocopy.orders.payment');
+Route::post('/fotocopy/orders/{orderCode}/simulate-payment', [PhotocopyController::class, 'simulatePayment'])->name('fotocopy.orders.simulate-payment');
 
 // Rute alternatif direktori mitra fotocopy tim
 Route::get('/photocopy-directory', [PhotocopyController::class, 'index'])->name('photocopy.directory');
 Route::get('/photocopy-directory/{id}', [PhotocopyController::class, 'show'])->name('photocopy.directory.show');
 Route::get('/photocopy-directory/{id}/order', [PhotocopyController::class, 'order'])->name('photocopy.directory.order');
 Route::post('/photocopy-directory/{id}/order', [PhotocopyController::class, 'storeOrder'])->name('photocopy.directory.order.store');
+Route::get('/photocopy-directory/orders/{orderCode}/payment', [PhotocopyController::class, 'paymentInstructions'])->name('photocopy.directory.orders.payment');
+Route::post('/photocopy-directory/orders/{orderCode}/simulate-payment', [PhotocopyController::class, 'simulatePayment'])->name('photocopy.directory.orders.simulate-payment');
 
 // 360 Photo Inspector & SPARQL Calibration (No Auth Required)
 Route::get('/admin/cek-foto', [PhotoInspectorController::class, 'index'])->name('admin.cek-foto');

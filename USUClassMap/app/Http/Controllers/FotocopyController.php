@@ -37,4 +37,20 @@ class FotocopyController extends Controller
     {
         return app(PhotocopyController::class)->storeOrder($request, $id);
     }
+
+    /**
+     * Tampilan instruksi pembayaran (Unified).
+     */
+    public function paymentInstructions($orderCode)
+    {
+        return app(PhotocopyController::class)->paymentInstructions($orderCode);
+    }
+
+    /**
+     * Simulasi status pembayaran (PoC).
+     */
+    public function simulatePayment(Request $request, $orderCode)
+    {
+        return app(PhotocopyController::class)->simulatePayment($request, $orderCode);
+    }
 }

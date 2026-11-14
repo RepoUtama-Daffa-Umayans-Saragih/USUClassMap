@@ -7,6 +7,7 @@ use App\Models\FotocopyOrderItem;
 use App\Models\FotocopyStore;
 use App\Models\PhotocopyPlace;
 use App\Models\PhotocopyItem;
+use App\Services\Payment\PaymentManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -121,7 +122,7 @@ class PhotocopyController extends Controller
     }
 
     /**
-     * Process order submission, save to database, and return WhatsApp checkout link.
+     * Process order submission, save to database, and initialize payment strategy.
      */
     public function storeOrder(Request $request, $id)
     {
@@ -137,7 +138,8 @@ class PhotocopyController extends Controller
             'customer_name' => 'required|string|max:150',
             'customer_phone' => 'nullable|string|max:30',
             'notes' => 'nullable|string|max:1000',
-            'payment_method' => 'nullable|in:QRIS,Tunai,Transfer',
+            'payment_method' => 'nullable|string|max:50',
+            'payment_channel' => 'nullable|string|max:50',
             'items' => 'required|array|min:1',
             'items.*.name' => 'nullable|string',
             'items.*.service_name' => 'nullable|string',
@@ -152,7 +154,14 @@ class PhotocopyController extends Controller
             $totalPrice += ($item['price'] * $item['quantity']);
         }
 
-        $paymentMethod = $validated['payment_method'] ?? 'QRIS';
+        // Normalize payment method to strategy keys: 'qris', 'bank_transfer', 'cash'
+        $rawMethod = strtolower(trim((string) ($validated['payment_method'] ?? 'qris')));
+        $paymentMethod = match ($rawMethod) {
+            'cash', 'tunai', 'cod' => 'cash',
+            'bank_transfer', 'bank', 'transfer', 'va' => 'bank_transfer',
+            default => 'qris',
+        };
+
         $order = FotocopyOrder::create([
             'order_code' => 'ORD-' . date('Ymd') . '-' . strtoupper(Str::random(4)),
             'store_id' => $storeId,
@@ -161,7 +170,8 @@ class PhotocopyController extends Controller
             'customer_phone' => $validated['customer_phone'] ?? null,
             'notes' => $validated['notes'] ?? null,
             'payment_method' => $paymentMethod,
-            'payment_status' => $paymentMethod === 'Tunai' ? 'pending' : 'paid',
+            'payment_channel' => $validated['payment_channel'] ?? null,
+            'payment_status' => 'pending',
             'order_status' => 'Menunggu',
             'total_price' => $totalPrice,
         ]);
@@ -179,6 +189,12 @@ class PhotocopyController extends Controller
             ]);
         }
 
+        // Execute payment strategy
+        $paymentManager = app(PaymentManager::class);
+        $paymentResult = $paymentManager->process($order, $paymentMethod, [
+            'payment_channel' => $validated['payment_channel'] ?? null,
+        ]);
+
         // Format WhatsApp order message
         $waNumber = preg_replace('/[^\d]/', '', $place->whatsapp ?: $place->phone ?: '6285769737410');
         if (str_starts_with($waNumber, '08')) {
@@ -187,39 +203,88 @@ class PhotocopyController extends Controller
             $waNumber = '62' . substr($waNumber, 1);
         }
 
-        $waText = "Halo {$place->name}, saya ingin memesan:\n";
+        $waText = "Halo {$place->name}, saya telah membuat pesanan di USUClassMap:\n";
         $waText .= "Kode Pesanan: #{$order->order_code}\n";
         $waText .= "Nama Pemesan: {$order->customer_name}\n";
         if ($order->customer_phone) {
             $waText .= "No. HP: {$order->customer_phone}\n";
         }
-        $waText .= "\nRincian Item:\n";
+        $waText .= "\nRincian Pesanan:\n";
         foreach ($validated['items'] as $item) {
             $itemName = $item['name'] ?? $item['service_name'] ?? 'Item';
             $sub = number_format($item['price'] * $item['quantity'], 0, ',', '.');
             $waText .= "- {$itemName} (x{$item['quantity']}): Rp {$sub}\n";
         }
         $waText .= "\nTotal: Rp " . number_format($totalPrice, 0, ',', '.') . "\n";
-        $waText .= "Metode Bayar: {$order->payment_method}\n";
+        $waText .= "Metode Bayar: " . $order->getPaymentMethodLabel();
+        if ($order->payment_channel) {
+            $waText .= " (" . $order->getPaymentChannelLabel() . ")";
+        }
+        $waText .= "\nStatus Pembayaran: " . ($order->isPaid() ? 'Lunas' : 'Menunggu Konfirmasi') . "\n";
         if ($order->notes) {
             $waText .= "Catatan: {$order->notes}\n";
         }
-        $waText .= "\nMohon konfirmasi ketersediaan dan proses pesanan saya. Terima kasih!";
+        $waText .= "\nMohon diproses pesanan saya. Terima kasih!";
 
         $whatsappUrl = 'https://wa.me/' . $waNumber . '?text=' . urlencode($waText);
+        $paymentUrl = route('fotocopy.orders.payment', $order->order_code);
 
-        if ($request->wantsJson()) {
+        if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Pesanan berhasil dibuat dan tercatat di sistem!',
+                'message' => 'Pesanan berhasil dibuat!',
                 'order_code' => $order->order_code,
                 'order_id' => $order->id,
+                'payment_url' => $paymentUrl,
                 'whatsapp_url' => $whatsappUrl,
+                'payment' => $paymentResult->toArray(),
             ]);
         }
 
-        return redirect()->route('fotocopy.show', $place->id)
-            ->with('success', "Pesanan #{$order->order_code} berhasil dibuat! Silakan hubungi kasir atau kirim konfirmasi via WhatsApp.")
+        return redirect()->route('fotocopy.orders.payment', $order->order_code)
+            ->with('success', "Pesanan #{$order->order_code} berhasil dibuat! Silakan selesaikan pembayaran.")
             ->with('whatsapp_url', $whatsappUrl);
+    }
+
+    /**
+     * Tampilkan halaman instruksi pembayaran dan rincian pesanan.
+     */
+    public function paymentInstructions($orderCode)
+    {
+        $order = FotocopyOrder::where('order_code', $orderCode)
+            ->with(['store', 'photocopyPlace', 'items'])
+            ->firstOrFail();
+
+        $place = $order->photocopyPlace ?? PhotocopyPlace::find($order->store_id) ?? new PhotocopyPlace([
+            'name' => $order->store?->name ?? 'Mitra Fotokopi USU',
+            'address' => $order->store?->address ?? 'Area Kampus USU Medan',
+            'whatsapp' => $order->store?->whatsapp ?? '6285769737410',
+        ]);
+
+        return view('public.fotocopy.payment', compact('order', 'place'));
+    }
+
+    /**
+     * Endpoint simulasi pembayaran (PoC) untuk menandai pesanan menjadi Lunas.
+     */
+    public function simulatePayment(Request $request, $orderCode)
+    {
+        $order = FotocopyOrder::where('order_code', $orderCode)->firstOrFail();
+        $paymentManager = app(PaymentManager::class);
+        $success = $paymentManager->simulateSuccess($order);
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => $success,
+                'message' => 'Status pembayaran berhasil diperbarui menjadi Lunas (Simulasi PoC)!',
+                'order_code' => $order->order_code,
+                'payment_status' => $order->payment_status,
+                'order_status' => $order->order_status,
+                'paid_at' => $order->paid_at?->format('d M Y, H:i') ?? now()->format('d M Y, H:i'),
+            ]);
+        }
+
+        return redirect()->route('fotocopy.orders.payment', $order->order_code)
+            ->with('success', 'Status pembayaran berhasil diperbarui menjadi Lunas!');
     }
 }

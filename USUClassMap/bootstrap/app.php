@@ -12,6 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->validateCsrfTokens(except: [
+            'fotocopy/orders/*/simulate-payment',
+            'photocopy-directory/orders/*/simulate-payment',
+        ]);
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
             'admin.fotokopi' => \App\Http\Middleware\EnsureUserIsAdminFotokopi::class,
