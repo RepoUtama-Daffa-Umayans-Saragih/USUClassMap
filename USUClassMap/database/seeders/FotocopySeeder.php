@@ -6,8 +6,11 @@ use App\Models\FotocopyOrder;
 use App\Models\FotocopyOrderItem;
 use App\Models\FotocopyService;
 use App\Models\FotocopyStore;
+use App\Models\PhotocopyPlace;
+use App\Models\PhotocopyItem;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -42,203 +45,101 @@ class FotocopySeeder extends Seeder
             ]
         );
 
-        // 3. Seed 6 Mitra Toko Fotokopi Kampus USU (Sesuai Referensi Tampilan)
-        $storesData = [
-            [
-                'id' => 5,
-                'user_id' => $cashierFotokopi->id,
-                'name' => 'Berkah Abadi Copy & ATK Perpustakaan',
-                'slug' => 'berkah-abadi-copy-atk-perpustakaan',
-                'location_name' => 'Pelataran Parkir Perpustakaan Pusat USU',
-                'latitude' => 3.565250,
-                'longitude' => 98.654850,
-                'opening_hours' => '07:30 - 20:30',
-                'operating_days' => 'Senin - Sabtu',
-                'whatsapp' => '+6282277809900',
-                'instagram' => '@berkahabadi_usu',
-                'facebook' => 'berkahabadi.copy',
-                'description' => 'Paling strategis di dekat Perpustakaan Pusat USU. Melayani fotocopy referensi buku perpus, cetak online via WA, dan perlengkapan ujian.',
-                'rating' => 4.7,
-                'is_open' => true,
-                'starting_price' => 200,
-                'services' => [
-                    [
-                        'name' => 'Print Tugas A4 B/W',
-                        'category' => 'Print',
-                        'price' => 200,
-                        'unit' => 'lembar',
-                        'description' => 'Langsung kirim file via WA',
-                    ],
-                    [
-                        'name' => 'Print Warna A4',
-                        'category' => 'Print',
-                        'price' => 800,
-                        'unit' => 'lembar',
-                        'description' => 'Kualitas jernih',
-                    ],
-                    [
-                        'name' => 'Fotocopy A4/F4',
-                        'category' => 'Fotocopy',
-                        'price' => 175,
-                        'unit' => 'lembar',
-                        'description' => 'Pelayanan ramah',
-                    ],
-                    [
-                        'name' => 'Jilid Spiral Kawat A4',
-                        'category' => 'Jilid',
-                        'price' => 10000,
-                        'unit' => 'buku',
-                        'description' => 'Cover mika bening tebal',
-                    ],
-                    [
-                        'name' => 'Pulpen Gel Standard / Faster',
-                        'category' => 'ATK',
-                        'price' => 3500,
-                        'unit' => 'pcs',
-                        'description' => 'Tinta hitam/biru',
-                    ],
-                ]
-            ],
-            [
-                'id' => 1,
-                'user_id' => null,
-                'name' => 'Copy Corner Fakultas Hukum',
-                'slug' => 'copy-corner-fakultas-hukum',
-                'location_name' => 'Lobi Sayap Barat Fakultas Hukum (FH) USU',
-                'latitude' => 3.564100,
-                'longitude' => 98.653900,
-                'opening_hours' => '08:00 - 18:00',
-                'operating_days' => 'Senin - Jumat',
-                'whatsapp' => '+6281234567891',
-                'instagram' => '@copycorner_fh',
-                'facebook' => 'copycorner.fh',
-                'description' => 'Tempat fotocopy buku teks hukum, KUHP, berkas peradilan semu, perbanyakan berkas skripsi, serta meterai resmi.',
-                'rating' => 4.6,
-                'is_open' => true,
-                'starting_price' => 200,
-                'services' => [
-                    ['name' => 'Print Hitam Putih A4', 'category' => 'Print', 'price' => 200, 'unit' => 'lembar', 'description' => 'Cepat & praktis'],
-                    ['name' => 'Print Warna A4', 'category' => 'Print', 'price' => 1000, 'unit' => 'lembar', 'description' => 'Tinta laser tajam'],
-                    ['name' => 'Fotocopy Buku Hukum A4/F4', 'category' => 'Fotocopy', 'price' => 175, 'unit' => 'lembar', 'description' => 'Buku tebal rapi'],
-                    ['name' => 'Jilid Lakban Biasa', 'category' => 'Jilid', 'price' => 5000, 'unit' => 'buku', 'description' => 'Lakban hitam standar'],
-                ]
-            ],
-            [
-                'id' => 2,
-                'user_id' => null,
-                'name' => 'Digital Print Center FK & FIB',
-                'slug' => 'digital-print-center-fk-fib',
-                'location_name' => 'Belakang Gedung Fakultas Kedokteran (FK) USU',
-                'latitude' => 3.563500,
-                'longitude' => 98.656200,
-                'opening_hours' => '07:00 - 22:00',
-                'operating_days' => 'Senin - Sabtu',
-                'whatsapp' => '+6281298765432',
-                'instagram' => '@digitalprint_fkfib',
-                'facebook' => 'digitalprint.fk',
-                'description' => 'Spesialis cetak poster penelitian ilmiah, atlas kedokteran, cetak diktat tebal, banner seminar, dan cetak kilat warna tajam.',
-                'rating' => 4.9,
-                'is_open' => true,
-                'starting_price' => 200,
-                'services' => [
-                    ['name' => 'Print Laser Hitam Putih A4', 'category' => 'Print', 'price' => 250, 'unit' => 'lembar', 'description' => 'Resolusi tinggi'],
-                    ['name' => 'Print Warna Laser High Res A4', 'category' => 'Print', 'price' => 1500, 'unit' => 'lembar', 'description' => 'Glossy / Matte'],
-                    ['name' => 'Cetak Poster Ilmiah / Banner A1', 'category' => 'Print', 'price' => 35000, 'unit' => 'lembar', 'description' => 'Bahan Albatros / Luster'],
-                    ['name' => 'Jilid Hardcover Skripsi', 'category' => 'Jilid', 'price' => 35000, 'unit' => 'buku', 'description' => 'Tinta emas embos'],
-                ]
-            ],
-            [
-                'id' => 3,
-                'user_id' => null,
-                'name' => 'Fotocopy & Print Jaya FISIP',
-                'slug' => 'fotocopy-print-jaya-fisip',
-                'location_name' => 'Samping Gedung FISIP USU (Dekat Kantin)',
-                'latitude' => 3.566800,
-                'longitude' => 98.652800,
-                'opening_hours' => '08:00 - 21:30',
-                'operating_days' => 'Senin - Minggu',
-                'whatsapp' => '+6285211223344',
-                'instagram' => '@jayafisip_copy',
-                'facebook' => 'jayaprint.fisip',
-                'description' => 'Pusat fotocopy dan print mahasiswa FISIP & FIB. Menyediakan cetak cepat, jilid softcover/hardcover, dan cetak foto kilat.',
-                'rating' => 4.8,
-                'is_open' => true,
-                'starting_price' => 200,
-                'services' => [
-                    ['name' => 'Print Hitam Putih A4', 'category' => 'Print', 'price' => 200, 'unit' => 'lembar', 'description' => 'Kertas 75gr'],
-                    ['name' => 'Print Warna A4', 'category' => 'Print', 'price' => 1000, 'unit' => 'lembar', 'description' => 'Full color'],
-                    ['name' => 'Fotocopy A4/F4', 'category' => 'Fotocopy', 'price' => 180, 'unit' => 'lembar', 'description' => 'Mesin Canon high speed'],
-                    ['name' => 'Jilid Softcover', 'category' => 'Jilid', 'price' => 15000, 'unit' => 'buku', 'description' => 'Laminating doff'],
-                ]
-            ],
-            [
-                'id' => 4,
-                'user_id' => null,
-                'name' => 'Fotocopy Pak Budi FT',
-                'slug' => 'fotocopy-pak-budi-ft',
-                'location_name' => 'Depan Gedung Fakultas Teknik (FT) USU',
-                'latitude' => 3.561900,
-                'longitude' => 98.655100,
-                'opening_hours' => '07:30 - 21:00',
-                'operating_days' => 'Senin - Sabtu',
-                'whatsapp' => '+6281355667788',
-                'instagram' => '@pakbudi_ft',
-                'facebook' => 'pakbudi.ft',
-                'description' => 'Melayani fotocopy kilat, print tugas/makalah, print skripsi, jilid lakban & spiral, dan penjualan ATK lengkap mahasiswa teknik.',
-                'rating' => 4.9,
-                'is_open' => true,
-                'starting_price' => 200,
-                'services' => [
-                    ['name' => 'Print Tugas/Makalah B/W', 'category' => 'Print', 'price' => 200, 'unit' => 'lembar', 'description' => 'Format PDF/Docx'],
-                    ['name' => 'Print Gambar Teknik A3', 'category' => 'Print', 'price' => 3000, 'unit' => 'lembar', 'description' => 'Plotter AutoCAD'],
-                    ['name' => 'Jilid Spiral Kawat', 'category' => 'Jilid', 'price' => 12000, 'unit' => 'buku', 'description' => 'Mika bening + karton'],
-                    ['name' => 'Kertas Kalkir A3', 'category' => 'ATK', 'price' => 5000, 'unit' => 'lembar', 'description' => 'Untuk gambar teknik'],
-                ]
-            ],
-            [
-                'id' => 6,
-                'user_id' => null,
-                'name' => 'Rizky Multi Print USU (Pintu 1)',
-                'slug' => 'rizky-multi-print-usu-pintu-1',
-                'location_name' => 'Pintu 1 Kampus USU, Jl. Dr. Mansyur No. 28 Medan',
-                'latitude' => 3.568200,
-                'longitude' => 98.658300,
-                'opening_hours' => '07:00 - 23:00',
-                'operating_days' => 'Senin - Minggu',
-                'whatsapp' => '+6281988990011',
-                'instagram' => '@rizkymultiprint',
-                'facebook' => 'rizkyprint.pintu1',
-                'description' => 'Buka sampai malam! Melayani print 24 jam dengan konfirmasi WA, pembuatan plakat akrilik, cetak sertifikat, dan print skripsi kilat.',
-                'rating' => 4.9,
-                'is_open' => true,
-                'starting_price' => 200,
-                'services' => [
-                    ['name' => 'Print Skripsi Kilat A4', 'category' => 'Print', 'price' => 250, 'unit' => 'lembar', 'description' => 'Kertas 80gr PaperOne'],
-                    ['name' => 'Plakat Akrilik Wisuda', 'category' => 'ATK', 'price' => 45000, 'unit' => 'pcs', 'description' => 'Custom nama & logo USU'],
-                    ['name' => 'Fotocopy Bolak-Balik', 'category' => 'Fotocopy', 'price' => 190, 'unit' => 'lembar', 'description' => 'Hemat & rapi'],
-                ]
-            ],
-        ];
+        // 3. Load all 31 places from usu_photocopy_data.json
+        $jsonPath = database_path('seeders/data/usu_photocopy_data.json');
+        if (!file_exists($jsonPath)) {
+            return;
+        }
 
-        foreach ($storesData as $storeInfo) {
-            $services = $storeInfo['services'];
-            unset($storeInfo['services']);
+        $storesData = json_decode(file_get_contents($jsonPath), true);
+        if (!is_array($storesData)) {
+            return;
+        }
 
-            $store = FotocopyStore::updateOrCreate(['id' => $storeInfo['id']], $storeInfo);
+        DB::statement('PRAGMA foreign_keys = OFF;');
 
-            foreach ($services as $srv) {
-                FotocopyService::updateOrCreate(
-                    [
-                        'store_id' => $store->id,
-                        'name' => $srv['name']
-                    ],
-                    $srv
-                );
+        // Temporarily randomize existing slugs to prevent unique constraint conflict during re-mapping
+        if (DB::table('fotocopy_stores')->count() > 0) {
+            DB::table('fotocopy_stores')->update([
+                'slug' => DB::raw("'temp-' || id || '-' || hex(randomblob(4))")
+            ]);
+        }
+
+        foreach ($storesData as $data) {
+            $id = $data['id'] ?? null;
+            $slug = $data['slug'] ?? Str::slug($data['name']);
+
+            $startingPrice = 200;
+            if (!empty($data['catalog_items']) && is_array($data['catalog_items'])) {
+                $prices = array_column($data['catalog_items'], 'price');
+                if (!empty($prices)) {
+                    $startingPrice = min($prices);
+                }
+            }
+
+            $openHour = $data['open_time'] ?? '08:00';
+            $closeHour = $data['close_time'] ?? '21:00';
+            $openingHoursStr = "{$openHour} - {$closeHour}";
+
+            // Assign cashier to Store 5 (Berkah Abadi)
+            $isBerkah = ($id == 5) || str_contains($data['name'], 'Berkah Abadi');
+            $storeUserId = $isBerkah ? $cashierFotokopi->id : null;
+
+            $attrs = [
+                'id' => $id,
+                'user_id' => $storeUserId,
+                'name' => $data['name'],
+                'slug' => $slug,
+                'location_name' => $data['location_name'],
+                'latitude' => $data['latitude'],
+                'longitude' => $data['longitude'],
+                'opening_hours' => $openingHoursStr,
+                'operating_days' => $data['operating_days'] ?? 'Senin - Sabtu',
+                'phone' => $data['phone'] ?? null,
+                'whatsapp' => $data['whatsapp'] ?? null,
+                'image_url' => $data['image_url'] ?? null,
+                'google_maps_url' => $data['google_maps_url'] ?? null,
+                'google_place_id' => $data['google_place_id'] ?? null,
+                'description' => $data['description'] ?? null,
+                'rating' => $data['rating'] ?? 4.8,
+                'user_rating_count' => $data['user_rating_count'] ?? 50,
+                'is_open' => true,
+                'starting_price' => $startingPrice,
+                'updated_at' => now(),
+            ];
+
+            $existing = DB::table('fotocopy_stores')->where('id', $id)->first();
+            if ($existing) {
+                DB::table('fotocopy_stores')->where('id', $id)->update($attrs);
+            } else {
+                $attrs['created_at'] = now();
+                DB::table('fotocopy_stores')->insert($attrs);
+            }
+
+            // Insert or update services
+            if (!empty($data['catalog_items']) && is_array($data['catalog_items'])) {
+                foreach ($data['catalog_items'] as $item) {
+                    FotocopyService::updateOrCreate(
+                        [
+                            'store_id' => $id,
+                            'name' => $item['name'],
+                        ],
+                        [
+                            'category' => $item['category'] ?? 'Fotocopy',
+                            'price' => $item['price'] ?? 200,
+                            'unit' => $item['unit'] ?? 'lembar',
+                            'description' => $item['description'] ?? null,
+                            'is_available' => $item['is_available'] ?? true,
+                        ]
+                    );
+                }
             }
         }
 
-        // 4. Seed Beberapa Pesanan Masuk (Sample Orders) untuk Berkah Abadi
-        $berkahStore = FotocopyStore::find(5);
+        DB::statement('PRAGMA foreign_keys = ON;');
+
+        // 4. Seed sample orders on Berkah Abadi (Store ID 5) for cashier & reports testing
+        $berkahStore = FotocopyStore::find(5) ?? FotocopyStore::where('name', 'like', '%Berkah Abadi%')->first();
         if ($berkahStore) {
             $order1 = FotocopyOrder::updateOrCreate(
                 ['order_code' => 'ORD-20261113-0001'],
@@ -246,7 +147,7 @@ class FotocopySeeder extends Seeder
                     'store_id' => $berkahStore->id,
                     'customer_name' => 'Budi Santoso (NIM 211402011)',
                     'customer_phone' => '081234567890',
-                    'notes' => 'Tolong rangkap 2, jilid lakban hitam, kertas 80gr. File terlampir langsung.',
+                    'notes' => 'Tolong jilid spiral warna biru ya mas, selesaikan sebelum jam 12:00.',
                     'file_name' => 'Makalah_Studi_Kasus_MKWU_Kelompok4.pdf',
                     'file_size' => '2.4 MB',
                     'file_type' => 'pdf',
@@ -350,5 +251,8 @@ class FotocopySeeder extends Seeder
                 ]
             );
         }
+
+        // 5. Also seed PhotocopyPlace & PhotocopyItem to maintain 100% database parity
+        (new PhotocopySeeder())->run();
     }
 }

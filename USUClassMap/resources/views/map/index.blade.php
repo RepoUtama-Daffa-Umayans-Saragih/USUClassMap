@@ -117,6 +117,19 @@
                         </button>
                     @endforeach
                 </div>
+
+                <div class="mt-2.5 pt-2 border-t border-gray-200/70 flex items-center justify-between">
+                    <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Layanan Kampus</span>
+                    <button 
+                        type="button" 
+                        id="toggle-fotocopy-btn" 
+                        onclick="window.USUClassMap && window.USUClassMap.togglePhotocopyLayer()"
+                        class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-lg border border-emerald-300 text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition-all shadow-2xs cursor-pointer"
+                    >
+                        <i class="fa-solid fa-print text-emerald-600 text-xs"></i>
+                        <span>Mitra Fotokopi (<span id="fotocopy-count-badge">31</span>)</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Results Summary Bar -->
@@ -164,6 +177,18 @@
 
         <!-- Map Canvas Area -->
         <main class="flex-1 relative h-full w-full bg-gray-200">
+            <!-- Floating Quick Toggle for Photocopy Layer -->
+            <div class="absolute top-3 right-14 z-[999]">
+                <button 
+                    type="button" 
+                    id="map-floating-photocopy-btn"
+                    onclick="window.USUClassMap && window.USUClassMap.togglePhotocopyLayer()"
+                    class="bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-emerald-700 shadow-md border border-gray-200 hover:border-emerald-500 flex items-center gap-2 transition-all cursor-pointer"
+                >
+                    <i class="fa-solid fa-print text-emerald-600"></i>
+                    <span>Tampilkan Fotokopi (31)</span>
+                </button>
+            </div>
             <div id="map" class="w-full h-full z-0"></div>
         </main>
     </div>

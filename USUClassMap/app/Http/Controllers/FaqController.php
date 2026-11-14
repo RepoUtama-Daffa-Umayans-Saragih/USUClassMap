@@ -14,23 +14,23 @@ class FaqController extends Controller
         $faqs = [
             [
                 'category' => 'Tentang Aplikasi Web',
-                'question' => 'Apa itu aplikasi USUClassMap dan apa fungsinya?',
+                'question' => 'Apa itu aplikasi USUClassMap?',
                 'answer' => 'USUClassMap adalah platform peta interaktif kampus dan direktori akademik berbasis Web Semantik (Semantic Web). Aplikasi ini membantu mahasiswa Universitas Sumatera Utara menemukan lokasi ruang kelas perkuliahan MKWK/MKWU, gedung fakultas, navigasi 360°, jadwal kuliah, serta layanan terintegrasi kampus seperti jasa fotocopy & percetakan di sekitar kampus.'
             ],
             [
-                'category' => 'Tentang Aplikasi Web',
-                'question' => 'Apakah USUClassMap terhubung dengan layanan fotocopy di kampus?',
-                'answer' => 'Ya! USUClassMap kini memiliki fitur terintegrasi "Fotocopy" di mana mahasiswa dapat mencari tempat fotocopy terdekat dari ruang kelas, melihat status buka/tutup toko, mengecek harga layanan (print, jilid, laminating, fotocopy), serta memesan langsung via WhatsApp dengan pesan otomatis atau menuju lokasi via Google Maps.'
-            ],
-            [
                 'category' => 'Pencarian & Jadwal',
-                'question' => 'Bagaimana cara mencari jadwal kuliah dan ruangan kelas saya?',
+                'question' => 'Bagaimana cara mencari jadwal kuliah saya?',
                 'answer' => 'Buka halaman "Peta", lalu gunakan kolom pencarian di sidebar kiri untuk mengetik nama mata kuliah (misal: "Pendidikan Agama", "Kewarganegaraan"), kode mata kuliah, nama gedung, atau nama dosen. Anda juga dapat memfilter jadwal berdasarkan hari kuliah (Senin hingga Sabtu).'
             ],
             [
                 'category' => 'Navigasi & Tur 360°',
-                'question' => 'Bagaimana cara menggunakan Tur Visual 360° dan Rute Lokasi?',
-                'answer' => 'Pada peta atau kartu informasi gedung/ruangan, klik ikon 360° untuk melihat panorama ruangan secara interaktif. Untuk menuju ke lokasi fisik di kampus, klik tombol "Petunjuk Arah (Google Maps)" atau ikon pejalan kaki untuk panduan rute akurat.'
+                'question' => 'Apa itu Tur Visual 360°',
+                'answer' => 'Tur Visual 360° adalah fitur foto panorama interaktif yang memungkinkan mahasiswa melihat kondisi nyata di dalam ruang kelas perkuliahan sebelum datang langsung.'
+            ],
+            [
+                'category' => 'Navigasi & Tur 360°',
+                'question' => 'Bagaimana cara mendapatkan rute petunjuk arah',
+                'answer' => 'Pada peta atau kartu informasi gedung/ruangan, klik tombol "Petunjuk Arah (Google Maps)" atau ikon rute jalan kaki untuk panduan rute GPS akurat langsung ke gedung yang dituju.'
             ],
             [
                 'category' => 'Fitur Bookmark',
@@ -38,9 +38,24 @@ class FaqController extends Controller
                 'answer' => 'Klik tombol bookmark pada kartu jadwal yang ingin Anda simpan. Seluruh jadwal yang dibookmark akan otomatis tersimpan di peramban Anda dan dapat diakses dengan cepat melalui menu "Bookmark" di navigasi atas.'
             ],
             [
+                'category' => 'Teknologi & Semantic Web',
+                'question' => 'Bagaimana data jadwal diproses di USUClassMap?',
+                'answer' => 'Data jadwal dikonversi ke format RDF/OWL ontologi Semantic Web dan di-query menggunakan SPARQL Protocol and RDF Query Language melalui Apache Jena Fuseki untuk relasi data yang presisi.'
+            ],
+            [
                 'category' => 'Akses & Akun',
-                'question' => 'Apakah mahasiswa wajib mendaftar akun atau login untuk menggunakan peta?',
-                'answer' => 'Tidak wajib. Peta interaktif, pencarian jadwal, tur 360°, bookmark, dan layanan fotocopy dapat diakses secara publik dan gratis oleh seluruh mahasiswa tanpa perlu login. Login hanya diperuntukkan bagi admin pengelola jadwal dan pengguna yang ingin menyimpan profil.'
+                'question' => 'Apakah mahasiswa perlu login untuk menggunakan fitur peta?',
+                'answer' => 'Tidak wajib. Peta interaktif, pencarian jadwal, tur 360°, bookmark, dan layanan fotocopy dapat diakses secara publik dan gratis oleh seluruh mahasiswa tanpa perlu login.'
+            ],
+            [
+                'category' => 'Bantuan & Kendala',
+                'question' => 'Jadwal kuliah saya tidak ditemukan, apa yang harus dilakukan?',
+                'answer' => 'Pastikan penulisan kata kunci nama mata kuliah atau dosen sudah sesuai. Jika jadwal tetap tidak muncul, silakan hubungi tim helpdesk melalui nomor WhatsApp atau email yang tersedia di bawah.'
+            ],
+            [
+                'category' => 'Layanan Fotocopy',
+                'question' => 'Apakah USUClassMap terhubung dengan layanan fotocopy di kampus?',
+                'answer' => 'Ya! USUClassMap kini memiliki fitur terintegrasi "Fotocopy" di mana mahasiswa dapat mencari tempat fotocopy terdekat dari ruang kelas, melihat status buka/tutup toko, mengecek harga layanan (print, jilid, laminating, fotocopy), serta memesan langsung via WhatsApp dengan pesan otomatis atau menuju lokasi via Google Maps.'
             ],
         ];
 
@@ -59,38 +74,27 @@ class FaqController extends Controller
             [
                 'name' => 'Email Pusat Bantuan & Informasi',
                 'type' => 'email',
-                'contact' => 'support.classmap@usu.ac.id',
-                'url' => 'mailto:support.classmap@usu.ac.id?subject=' . rawurlencode('Bantuan / Pertanyaan Aplikasi USUClassMap'),
-                'desc' => 'Kirim pertanyaan, laporan bug, atau usulan penambahan data jadwal & mitra fotocopy',
+                'contact' => 'support@usuclassmap.usu.ac.id',
+                'url' => 'mailto:support@usuclassmap.usu.ac.id?subject=' . rawurlencode('Bantuan Mahasiswa USUClassMap'),
+                'desc' => 'Kirim pertanyaan rinci, laporan bug antarmuka, atau permintaan data ruangan',
                 'fa_icon' => 'fa-solid fa-envelope',
-                'badge' => 'Email Resmi',
+                'badge' => 'Tiket Dukungan',
                 'color' => '#10A760',
                 'action_label' => 'Kirim Email'
             ],
             [
-                'name' => 'Instagram Resmi USUClassMap',
-                'type' => 'instagram',
-                'contact' => '@usuclassmap',
-                'url' => 'https://instagram.com/usuclassmap',
-                'desc' => 'Informasi update pembaruan jadwal, panduan penggunaan, dan info seputar kampus USU',
-                'fa_icon' => 'fa-brands fa-instagram',
-                'badge' => 'Media Sosial',
-                'color' => '#E1306C',
-                'action_label' => 'Kunjungi Instagram'
-            ],
-            [
-                'name' => 'Facebook Page USUClassMap',
-                'type' => 'facebook',
-                'contact' => 'USUClassMap Official',
-                'url' => 'https://facebook.com/usuclassmap',
-                'desc' => 'Komunitas mahasiswa dan informasi seputar denah & peta kampus USU',
-                'fa_icon' => 'fa-brands fa-facebook-f',
-                'badge' => 'Komunitas',
-                'color' => '#1877F2',
-                'action_label' => 'Kunjungi Facebook'
+                'name' => 'Lokasi Sekretariat PSI USU',
+                'type' => 'location',
+                'contact' => 'Gedung Pusat Sistem Informasi (PSI) USU',
+                'url' => 'https://maps.google.com/?q=Pusat+Sistem+Informasi+USU+Medan',
+                'desc' => 'Jl. Universitas No. 9, Kampus Padang Bulan, Medan 20155',
+                'fa_icon' => 'fa-solid fa-location-dot',
+                'badge' => 'Kunjungan Langsung',
+                'color' => '#D4A017',
+                'action_label' => 'Buka di Google Maps'
             ],
         ];
 
-        return view('public.faq', compact('faqs', 'contacts'));
+        return view('faq', compact('faqs', 'contacts'));
     }
 }

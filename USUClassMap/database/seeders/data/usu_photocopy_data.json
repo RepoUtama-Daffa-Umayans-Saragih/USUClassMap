@@ -2,7 +2,8 @@
     {
         "id": 1,
         "name": "Fotocopy Pak Budi FT",
-        "category": "Fotocopy & ATK Kampus",
+        "slug": "fotocopy-pak-budi-ft",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Pusat fotokopi dan cetak tugas andalan mahasiswa Fakultas Teknik USU. Melayani fotokopi kilat, print laporan praktikum, jilid skripsi emas, dan perlengkapan gambar teknik/milimeter block.",
         "location_name": "Depan Gedung Fakultas Teknik (FT) USU, Jl. Alumni No. 3",
         "latitude": 3.563812,
@@ -10,17 +11,19 @@
         "open_time": "07:30",
         "close_time": "21:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": null,
         "phone": "0812-6012-3456",
         "whatsapp": "6281260123456",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdkfJX16j9UNM7cQOgJOjrp6FUsQ8ULUHVSCI7wykJ42HgvXtbZGIy_fSFS-AXJvrwwiPKOEgpe3H5bLYe8htBEgNqSZmDBPCM2Op4_0XPU3fqsvKOzPNNYqsvh0bxRizOvLNbO3g=w800-h600-k-no",
         "rating": 4.9,
         "user_rating_count": 142,
         "google_maps_url": "https://maps.google.com/?q=3.563812,98.654210",
+        "google_place_id": null,
         "services": [
-            "Fotokopi Hitam Putih Kilat",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
             "Print Laporan Praktikum Teknik",
             "Jilid Hardcover Skripsi Emas USU",
-            "Jilid Spiral Kawat",
             "Kertas Milimeter Block & Kalkir",
             "Scan Berkas PDF"
         ],
@@ -30,77 +33,88 @@
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Kertas HVS 75gr hasil jernih"
+                "description": "Kertas HVS 75gr hasil jernih",
+                "is_available": true
             },
             {
                 "name": "Print Dokumen Hitam Putih A4 (Laporan Praktikum)",
                 "category": "Print",
                 "price": 250,
                 "unit": "lembar",
-                "description": "Teks tajam anti luntur"
+                "description": "Teks tajam anti luntur",
+                "is_available": true
             },
             {
                 "name": "Print Warna A4 Bagan & Grafik Teknik",
                 "category": "Print",
                 "price": 1000,
                 "unit": "lembar",
-                "description": "Resolusi tinggi warna presisi"
+                "description": "Resolusi tinggi warna presisi",
+                "is_available": true
             },
             {
                 "name": "Print Plotter / Gambar Kerja Teknik A3",
                 "category": "Print",
                 "price": 4500,
                 "unit": "lembar",
-                "description": "Kertas HVS 80gr ukuran A3"
+                "description": "Kertas HVS 80gr ukuran A3",
+                "is_available": true
             },
             {
                 "name": "Kertas Milimeter Block A3 Buku Gambar",
                 "category": "ATK",
                 "price": 15000,
                 "unit": "buku",
-                "description": "Standar praktikum FT USU"
+                "description": "Standar praktikum FT USU",
+                "is_available": true
             },
             {
                 "name": "Jilid Lakban Hitam + Mika Bening",
                 "category": "Jilid",
                 "price": 3500,
                 "unit": "buku",
-                "description": "Laporan mingguan praktikum"
+                "description": "Laporan mingguan praktikum",
+                "is_available": true
             },
             {
                 "name": "Jilid Spiral Kawat Ring Besi",
                 "category": "Jilid",
                 "price": 12000,
                 "unit": "buku",
-                "description": "Kuat dan rapi hingga 200 lembar"
+                "description": "Kuat dan rapi hingga 200 lembar",
+                "is_available": true
             },
             {
                 "name": "Jilid Hard Cover Skripsi Emas Teknik USU",
                 "category": "Jilid",
                 "price": 35000,
                 "unit": "buku",
-                "description": "Warna biru tua standar FT USU embos emas"
+                "description": "Warna biru tua standar FT USU embos emas",
+                "is_available": true
             },
             {
                 "name": "Kertas HVS PaperOne A4 75gr (1 Rim)",
                 "category": "ATK",
                 "price": 52000,
                 "unit": "rim",
-                "description": "500 lembar asli"
+                "description": "500 lembar asli",
+                "is_available": true
             },
             {
                 "name": "Pensil Mekanik & Isi Pensil 0.5 2B",
                 "category": "ATK",
                 "price": 8500,
                 "unit": "pcs",
-                "description": "Untuk gambar teknik"
+                "description": "Untuk gambar teknik",
+                "is_available": true
             }
         ]
     },
     {
         "id": 2,
         "name": "Fotocopy & Print Jaya FISIP",
-        "category": "Fotocopy & Print Cepat",
+        "slug": "fotocopy-print-jaya-fisip",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Layanan cetak dokumen dan fotocopy cepat area FISIP & FIB. Menyediakan print makalah tugas kuliah, cetak foto wisuda, jilid softcover/hardcover, dan map snelhechter ujian.",
         "location_name": "Samping Gedung FISIP USU (Dekat Kantin Sosial)",
         "latitude": 3.56512,
@@ -108,19 +122,21 @@
         "open_time": "08:00",
         "close_time": "21:30",
         "operating_days": "Senin - Minggu",
+        "opening_hours": null,
         "phone": "0821-6543-2109",
         "whatsapp": "6282165432109",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfiYjeVcANiFPfJ9u0OlzKO3K4wU6mqqfrsguZEYbfYMKJz-Xf-3RKv7lXffOsJbL0-NEo7-_8L6QoENLrncDSl5II2DPyxOaMk4KyJ6mu1QAfQR_8xiLkG9HMdw8Z3jrFA8a6nxg=w800-h600-k-no",
         "rating": 4.8,
         "user_rating_count": 98,
         "google_maps_url": "https://maps.google.com/?q=3.565120,98.656340",
+        "google_place_id": null,
         "services": [
+            "Perlengkapan ATK Mahasiswa",
             "Print Makalah Kuliah Cepat",
             "Fotocopy Bahan Dosen A4/F4",
             "Jilid Softcover Buffalo",
             "Jilid Hardcover Skripsi FISIP",
-            "Cetak Pas Foto Kilat",
-            "ATK Mahasiswa"
+            "Cetak Pas Foto Kilat"
         ],
         "catalog_items": [
             {
@@ -128,70 +144,80 @@
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Harga hemat mahasiswa"
+                "description": "Harga hemat mahasiswa",
+                "is_available": true
             },
             {
                 "name": "Print Makalah Tugas Hitam Putih A4",
                 "category": "Print",
                 "price": 200,
                 "unit": "lembar",
-                "description": "Laser printer berkecepatan tinggi"
+                "description": "Laser printer berkecepatan tinggi",
+                "is_available": true
             },
             {
                 "name": "Print Makalah Berwarna A4 (Inkjet Tajam)",
                 "category": "Print",
                 "price": 800,
                 "unit": "lembar",
-                "description": "Warna hidup untuk tugas kelompok"
+                "description": "Warna hidup untuk tugas kelompok",
+                "is_available": true
             },
             {
                 "name": "Jilid Mika Bening & Buffalo Warna",
                 "category": "Jilid",
                 "price": 3000,
                 "unit": "buku",
-                "description": "Cover buffalo aneka warna pilihan"
+                "description": "Cover buffalo aneka warna pilihan",
+                "is_available": true
             },
             {
                 "name": "Jilid Spiral Plastik Praktis",
                 "category": "Jilid",
                 "price": 8000,
                 "unit": "buku",
-                "description": "Bisa dibuka tambah lembaran"
+                "description": "Bisa dibuka tambah lembaran",
+                "is_available": true
             },
             {
                 "name": "Jilid Hard Cover Skripsi FISIP USU (Oranye)",
                 "category": "Jilid",
                 "price": 35000,
                 "unit": "buku",
-                "description": "Warna oranye khas FISIP USU"
+                "description": "Warna oranye khas FISIP USU",
+                "is_available": true
             },
             {
                 "name": "Pas Foto Wisuda & Ijazah 3x4 / 4x6 (1 Paket)",
                 "category": "Finishing",
                 "price": 10000,
                 "unit": "paket",
-                "description": "Kertas foto glossy doff lab"
+                "description": "Kertas foto glossy doff lab",
+                "is_available": true
             },
             {
                 "name": "Map Snelhechter Plastik Folio",
                 "category": "ATK",
                 "price": 3500,
                 "unit": "pcs",
-                "description": "Untuk berkas seminar proposal"
+                "description": "Untuk berkas seminar proposal",
+                "is_available": true
             },
             {
                 "name": "Pulpen Gel Snowman V-5 0.5 Hitam",
                 "category": "ATK",
                 "price": 4000,
                 "unit": "pcs",
-                "description": "Tinta pekat anti macet"
+                "description": "Tinta pekat anti macet",
+                "is_available": true
             }
         ]
     },
     {
         "id": 3,
         "name": "Digital Print Center FK & FIB",
-        "category": "Cetak Poster & Jurnal Ilmiah",
+        "slug": "digital-print-center-fk-fib",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Spesialis cetak poster penelitian ilmiah, atlas kedokteran, cetak diktat tebal, banner seminar, dan cetak kilat warna tajam anti luntur.",
         "location_name": "Belakang Gedung Fakultas Kedokteran (FK) USU, Jl. dr. Mansur No. 5",
         "latitude": 3.562145,
@@ -199,18 +225,29 @@
         "open_time": "07:00",
         "close_time": "22:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": null,
         "phone": "0852-7011-2233",
         "whatsapp": "6285270112233",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdrmE43sDJRNFSNE1n7EmycG3BJb8deOTxjRw603S9J9YdNvK6isLBLpgYCQpXZ3gqflRepZkI2UI5Z5nj_PSbFz9m4LOXwgWWHqSrQcrFKPXtwcrA-zPy2UgCFh4UVcVdgxQE=w800-h600-k-no",
         "rating": 4.9,
         "user_rating_count": 185,
         "google_maps_url": "https://maps.google.com/?q=3.562145,98.653110",
+        "google_place_id": null,
         "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa",
             "Cetak Poster Penelitian Albatros A1/A0",
             "Print Laser Anatomi Kedokteran",
             "Fotocopy Jurnal & Panduan Lab",
-            "Jilid Hardcover Tesis & Disertasi",
-            "Laminating Panas Anti Air"
+            "Jilid Hardcover Tesis & Disertasi"
         ],
         "catalog_items": [
             {
@@ -218,63 +255,72 @@
                 "category": "Cetak",
                 "price": 60000,
                 "unit": "lembar",
-                "description": "Bahan Albatros doff resolusi tinggi untuk sidang"
+                "description": "Bahan Albatros doff resolusi tinggi untuk sidang",
+                "is_available": true
             },
             {
                 "name": "Cetak Poster Ilmiah Albatros Ukuran A0",
                 "category": "Cetak",
                 "price": 110000,
                 "unit": "lembar",
-                "description": "Standar konferensi internasional"
+                "description": "Standar konferensi internasional",
+                "is_available": true
             },
             {
                 "name": "Print Laser Full Color Bagan Anatomi A4",
                 "category": "Print",
                 "price": 1500,
                 "unit": "lembar",
-                "description": "Laser toner tajam mikroskopis"
+                "description": "Laser toner tajam mikroskopis",
+                "is_available": true
             },
             {
                 "name": "Print Laser Teks B/W HVS 80gr",
                 "category": "Print",
                 "price": 300,
                 "unit": "lembar",
-                "description": "Bahan tebal anti tembus"
+                "description": "Bahan tebal anti tembus",
+                "is_available": true
             },
             {
                 "name": "Fotocopy Buku Teks Kedokteran / Jurnal",
                 "category": "Fotocopy",
                 "price": 200,
                 "unit": "lembar",
-                "description": "Hasil bersih kontras tajam"
+                "description": "Hasil bersih kontras tajam",
+                "is_available": true
             },
             {
                 "name": "Jilid Hard Cover Skripsi Hijau FK USU",
                 "category": "Jilid",
                 "price": 40000,
                 "unit": "buku",
-                "description": "Format hijau tua embos emas FK"
+                "description": "Format hijau tua embos emas FK",
+                "is_available": true
             },
             {
                 "name": "Jilid Tesis Lux Beludru Tebal",
                 "category": "Jilid",
                 "price": 65000,
                 "unit": "buku",
-                "description": "Pita pembatas + sudut siku emas"
+                "description": "Pita pembatas + sudut siku emas",
+                "is_available": true
             },
             {
                 "name": "Laminating Dokumen Ijazah Panas A4",
                 "category": "Finishing",
                 "price": 4000,
                 "unit": "lembar",
-                "description": "Anti air dan anti kerut"
+                "description": "Anti air dan anti kerut",
+                "is_available": true
             }
         ]
     },
     {
         "id": 4,
         "name": "Copy Corner Fakultas Hukum",
-        "category": "Fotocopy Berkas & Skripsi",
+        "slug": "copy-corner-fakultas-hukum",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Layanan fotokopi khusus dokumen perundang-undangan, naskah skripsi hukum, rangkuman pasal KUHP, dan penjilidan resmi.",
         "location_name": "Belakang Gedung Dekanat Fakultas Hukum USU",
         "latitude": 3.56445,
@@ -282,13 +328,25 @@
         "open_time": "08:00",
         "close_time": "20:00",
         "operating_days": "Senin - Jumat",
+        "opening_hours": null,
         "phone": "0813-9876-5432",
         "whatsapp": "6281398765432",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfEgvLOB5V1KHQjuQ-NEO_0QREsttfWkpV6QFu3CVfgqp_u3oy8flEvO0E4fAIOMVFNfEYMD-pNxVaTf3Xr9TLxK-D4_StbPuwc-LlnoOTMlBlOn7GnmO1EHOnWOdLpx8EhrCTA=w800-h600-k-no",
         "rating": 4.7,
         "user_rating_count": 76,
         "google_maps_url": "https://maps.google.com/?q=3.564450,98.657800",
+        "google_place_id": null,
         "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa",
             "Fotokopi Bundel Berkas Hukum",
             "Print Skripsi Format FH USU",
             "Jilid Hardcover Merah FH",
@@ -301,49 +359,56 @@
                 "category": "Fotocopy",
                 "price": 175,
                 "unit": "lembar",
-                "description": "Bolak-balik rapi berurutan"
+                "description": "Bolak-balik rapi berurutan",
+                "is_available": true
             },
             {
                 "name": "Print Skripsi Laser B/W HVS 80gr",
                 "category": "Print",
                 "price": 275,
                 "unit": "lembar",
-                "description": "Margin 4-4-3-3 pedoman FH USU"
+                "description": "Margin 4-4-3-3 pedoman FH USU",
+                "is_available": true
             },
             {
                 "name": "Jilid Hard Cover Skripsi Merah FH USU",
                 "category": "Jilid",
                 "price": 35000,
                 "unit": "buku",
-                "description": "Warna merah marun khas FH"
+                "description": "Warna merah marun khas FH",
+                "is_available": true
             },
             {
                 "name": "Jilid Lakban Tebal + Mika Doff",
                 "category": "Jilid",
                 "price": 4000,
                 "unit": "buku",
-                "description": "Kapasitas hingga 300 lembar"
+                "description": "Kapasitas hingga 300 lembar",
+                "is_available": true
             },
             {
                 "name": "Map Snelhechter Folio Plastik Tebal",
                 "category": "ATK",
                 "price": 4000,
                 "unit": "pcs",
-                "description": "Warna merah bendera"
+                "description": "Warna merah bendera",
+                "is_available": true
             },
             {
                 "name": "Materai 10.000 Kantor Pos Asli",
                 "category": "ATK",
                 "price": 11500,
                 "unit": "pcs",
-                "description": "Resmi keaslian dijamin"
+                "description": "Resmi keaslian dijamin",
+                "is_available": true
             }
         ]
     },
     {
         "id": 5,
         "name": "Berkah Abadi Copy & ATK Perpustakaan",
-        "category": "Fotocopy Referensi & ATK",
+        "slug": "berkah-abadi-copy-atk-perpustakaan",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Lokasi strategis di lantai dasar perpustakaan pusat USU. Melayani fotokopi buku referensi, print kilat dari flashdisk/email, jilid spiral makalah, dan toko ATK lengkap.",
         "location_name": "Lantai Dasar Gedung Perpustakaan Pusat USU",
         "latitude": 3.5618,
@@ -351,13 +416,25 @@
         "open_time": "08:00",
         "close_time": "18:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": null,
         "phone": "0822-7788-9900",
         "whatsapp": "6282277889900",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfIB3sfsu7MJZr4WjwpEL35WDLvdKX3v8cKjN4DDqWho2PRW-xDNXm_zV2Www4UoAKJ81aWKC6b7pwZo9oxlL4YylLADTAzIHBlsCUH2L2fTIb1H0Vp0C36XD2we5f-LCRQPUF0Nw=w800-h600-k-no",
         "rating": 4.8,
         "user_rating_count": 112,
         "google_maps_url": "https://maps.google.com/?q=3.561800,98.655900",
+        "google_place_id": null,
         "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa",
             "Fotokopi Buku Ensiklopedia & Referensi",
             "Self-Service Print Flashdisk",
             "Scan Bab Buku ke PDF",
@@ -370,49 +447,56 @@
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Hasil bersih tanpa bayangan hitam"
+                "description": "Hasil bersih tanpa bayangan hitam",
+                "is_available": true
             },
             {
                 "name": "Print Dokumen Kilat dari Flashdisk / WA",
                 "category": "Print",
                 "price": 250,
                 "unit": "lembar",
-                "description": "Tinggal colok langsung cetak"
+                "description": "Tinggal colok langsung cetak",
+                "is_available": true
             },
             {
                 "name": "Scan Bab Buku ke PDF (Per Bab)",
                 "category": "Digital",
                 "price": 500,
                 "unit": "halaman",
-                "description": "Resolusi tinggi kirim ke HP"
+                "description": "Resolusi tinggi kirim ke HP",
+                "is_available": true
             },
             {
                 "name": "Jilid Spiral Kawat Buku Catatan",
                 "category": "Jilid",
                 "price": 10000,
                 "unit": "buku",
-                "description": "Nyaman dibolak-balik 360 derajat"
+                "description": "Nyaman dibolak-balik 360 derajat",
+                "is_available": true
             },
             {
                 "name": "Pulpen Pilot Ballliner 0.8 Hitam",
                 "category": "ATK",
                 "price": 18000,
                 "unit": "pcs",
-                "description": "Untuk tanda tangan ijazah/skripsi"
+                "description": "Untuk tanda tangan ijazah/skripsi",
+                "is_available": true
             },
             {
                 "name": "Sticky Notes Post-it 3x3 Warna-Warni",
                 "category": "ATK",
                 "price": 7500,
                 "unit": "pad",
-                "description": "Penanda halaman buku referensi"
+                "description": "Penanda halaman buku referensi",
+                "is_available": true
             }
         ]
     },
     {
         "id": 6,
         "name": "Rizky Multi Print USU (Pintu 1)",
-        "category": "Percetakan & Cetak Sablon",
+        "slug": "rizky-multi-print-usu-pintu-1",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Pusat percetakan dan fotokopi terlengkap di gerbang Pintu 1 USU. Melayani cetak spanduk ormawa, jilid skripsi kilat, sertifikat panitia, dan merchandise kampus.",
         "location_name": "Pintu 1 USU, Jl. Universitas No. 4, Padang Bulan",
         "latitude": 3.5662,
@@ -420,12 +504,14 @@
         "open_time": "07:00",
         "close_time": "23:00",
         "operating_days": "Setiap Hari",
+        "opening_hours": null,
         "phone": "0812-9988-7766",
         "whatsapp": "6281299887766",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfkhXxCab5zNBW-MHkR7bHlty3VrkRQIpTSXGvyjRn1utm3TPtOrxn4t7B7x8WmUlXZqgrLWxpWs3hgSJtRnrhNdxAkr1GhuTftzIsvVjH2SDhraVHGKmXmj3lsQ-4PcThAFbsoQBzdqm8H=w800-h600-k-no",
         "rating": 4.9,
         "user_rating_count": 210,
         "google_maps_url": "https://maps.google.com/?q=3.566200,98.658100",
+        "google_place_id": null,
         "services": [
             "Cetak Spanduk Banner Ormawa",
             "Digital Printing Laser A3+",
@@ -440,49 +526,56 @@
                 "category": "Cetak",
                 "price": 25000,
                 "unit": "meter",
-                "description": "Sudah termasuk mata ayam pengait"
+                "description": "Sudah termasuk mata ayam pengait",
+                "is_available": true
             },
             {
                 "name": "Print Digital Laser A3+ Art Carton 260gr",
                 "category": "Print",
                 "price": 8500,
                 "unit": "lembar",
-                "description": "Warna tajam mengkilat"
+                "description": "Warna tajam mengkilat",
+                "is_available": true
             },
             {
                 "name": "Jilid Hard Cover Skripsi Ekspres (6 Jam)",
                 "category": "Jilid",
                 "price": 45000,
                 "unit": "buku",
-                "description": "Penyelesaian hari yang sama"
+                "description": "Penyelesaian hari yang sama",
+                "is_available": true
             },
             {
                 "name": "Cetak Sertifikat Kertas Linen Jepang A4",
                 "category": "Cetak",
                 "price": 3500,
                 "unit": "lembar",
-                "description": "Permukaan bertekstur elegan"
+                "description": "Permukaan bertekstur elegan",
+                "is_available": true
             },
             {
                 "name": "ID Card PVC Panas + Tali Lanyard",
                 "category": "Merchandise",
                 "price": 12000,
                 "unit": "set",
-                "description": "Anti patah dan tahan air"
+                "description": "Anti patah dan tahan air",
+                "is_available": true
             },
             {
                 "name": "Fotocopy Makalah Kilat A4",
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Kecepatan 80 ppm"
+                "description": "Kecepatan 80 ppm",
+                "is_available": true
             }
         ]
     },
     {
         "id": 7,
         "name": "Fotocopy FP USU",
-        "category": "Fotocopy & Diktat Pertanian",
+        "slug": "fotocopy-fp-usu",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Tempat fotokopi resmi di lingkungan Fakultas Pertanian USU. Menyediakan fotokopi modul praktikum agronomi, print laporan kebun, dan perlengkapan tulis mahasiswa pertanian.",
         "location_name": "Komplek Fakultas Pertanian USU, Padang Bulan, Medan",
         "latitude": 3.565,
@@ -490,13 +583,28 @@
         "open_time": "08:00",
         "close_time": "18:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "07.00–21.00",
+            "minggu": "07.00–21.00",
+            "senin": "07.00–21.00",
+            "selasa": "07.00–21.00",
+            "rabu": "07.00–21.00",
+            "kamis": "07.00–21.00",
+            "jumat": "07.00–21.00"
+        },
         "phone": "0812-6582-1400",
         "whatsapp": "6281265821400",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdQxE49eklS6_lUgbMSnflkoCZFLtpPgVye1Pf_SqV7DxR_DPGH9QlxtgRsgTQ8TMTVK89oWBpL7TluCZLShs_qvXRzc_bNQtt1UP9jO7WK8ObX860-1hsilHXXDR4LavoRbMvOrQ=w800-h600-k-no",
         "rating": 4.8,
-        "user_rating_count": 48,
-        "google_maps_url": "https://maps.google.com/?q=Fotocopy+FP+USU+Medan",
+        "user_rating_count": 5,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJ46JQ3-AvMTAR5K4JN9tL42Y",
+        "google_place_id": "ChIJ46JQ3-AvMTAR5K4JN9tL42Y",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Fotocopy Modul Praktikum Kebun",
             "Print Laporan Praktikum Warna",
             "Jilid Hijau Pertanian USU",
@@ -508,49 +616,56 @@
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Cepat dan rapi dijilid mika"
+                "description": "Cepat dan rapi dijilid mika",
+                "is_available": true
             },
             {
                 "name": "Print Laporan Mingguan Hitam Putih A4",
                 "category": "Print",
                 "price": 250,
                 "unit": "lembar",
-                "description": "Kertas HVS 75gr"
+                "description": "Kertas HVS 75gr",
+                "is_available": true
             },
             {
                 "name": "Print Hasil Pengamatan Warna A4",
                 "category": "Print",
                 "price": 1000,
                 "unit": "lembar",
-                "description": "Foto tanaman dan tabel data"
+                "description": "Foto tanaman dan tabel data",
+                "is_available": true
             },
             {
                 "name": "Jilid Hard Cover Skripsi Hijau Daun FP USU",
                 "category": "Jilid",
                 "price": 35000,
                 "unit": "buku",
-                "description": "Standar dekanat FP USU"
+                "description": "Standar dekanat FP USU",
+                "is_available": true
             },
             {
                 "name": "Jilid Lakban Hitam + Mika Transparan",
                 "category": "Jilid",
                 "price": 3500,
                 "unit": "buku",
-                "description": "Untuk bundel laporan kelompok"
+                "description": "Untuk bundel laporan kelompok",
+                "is_available": true
             },
             {
                 "name": "Map Folio Kancing Plastik",
                 "category": "ATK",
                 "price": 5000,
                 "unit": "pcs",
-                "description": "Aman dari kotoran dan air"
+                "description": "Aman dari kotoran dan air",
+                "is_available": true
             }
         ]
     },
     {
         "id": 8,
         "name": "SGF PRINTING Medan",
-        "category": "Digital Printing & Sablon",
+        "slug": "sgf-printing-medan",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Pusat digital printing skala besar dekat USU. Melayani cetak laser A3+, banner spanduk, cetak DTF kaos, brosur seminar, box packaging, dan jilid skripsi hardcover kilat.",
         "location_name": "Jl. Jamin Ginting No. 238, Padang Bulan, Medan",
         "latitude": 3.55921,
@@ -558,13 +673,29 @@
         "open_time": "08:00",
         "close_time": "22:00",
         "operating_days": "Setiap Hari",
+        "opening_hours": {
+            "sabtu": "07.00–23.30",
+            "minggu": "09.00–23.30",
+            "senin": "07.00–23.30",
+            "selasa": "07.00–23.30",
+            "rabu": "07.00–23.30",
+            "kamis": "07.00–23.30",
+            "jumat": "07.00–23.30"
+        },
         "phone": "0852-7514-8888",
         "whatsapp": "6285275148888",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLexafbYg6fhQG8T8dRkF5U07SmjGs7XIBgqEHBOfbjPtgXjnbPefvjjqYR6MS6VNm_1bKvBnh-T3SgoltyNxqREkphmBIQ59Q-mbPatxKmyuXsLZxMekQFkpWwsukHTJfqVTH0=w800-h600-k-no",
-        "rating": 4.9,
-        "user_rating_count": 315,
-        "google_maps_url": "https://maps.google.com/?q=SGF+PRINTING+Medan",
+        "rating": 4.4,
+        "user_rating_count": 184,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJabJAdNgvMTARFIZVySmX0v8",
+        "google_place_id": "ChIJabJAdNgvMTARFIZVySmX0v8",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Perlengkapan ATK Mahasiswa",
             "Digital Laser Printing A3+",
             "Cetak Banner Spanduk Outdoor",
             "Sablon DTF & Kaos Komunitas",
@@ -578,56 +709,64 @@
                 "category": "Print",
                 "price": 8500,
                 "unit": "lembar",
-                "description": "Hasil tajam glossy mengkilat"
+                "description": "Hasil tajam glossy mengkilat",
+                "is_available": true
             },
             {
                 "name": "Print Spanduk Flexi 280gr Outdoor (Per Meter)",
                 "category": "Cetak",
                 "price": 25000,
                 "unit": "meter",
-                "description": "Tahan cuaca dan panas matahari"
+                "description": "Tahan cuaca dan panas matahari",
+                "is_available": true
             },
             {
                 "name": "Jilid Hard Cover Skripsi Emas Standar USU",
                 "category": "Jilid",
                 "price": 35000,
                 "unit": "buku",
-                "description": "Tinta emas foil timbul presisi"
+                "description": "Tinta emas foil timbul presisi",
+                "is_available": true
             },
             {
                 "name": "Cetak Sablon DTF Meteran Ukuran 58cm",
                 "category": "Sablon",
                 "price": 55000,
                 "unit": "meter",
-                "description": "Siap press ke baju/kaos"
+                "description": "Siap press ke baju/kaos",
+                "is_available": true
             },
             {
                 "name": "X-Banner Indoor 60x160cm Komplit Cetak",
                 "category": "Display",
                 "price": 65000,
                 "unit": "set",
-                "description": "Rangka fiber tebal anti roboh"
+                "description": "Rangka fiber tebal anti roboh",
+                "is_available": true
             },
             {
                 "name": "Cetak Brosur Lipat Tiga A4 Full Color",
                 "category": "Cetak",
                 "price": 2000,
                 "unit": "lembar",
-                "description": "Kertas Art Paper 150gr"
+                "description": "Kertas Art Paper 150gr",
+                "is_available": true
             },
             {
                 "name": "Stiker Vinyl A3+ Kiss Cut",
                 "category": "Cetak",
                 "price": 16000,
                 "unit": "lembar",
-                "description": "Tahan air dan tidak mudah sobek"
+                "description": "Tahan air dan tidak mudah sobek",
+                "is_available": true
             }
         ]
     },
     {
         "id": 9,
         "name": "Suwi Fotocopy - Printing & ATK",
-        "category": "Fotocopy, Toko Buku & ATK",
+        "slug": "suwi-fotocopy-printing-atk",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Toko fotocopy dan ATK terpercaya mahasiswa Padang Bulan. Menyediakan kebutuhan kuliah lengkap: buku tulis, alat tulis, fotocopy kilat ribuan lembar, jilid spiral kawat, dan scan ijazah.",
         "location_name": "Jl. Harmonika Baru No. 12, Padang Bulan, Medan",
         "latitude": 3.55743,
@@ -635,13 +774,28 @@
         "open_time": "07:30",
         "close_time": "22:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "07.30–23.30",
+            "minggu": "10.00–23.30",
+            "senin": "07.30–23.30",
+            "selasa": "07.30–23.30",
+            "rabu": "07.30–23.30",
+            "kamis": "07.30–23.30",
+            "jumat": "07.30–23.30"
+        },
         "phone": "0821-6714-2587",
         "whatsapp": "6282167142587",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeC1DqaOHvM2ZWKy9lbM_XcB2APBfmcbaY4j7QyenWp0zcxA_LW-jACigqGKcihq7XnNFbRUfAc-qnUAqSFqfxPRmUj9OEONX5WbE5LuKEHZRyysmA3woFEy7608s4ZF0GE3J3GOQ=w800-h600-k-no",
-        "rating": 4.8,
-        "user_rating_count": 126,
-        "google_maps_url": "https://maps.google.com/?q=Suwi+Fotocopy+Medan",
+        "rating": 4.7,
+        "user_rating_count": 29,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJC9tcDcovMTARPaVrdJ7UYjs",
+        "google_place_id": "ChIJC9tcDcovMTARPaVrdJ7UYjs",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Fotocopy Cepat Ribuan Lembar",
             "Perlengkapan ATK Kuliah Lengkap",
             "Jilid Spiral Kawat & Mika",
@@ -655,63 +809,72 @@
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Tarif hemat khusus mahasiswa"
+                "description": "Tarif hemat khusus mahasiswa",
+                "is_available": true
             },
             {
                 "name": "Print Dokumen Hitam Putih A4 (HVS 75gr)",
                 "category": "Print",
                 "price": 250,
                 "unit": "lembar",
-                "description": "Cepat tanpa antri"
+                "description": "Cepat tanpa antri",
+                "is_available": true
             },
             {
                 "name": "Print Dokumen Berwarna A4",
                 "category": "Print",
                 "price": 1000,
                 "unit": "lembar",
-                "description": "Warna jernih dan rata"
+                "description": "Warna jernih dan rata",
+                "is_available": true
             },
             {
                 "name": "Jilid Ring Spiral Kawat Rapih",
                 "category": "Jilid",
                 "price": 12000,
                 "unit": "buku",
-                "description": "Depan mika bening, belakang plastik kulit jeruk"
+                "description": "Depan mika bening, belakang plastik kulit jeruk",
+                "is_available": true
             },
             {
                 "name": "Kertas HVS Sinar Dunia A4 75gr (1 Rim)",
                 "category": "ATK",
                 "price": 53000,
                 "unit": "rim",
-                "description": "Kertas putih bersih standar kantor"
+                "description": "Kertas putih bersih standar kantor",
+                "is_available": true
             },
             {
                 "name": "Buku Tulis Kampus Bergaris Kiky Isi 50",
                 "category": "ATK",
                 "price": 7500,
                 "unit": "buku",
-                "description": "Kertas tebal tidak tembus tinta"
+                "description": "Kertas tebal tidak tembus tinta",
+                "is_available": true
             },
             {
                 "name": "Pulpen Pilot G2 0.7 Gel Asli",
                 "category": "ATK",
                 "price": 18000,
                 "unit": "pcs",
-                "description": "Tinta jepang sangat mulus"
+                "description": "Tinta jepang sangat mulus",
+                "is_available": true
             },
             {
                 "name": "Scan Dokumen Ijazah ke PDF 300 DPI",
                 "category": "Digital",
                 "price": 500,
                 "unit": "halaman",
-                "description": "File langsung dikirim ke WhatsApp"
+                "description": "File langsung dikirim ke WhatsApp",
+                "is_available": true
             }
         ]
     },
     {
         "id": 10,
         "name": "Percetakan Modena & Fotocopy",
-        "category": "Percetakan & Cetak Skripsi",
+        "slug": "percetakan-modena-fotocopy",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Pelopor percetakan dan jilid skripsi di Jl. Dr. Mansyur dekat Pintu 2 USU. Terkenal dengan pengerjaan skripsi super rapi, jilid hardcover embos emas presisi, dan cetak kartu nama kilat.",
         "location_name": "Jl. Dr. Mansyur No. 124, Padang Bulan Selayang I, Medan",
         "latitude": 3.558865,
@@ -719,13 +882,28 @@
         "open_time": "08:00",
         "close_time": "22:00",
         "operating_days": "Setiap Hari",
+        "opening_hours": {
+            "sabtu": "08.00–19.15",
+            "minggu": "Tutup",
+            "senin": "08.00–19.10",
+            "selasa": "08.00–19.10",
+            "rabu": "08.00–19.13",
+            "kamis": "08.00–19.10",
+            "jumat": "08.00–19.15"
+        },
         "phone": "0812-6474-2121",
         "whatsapp": "6281264742121",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLcbFI3etVTxJYzdLdaCIRea7LBBCz6qqLcnkrHQFuyGAsyQY-YDOSAmyhV9XYwWlMjf7oKp6pqi5U8js-VEZcFdMD4RwJNLRjoEeiI4_C3mpwHpKL2lDxx5NS57TgEUzcaUTPp_=w800-h600-k-no",
-        "rating": 5.0,
-        "user_rating_count": 84,
-        "google_maps_url": "https://maps.google.com/?q=Percetakan+Modena+Medan",
+        "rating": 5,
+        "user_rating_count": 4,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJR6kGT4QjMTARzfxMjOkD2lI",
+        "google_place_id": "ChIJR6kGT4QjMTARzfxMjOkD2lI",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Print Skripsi Kilat Laserjet",
             "Jilid Hard Cover Embos Emas USU",
             "Cetak Kartu Nama & ID Card",
@@ -739,49 +917,56 @@
                 "category": "Print",
                 "price": 300,
                 "unit": "lembar",
-                "description": "Standar mutu skripsi USU"
+                "description": "Standar mutu skripsi USU",
+                "is_available": true
             },
             {
                 "name": "Print Skripsi Lembar Pengesahan Warna",
                 "category": "Print",
                 "price": 1000,
                 "unit": "lembar",
-                "description": "Warna logo universitas akurat"
+                "description": "Warna logo universitas akurat",
+                "is_available": true
             },
             {
                 "name": "Jilid Hard Cover Skripsi Emas Standar Seluruh Fakultas USU",
                 "category": "Jilid",
                 "price": 35000,
                 "unit": "buku",
-                "description": "Embos foil emas timbul tahan lama"
+                "description": "Embos foil emas timbul tahan lama",
+                "is_available": true
             },
             {
                 "name": "Cetak Kartu Nama 1 Box (Isi 100 Lembar)",
                 "category": "Cetak",
                 "price": 35000,
                 "unit": "box",
-                "description": "Bahan Art Carton 260gr doff/glossy"
+                "description": "Bahan Art Carton 260gr doff/glossy",
+                "is_available": true
             },
             {
                 "name": "Print Plotter Kalkir A1 Gambar Kerja Arsitektur",
                 "category": "Print",
                 "price": 25000,
                 "unit": "lembar",
-                "description": "Garis tipis terbaca sempurna"
+                "description": "Garis tipis terbaca sempurna",
+                "is_available": true
             },
             {
                 "name": "Fotocopy Buku Pelajaran A4 / F4",
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Mesin Canon Digital kecepatan tinggi"
+                "description": "Mesin Canon Digital kecepatan tinggi",
+                "is_available": true
             }
         ]
     },
     {
         "id": 11,
         "name": "Ruth Fotocopy",
-        "category": "Fotocopy & Print Mahasiswa",
+        "slug": "ruth-fotocopy",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Layanan fotokopi bersahabat di area Padang Bulan. Melayani fotokopi ribuan lembar untuk organisasi, jilid lakban, print tugas harian, dan perlengkapan ujian.",
         "location_name": "Jl. Jamin Ginting Gang Bahagia, Padang Bulan, Medan",
         "latitude": 3.56012,
@@ -789,13 +974,95 @@
         "open_time": "08:00",
         "close_time": "21:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "periods": [
+                {
+                    "open": {
+                        "day": 1,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 1,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 2,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 2,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 3,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 3,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 4,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 4,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 5,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 5,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 6,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 6,
+                        "hour": 20,
+                        "minute": 0
+                    }
+                }
+            ]
+        },
         "phone": "0857-6353-8448",
         "whatsapp": "6285763538448",
         "image_url": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW0JX6scu-6XWu-P0wMhtvmtotXaomZWw3DWWDBeRSQi3oG793i36tjzTixj0dNrguTs9gbaG452w7L2_8d0WeN9Qp2IGgv1kB6-ZWdnxG0idhqMuUaufvMXCEh1d1Zs5QJWDJJ4X7qj_SuoPVMJP7DzjSdH-gQ2wlpOl5edYNFIBJGdnlCARD-uxDPNpfKJf6OHfSgq=w800-h600-k-no",
         "rating": 4.7,
         "user_rating_count": 52,
         "google_maps_url": "https://maps.google.com/?q=Ruth+Fotocopy+Medan",
+        "google_place_id": "usu_place_ruth-fotocopy",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Fotocopy Grosir Organisasi",
             "Print Makalah & Tugas",
             "Jilid Mika Lakban",
@@ -807,42 +1074,48 @@
                 "category": "Fotocopy",
                 "price": 160,
                 "unit": "lembar",
-                "description": "Harga grosir untuk panitia"
+                "description": "Harga grosir untuk panitia",
+                "is_available": true
             },
             {
                 "name": "Print Makalah Tugas Kuliah A4 B/W",
                 "category": "Print",
                 "price": 250,
                 "unit": "lembar",
-                "description": "HVS 75gr"
+                "description": "HVS 75gr",
+                "is_available": true
             },
             {
                 "name": "Print Lembar Warna Tugas A4",
                 "category": "Print",
                 "price": 1000,
                 "unit": "lembar",
-                "description": "Warna cerah"
+                "description": "Warna cerah",
+                "is_available": true
             },
             {
                 "name": "Jilid Lakban Biasa + Cover Mika",
                 "category": "Jilid",
                 "price": 3000,
                 "unit": "buku",
-                "description": "Pengerjaan 3 menit"
+                "description": "Pengerjaan 3 menit",
+                "is_available": true
             },
             {
                 "name": "Map Folio Kertas Buffalo",
                 "category": "ATK",
                 "price": 2000,
                 "unit": "pcs",
-                "description": "Tersedia berbagai pilihan warna"
+                "description": "Tersedia berbagai pilihan warna",
+                "is_available": true
             }
         ]
     },
     {
         "id": 12,
         "name": "FAHRI COMPUTER DAN FOTOCOPY",
-        "category": "Rental Komputer, Servis & Fotocopy",
+        "slug": "fahri-computer-dan-fotocopy",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Pusat bantuan tugas komprehensif di Padang Bulan. Melayani jasa pengetikan skripsi pedoman USU, olah data statistik, servis laptop/komputer, print warna high res, dan fotokopi.",
         "location_name": "Jl. Harmonika No. 45, Padang Bulan, Medan",
         "latitude": 3.5562,
@@ -850,13 +1123,28 @@
         "open_time": "08:00",
         "close_time": "23:00",
         "operating_days": "Setiap Hari",
+        "opening_hours": {
+            "sabtu": "06.30–23.00",
+            "minggu": "06.30–23.00",
+            "senin": "06.30–23.00",
+            "selasa": "06.30–23.00",
+            "rabu": "06.30–23.00",
+            "kamis": "06.30–23.00",
+            "jumat": "06.30–23.00"
+        },
         "phone": "0821-6676-4445",
         "whatsapp": "6282166764445",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeuadSxRhlnkienWNWEINVuGlfbHSLHjUj1_JLJng1kZaZ4j05FFzcsvy2Xg4fQxs9VK2XTucBlCtt6o2piNy55vkU9BOGCSDiVFr8W7D9_GbXxeEDjgBNhkwk5Nm097UXODuit_0ik9KKb=w800-h600-k-no",
-        "rating": 4.9,
-        "user_rating_count": 94,
-        "google_maps_url": "https://maps.google.com/?q=FAHRI+COMPUTER+Medan",
+        "rating": 4.8,
+        "user_rating_count": 63,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJ6XLpuA8xMTARwxNQ2JlbB4g",
+        "google_place_id": "ChIJ6XLpuA8xMTARwxNQ2JlbB4g",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Format Skripsi Sesuai Panduan USU",
             "Jasa Pengetikan & Olah Data Tugas",
             "Servis Laptop & Install Ulang Windows",
@@ -869,49 +1157,56 @@
                 "category": "Jasa IT",
                 "price": 35000,
                 "unit": "file",
-                "description": "Sesuai buku pedoman skripsi USU"
+                "description": "Sesuai buku pedoman skripsi USU",
+                "is_available": true
             },
             {
                 "name": "Jasa Pengetikan Naskah Tugas Kuliah",
                 "category": "Jasa IT",
                 "price": 3000,
                 "unit": "halaman",
-                "description": "Ketik rapi bebas typo"
+                "description": "Ketik rapi bebas typo",
+                "is_available": true
             },
             {
                 "name": "Install Ulang Windows 10/11 + Full Office Mahasiswa",
                 "category": "Servis",
                 "price": 60000,
                 "unit": "unit",
-                "description": "Termasuk antivirus dan driver lengkap"
+                "description": "Termasuk antivirus dan driver lengkap",
+                "is_available": true
             },
             {
                 "name": "Rental Komputer + Internet Cepat (1 Jam)",
                 "category": "Rental",
                 "price": 5000,
                 "unit": "jam",
-                "description": "PC lancar untuk browsing & skripsi"
+                "description": "PC lancar untuk browsing & skripsi",
+                "is_available": true
             },
             {
                 "name": "Print Dokumen Komputer Laser A4 B/W",
                 "category": "Print",
                 "price": 250,
                 "unit": "lembar",
-                "description": "Kertas HVS 75gr"
+                "description": "Kertas HVS 75gr",
+                "is_available": true
             },
             {
                 "name": "Flashdisk Sandisk 32GB Ultra Dual USB Original",
                 "category": "Aksesoris",
                 "price": 65000,
                 "unit": "pcs",
-                "description": "Garansi resmi 5 tahun"
+                "description": "Garansi resmi 5 tahun",
+                "is_available": true
             }
         ]
     },
     {
         "id": 13,
         "name": "BISA INTERNET FOTOCOPY",
-        "category": "Rental Internet & Fotocopy",
+        "slug": "bisa-internet-fotocopy",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Tempat rental komputer internet dan print tugas strategis di Jl. Dr. Mansyur. Menyediakan cetak kartu ujian, pendaftaran online kampus, fotokopi, dan laminating dokumen.",
         "location_name": "Jl. Dr. Mansyur No. 88, Dekat Simpang Kampus USU, Medan",
         "latitude": 3.5605,
@@ -919,13 +1214,95 @@
         "open_time": "08:00",
         "close_time": "22:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "periods": [
+                {
+                    "open": {
+                        "day": 1,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 1,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 2,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 2,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 3,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 3,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 4,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 4,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 5,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 5,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 6,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 6,
+                        "hour": 20,
+                        "minute": 0
+                    }
+                }
+            ]
+        },
         "phone": "0852-9738-4437",
         "whatsapp": "6285297384437",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLcbFI3etVTxJYzdLdaCIRea7LBBCz6qqLcnkrHQFuyGAsyQY-YDOSAmyhV9XYwWlMjf7oKp6pqi5U8js-VEZcFdMD4RwJNLRjoEeiI4_C3mpwHpKL2lDxx5NS57TgEUzcaUTPp_=w800-h600-k-no",
         "rating": 4.6,
         "user_rating_count": 67,
         "google_maps_url": "https://maps.google.com/?q=BISA+INTERNET+FOTOCOPY+Medan",
+        "google_place_id": "usu_place_bisa-internet-fotocopy",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Akses Internet Cepat & Cetak Tiket/Formulir",
             "Print Kartu Ujian & KRS Mahasiswa",
             "Fotocopy Hitam Putih",
@@ -938,42 +1315,48 @@
                 "category": "Print",
                 "price": 500,
                 "unit": "lembar",
-                "description": "Langsung dari portal Satu USU"
+                "description": "Langsung dari portal Satu USU",
+                "is_available": true
             },
             {
                 "name": "Fotocopy Bahan Dosen A4",
                 "category": "Fotocopy",
                 "price": 200,
                 "unit": "lembar",
-                "description": "Jelas dan pekat"
+                "description": "Jelas dan pekat",
+                "is_available": true
             },
             {
                 "name": "Laminating Panas KTP / Kartu Mahasiswa",
                 "category": "Finishing",
                 "price": 3000,
                 "unit": "lembar",
-                "description": "Tebal dan presisi"
+                "description": "Tebal dan presisi",
+                "is_available": true
             },
             {
                 "name": "Rental Browsing & Download Materi (Per Jam)",
                 "category": "Rental",
                 "price": 5000,
                 "unit": "jam",
-                "description": "Koneksi fiber optik stabil"
+                "description": "Koneksi fiber optik stabil",
+                "is_available": true
             },
             {
                 "name": "Materai Asli Rp 10.000",
                 "category": "ATK",
                 "price": 11500,
                 "unit": "pcs",
-                "description": "Kantor pos"
+                "description": "Kantor pos",
+                "is_available": true
             }
         ]
     },
     {
         "id": 14,
         "name": "Eman Fotocopy",
-        "category": "Fotocopy & Jilid Cepat",
+        "slug": "eman-fotocopy",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Tempat fotokopi andalan mahasiswa kos-kosan Padang Bulan. Buka dari pagi hingga malam, pengerjaan jilid skripsi kilat dan fotokopi modul dalam jumlah besar.",
         "location_name": "Jl. Harmonika Baru Gang Melati, Padang Bulan, Medan",
         "latitude": 3.5558,
@@ -981,13 +1364,95 @@
         "open_time": "07:30",
         "close_time": "22:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "periods": [
+                {
+                    "open": {
+                        "day": 1,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 1,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 2,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 2,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 3,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 3,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 4,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 4,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 5,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 5,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 6,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 6,
+                        "hour": 20,
+                        "minute": 0
+                    }
+                }
+            ]
+        },
         "phone": "0851-4783-1445",
         "whatsapp": "6285147831445",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfTu29I_ea7osyPBx1vzpH52H-Q3FRKBPPeU1-Jl1CapgYQ-Xo41AsN6jhART1I3i1NHHSz03mvclgG4dUYFeRXeOWq-3Biz9u2RicmoXkJSohMCIhuMZ2JA_TJ1UfCly7A2zz0AA=w800-h600-k-no",
         "rating": 4.8,
         "user_rating_count": 42,
         "google_maps_url": "https://maps.google.com/?q=Eman+Fotocopy+Medan",
+        "google_place_id": "usu_place_eman-fotocopy",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Fotocopy Cepat Antri Pendek",
             "Print Tugas Harian HVS 75gr",
             "Jilid Lakban & Spiral",
@@ -999,35 +1464,40 @@
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Mesin cetak terbaru"
+                "description": "Mesin cetak terbaru",
+                "is_available": true
             },
             {
                 "name": "Print Dokumen Tugas A4",
                 "category": "Print",
                 "price": 250,
                 "unit": "lembar",
-                "description": "Cepat dan tidak belepotan"
+                "description": "Cepat dan tidak belepotan",
+                "is_available": true
             },
             {
                 "name": "Jilid Mika Bening Lakban Hitam",
                 "category": "Jilid",
                 "price": 3000,
                 "unit": "buku",
-                "description": "Untuk tugas mingguan"
+                "description": "Untuk tugas mingguan",
+                "is_available": true
             },
             {
                 "name": "Kertas HVS Eceran (Per 50 Lembar)",
                 "category": "ATK",
                 "price": 6000,
                 "unit": "pack",
-                "description": "HVS 75gr siap pakai"
+                "description": "HVS 75gr siap pakai",
+                "is_available": true
             }
         ]
     },
     {
         "id": 15,
         "name": "Printzy Fotocopy & Printing",
-        "category": "Self-Service Print & Fotocopy",
+        "slug": "printzy-fotocopy-printing",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Tempat cetak modern dengan sistem praktis dekat Asrama USU. Menyediakan self-service printing, cetak pas foto ijazah, jilid softcover/hardcover, dan laminating anti air.",
         "location_name": "Jl. Abdul Hakim No. 18, Dekat Asrama USU, Padang Bulan, Medan",
         "latitude": 3.5539,
@@ -1035,13 +1505,29 @@
         "open_time": "08:00",
         "close_time": "22:00",
         "operating_days": "Setiap Hari",
+        "opening_hours": {
+            "sabtu": "09.00–18.00",
+            "minggu": "Tutup",
+            "senin": "09.00–18.00",
+            "selasa": "09.00–18.00",
+            "rabu": "09.00–18.00",
+            "kamis": "09.00–18.00",
+            "jumat": "09.00–18.00"
+        },
         "phone": "0812-6253-2978",
         "whatsapp": "6281262532978",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLd2pJ3J-biy-3Fd0eeMnAt5qDPlE8nJfCXF29AN8PeU0O4mNI18G-sM8MDXwBQifzj2TBaLG9a4WrA0y8kZovw2iilUvXzkk9L0oJ7Ixa5E-bBojo4pv9cIyVjXMSSAHc6TESkF2A=w800-h600-k-no",
         "rating": 4.9,
-        "user_rating_count": 89,
-        "google_maps_url": "https://maps.google.com/?q=Printzy+Fotocopy+Medan",
+        "user_rating_count": 35,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJzzZ-KQAvMTARrwSknmLoF2U",
+        "google_place_id": "ChIJzzZ-KQAvMTARrwSknmLoF2U",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Perlengkapan ATK Mahasiswa",
             "Self-Service Printing Fleksibel",
             "Pas Foto Wisuda & Ijazah Cetak Kilat",
             "Print Makalah & Proposal Skripsi",
@@ -1054,42 +1540,48 @@
                 "category": "Foto",
                 "price": 12000,
                 "unit": "paket",
-                "description": "Isi 8 lembar anti luntur"
+                "description": "Isi 8 lembar anti luntur",
+                "is_available": true
             },
             {
                 "name": "Print Dokumen Full Color High Res A4",
                 "category": "Print",
                 "price": 1200,
                 "unit": "lembar",
-                "description": "Tinta original tajam"
+                "description": "Tinta original tajam",
+                "is_available": true
             },
             {
                 "name": "Print Dokumen B/W A4 (Kertas 80gr)",
                 "category": "Print",
                 "price": 300,
                 "unit": "lembar",
-                "description": "Lebih tebal dan elegan"
+                "description": "Lebih tebal dan elegan",
+                "is_available": true
             },
             {
                 "name": "Fotocopy Bolak Balik A4 / F4",
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Hemat kertas"
+                "description": "Hemat kertas",
+                "is_available": true
             },
             {
                 "name": "Jilid Soft Cover Jendela Mika",
                 "category": "Jilid",
                 "price": 6000,
                 "unit": "buku",
-                "description": "Cocok untuk laporan magang"
+                "description": "Cocok untuk laporan magang",
+                "is_available": true
             }
         ]
     },
     {
         "id": 16,
         "name": "New Nasional Fotocopy",
-        "category": "Fotocopy Mesin Cepat",
+        "slug": "new-nasional-fotocopy",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Layanan fotokopi berkecepatan tinggi di Jl. Jamin Ginting. Siap memproses order ribuan lembar diktat kuliah, jilid skripsi hardcover ekspres, dan print dokumen warna.",
         "location_name": "Jl. Jamin Ginting No. 165, Padang Bulan, Medan",
         "latitude": 3.5598,
@@ -1097,17 +1589,99 @@
         "open_time": "07:30",
         "close_time": "21:30",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "periods": [
+                {
+                    "open": {
+                        "day": 1,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 1,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 2,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 2,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 3,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 3,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 4,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 4,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 5,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 5,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 6,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 6,
+                        "hour": 20,
+                        "minute": 0
+                    }
+                }
+            ]
+        },
         "phone": "0813-7012-3456",
         "whatsapp": "6281370123456",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLexafbYg6fhQG8T8dRkF5U07SmjGs7XIBgqEHBOfbjPtgXjnbPefvjjqYR6MS6VNm_1bKvBnh-T3SgoltyNxqREkphmBIQ59Q-mbPatxKmyuXsLZxMekQFkpWwsukHTJfqVTH0=w800-h600-k-no",
         "rating": 4.7,
         "user_rating_count": 58,
         "google_maps_url": "https://maps.google.com/?q=New+Nasional+Fotocopy+Medan",
+        "google_place_id": "usu_place_new-nasional-fotocopy",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
+            "Jilid Lakban & Spiral",
             "Fotocopy Mesin Canon Kecepatan Tinggi",
             "Jilid Hardcover Skripsi USU",
-            "Print Warna Dokumen A4/F4",
-            "Jilid Lakban & Spiral Kawat"
+            "Print Warna Dokumen A4/F4"
         ],
         "catalog_items": [
             {
@@ -1115,35 +1689,40 @@
                 "category": "Fotocopy",
                 "price": 170,
                 "unit": "lembar",
-                "description": "Diskon otomatis untuk pesanan banyak"
+                "description": "Diskon otomatis untuk pesanan banyak",
+                "is_available": true
             },
             {
                 "name": "Print Dokumen Hitam Putih A4",
                 "category": "Print",
                 "price": 250,
                 "unit": "lembar",
-                "description": "Bersih dan rapi"
+                "description": "Bersih dan rapi",
+                "is_available": true
             },
             {
                 "name": "Jilid Hard Cover Skripsi Emas USU",
                 "category": "Jilid",
                 "price": 35000,
                 "unit": "buku",
-                "description": "Standar universitas"
+                "description": "Standar universitas",
+                "is_available": true
             },
             {
                 "name": "Jilid Spiral Kawat Buku Laporan",
                 "category": "Jilid",
                 "price": 12000,
                 "unit": "buku",
-                "description": "Awet tidak mudah lepas"
+                "description": "Awet tidak mudah lepas",
+                "is_available": true
             }
         ]
     },
     {
         "id": 17,
         "name": "Stiker Custom Medan",
-        "category": "Percetakan Kustom & Cutting Stiker",
+        "slug": "stiker-custom-medan",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Spesialis pembuatan stiker custom kemasan, vinyl waterproof, cutting die cut/kiss cut, stiker hologram segel, cetak banner spanduk, dan merchandise komunitas kampus USU.",
         "location_name": "Jl. Dr. Mansyur No. 42B, Padang Bulan, Medan",
         "latitude": 3.5612,
@@ -1151,13 +1730,96 @@
         "open_time": "09:00",
         "close_time": "21:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "periods": [
+                {
+                    "open": {
+                        "day": 1,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 1,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 2,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 2,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 3,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 3,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 4,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 4,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 5,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 5,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 6,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 6,
+                        "hour": 20,
+                        "minute": 0
+                    }
+                }
+            ]
+        },
         "phone": "0858-1132-5475",
         "whatsapp": "6285811325475",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLc_z_EPIlm_a7V0zAAag0IgQLpZtvpLkyigAUReCVytcUeKEUfVz29IzaRltR8CAULMVcqGWuzkfNYTLH9iORxxxl4n8cZ7LAf2_KTeaxtKbG-aXeboXVUjMV1xBolpHPOY0V0W0wED89kt=w800-h600-k-no",
-        "rating": 5.0,
+        "rating": 5,
         "user_rating_count": 164,
         "google_maps_url": "https://maps.google.com/?q=Stiker+Custom+Medan",
+        "google_place_id": "usu_place_stiker-custom-medan",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Perlengkapan ATK Mahasiswa",
             "Cetak Stiker Vinyl Anti Air & Tahan Sobek",
             "Cutting Stiker Kiss Cut / Die Cut Mesin Roland",
             "Stiker Kromo Mengkilap A3+",
@@ -1171,49 +1833,56 @@
                 "category": "Stiker",
                 "price": 15000,
                 "unit": "lembar",
-                "description": "Tahan air, minyak, dan tidak luntur"
+                "description": "Tahan air, minyak, dan tidak luntur",
+                "is_available": true
             },
             {
                 "name": "Stiker Cromo A3+ Glossy (Label Makanan)",
                 "category": "Stiker",
                 "price": 10000,
                 "unit": "lembar",
-                "description": "Bahan kertas kilap elegan"
+                "description": "Bahan kertas kilap elegan",
+                "is_available": true
             },
             {
                 "name": "Stiker Transparan A3+ (Bening Waterproof)",
                 "category": "Stiker",
                 "price": 16000,
                 "unit": "lembar",
-                "description": "Cocok untuk botol kaca/minuman"
+                "description": "Cocok untuk botol kaca/minuman",
+                "is_available": true
             },
             {
                 "name": "Stiker Hologram Laser Custom Segel Garansi",
                 "category": "Stiker",
                 "price": 25000,
                 "unit": "lembar",
-                "description": "Efek pelangi saat terkena cahaya"
+                "description": "Efek pelangi saat terkena cahaya",
+                "is_available": true
             },
             {
                 "name": "Pin Bros Custom Ormawa USU 44mm",
                 "category": "Merchandise",
                 "price": 4500,
                 "unit": "pcs",
-                "description": "Peniti anti karat dan laminasi doff/glossy"
+                "description": "Peniti anti karat dan laminasi doff/glossy",
+                "is_available": true
             },
             {
                 "name": "Gantungan Kunci Akrilik 2 Sisi Custom",
                 "category": "Merchandise",
                 "price": 8500,
                 "unit": "pcs",
-                "description": "Potong presisi laser akrilik 3mm"
+                "description": "Potong presisi laser akrilik 3mm",
+                "is_available": true
             }
         ]
     },
     {
         "id": 18,
         "name": "AR FOTO COPY / Cetak poto",
-        "category": "Studio Foto Kilat & Fotocopy",
+        "slug": "ar-foto-copy-cetak-poto",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Studio pas foto kilat dan fotokopi di Jl. Sumber. Melayani foto studio wisuda kilat, pas foto ijazah, cetak foto frame 10R/12R, ganti latar foto merah/biru, dan fotokopi berkas.",
         "location_name": "Jl. Sumber No. 14, Dekat Pintu 4 USU, Medan",
         "latitude": 3.5571,
@@ -1221,13 +1890,28 @@
         "open_time": "08:00",
         "close_time": "21:00",
         "operating_days": "Setiap Hari",
+        "opening_hours": {
+            "sabtu": "07.00–21.00",
+            "minggu": "07.00–21.00",
+            "senin": "07.00–21.00",
+            "selasa": "07.00–21.00",
+            "rabu": "07.00–21.00",
+            "kamis": "07.00–21.00",
+            "jumat": "07.00–21.00"
+        },
         "phone": "0813-9677-7500",
         "whatsapp": "6281396777500",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeC1DqaOHvM2ZWKy9lbM_XcB2APBfmcbaY4j7QyenWp0zcxA_LW-jACigqGKcihq7XnNFbRUfAc-qnUAqSFqfxPRmUj9OEONX5WbE5LuKEHZRyysmA3woFEy7608s4ZF0GE3J3GOQ=w800-h600-k-no",
-        "rating": 4.8,
-        "user_rating_count": 71,
-        "google_maps_url": "https://maps.google.com/?q=AR+FOTO+COPY+Medan",
+        "rating": 4.5,
+        "user_rating_count": 31,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJCVdtj8svMTARbbuhMjetIL0",
+        "google_place_id": "ChIJCVdtj8svMTARbbuhMjetIL0",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Pas Foto Kilat Ijazah 5 Menit Jadi",
             "Edit Latar Belakang Foto Merah/Biru",
             "Cetak Foto Frame Wisuda 10R",
@@ -1240,49 +1924,56 @@
                 "category": "Foto",
                 "price": 15000,
                 "unit": "paket",
-                "description": "Sudah termasuk edit jas & dasi"
+                "description": "Sudah termasuk edit jas & dasi",
+                "is_available": true
             },
             {
                 "name": "Edit Background Pas Foto (Ganti Merah / Biru)",
                 "category": "Foto",
                 "price": 10000,
                 "unit": "foto",
-                "description": "Pengerjaan 5 menit langsung cetak"
+                "description": "Pengerjaan 5 menit langsung cetak",
+                "is_available": true
             },
             {
                 "name": "Cetak Foto Frame Wisuda 10R + Bingkai Minimalis",
                 "category": "Foto",
                 "price": 55000,
                 "unit": "set",
-                "description": "Bingkai kaca kayu elegan"
+                "description": "Bingkai kaca kayu elegan",
+                "is_available": true
             },
             {
                 "name": "Cetak Foto Ukuran 4R Glossy Asli",
                 "category": "Foto",
                 "price": 3500,
                 "unit": "lembar",
-                "description": "Kertas foto Fuji Film asli"
+                "description": "Kertas foto Fuji Film asli",
+                "is_available": true
             },
             {
                 "name": "Fotocopy Berkas Lamaran / Ijazah A4",
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Hitam pekat bersih"
+                "description": "Hitam pekat bersih",
+                "is_available": true
             },
             {
                 "name": "Laminating Press Panas Ijazah",
                 "category": "Finishing",
                 "price": 4000,
                 "unit": "lembar",
-                "description": "Anti lengket dan tahan puluhan tahun"
+                "description": "Anti lengket dan tahan puluhan tahun",
+                "is_available": true
             }
         ]
     },
     {
         "id": 19,
         "name": "FOTOCOPY FORTUNA",
-        "category": "Fotocopy & Jilid Skripsi",
+        "slug": "fotocopy-fortuna",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Layanan fotokopi dan jilid skripsi terjangkau di Jl. Harmonika Baru. Melayani fotokopi modul kuliah, jilid softcover/hardcover, dan print dokumen warna cepat.",
         "location_name": "Jl. Harmonika Baru No. 29, Padang Bulan, Medan",
         "latitude": 3.5567,
@@ -1290,16 +1981,98 @@
         "open_time": "08:00",
         "close_time": "22:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "periods": [
+                {
+                    "open": {
+                        "day": 1,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 1,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 2,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 2,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 3,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 3,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 4,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 4,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 5,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 5,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 6,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 6,
+                        "hour": 20,
+                        "minute": 0
+                    }
+                }
+            ]
+        },
         "phone": "0852-6123-4567",
         "whatsapp": "6285261234567",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfNJbAzT0CFgrbCY2xZr4jliCe4V5Q2YNVCcNjX0LNWUgdIbqwfcabWcTZTbXdkx93wZOoOWcrw_bdtEnX5vjy0liHHCB3VEIkKD2mbhVDynD9kuSml51tcv3gIcERomuA6RSQR=w800-h600-k-no",
         "rating": 4.8,
         "user_rating_count": 39,
         "google_maps_url": "https://maps.google.com/?q=FOTOCOPY+FORTUNA+Medan",
+        "google_place_id": "usu_place_fotocopy-fortuna",
         "services": [
-            "Fotocopy Cepat Murah Mahasiswa",
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Jilid Hardcover Skripsi USU",
-            "Print Warna Dokumen A4",
+            "Print Warna Dokumen A4/F4",
+            "Fotocopy Cepat Murah Mahasiswa",
             "Jilid Lakban & ATK"
         ],
         "catalog_items": [
@@ -1308,35 +2081,40 @@
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Jelas dan tidak miring"
+                "description": "Jelas dan tidak miring",
+                "is_available": true
             },
             {
                 "name": "Print Dokumen Hitam Putih A4",
                 "category": "Print",
                 "price": 250,
                 "unit": "lembar",
-                "description": "HVS 75gr"
+                "description": "HVS 75gr",
+                "is_available": true
             },
             {
                 "name": "Jilid Hard Cover Skripsi Emas USU",
                 "category": "Jilid",
                 "price": 35000,
                 "unit": "buku",
-                "description": "Embos foil emas timbul"
+                "description": "Embos foil emas timbul",
+                "is_available": true
             },
             {
                 "name": "Jilid Mika Lakban Biasa",
                 "category": "Jilid",
                 "price": 3000,
                 "unit": "buku",
-                "description": "Pengerjaan kilat 3 menit"
+                "description": "Pengerjaan kilat 3 menit",
+                "is_available": true
             }
         ]
     },
     {
         "id": 20,
         "name": "Igna Foto Copy",
-        "category": "Fotocopy & ATK Toko",
+        "slug": "igna-foto-copy",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Toko fotocopy dan penyedia alat tulis kantor di Padang Bulan. Siap melayani fotokopi bahan kuliah mahasiswa, penjualan kertas satu rim, dan perlengkapan ujian.",
         "location_name": "Jl. Bunga Terompet No. 5, Padang Bulan, Medan",
         "latitude": 3.5545,
@@ -1344,16 +2122,31 @@
         "open_time": "08:00",
         "close_time": "21:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "07.00–22.00",
+            "minggu": "04.00–22.00",
+            "senin": "07.00–22.00",
+            "selasa": "07.00–22.00",
+            "rabu": "07.00–22.00",
+            "kamis": "07.00–22.00",
+            "jumat": "07.00–22.00"
+        },
         "phone": "061-8211992",
         "whatsapp": "6281263457890",
         "image_url": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW1yXs40o7tL4ais0jXSElklSjzv5FNgmSutVu8urz51BzEV5UNOzWFxcPtrG16qmKZRv73Oh7pbCueJPCTpuTyaROnOqRKCkOKuEXyLQFeQL3SQPIMh7F_Og_Vuk6_GjDJMe7L5D5SSjDf92SRp-sw7T5zYp64XD281L_oIunNW7EpOIZo_snmbUw4hh0ZXyoZdHZU4OA=w800-h600-k-no",
         "rating": 4.6,
-        "user_rating_count": 33,
-        "google_maps_url": "https://maps.google.com/?q=Igna+Foto+Copy+Medan",
+        "user_rating_count": 71,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJ244_hGUwMTARa5o4tt6YyB4",
+        "google_place_id": "ChIJ244_hGUwMTARa5o4tt6YyB4",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Fotocopy Dokumen Cepat",
             "Penjualan Kertas HVS Rim",
-            "Jilid Lakban & Mika",
             "ATK Lengkap"
         ],
         "catalog_items": [
@@ -1362,35 +2155,40 @@
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Tarif hemat mahasiswa"
+                "description": "Tarif hemat mahasiswa",
+                "is_available": true
             },
             {
                 "name": "Kertas HVS PaperOne A4 75gr (1 Rim)",
                 "category": "ATK",
                 "price": 52000,
                 "unit": "rim",
-                "description": "Isi 500 lembar"
+                "description": "Isi 500 lembar",
+                "is_available": true
             },
             {
                 "name": "Jilid Lakban Biasa + Mika",
                 "category": "Jilid",
                 "price": 3500,
                 "unit": "buku",
-                "description": "Laporan praktikum"
+                "description": "Laporan praktikum",
+                "is_available": true
             },
             {
                 "name": "Pulpen Standard AE7 0.5 Hitam",
                 "category": "ATK",
                 "price": 3000,
                 "unit": "pcs",
-                "description": "Paling banyak dicari"
+                "description": "Paling banyak dicari",
+                "is_available": true
             }
         ]
     },
     {
         "id": 21,
         "name": "NEXT PERCETAKAN",
-        "category": "Digital Printing & Offset",
+        "slug": "next-percetakan",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Percetakan offset modern di Jl. Jamin Ginting. Menyediakan cetak kalender, nota NCR perusahaan/kantor, buku panduan seminar, map berlogo USU, dan kartu nama express.",
         "location_name": "Jl. Jamin Ginting No. 312, Padang Bulan, Medan",
         "latitude": 3.5582,
@@ -1398,13 +2196,28 @@
         "open_time": "08:30",
         "close_time": "21:30",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "07.30–20.00",
+            "minggu": "12.00–21.00",
+            "senin": "07.30–20.00",
+            "selasa": "07.30–20.00",
+            "rabu": "07.30–20.00",
+            "kamis": "07.30–20.00",
+            "jumat": "07.30–20.00"
+        },
         "phone": "0853-5897-3554",
         "whatsapp": "6285358973554",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfmmnTjdZGhqboYUyot6UM0xR9nWb4ka5j_lqnCtQX5-GZsZ_rzkYLSefCFmP5lSTYi9ugbrwWWYe2FJMttNCw69DKy47obV8YHz95pOJQV-mAc3KtYywlM0XgtB11adBn2EIVqXC6SuAYJ=w800-h600-k-no",
-        "rating": 4.9,
-        "user_rating_count": 147,
-        "google_maps_url": "https://maps.google.com/?q=NEXT+PERCETAKAN+Medan",
+        "rating": 5,
+        "user_rating_count": 413,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJjVT1HCAxMTARzmmum7j-WbQ",
+        "google_place_id": "ChIJjVT1HCAxMTARzmmum7j-WbQ",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Cetak Kalender Dinding & Meja",
             "Cetak Nota NCR 2/3 Ply",
             "Cetak Booklet & Buku Acara",
@@ -1417,42 +2230,48 @@
                 "category": "Percetakan",
                 "price": 180000,
                 "unit": "rim",
-                "description": "Isi 50 buku nota untuk usaha/kegiatan"
+                "description": "Isi 50 buku nota untuk usaha/kegiatan",
+                "is_available": true
             },
             {
                 "name": "Cetak Kalender Meja Spiral Standee",
                 "category": "Percetakan",
                 "price": 25000,
                 "unit": "pcs",
-                "description": "Art Carton 260gr full color"
+                "description": "Art Carton 260gr full color",
+                "is_available": true
             },
             {
                 "name": "Cetak Map Berlogo USU Kantong Mika",
                 "category": "Percetakan",
                 "price": 8500,
                 "unit": "pcs",
-                "description": "Bahan Art Carton laminasi doff"
+                "description": "Bahan Art Carton laminasi doff",
+                "is_available": true
             },
             {
                 "name": "Print Digital Laser A3+ Full Color",
                 "category": "Print",
                 "price": 8500,
                 "unit": "lembar",
-                "description": "Mesin Fuji Xerox C1000i tajam"
+                "description": "Mesin Fuji Xerox C1000i tajam",
+                "is_available": true
             },
             {
                 "name": "Cetak Buku Kenangan / Yearbook Spiral",
                 "category": "Buku",
                 "price": 65000,
                 "unit": "buku",
-                "description": "Cover tebal hardcover laminasi"
+                "description": "Cover tebal hardcover laminasi",
+                "is_available": true
             }
         ]
     },
     {
         "id": 22,
         "name": "Foto Copy Risa",
-        "category": "Fotocopy & Print Kampus",
+        "slug": "foto-copy-risa",
+        "category": "Fotocopy & Percetakan Kampus",
         "description": "Layanan fotokopi dekat pintu gerbang USU. Melayani fotokopi lembaran cepat, jilid skripsi softcover, print dokumen tugas, dan penjualan materai resmi.",
         "location_name": "Jl. Pintu Air No. 8, Padang Bulan, Medan",
         "latitude": 3.5531,
@@ -1460,13 +2279,95 @@
         "open_time": "08:00",
         "close_time": "21:00",
         "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "periods": [
+                {
+                    "open": {
+                        "day": 1,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 1,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 2,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 2,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 3,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 3,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 4,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 4,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 5,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 5,
+                        "hour": 21,
+                        "minute": 0
+                    }
+                },
+                {
+                    "open": {
+                        "day": 6,
+                        "hour": 8,
+                        "minute": 0
+                    },
+                    "close": {
+                        "day": 6,
+                        "hour": 20,
+                        "minute": 0
+                    }
+                }
+            ]
+        },
         "phone": "061-8463689",
         "whatsapp": "6285372345678",
         "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLe8b_fjNibkSSbttBJMcKVTa4QfDP7RsgbGLwVilcuhW4gVlS8UDn9XOG8I0zZ4PPxYrJwbMj0M8gfJekMXNp1bO5wS8Jgzd0GSjXYkIeViVeWAYGxzd8_QZgh0RLcOKAxMXtbiSQ=w800-h600-k-no",
         "rating": 4.7,
         "user_rating_count": 28,
         "google_maps_url": "https://maps.google.com/?q=Foto+Copy+Risa+Medan",
+        "google_place_id": "usu_place_foto-copy-risa",
         "services": [
+            "Print Dokumen Full Color",
+            "Fotokopi Hitam Putih",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Perlengkapan ATK Mahasiswa",
             "Fotocopy Tugas Kuliah",
             "Print Dokumen HVS 75gr",
             "Jilid Softcover Mika",
@@ -1478,28 +2379,1011 @@
                 "category": "Fotocopy",
                 "price": 180,
                 "unit": "lembar",
-                "description": "Cepat dan tidak menunggu lama"
+                "description": "Cepat dan tidak menunggu lama",
+                "is_available": true
             },
             {
                 "name": "Print Hitam Putih Dokumen A4",
                 "category": "Print",
                 "price": 250,
                 "unit": "lembar",
-                "description": "Kertas HVS 75gr"
+                "description": "Kertas HVS 75gr",
+                "is_available": true
             },
             {
                 "name": "Jilid Mika Lakban Hitam",
                 "category": "Jilid",
                 "price": 3000,
                 "unit": "buku",
-                "description": "Rapi dan kuat"
+                "description": "Rapi dan kuat",
+                "is_available": true
             },
             {
                 "name": "Materai Rp 10.000 Kantor Pos",
                 "category": "ATK",
                 "price": 11500,
                 "unit": "pcs",
-                "description": "Resmi asli"
+                "description": "Resmi asli",
+                "is_available": true
+            }
+        ]
+    },
+    {
+        "id": 24,
+        "name": "OK Printing (Large Format Printing )",
+        "slug": "ok-printing-large-format-printing",
+        "category": "Fotocopy & Percetakan Kampus",
+        "description": "Layanan cetak digital • Toko Percetakan",
+        "location_name": "Jl. Jamin Ginting No.96, Padang Bulan, Kec. Medan Baru, Kota Medan, Sumatera Utara 20155",
+        "latitude": 3.5690111,
+        "longitude": 98.6597857,
+        "open_time": "08:00",
+        "close_time": "21:00",
+        "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "08.00–17.00",
+            "minggu": "Tutup",
+            "senin": "08.00–18.00",
+            "selasa": "08.00–18.00",
+            "rabu": "08.00–18.00",
+            "kamis": "08.00–18.00",
+            "jumat": "08.00–18.00"
+        },
+        "phone": "(061) 88868310",
+        "whatsapp": "06188868310",
+        "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfH3a7njRvGj30JMCPrvz-3Z8gSJh_XYnOkC2ZcdD-B59Tvi5uxxtyG0Hvu5d-sjERQWC4YMoTg7phT_5ySLdtMMYt0sHOZeuhNHyrMJQ4Ls9lGXDn6j4ZI8IbCBpTU_FjPdvc=w1000-h1000-c-n",
+        "rating": 4.7,
+        "user_rating_count": 111,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJI1qKMycwMTAR-KureMtfnR0",
+        "google_place_id": "ChIJI1qKMycwMTAR-KureMtfnR0",
+        "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa"
+        ],
+        "catalog_items": [
+            {
+                "name": "Cetak Banner / Spanduk Flexi 280gr",
+                "category": "Cetak",
+                "price": 20000,
+                "unit": "meter",
+                "description": "Bahan tahan cuaca cocok untuk stand kegiatan & event kampus",
+                "is_available": true
+            },
+            {
+                "name": "Cetak X-Banner / Y-Banner Lengkap Tiang",
+                "category": "Cetak",
+                "price": 65000,
+                "unit": "paket",
+                "description": "Ukuran 60x160cm bahan albatros lamination + tiang fleksibel",
+                "is_available": true
+            },
+            {
+                "name": "Print Poster Ilmiah Albatros Doff A1",
+                "category": "Cetak",
+                "price": 60000,
+                "unit": "lembar",
+                "description": "Bahan doff tidak memantulkan cahaya standar sidang skripsi",
+                "is_available": true
+            },
+            {
+                "name": "Print Laser A3+ Full Color Art Paper 260gr",
+                "category": "Print",
+                "price": 7500,
+                "unit": "lembar",
+                "description": "Hasil tajam untuk portofolio, booklet, & gambar kerja teknik",
+                "is_available": true
+            },
+            {
+                "name": "Cetak Stiker Vinyl A3+ Kiss Cut",
+                "category": "Cetak",
+                "price": 18000,
+                "unit": "lembar",
+                "description": "Stiker tahan air siap tempel untuk kemasan & merchandise UKM",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Spiral Kawat Ring Besi A3 / A4",
+                "category": "Jilid",
+                "price": 15000,
+                "unit": "buku",
+                "description": "Buku portofolio & gambar arsitektur rapi dan kokoh",
+                "is_available": true
+            },
+            {
+                "name": "Fotocopy Hitam Putih A4 / F4",
+                "category": "Fotocopy",
+                "price": 200,
+                "unit": "lembar",
+                "description": "Kertas HVS 75gr hasil jernih dan presisi",
+                "is_available": true
+            },
+            {
+                "name": "Scan Dokumen Berkas PDF Resolusi 300 DPI",
+                "category": "Finishing",
+                "price": 1000,
+                "unit": "lembar",
+                "description": "Langsung kirim ke email / WA / Google Drive",
+                "is_available": true
+            }
+        ]
+    },
+    {
+        "id": 25,
+        "name": "SEMPURNA PRINTING MEDAN ( Digital Printing )",
+        "slug": "sempurna-printing-medan-digital-printing",
+        "category": "Fotocopy & Percetakan Kampus",
+        "description": "Layanan cetak digital",
+        "location_name": "Jl. Laksana No.58c, Kotamatsum III, Kec. Medan Area, Kota Medan, Sumatera Utara 20211",
+        "latitude": 3.5754507,
+        "longitude": 98.6907665,
+        "open_time": "08:00",
+        "close_time": "21:00",
+        "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "08.00–18.00",
+            "minggu": "Tutup",
+            "senin": "08.00–18.00",
+            "selasa": "08.00–18.00",
+            "rabu": "08.00–18.00",
+            "kamis": "08.00–18.00",
+            "jumat": "08.00–18.00"
+        },
+        "phone": "(061) 7326788",
+        "whatsapp": "0617326788",
+        "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLcnzdf2kPSt60Ua2MVMNTydLzrLEf5z_sAXBKWn3-UjWQ8_Mg6SiZ-F3peNgPmfTMUrzrjdJJinMYLn241mt9as-7jzTqXTQKZJCTVMXv7LSn46ai_Wz63Ybk_Gfr7xN41NsZo=w1000-h1000-c-n",
+        "rating": 4.6,
+        "user_rating_count": 219,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJlQRW1k0wMTAReL_n4kAkpXY",
+        "google_place_id": "ChIJlQRW1k0wMTAReL_n4kAkpXY",
+        "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa"
+        ],
+        "catalog_items": [
+            {
+                "name": "Print Digital A3+ Art Carton 260gr Full Color",
+                "category": "Print",
+                "price": 7000,
+                "unit": "lembar",
+                "description": "Cetak pamflet, sertifikat, & kartu nama resolusi tinggi",
+                "is_available": true
+            },
+            {
+                "name": "Print Dokumen Laporan Hitam Putih A4",
+                "category": "Print",
+                "price": 250,
+                "unit": "lembar",
+                "description": "Laser cepat anti pudar untuk tugas dan makalah kuliah",
+                "is_available": true
+            },
+            {
+                "name": "Print Dokumen Skripsi Berwarna A4",
+                "category": "Print",
+                "price": 1000,
+                "unit": "lembar",
+                "description": "Kertas HVS 80gr tinta tajam untuk bagan & grafik",
+                "is_available": true
+            },
+            {
+                "name": "Cetak Sertifikat Piagam Linen A4",
+                "category": "Cetak",
+                "price": 4500,
+                "unit": "lembar",
+                "description": "Kertas linen bertekstur elegan untuk kegiatan seminar",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Hard Cover Skripsi Emas USU",
+                "category": "Jilid",
+                "price": 35000,
+                "unit": "buku",
+                "description": "Standar skripsi universitas dengan pita pembatas & sudut siku",
+                "is_available": true
+            },
+            {
+                "name": "Cetak Stiker Cromo / Vinyl A3+ Glossy",
+                "category": "Cetak",
+                "price": 15000,
+                "unit": "lembar",
+                "description": "Stiker label nama kegiatan mahasiswa & botol produk",
+                "is_available": true
+            },
+            {
+                "name": "Laminating Doff / Glossy Panas A3 / A4",
+                "category": "Finishing",
+                "price": 5000,
+                "unit": "lembar",
+                "description": "Perlindungan dokumen resmi anti air dan goresan",
+                "is_available": true
+            },
+            {
+                "name": "Fotocopy Hitam Putih Bahan Ajar A4",
+                "category": "Fotocopy",
+                "price": 180,
+                "unit": "lembar",
+                "description": "Tarif mahasiswa khusus rangkuman modul kuliah",
+                "is_available": true
+            }
+        ]
+    },
+    {
+        "id": 26,
+        "name": "Prida Percetakan & Foto Copy",
+        "slug": "prida-percetakan-foto-copy",
+        "category": "Fotocopy & Percetakan Kampus",
+        "description": "Toko Fotokopi • Toko Percetakan",
+        "location_name": "Jl. Jend. D.I Panjaitan No.76, Babura, Kec. Medan Baru, Kota Medan, Sumatera Utara 20152",
+        "latitude": 3.5790848,
+        "longitude": 98.6593357,
+        "open_time": "08:00",
+        "close_time": "21:00",
+        "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "08.00–22.00",
+            "minggu": "09.00–22.00",
+            "senin": "08.00–22.00",
+            "selasa": "08.00–22.00",
+            "rabu": "08.00–22.00",
+            "kamis": "08.00–22.00",
+            "jumat": "08.00–22.00"
+        },
+        "phone": "(061) 4534605",
+        "whatsapp": "0614534605",
+        "image_url": "https://lh3.googleusercontent.com/grass-proxy/AIM7gW1kQhPMgITgbGuRyLz6VLm9-qUGkOmgTlq44Pa6fnQbjNa4fMm9IkEXmTTNGuHeVNOPyOv7q9_T9KO0xzjWnR34NX3bg9Vr0_GE2Uyevl2ltC7E6IyWFVZ87YmVKn3-vsUzfGpkG2VB2OWdsQCwqk9-rnci2yc-H-7WxQRISCdOmnXIfFrLxCNGOtXhYImu6lOPCqciuw=w1000-h1000-c-n",
+        "rating": 3.3,
+        "user_rating_count": 131,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJS5vGeScwMTARQbCyopKgfKM",
+        "google_place_id": "ChIJS5vGeScwMTARQbCyopKgfKM",
+        "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa"
+        ],
+        "catalog_items": [
+            {
+                "name": "Fotocopy Hitam Putih A4 / F4 (Bolak-Balik)",
+                "category": "Fotocopy",
+                "price": 200,
+                "unit": "lembar",
+                "description": "HVS 75gr teks tajam bebas bayangan",
+                "is_available": true
+            },
+            {
+                "name": "Fotocopy Bahan Ajar & Modul Kuliah A4",
+                "category": "Fotocopy",
+                "price": 180,
+                "unit": "lembar",
+                "description": "Harga hemat mahasiswa min. 50 lembar",
+                "is_available": true
+            },
+            {
+                "name": "Print Dokumen Skripsi / Tugas Kuliah A4",
+                "category": "Print",
+                "price": 250,
+                "unit": "lembar",
+                "description": "Hasil laser tajam anti luntur untuk berkas sidang",
+                "is_available": true
+            },
+            {
+                "name": "Print Warna Makalah Tugas Presentasi A4",
+                "category": "Print",
+                "price": 1000,
+                "unit": "lembar",
+                "description": "Grafik warna kontras tinggi HVS 80gr",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Lakban Hitam + Mika Bening Bawah Buffalo",
+                "category": "Jilid",
+                "price": 3500,
+                "unit": "buku",
+                "description": "Standar laporan mingguan tugas praktikum",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Spiral Kawat Ring Besi",
+                "category": "Jilid",
+                "price": 12000,
+                "unit": "buku",
+                "description": "Modul dan diktat kuliah rapi hingga 150 lembar",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Hard Cover Skripsi Bordir Emas",
+                "category": "Jilid",
+                "price": 35000,
+                "unit": "buku",
+                "description": "Format baku fakultas USU tulisan timbul foil emas",
+                "is_available": true
+            },
+            {
+                "name": "Kertas HVS A4 75gr PaperOne (1 Rim)",
+                "category": "ATK",
+                "price": 52000,
+                "unit": "rim",
+                "description": "500 lembar segel pabrik standar skripsi",
+                "is_available": true
+            },
+            {
+                "name": "Map Snelhechter Plastik Folio",
+                "category": "ATK",
+                "price": 3500,
+                "unit": "pcs",
+                "description": "Map berkas seminar proposal dan ujian meja hijau",
+                "is_available": true
+            }
+        ]
+    },
+    {
+        "id": 27,
+        "name": "Nirwana Printing",
+        "slug": "nirwana-printing",
+        "category": "Fotocopy & Percetakan Kampus",
+        "description": "Toko Percetakan • Printer Digital",
+        "location_name": "USU, no 91, Jl. Pembangunan, Padang Bulan, Kec. Medan Baru, Kota Medan, Sumatera Utara 20155",
+        "latitude": 3.5630474,
+        "longitude": 98.6522782,
+        "open_time": "08:00",
+        "close_time": "21:00",
+        "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "08.00–17.00",
+            "minggu": "Tutup",
+            "senin": "08.00–17.00",
+            "selasa": "08.00–17.00",
+            "rabu": "08.00–17.00",
+            "kamis": "08.00–17.00",
+            "jumat": "08.00–17.00"
+        },
+        "phone": "0813-6192-8868",
+        "whatsapp": "6281361928868",
+        "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfNSmxhZXx9_B6IwqMFMfxyj2XGyjy5LJ4Xi_UKnTpNtyQAIOgxUTJYqA9xoPw6prk8TBXaKq9DpN7g7RQ7y7hTMIG_KZGtOnvDnsMjsr9MA_mC90dmV9yy5A3MDDvpbR6hQ4_b=w1000-h1000-c-n",
+        "rating": 4.4,
+        "user_rating_count": 14,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJE6GWeecvMTARgotKTWy60CI",
+        "google_place_id": "ChIJE6GWeecvMTARgotKTWy60CI",
+        "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa"
+        ],
+        "catalog_items": [
+            {
+                "name": "Print Dokumen Hitam Putih Cepat A4",
+                "category": "Print",
+                "price": 250,
+                "unit": "lembar",
+                "description": "Mesin digital laser production kecepatan tinggi",
+                "is_available": true
+            },
+            {
+                "name": "Print Warna Tugas Desain Grafis A4 / A3",
+                "category": "Print",
+                "price": 1200,
+                "unit": "lembar",
+                "description": "Tinta pigment anti air hasil warna cerah",
+                "is_available": true
+            },
+            {
+                "name": "Cetak Spanduk & Banner Event Mahasiswa",
+                "category": "Cetak",
+                "price": 22000,
+                "unit": "meter",
+                "description": "Flexi cina 280gr resolusi tinggi untuk UKM & ormawa",
+                "is_available": true
+            },
+            {
+                "name": "Cetak Roll Up Banner Albatros 85x200cm",
+                "category": "Cetak",
+                "price": 180000,
+                "unit": "paket",
+                "description": "Lengkap tiang aluminium stand display seminar",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Soft Cover Glossy / Doff Lem Panas",
+                "category": "Jilid",
+                "price": 18000,
+                "unit": "buku",
+                "description": "Buku panduan seminar, majalah, & laporan magang",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Hard Cover Skripsi Kampus USU",
+                "category": "Jilid",
+                "price": 35000,
+                "unit": "buku",
+                "description": "Embos emas warna resmi fakultas standar USU",
+                "is_available": true
+            },
+            {
+                "name": "Scan Berkas Dokumen PDF Batch",
+                "category": "Finishing",
+                "price": 1000,
+                "unit": "lembar",
+                "description": "Resolusi 300 DPI arsip digital langsung ke flashdisk",
+                "is_available": true
+            },
+            {
+                "name": "Fotocopy Hitam Putih A4 HVS 75gr",
+                "category": "Fotocopy",
+                "price": 200,
+                "unit": "lembar",
+                "description": "Cetakan bersih bebas noda tinta",
+                "is_available": true
+            }
+        ]
+    },
+    {
+        "id": 28,
+        "name": "USU PRINTING",
+        "slug": "usu-printing",
+        "category": "Fotocopy & Percetakan Kampus",
+        "description": "Percetakan Komersial",
+        "location_name": "Jl. Dr. Mansyur No.30/58a, Merdeka, Kec. Medan Baru, Kota Medan, Sumatera Utara 20153",
+        "latitude": 3.5674789,
+        "longitude": 98.6595871,
+        "open_time": "08:00",
+        "close_time": "21:00",
+        "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "07.00–19.00",
+            "minggu": "14.00–19.00",
+            "senin": "07.00–19.00",
+            "selasa": "07.00–19.00",
+            "rabu": "07.00–19.00",
+            "kamis": "07.00–19.00",
+            "jumat": "07.00–19.00"
+        },
+        "phone": "0822-6939-8956",
+        "whatsapp": "6282269398956",
+        "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfo_o-TqDTO3vmO7Xy8FDffrfpRo65BTvR7OVMbCGC-B_WVx2VHqZE-zCFqmscxrVcRoWzV_FIjUjyjaLzxsiB4J-aTyKD_Dhqgz0b5ZB0zvQBsStNzlbTuFw_1wW1Qr2RHLLc=w1000-h1000-c-n",
+        "rating": 3.9,
+        "user_rating_count": 12,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJfbrBeHkvMTARmJvukPisSsA",
+        "google_place_id": "ChIJfbrBeHkvMTARmJvukPisSsA",
+        "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa"
+        ],
+        "catalog_items": [
+            {
+                "name": "Fotocopy Hitam Putih A4 / F4 Tarif Mahasiswa",
+                "category": "Fotocopy",
+                "price": 180,
+                "unit": "lembar",
+                "description": "Tarif resmi mahasiswa kampus USU hemat & cepat",
+                "is_available": true
+            },
+            {
+                "name": "Print Tugas Kuliah Hitam Putih A4",
+                "category": "Print",
+                "price": 250,
+                "unit": "lembar",
+                "description": "Laser cetak cepat bebas antre",
+                "is_available": true
+            },
+            {
+                "name": "Print Dokumen Berwarna A4 (Tesis / Skripsi)",
+                "category": "Print",
+                "price": 800,
+                "unit": "lembar",
+                "description": "Warna akurat HVS 80gr standar universitas",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Hard Cover Skripsi Emas Standar USU",
+                "category": "Jilid",
+                "price": 35000,
+                "unit": "buku",
+                "description": "Sesuai buku pedoman penulisan skripsi USU",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Spiral Plastik Praktis",
+                "category": "Jilid",
+                "price": 8000,
+                "unit": "buku",
+                "description": "Bisa buka-pasang lembaran laporan praktikum",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Lakban & Mika Bening",
+                "category": "Jilid",
+                "price": 3500,
+                "unit": "buku",
+                "description": "Laporan praktikum harian & makalah kelompok",
+                "is_available": true
+            },
+            {
+                "name": "Paket Pas Foto Ijazah & Wisuda (4 Lembar)",
+                "category": "Finishing",
+                "price": 10000,
+                "unit": "paket",
+                "description": "Kertas foto lab anti sidik jari background merah/biru",
+                "is_available": true
+            },
+            {
+                "name": "Map Plastik Snelhechter Folio Resmi",
+                "category": "ATK",
+                "price": 3500,
+                "unit": "pcs",
+                "description": "Warna resmi per fakultas USU",
+                "is_available": true
+            }
+        ]
+    },
+    {
+        "id": 29,
+        "name": "Percetakan ERIKA",
+        "slug": "percetakan-erika",
+        "category": "Fotocopy & Percetakan Kampus",
+        "description": "Toko Fotokopi",
+        "location_name": "USU, Jl. Pembangunan, Padang Bulan Selayang I, Kec. Medan Baru, Kota Medan, Sumatera Utara 20153",
+        "latitude": 3.5658312,
+        "longitude": 98.6522899,
+        "open_time": "08:00",
+        "close_time": "21:00",
+        "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "08.00–20.00",
+            "minggu": "Tutup",
+            "senin": "08.00–20.00",
+            "selasa": "08.00–20.00",
+            "rabu": "08.00–20.00",
+            "kamis": "08.00–20.00",
+            "jumat": "08.00–20.00"
+        },
+        "phone": "0813-2201-477",
+        "whatsapp": "628132201477",
+        "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfx5TGXhKvnSwBaHkU1Uruc6plWB0wutfmEJazpBF_5GPgLeccugbpGkajFJNcn84onIFArZNW23AIO_n_PiKzHheTe7QSA4yqBGXry1HXNIepsz99bxALF8emiBTvzdqIZLuuCBnxytxb1=w1000-h1000-c-n",
+        "rating": 1,
+        "user_rating_count": 1,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJ1XLslJ8vMTARr_R2N3QmFiA",
+        "google_place_id": "ChIJ1XLslJ8vMTARr_R2N3QmFiA",
+        "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa"
+        ],
+        "catalog_items": [
+            {
+                "name": "Fotocopy Diktat & Bahan Kuliah A4 / F4",
+                "category": "Fotocopy",
+                "price": 200,
+                "unit": "lembar",
+                "description": "Hasil jernih kertas HVS 75gr bolak-balik rapi",
+                "is_available": true
+            },
+            {
+                "name": "Print Dokumen Teks Hitam Putih A4",
+                "category": "Print",
+                "price": 250,
+                "unit": "lembar",
+                "description": "Laser anti belepotan untuk bab skripsi",
+                "is_available": true
+            },
+            {
+                "name": "Print Laporan Praktikum Warna A4",
+                "category": "Print",
+                "price": 1000,
+                "unit": "lembar",
+                "description": "Resolusi tajam untuk foto mikroskop & tabel praktikum",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Lakban Hitam Mika Cover Buffalo",
+                "category": "Jilid",
+                "price": 3500,
+                "unit": "buku",
+                "description": "Laporan mingguan & tugas rutin praktikum",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Spiral Kawat Modul Praktikum",
+                "category": "Jilid",
+                "price": 12000,
+                "unit": "buku",
+                "description": "Kuat, awet, mudah dibalik 360 derajat",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Hard Cover Skripsi Embos Emas",
+                "category": "Jilid",
+                "price": 35000,
+                "unit": "buku",
+                "description": "Lengkap pita pembatas buku & siku pengaman",
+                "is_available": true
+            },
+            {
+                "name": "Laminating Panas Kartu & Piagam A4",
+                "category": "Finishing",
+                "price": 3500,
+                "unit": "lembar",
+                "description": "Plastik tebal mengkilap anti air",
+                "is_available": true
+            },
+            {
+                "name": "Pulpen Gel Faster 0.5 Black Anti Macet",
+                "category": "ATK",
+                "price": 4000,
+                "unit": "pcs",
+                "description": "Pulpen andalan ujian meja hijau & praktikum",
+                "is_available": true
+            }
+        ]
+    },
+    {
+        "id": 30,
+        "name": "CV. E'KARYA",
+        "slug": "cv-ekarya",
+        "category": "Fotocopy & Percetakan Kampus",
+        "description": "Toko Fotokopi • Percetakan Komersial • Studio Fotografi • Printer Digital • Layanan Percetakan Undangan • Studio Foto",
+        "location_name": "Jl. Jamin Ginting No.136-138, Merdeka, Kec. Medan Baru, Kota Medan, Sumatera Utara 20154",
+        "latitude": 3.5680149,
+        "longitude": 98.6601777,
+        "open_time": "08:00",
+        "close_time": "21:00",
+        "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "08.00–19.00",
+            "minggu": "Tutup",
+            "senin": "08.00–19.00",
+            "selasa": "08.00–19.00",
+            "rabu": "08.00–19.00",
+            "kamis": "08.00–19.00",
+            "jumat": "08.00–19.00"
+        },
+        "phone": "0822-7746-8505",
+        "whatsapp": "6282277468505",
+        "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLfT_UEpgtj6GAgAG5OuS3augwZiV4RoAW_bl_EHl3rUkGSqKqOMKO7KWGF8QoNfd__92x1aRrUwNI0YeZhDFniQFisLHhSKJhGmOI8Q3baVWXUOR2SVila6pLBCH0ZP9ug0qW80=w1000-h1000-c-n",
+        "rating": 4.3,
+        "user_rating_count": 241,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJjed3OiAwMTARjtprMYCAYrI",
+        "google_place_id": "ChIJjed3OiAwMTARjtprMYCAYrI",
+        "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa"
+        ],
+        "catalog_items": [
+            {
+                "name": "Cetak Pas Foto Wisuda Kilat 3x4 / 4x6 (1 Paket 8 Lbr)",
+                "category": "Foto",
+                "price": 15000,
+                "unit": "paket",
+                "description": "Gratis ganti jas/dasi & ganti background merah/biru",
+                "is_available": true
+            },
+            {
+                "name": "Cetak Foto Frame Wisuda 10R / 12R + Bingkai Minimalis",
+                "category": "Foto",
+                "price": 55000,
+                "unit": "pcs",
+                "description": "Kertas doff lab warna awet puluhan tahun",
+                "is_available": true
+            },
+            {
+                "name": "Print Dokumen Skripsi Hitam Putih A4",
+                "category": "Print",
+                "price": 250,
+                "unit": "lembar",
+                "description": "Laser text tajam kertas PaperOne 80gr",
+                "is_available": true
+            },
+            {
+                "name": "Print Dokumen Laporan Berwarna A4",
+                "category": "Print",
+                "price": 1000,
+                "unit": "lembar",
+                "description": "Warna kontras & hidup untuk diagram teknis",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Hard Cover Skripsi Emas USU",
+                "category": "Jilid",
+                "price": 35000,
+                "unit": "buku",
+                "description": "Format baku universitas dengan tulisan emas presisi",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Spiral Kawat & Mika Doff Transparan",
+                "category": "Jilid",
+                "price": 12000,
+                "unit": "buku",
+                "description": "Presentasi proposal skripsi & portofolio magang",
+                "is_available": true
+            },
+            {
+                "name": "Cetak Stiker Vinyl Anti Air A3+",
+                "category": "Cetak",
+                "price": 18000,
+                "unit": "lembar",
+                "description": "Stiker label nama & stiker event UKM organisasi",
+                "is_available": true
+            },
+            {
+                "name": "Fotocopy Hitam Putih A4 / F4",
+                "category": "Fotocopy",
+                "price": 200,
+                "unit": "lembar",
+                "description": "Kertas HVS 75gr jernih dan cepat",
+                "is_available": true
+            }
+        ]
+    },
+    {
+        "id": 31,
+        "name": "Print fotocopy & Expedisi J&T Ka Ida",
+        "slug": "print-fotocopy-expedisi-jt-ka-ida",
+        "category": "Fotocopy & Percetakan Kampus",
+        "description": "Jasa Ketik • Penjilid Buku • Jasa Kurir • Printer Digital • Toko Alat Tulis Kantor • Jasa Reparasi Printer • Toko Alat Tulis • Grosir alat-alat tulis",
+        "location_name": "Jl. Karya Tani No.113, Pangkalan Masyhur, Kec. Medan Johor, Kota Medan, Sumatera Utara 20143",
+        "latitude": 3.5386362,
+        "longitude": 98.6656832,
+        "open_time": "08:00",
+        "close_time": "21:00",
+        "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "07.00–21.00",
+            "minggu": "07.00–21.00",
+            "senin": "07.00–21.00",
+            "selasa": "07.00–21.00",
+            "rabu": "07.00–21.00",
+            "kamis": "07.00–21.00",
+            "jumat": "07.00–21.00"
+        },
+        "phone": "0823-7969-5303",
+        "whatsapp": "6282379695303",
+        "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLeksMgkrEToUtVwYL8G40B6anOn3NL7iZYKlsE2EpbqmVh4kagepic5sBgdVC2Wq6okZO2-t6rRwH9cCQNBPdU_njojpjfWgTvbCGNzQri5k_KOhiI-2IygAtaWJERYojLZxc-sfbJF0QR7=w1000-h1000-c-n",
+        "rating": 5,
+        "user_rating_count": 3,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJX580HuU7MTARdttf5Nk0zGs",
+        "google_place_id": "ChIJX580HuU7MTARdttf5Nk0zGs",
+        "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa"
+        ],
+        "catalog_items": [
+            {
+                "name": "Fotocopy Hitam Putih A4 / F4",
+                "category": "Fotocopy",
+                "price": 200,
+                "unit": "lembar",
+                "description": "Hasil jernih & bersih kertas HVS 75gr",
+                "is_available": true
+            },
+            {
+                "name": "Print Dokumen Kuliah Hitam Putih A4",
+                "category": "Print",
+                "price": 250,
+                "unit": "lembar",
+                "description": "Cepat bisa ditunggu langsung selesai",
+                "is_available": true
+            },
+            {
+                "name": "Print Dokumen Berwarna A4",
+                "category": "Print",
+                "price": 1000,
+                "unit": "lembar",
+                "description": "Kertas HVS 80gr hasil warna cerah",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Lakban Hitam + Mika Bening",
+                "category": "Jilid",
+                "price": 3500,
+                "unit": "buku",
+                "description": "Untuk tugas rutin praktikum & makalah",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Spiral Ring Kawat Besi",
+                "category": "Jilid",
+                "price": 12000,
+                "unit": "buku",
+                "description": "Untuk buku modul & catatan kuliah tebal",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Hard Cover Skripsi Emas",
+                "category": "Jilid",
+                "price": 35000,
+                "unit": "buku",
+                "description": "Embos foil emas rapi standar kampus",
+                "is_available": true
+            },
+            {
+                "name": "Map Amplop Coklat Tali Folio Tebal",
+                "category": "ATK",
+                "price": 4000,
+                "unit": "pcs",
+                "description": "Untuk pengiriman berkas wisuda/skripsi",
+                "is_available": true
+            },
+            {
+                "name": "Lakban Bening / Coklat 2 Inch Heavy Duty",
+                "category": "ATK",
+                "price": 12000,
+                "unit": "pcs",
+                "description": "Packing berkas & pengiriman dokumen ekspedisi",
+                "is_available": true
+            }
+        ]
+    },
+    {
+        "id": 32,
+        "name": "Percetakan BIG JAYA Medan",
+        "slug": "percetakan-big-jaya-medan",
+        "category": "Fotocopy & Percetakan Kampus",
+        "description": "Toko Percetakan • Jasa Periklanan • Toko Alat Tulis Kantor",
+        "location_name": "Jl. Jamin Ginting No.482, Padang Bulan, SUmber Medan Baru, Kota Medan, Sumatera Utara 20155",
+        "latitude": 3.5573581,
+        "longitude": 98.6616128,
+        "open_time": "08:00",
+        "close_time": "21:00",
+        "operating_days": "Senin - Sabtu",
+        "opening_hours": {
+            "sabtu": "07.00–21.00",
+            "minggu": "13.00–21.00",
+            "senin": "07.00–21.00",
+            "selasa": "07.00–21.00",
+            "rabu": "07.00–19.00",
+            "kamis": "07.00–21.00",
+            "jumat": "07.00–21.00"
+        },
+        "phone": "0812-6011-4137",
+        "whatsapp": "6281260114137",
+        "image_url": "https://lh3.googleusercontent.com/grass-cs/AABkmLdgD8wBM7D1L4r68eZ0MedL_ymjKWxDDSsENR_NlZ3qKdMvOyzjqPnMDtXT2NGD55FfzyjM2ey__ziJei9pMxMuLjPU2-iDPf_QtMRVR4JbUB4oBbNfxK3hgnD7o1Io0uiig0OSyQ=w1000-h1000-c-n",
+        "rating": 4.8,
+        "user_rating_count": 22,
+        "google_maps_url": "https://www.google.com/maps/search/?api=1&query=Google&query_place_id=ChIJiQJnWp0xMTARoTf0JoDh23A",
+        "google_place_id": "ChIJiQJnWp0xMTARoTf0JoDh23A",
+        "services": [
+            "Print Dokumen Full Color",
+            "Print Hitam Putih A4/F4",
+            "Fotokopi Hitam Putih",
+            "Jilid Lakban & Mika",
+            "Jilid Spiral Kawat & Plastik",
+            "Jilid Hard Cover Skripsi",
+            "Cetak Banner, Poster & Stiker",
+            "Scan Dokumen ke PDF",
+            "Laminating Panas",
+            "Perlengkapan ATK Mahasiswa"
+        ],
+        "catalog_items": [
+            {
+                "name": "Cetak Spanduk Kain & Banner Flexi 280gr",
+                "category": "Cetak",
+                "price": 20000,
+                "unit": "meter",
+                "description": "Cetak cepat acara kampus, musma, & pelantikan ormawa",
+                "is_available": true
+            },
+            {
+                "name": "Cetak X-Banner Mahasiswa Ukuran 60x160cm",
+                "category": "Cetak",
+                "price": 60000,
+                "unit": "paket",
+                "description": "Bahan albatros lamination + tiang standing banner",
+                "is_available": true
+            },
+            {
+                "name": "Print Digital A3+ Art Paper 260gr Full Color",
+                "category": "Print",
+                "price": 7500,
+                "unit": "lembar",
+                "description": "Brosur, poster, sertifikat kegiatan mahasiswa",
+                "is_available": true
+            },
+            {
+                "name": "Print Hitam Putih Dokumen Laporan A4",
+                "category": "Print",
+                "price": 250,
+                "unit": "lembar",
+                "description": "Laser printer kecepatan tinggi untuk laporan tebal",
+                "is_available": true
+            },
+            {
+                "name": "Print Warna Makalah & Jurnal A4",
+                "category": "Print",
+                "price": 1000,
+                "unit": "lembar",
+                "description": "Resolusi 1200 DPI tajam dan presisi",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Hard Cover Skripsi Embos Emas USU",
+                "category": "Jilid",
+                "price": 35000,
+                "unit": "buku",
+                "description": "Standar cetak seluruh fakultas universitas",
+                "is_available": true
+            },
+            {
+                "name": "Jilid Soft Cover Bending Lem Panas",
+                "category": "Jilid",
+                "price": 18000,
+                "unit": "buku",
+                "description": "Buku kenangan, laporan KKN, & majalah kampus",
+                "is_available": true
+            },
+            {
+                "name": "Cetak ID Card Mahasiswa / Panitia PVC",
+                "category": "Cetak",
+                "price": 8000,
+                "unit": "pcs",
+                "description": "Bahan kartu ATM tebal anti luntur lengkap tali gantung",
+                "is_available": true
+            },
+            {
+                "name": "Fotocopy Hitam Putih A4 / F4",
+                "category": "Fotocopy",
+                "price": 200,
+                "unit": "lembar",
+                "description": "HVS 75gr jernih dan murah",
+                "is_available": true
             }
         ]
     }

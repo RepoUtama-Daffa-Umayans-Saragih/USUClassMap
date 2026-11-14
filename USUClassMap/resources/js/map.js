@@ -1116,9 +1116,142 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     };
 
+    // =========================================================================
+    // PHOTOCOPY LAYER (31 MITRA FOTOKOPI USU INTEGRATION)
+    // =========================================================================
+    let photocopyMarkers = {};
+    let allPhotocopyPlaces = [];
+    let isPhotocopyLayerActive = false;
+
+    async function loadPhotocopyPlaces() {
+        if (allPhotocopyPlaces.length > 0) return allPhotocopyPlaces;
+        try {
+            const resp = await fetch('/api/copy-shops?per_page=50');
+            const json = await resp.json();
+            allPhotocopyPlaces = json.data || [];
+            const badgeEl = document.getElementById('fotocopy-count-badge');
+            const floatingBadge = document.getElementById('floating-photocopy-count');
+            if (badgeEl) badgeEl.textContent = allPhotocopyPlaces.length;
+            if (floatingBadge) floatingBadge.textContent = allPhotocopyPlaces.length;
+            return allPhotocopyPlaces;
+        } catch (e) {
+            console.error('Failed to load photocopy places:', e);
+            return [];
+        }
+    }
+
+    function createPhotocopyIcon(name) {
+        const shortName = name.length > 18 ? name.substring(0, 16) + '...' : name;
+        return L.divIcon({
+            className: 'custom-leaflet-marker photocopy-marker',
+            html: `
+                <div class="relative flex flex-col items-center group cursor-pointer">
+                    <div class="px-2.5 py-1 bg-emerald-600 text-white text-[11px] font-extrabold rounded-lg shadow-md border-2 border-white whitespace-nowrap flex items-center gap-1.5 transition-transform group-hover:scale-105">
+                        <span class="text-xs">🖨️</span>
+                        <span>${shortName}</span>
+                    </div>
+                    <div class="w-2.5 h-2.5 bg-emerald-600 rotate-45 -mt-1 shadow-xs border-r-2 border-b-2 border-white"></div>
+                </div>
+            `,
+            iconSize: [120, 36],
+            iconAnchor: [60, 36],
+            popupAnchor: [0, -36]
+        });
+    }
+
+    function renderPhotocopyMarkers(places) {
+        Object.values(photocopyMarkers).forEach(m => map.removeLayer(m));
+        photocopyMarkers = {};
+
+        places.forEach(place => {
+            if (!place.latitude || !place.longitude) return;
+            const icon = createPhotocopyIcon(place.name);
+            const marker = L.marker([place.latitude, place.longitude], { icon: icon });
+
+            const photoHtml = place.image_url 
+                ? `<img src="${place.image_url}" alt="${place.name}" class="w-full h-28 object-cover rounded-t-xl">`
+                : '';
+
+            const statusBadge = place.is_open_now
+                ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">🟢 Buka</span>`
+                : `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-800 border border-red-200">🔴 Tutup</span>`;
+
+            const waDigits = (place.whatsapp || place.phone || '6285769737410').replace(/[^0-9]/g, '');
+            const waUrl = place.whatsapp_url || `https://wa.me/${waDigits}`;
+
+            const popupContent = `
+                <div class="p-0 overflow-hidden font-sans">
+                    ${photoHtml}
+                    <div class="p-3.5 space-y-2">
+                        <div class="flex items-start justify-between gap-2">
+                            <h4 class="font-bold text-sm text-gray-900 leading-tight">${place.name}</h4>
+                            ${statusBadge}
+                        </div>
+                        <div class="flex items-center gap-1 text-xs text-amber-600 font-bold">
+                            <span>⭐ ${place.rating || '4.8'}</span>
+                            <span class="text-gray-400 font-normal">(${place.user_rating_count || 50} ulasan)</span>
+                        </div>
+                        <p class="text-xs text-gray-600 line-clamp-2">${place.location_name || place.address || ''}</p>
+                        <div class="pt-2 border-t border-gray-100 flex items-center gap-2">
+                            <a href="/fotocopy/${place.id}" target="_blank" class="flex-1 py-1.5 px-3 bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold text-xs rounded-lg text-center shadow-xs transition-colors">
+                                Lihat & Pesan
+                            </a>
+                            <a href="${waUrl}" target="_blank" class="p-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg text-xs font-bold transition-colors" title="Chat WhatsApp">
+                                💬 WA
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            marker.bindPopup(popupContent, {
+                className: 'custom-popup usu-custom-popup',
+                maxWidth: 300,
+                minWidth: 260
+            });
+
+            marker.addTo(map);
+            photocopyMarkers[place.id] = marker;
+        });
+    }
+
     window.USUClassMap = {
         openRoomDetailModal: window.openRoomDetailModal,
         openMultimediaModal: window.openMultimediaModal,
+
+        togglePhotocopyLayer: async () => {
+            isPhotocopyLayerActive = !isPhotocopyLayerActive;
+            const btn = document.getElementById('map-floating-photocopy-btn');
+            const sideBtn = document.getElementById('toggle-fotocopy-btn');
+
+            if (isPhotocopyLayerActive) {
+                const places = await loadPhotocopyPlaces();
+                renderPhotocopyMarkers(places);
+                if (btn) {
+                    btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
+                    btn.classList.remove('bg-white/95', 'text-gray-700');
+                }
+                if (sideBtn) {
+                    sideBtn.classList.add('bg-emerald-600', 'text-white');
+                    sideBtn.classList.remove('bg-emerald-50', 'text-emerald-800');
+                }
+                if (Object.keys(photocopyMarkers).length > 0) {
+                    const group = new L.featureGroup(Object.values(photocopyMarkers));
+                    map.fitBounds(group.getBounds().pad(0.1));
+                }
+            } else {
+                Object.values(photocopyMarkers).forEach(m => map.removeLayer(m));
+                photocopyMarkers = {};
+                if (btn) {
+                    btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+                    btn.classList.add('bg-white/95', 'text-gray-700');
+                }
+                if (sideBtn) {
+                    sideBtn.classList.remove('bg-emerald-600', 'text-white');
+                    sideBtn.classList.add('bg-emerald-50', 'text-emerald-800');
+                }
+            }
+        },
 
         /**
          * Smart Focus & Highlight Trigger (Phase 6.6 & 6.7)

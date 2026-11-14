@@ -35,14 +35,16 @@ Route::get('/bookmarks', function () {
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
 // Fotocopy Services (Integrasi Layanan & Pemesanan Kampus)
-Route::get('/fotocopy', [\App\Http\Controllers\FotocopyController::class, 'index'])->name('fotocopy.index');
-Route::get('/fotocopy/{id}', [\App\Http\Controllers\FotocopyController::class, 'show'])->name('fotocopy.show');
-Route::get('/fotocopy/{id}/order', [\App\Http\Controllers\FotocopyController::class, 'order'])->name('fotocopy.order');
-Route::post('/fotocopy/{id}/order', [\App\Http\Controllers\FotocopyController::class, 'storeOrder'])->name('fotocopy.order.store');
+Route::get('/fotocopy', [PhotocopyController::class, 'index'])->name('fotocopy.index');
+Route::get('/fotocopy/{id}', [PhotocopyController::class, 'show'])->name('fotocopy.show');
+Route::get('/fotocopy/{id}/order', [PhotocopyController::class, 'order'])->name('fotocopy.order');
+Route::post('/fotocopy/{id}/order', [PhotocopyController::class, 'storeOrder'])->name('fotocopy.order.store');
 
 // Rute alternatif direktori mitra fotocopy tim
 Route::get('/photocopy-directory', [PhotocopyController::class, 'index'])->name('photocopy.directory');
 Route::get('/photocopy-directory/{id}', [PhotocopyController::class, 'show'])->name('photocopy.directory.show');
+Route::get('/photocopy-directory/{id}/order', [PhotocopyController::class, 'order'])->name('photocopy.directory.order');
+Route::post('/photocopy-directory/{id}/order', [PhotocopyController::class, 'storeOrder'])->name('photocopy.directory.order.store');
 
 // 360 Photo Inspector & SPARQL Calibration (No Auth Required)
 Route::get('/admin/cek-foto', [PhotoInspectorController::class, 'index'])->name('admin.cek-foto');
