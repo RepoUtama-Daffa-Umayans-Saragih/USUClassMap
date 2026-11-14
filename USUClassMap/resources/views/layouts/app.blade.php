@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title ?? 'USUClassMap' }} - Peta Ruang Kelas Kampus USU</title>
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('styles')
 </head>
@@ -65,6 +67,9 @@
                 </a>
                 <a href="/faq" class="text-gray-600 hover:text-[#10A760] font-semibold text-sm transition-colors {{ request()->is('faq*') ? 'text-[#10A760]' : '' }}">
                     FAQ
+                </a>
+                <a href="{{ route('fotocopy.index') }}" class="text-gray-600 hover:text-[#10A760] font-semibold text-sm transition-colors {{ request()->routeIs('fotocopy*') ? 'text-[#10A760]' : '' }}">
+                    Fotocopy
                 </a>
             </div>
 
@@ -163,6 +168,9 @@
                     <span x-show="bookmarkCount > 0" x-text="bookmarkCount" class="px-2 py-0.5 text-xs font-bold text-white bg-[#10A760] rounded-full"></span>
                 </a>
                 <a href="/faq" class="block px-3 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:text-[#10A760] hover:bg-gray-50 {{ request()->is('faq*') ? 'bg-green-50 text-[#10A760]' : '' }}">FAQ</a>
+                <a href="{{ route('fotocopy.index') }}" class="block px-3 py-2 rounded-lg text-sm font-semibold text-gray-700 hover:text-[#10A760] hover:bg-gray-50 {{ request()->routeIs('fotocopy*') ? 'bg-green-50 text-[#10A760]' : '' }}">
+                    Fotocopy
+                </a>
             </div>
 
             @guest

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\AdminMapController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\PhotocopyController;
 use App\Http\Controllers\PhotoInspectorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -33,11 +34,15 @@ Route::get('/bookmarks', function () {
 
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
-// Public Fotocopy Routes
+// Fotocopy Services (Integrasi Layanan & Pemesanan Kampus)
 Route::get('/fotocopy', [\App\Http\Controllers\FotocopyController::class, 'index'])->name('fotocopy.index');
 Route::get('/fotocopy/{id}', [\App\Http\Controllers\FotocopyController::class, 'show'])->name('fotocopy.show');
 Route::get('/fotocopy/{id}/order', [\App\Http\Controllers\FotocopyController::class, 'order'])->name('fotocopy.order');
 Route::post('/fotocopy/{id}/order', [\App\Http\Controllers\FotocopyController::class, 'storeOrder'])->name('fotocopy.order.store');
+
+// Rute alternatif direktori mitra fotocopy tim
+Route::get('/photocopy-directory', [PhotocopyController::class, 'index'])->name('photocopy.directory');
+Route::get('/photocopy-directory/{id}', [PhotocopyController::class, 'show'])->name('photocopy.directory.show');
 
 // 360 Photo Inspector & SPARQL Calibration (No Auth Required)
 Route::get('/admin/cek-foto', [PhotoInspectorController::class, 'index'])->name('admin.cek-foto');

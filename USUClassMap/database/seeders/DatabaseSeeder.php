@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ScheduleSeeder::class,
             FibDummySeeder::class,
             FotocopySeeder::class,
+            PhotocopySeeder::class,
         ]);
     }
 }

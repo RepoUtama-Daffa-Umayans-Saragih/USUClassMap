@@ -125,10 +125,14 @@
                 <svg class="w-5 h-5 {{ request()->routeIs('admin.cek-foto*') ? 'text-emerald-600' : 'text-emerald-100' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.882v6.236a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"></path></svg>
                 360° Photo Inspector
             </a>
-
             <a href="{{ route('map') }}" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all text-sm text-white/90 hover:bg-white/15 hover:text-white font-medium">
                 <svg class="w-5 h-5 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                 Lihat Peta Publik
+            </a>
+
+            <a href="{{ route('fotocopy.index') }}" target="_blank" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all text-sm text-white/90 hover:bg-white/15 hover:text-white font-medium">
+                <svg class="w-5 h-5 text-emerald-100" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 12v2H8v-4h8v2zm2-2v-2H6v2H4v-4c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v4h-2z"/></svg>
+                Layanan Fotocopy
             </a>
         </nav>
 
