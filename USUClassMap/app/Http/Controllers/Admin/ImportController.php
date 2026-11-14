@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\ScheduleTemplateExport;
 use App\Http\Controllers\Controller;
 use App\Imports\ScheduleImport;
+use App\Jobs\RegenerateRdfJob;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -27,11 +29,20 @@ class ImportController extends Controller
 
         try {
             $import = new ScheduleImport();
-            Excel::import($import, $request->file('file'));
+            
+            // Nonaktifkan observer sementara untuk mencegah queue flooding (500 baris = 500 job)
+            Schedule::withoutEvents(function () use ($import, $request) {
+                Excel::import($import, $request->file('file'));
+            });
 
             $successCount = $import->getSuccessCount();
             $failCount = $import->getFailCount();
             $errors = $import->getErrors();
+
+            // Dispatch sinkronisasi RDF ke Fuseki tepat satu kali jika terdapat data yang berhasil diimpor
+            if ($successCount > 0) {
+                RegenerateRdfJob::dispatch();
+            }
 
             return redirect()->route('admin.import.index')
                 ->with('success', "Import selesai: {$successCount} baris berhasil, {$failCount} baris gagal.")
