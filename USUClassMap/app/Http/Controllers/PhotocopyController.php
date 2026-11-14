@@ -58,7 +58,12 @@ class PhotocopyController extends Controller
      */
     public function show($id)
     {
-        $place = PhotocopyPlace::with('items')->findOrFail($id);
+        $place = PhotocopyPlace::with(['items', 'services', 'reviews'])->findOrFail($id);
+
+        if ($place->items->isEmpty() || $place->services->isEmpty()) {
+            $place->seedDefaultItemsAndServices();
+            $place->load(['items', 'services']);
+        }
 
         $isOpen = $place->isOpenNow();
         $itemsByCategory = $place->items->where('is_available', true)->groupBy('category');
@@ -83,6 +88,12 @@ class PhotocopyController extends Controller
     public function order($id)
     {
         $place = PhotocopyPlace::with('items')->findOrFail($id);
+
+        if ($place->items->isEmpty()) {
+            $place->seedDefaultItemsAndServices();
+            $place->load('items');
+        }
+
         $isOpen = $place->isOpenNow();
         $itemsByCategory = $place->items->where('is_available', true)->groupBy('category');
 

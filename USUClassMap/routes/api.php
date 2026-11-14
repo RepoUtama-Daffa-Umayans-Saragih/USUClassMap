@@ -26,3 +26,10 @@ Route::post('/schedules/sync', [ScheduleApiController::class, 'sync'])->name('ap
 Route::middleware(['web', 'auth'])->group(function () {
     Route::get('/my-schedules', [ScheduleController::class, 'mySchedules'])->name('api.my-schedules');
 });
+
+// Copy Shops & Percetakan USU Endpoints
+Route::prefix('copy-shops')->group(function () {
+    Route::get('/services', [\App\Http\Controllers\Api\CopyShopApiController::class, 'services'])->name('api.copy-shops.services');
+    Route::get('/', [\App\Http\Controllers\Api\CopyShopApiController::class, 'index'])->name('api.copy-shops.index');
+    Route::get('/{id}', [\App\Http\Controllers\Api\CopyShopApiController::class, 'show'])->name('api.copy-shops.show');
+});

@@ -149,22 +149,27 @@
                 <div class="min-w-[85vw] max-w-[85vw] sm:min-w-[320px] sm:max-w-[320px] bg-white rounded-2xl border border-gray-100 overflow-hidden card-hover snap-card shadow-xs flex flex-col justify-between">
                     <div>
                         <!-- Card Header Image/Thumbnail -->
-                        <div class="relative h-36 sm:h-40 bg-gradient-to-br from-[#E8F5EE] to-[#D1F0DF] flex items-center justify-center overflow-hidden">
-                            <div class="text-center">
-                                <div class="w-12 sm:w-14 h-12 sm:h-14 bg-[#10A760]/15 rounded-2xl flex items-center justify-center mx-auto mb-1.5 text-[#10A760]">
-                                    <i class="fa-solid fa-print text-xl sm:text-2xl"></i>
+                        <div class="relative h-36 sm:h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
+                            @if($place->image_url)
+                                <img src="{{ $place->image_url }}" alt="{{ $place->name }}" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                            @else
+                                <div class="text-center">
+                                    <div class="w-12 sm:w-14 h-12 sm:h-14 bg-[#10A760]/15 rounded-2xl flex items-center justify-center mx-auto mb-1.5 text-[#10A760]">
+                                        <i class="fa-solid fa-print text-xl sm:text-2xl"></i>
+                                    </div>
+                                    <span class="text-[10px] sm:text-[11px] font-bold text-[#0D8A4E] tracking-wider uppercase">Mitra Fotocopy USU</span>
                                 </div>
-                                <span class="text-[10px] sm:text-[11px] font-bold text-[#0D8A4E] tracking-wider uppercase">Mitra Fotocopy USU</span>
-                            </div>
+                            @endif
                             <!-- Status Badge -->
-                            <div class="absolute top-3 left-3">
+                            <div class="absolute top-3 left-3 z-10">
                                 <span class="bg-[#10A760] text-white text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-xs">
                                     <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
                                     Buka
                                 </span>
                             </div>
                             <!-- Rating -->
-                            <div class="absolute top-3 right-3">
+                            <div class="absolute top-3 right-3 z-10">
                                 <span class="bg-white/95 backdrop-blur-xs text-[#D4A017] text-xs font-black px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
                                     <i class="fa-solid fa-star text-[10px]"></i> {{ number_format($place->rating, 1) }}
                                 </span>
@@ -308,14 +313,39 @@
                     </a>
                 </div>
             @else
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
                     @foreach($places as $place)
                     @php $isOpen = $place->isOpenNow(); @endphp
-                    <div class="bg-white rounded-2xl border border-gray-100 p-4 sm:p-4.5 card-hover shadow-xs flex flex-col justify-between">
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden card-hover shadow-xs flex flex-col justify-between h-full">
                         <div>
-                            <!-- Header: Title and Status -->
-                            <div class="flex items-start justify-between gap-2 mb-2">
-                                <div>
+                            <!-- Google Maps Photo Thumbnail -->
+                            <div class="relative h-36 bg-gray-100 overflow-hidden">
+                                @if($place->image_url)
+                                    <img src="{{ $place->image_url }}" alt="{{ $place->name }}" class="w-full h-full object-cover">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                                @else
+                                    <div class="w-full h-full bg-gradient-to-br from-[#E8F5EE] to-[#D1F0DF] flex items-center justify-center text-[#10A760]">
+                                        <i class="fa-solid fa-print text-2xl"></i>
+                                    </div>
+                                @endif
+                                <!-- Status Badge -->
+                                <div class="absolute top-2.5 left-2.5 z-10">
+                                    <span class="{{ $isOpen ? 'bg-[#10A760]' : 'bg-gray-800' }} text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">
+                                        {{ $isOpen ? 'Buka' : 'Tutup' }}
+                                    </span>
+                                </div>
+                                <!-- Rating -->
+                                <div class="absolute top-2.5 right-2.5 z-10">
+                                    <span class="bg-white/95 backdrop-blur-xs text-[#D4A017] text-[11px] font-black px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
+                                        <i class="fa-solid fa-star text-[10px]"></i> {{ number_format($place->rating, 1) }}
+                                        <span class="text-gray-400 font-normal text-[9px]">({{ $place->user_rating_count }})</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="p-4 sm:p-4.5">
+                                <!-- Header: Title and Location -->
+                                <div class="mb-2">
                                     <h3 class="font-extrabold text-gray-900 text-sm sm:text-base leading-snug hover:text-[#10A760]">
                                         <a href="{{ route('fotocopy.show', $place->id) }}">{{ $place->name }}</a>
                                     </h3>
@@ -324,92 +354,91 @@
                                         <span>{{ $place->location_name }}</span>
                                     </p>
                                 </div>
-                                <span class="{{ $isOpen ? 'bg-[#10A760] text-white' : 'bg-gray-200 text-gray-600' }} text-[10px] font-bold px-2.5 py-0.5 rounded-full shrink-0">
-                                    {{ $isOpen ? 'Buka' : 'Tutup' }}
-                                </span>
-                            </div>
 
-                            <p class="text-xs text-gray-600 line-clamp-2 mb-3">
-                                {{ $place->description }}
-                            </p>
+                                <p class="text-xs text-gray-600 line-clamp-2 mb-3">
+                                    {{ $place->description }}
+                                </p>
 
-                            <!-- Operational Schedule & Quick Prices -->
-                            <div class="bg-gray-50 rounded-xl p-2.5 mb-3 text-xs flex items-center justify-between">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-regular fa-clock text-[#10A760] text-sm"></i>
-                                    <div>
-                                        <div class="text-[10px] text-gray-400">Jadwal Operasional:</div>
-                                        <div class="font-bold text-gray-800">{{ $place->open_time }} - {{ $place->close_time }} WIB</div>
-                                        <div class="text-[10px] text-gray-500">{{ $place->operating_days }}</div>
+                                <!-- Operational Schedule & Quick Prices -->
+                                <div class="bg-gray-50 rounded-xl p-2.5 mb-3 text-xs flex items-center justify-between">
+                                    <div class="flex items-center gap-2">
+                                        <i class="fa-regular fa-clock text-[#10A760] text-sm"></i>
+                                        <div>
+                                            <div class="text-[10px] text-gray-400">Jadwal Operasional:</div>
+                                            <div class="font-bold text-gray-800">{{ $place->open_time }} - {{ $place->close_time }} WIB</div>
+                                            <div class="text-[10px] text-gray-500">{{ $place->operating_days }}</div>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-[10px] text-gray-400">Rating:</div>
+                                        <div class="font-black text-[#D4A017] flex items-center gap-1 justify-end">
+                                            <i class="fa-solid fa-star text-[10px]"></i>
+                                            <span>{{ number_format($place->rating, 1) }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="text-right">
-                                    <div class="text-[10px] text-gray-400">Rating:</div>
-                                    <div class="font-black text-[#D4A017] flex items-center gap-1 justify-end">
-                                        <i class="fa-solid fa-star text-[10px]"></i>
-                                        <span>{{ number_format($place->rating, 1) }}</span>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <!-- Social Direct Contact Row (ICON ONLY, NO TEXT as per request) -->
-                            <div class="flex items-center justify-between text-xs mb-3.5 pb-2.5 border-b border-gray-100">
-                                <span class="text-[11px] font-semibold text-gray-400">Kontak Person:</span>
-                                <div class="flex items-center gap-2">
-                                    <!-- WhatsApp -->
-                                    <a
-                                        href="{{ $place->getWhatsappUrl() }}"
-                                        target="_blank"
-                                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#25D366]/10 hover:bg-[#25D366] hover:text-white text-[#128C7E] flex items-center justify-center transition-all shadow-2xs"
-                                        title="WhatsApp Otomatis"
-                                    >
-                                        <i class="fa-brands fa-whatsapp text-sm sm:text-base"></i>
-                                    </a>
-                                    @if($place->instagram)
-                                    <!-- Instagram -->
-                                    <a
-                                        href="{{ $place->getInstagramUrl() }}"
-                                        target="_blank"
-                                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-pink-50 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 hover:text-white text-pink-600 flex items-center justify-center transition-all shadow-2xs"
-                                        title="Instagram"
-                                    >
-                                        <i class="fa-brands fa-instagram text-xs sm:text-sm"></i>
-                                    </a>
-                                    @endif
-                                    @if($place->facebook)
-                                    <!-- Facebook -->
-                                    <a
-                                        href="{{ $place->getFacebookUrl() }}"
-                                        target="_blank"
-                                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 flex items-center justify-center transition-all shadow-2xs"
-                                        title="Facebook"
-                                    >
-                                        <i class="fa-brands fa-facebook-f text-xs sm:text-sm"></i>
-                                    </a>
-                                    @endif
+                                <!-- Social Direct Contact Row (ICON ONLY, NO TEXT as per request) -->
+                                <div class="flex items-center justify-between text-xs mb-3.5 pb-2.5 border-b border-gray-100">
+                                    <span class="text-[11px] font-semibold text-gray-400">Kontak Person:</span>
+                                    <div class="flex items-center gap-2">
+                                        <!-- WhatsApp -->
+                                        <a
+                                            href="{{ $place->getWhatsappUrl() }}"
+                                            target="_blank"
+                                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#25D366]/10 hover:bg-[#25D366] hover:text-white text-[#128C7E] flex items-center justify-center transition-all shadow-2xs"
+                                            title="WhatsApp Otomatis"
+                                        >
+                                            <i class="fa-brands fa-whatsapp text-sm sm:text-base"></i>
+                                        </a>
+                                        @if($place->instagram)
+                                        <!-- Instagram -->
+                                        <a
+                                            href="{{ $place->getInstagramUrl() }}"
+                                            target="_blank"
+                                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-pink-50 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 hover:text-white text-pink-600 flex items-center justify-center transition-all shadow-2xs"
+                                            title="Instagram"
+                                        >
+                                            <i class="fa-brands fa-instagram text-xs sm:text-sm"></i>
+                                        </a>
+                                        @endif
+                                        @if($place->facebook)
+                                        <!-- Facebook -->
+                                        <a
+                                            href="{{ $place->getFacebookUrl() }}"
+                                            target="_blank"
+                                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 flex items-center justify-center transition-all shadow-2xs"
+                                            title="Facebook"
+                                        >
+                                            <i class="fa-brands fa-facebook-f text-xs sm:text-sm"></i>
+                                        </a>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Action Buttons: Detail & Pesan -->
-                        <div class="flex items-center gap-2 pt-1">
-                            <!-- Button Detail (Laman Baru) -->
-                            <a
-                                href="{{ route('fotocopy.show', $place->id) }}"
-                                class="flex-1 bg-white border border-[#10A760] text-[#10A760] hover:bg-green-50 text-xs font-bold py-2 rounded-xl text-center transition shadow-2xs flex items-center justify-center gap-1.5"
-                            >
-                                <i class="fa-regular fa-eye text-xs"></i>
-                                <span>Detail</span>
-                            </a>
+                        <div class="p-4 sm:p-4.5 pt-0">
+                            <div class="flex items-center gap-2">
+                                <!-- Button Detail (Laman Baru) -->
+                                <a
+                                    href="{{ route('fotocopy.show', $place->id) }}"
+                                    class="flex-1 bg-white border border-[#10A760] text-[#10A760] hover:bg-green-50 text-xs font-bold py-2 rounded-xl text-center transition shadow-2xs flex items-center justify-center gap-1.5"
+                                >
+                                    <i class="fa-regular fa-eye text-xs"></i>
+                                    <span>Detail</span>
+                                </a>
 
-                            <!-- Button Pesan (Laman Baru) -->
-                            <a
-                                href="{{ route('fotocopy.order', $place->id) }}"
-                                class="flex-1 bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs font-bold py-2 rounded-xl text-center transition shadow-xs flex items-center justify-center gap-1.5"
-                            >
-                                <i class="fa-solid fa-cart-shopping text-xs"></i>
-                                <span>Pesan</span>
-                            </a>
+                                <!-- Button Pesan (Laman Baru) -->
+                                <a
+                                    href="{{ route('fotocopy.order', $place->id) }}"
+                                    class="flex-1 bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs font-bold py-2 rounded-xl text-center transition shadow-xs flex items-center justify-center gap-1.5"
+                                >
+                                    <i class="fa-solid fa-cart-shopping text-xs"></i>
+                                    <span>Pesan</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                     @endforeach

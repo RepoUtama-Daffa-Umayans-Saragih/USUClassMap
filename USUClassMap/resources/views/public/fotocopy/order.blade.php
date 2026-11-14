@@ -102,9 +102,13 @@
         <!-- Header Info -->
         <div class="bg-white rounded-2xl border border-gray-100 shadow-xs p-4 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div class="flex items-center gap-3 sm:gap-4">
-                <div class="w-12 h-12 sm:w-14 sm:h-14 bg-[#E8F5EE] text-[#10A760] rounded-2xl flex items-center justify-center font-bold text-xl sm:text-2xl shrink-0">
-                    <i class="fa-solid fa-print"></i>
-                </div>
+                @if($place->image_url)
+                    <img src="{{ $place->image_url }}" alt="{{ $place->name }}" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl object-cover shrink-0 shadow-xs border border-gray-100">
+                @else
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 bg-[#E8F5EE] text-[#10A760] rounded-2xl flex items-center justify-center font-bold text-xl sm:text-2xl shrink-0">
+                        <i class="fa-solid fa-print"></i>
+                    </div>
+                @endif
                 <div>
                     <div class="flex items-center gap-2 flex-wrap">
                         <h1 class="text-lg sm:text-2xl font-black text-gray-900 leading-tight">{{ $place->name }}</h1>
