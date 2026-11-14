@@ -4,36 +4,27 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Building;
-use App\Models\Course;
 use App\Models\Lecturer;
 use App\Models\Room;
 use App\Models\Schedule;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    /**
-     * Display the admin dashboard with summary statistics.
-     */
     public function index()
     {
-        $totalSchedules = Schedule::count();
-        $totalLecturers = Lecturer::count();
-        $totalBuildings = Building::count();
-        $totalRooms = Room::count();
-        $totalCourses = Course::count();
+        $stats = [
+            'schedules' => Schedule::count(),
+            'lecturers' => Lecturer::count(),
+            'buildings' => Building::count(),
+            'rooms'     => Room::count(),
+        ];
 
-        $latestSchedules = Schedule::with(['course', 'lecturer', 'room'])
+        $recentSchedules = Schedule::with(['room.building', 'lecturer', 'course'])
             ->latest()
             ->take(5)
             ->get();
 
-        return view('admin.dashboard', compact(
-            'totalSchedules',
-            'totalLecturers',
-            'totalBuildings',
-            'totalRooms',
-            'totalCourses',
-            'latestSchedules'
-        ));
+        return view('admin.dashboard', compact('stats', 'recentSchedules'));
     }
 }

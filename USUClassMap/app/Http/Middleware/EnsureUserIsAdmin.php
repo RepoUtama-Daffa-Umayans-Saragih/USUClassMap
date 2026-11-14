@@ -10,12 +10,12 @@ class EnsureUserIsAdmin
 {
     /**
      * Handle an incoming request.
-     * Only allow users with admin or superadmin role.
+     * Membatasi akses route untuk Admin USUClassMap dan Super Admin.
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->isAdmin()) {
-            session()->flash('error', 'Akses ditolak. Anda tidak memiliki izin.');
+        if (!auth()->check() || (!auth()->user()->isAdmin() && !auth()->user()->isSuperAdmin())) {
+            session()->flash('error', 'Akses ditolak. Halaman ini hanya untuk Admin USUClassMap.');
             return redirect('/login');
         }
 

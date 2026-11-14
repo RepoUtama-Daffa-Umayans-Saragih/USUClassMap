@@ -34,10 +34,15 @@ Route::get('/bookmarks', function () {
 
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
-// Fotocopy Services (Integrasi Layanan Kampus)
-Route::get('/fotocopy', [PhotocopyController::class, 'index'])->name('fotocopy.index');
-Route::get('/fotocopy/{id}', [PhotocopyController::class, 'show'])->name('fotocopy.show');
-Route::get('/fotocopy/{id}/order', [PhotocopyController::class, 'order'])->name('fotocopy.order');
+// Fotocopy Services (Integrasi Layanan & Pemesanan Kampus)
+Route::get('/fotocopy', [\App\Http\Controllers\FotocopyController::class, 'index'])->name('fotocopy.index');
+Route::get('/fotocopy/{id}', [\App\Http\Controllers\FotocopyController::class, 'show'])->name('fotocopy.show');
+Route::get('/fotocopy/{id}/order', [\App\Http\Controllers\FotocopyController::class, 'order'])->name('fotocopy.order');
+Route::post('/fotocopy/{id}/order', [\App\Http\Controllers\FotocopyController::class, 'storeOrder'])->name('fotocopy.order.store');
+
+// Rute alternatif direktori mitra fotocopy tim
+Route::get('/photocopy-directory', [PhotocopyController::class, 'index'])->name('photocopy.directory');
+Route::get('/photocopy-directory/{id}', [PhotocopyController::class, 'show'])->name('photocopy.directory.show');
 
 // 360 Photo Inspector & SPARQL Calibration (No Auth Required)
 Route::get('/admin/cek-foto', [PhotoInspectorController::class, 'index'])->name('admin.cek-foto');
@@ -52,8 +57,15 @@ Route::get('/admin/cek-foto-p', [PhotoInspectorController::class, 'indexCylinder
 
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
-        if (auth()->user()->isAdmin()) {
+        $user = auth()->user();
+        if ($user->isSuperAdmin() || $user->isAdmin()) {
             return redirect()->route('admin.dashboard');
+        }
+        if ($user->role === 'admin_fotokopi') {
+            return redirect()->route('admin-fotokopi.dashboard');
+        }
+        if ($user->role === 'cashier_fotokopi') {
+            return redirect()->route('cashier-fotokopi.orders.index');
         }
         return redirect()->route('map');
     })->name('dashboard');
@@ -99,6 +111,40 @@ Route::prefix('admin')
         Route::post('/import', [ImportController::class, 'store'])->name('import.store');
         Route::get('/import/template', [ImportController::class, 'downloadTemplate'])->name('import.template');
         Route::get('/import/download-template', [ImportController::class, 'downloadTemplate'])->name('import.download');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Admin Fotokopi Routes (Auth + Admin Fotokopi Middleware)
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('admin-fotokopi')
+    ->middleware(['auth', 'admin.fotokopi'])
+    ->name('admin-fotokopi.')
+    ->group(function () {
+        Route::get('/dashboard', [\App\Http\Controllers\AdminFotokopi\DashboardController::class, 'index'])->name('dashboard');
+        Route::resource('stores', \App\Http\Controllers\AdminFotokopi\StoreController::class)->except(['show']);
+        Route::resource('services', \App\Http\Controllers\AdminFotokopi\ServiceController::class)->except(['show']);
+        Route::get('/reports', [\App\Http\Controllers\AdminFotokopi\ReportController::class, 'index'])->name('reports.index');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Cashier Fotokopi Routes (Auth + Cashier Middleware)
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('cashier-fotokopi')
+    ->middleware(['auth', 'cashier.fotokopi'])
+    ->name('cashier-fotokopi.')
+    ->group(function () {
+        Route::get('/orders', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'index'])->name('orders.index');
+        Route::patch('/orders/{order}/status', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'updateStatus'])->name('orders.status');
+        Route::get('/orders/{order}/file', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'downloadFile'])->name('orders.file');
+        Route::get('/orders/{order}/print', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'printJob'])->name('orders.print');
+        Route::get('/pos', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'createPos'])->name('orders.pos');
+        Route::post('/pos', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'storePos'])->name('orders.pos.store');
     });
 
 /*

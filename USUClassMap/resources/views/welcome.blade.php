@@ -68,8 +68,8 @@
                 <a href="/faq" class="text-gray-600 hover:text-[#10A760] font-semibold text-sm transition-colors {{ request()->is('faq*') ? 'text-[#10A760]' : '' }}">
                     FAQ
                 </a>
-                <a href="{{ route('fotocopy.index') }}" class="text-gray-600 hover:text-[#10A760] font-semibold text-sm transition-colors {{ request()->routeIs('fotocopy*') ? 'text-[#10A760]' : '' }}">
-                    Fotocopy
+                <a href="{{ route('fotocopy.index') }}" class="text-gray-600 hover:text-[#10A760] font-semibold text-sm transition-colors flex items-center gap-1.5 {{ request()->routeIs('fotocopy*') ? 'text-[#10A760]' : '' }}">
+                    <span>Fotocopy</span>
                 </a>
             </div>
 

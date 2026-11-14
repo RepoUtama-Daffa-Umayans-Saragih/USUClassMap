@@ -7,6 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -61,6 +62,16 @@ class LoginRequest extends FormRequest
     {
         $identity = $this->identity();
 
+        // 1. Cek langsung kecocokan di database
+        if (User::where('email', $identity)->exists()) {
+            return 'email';
+        }
+
+        if (User::where('nim', $identity)->exists()) {
+            return 'nim';
+        }
+
+        // 2. Format deteksi fallback
         if (filter_var($identity, FILTER_VALIDATE_EMAIL)) {
             return 'email';
         }
