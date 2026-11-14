@@ -255,9 +255,24 @@ class AuthenticatedSessionController extends Controller
     {
         $user = $request->user();
 
-        // Superadmin or admin@usu.ac.id → Admin Dashboard
-        if ($user && ($user->email === 'admin@usu.ac.id' || $user->isSuperAdmin())) {
+        // Super Admin → Admin Dashboard (Universal Access Control Hub)
+        if ($user && $user->isSuperAdmin()) {
             return redirect()->intended(route('admin.dashboard', absolute: false));
+        }
+
+        // Admin USUClassMap → Admin Dashboard
+        if ($user && $user->isAdmin()) {
+            return redirect()->intended(route('admin.dashboard', absolute: false));
+        }
+
+        // Admin Fotokopi → Admin Fotokopi Dashboard
+        if ($user && $user->role === 'admin_fotokopi') {
+            return redirect()->intended(route('admin-fotokopi.dashboard', absolute: false));
+        }
+
+        // Cashier Fotokopi → Cashier Orders
+        if ($user && $user->role === 'cashier_fotokopi') {
+            return redirect()->intended(route('cashier-fotokopi.orders.index', absolute: false));
         }
 
         // Regular users → Map page (or dashboard for Breeze compatibility)

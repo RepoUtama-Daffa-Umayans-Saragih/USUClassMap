@@ -145,7 +145,7 @@ USUClassMap/
 │   ├── Jobs/
 │   │   └── RegenerateRdfJob.php         # Async job regenerasi RDF
 │   ├── Models/
-│   │   ├── User.php                     # Role: 'admin', 'superadmin', user biasa
+│   │   ├── User.php                     # Role: 'admin_usuclassmap', user biasa
 │   │   ├── Building.php                 # Gedung (lat/lng, faculty, floor_count)
 │   │   ├── Room.php                     # Ruangan (photo_360_path, floor, capacity)
 │   │   ├── RoomMedia.php                # Media tambahan per ruangan (Phase 7.3)

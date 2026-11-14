@@ -66,6 +66,9 @@
                 <a href="/faq" class="text-gray-600 hover:text-[#10A760] font-semibold text-sm transition-colors {{ request()->is('faq*') ? 'text-[#10A760]' : '' }}">
                     FAQ
                 </a>
+                <a href="/fotocopy" class="text-gray-600 hover:text-[#10A760] font-semibold text-sm transition-colors flex items-center gap-1.5 {{ request()->is('fotocopy*') ? 'text-[#10A760]' : '' }}">
+                    <span>Fotocopy</span>
+                </a>
             </div>
 
             <!-- Right: Dynamic Profile & Auth (Desktop) -->

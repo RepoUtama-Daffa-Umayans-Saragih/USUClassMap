@@ -113,7 +113,7 @@
                             {{-- Identitas (NIM/NIP/Email) --}}
                             <div>
                                 <label for="nim" class="block text-sm font-bold text-gray-800 mb-1.5">
-                                    Identitas (NIP/NIM/Email USU)
+                                    Identitas (NIP / NIM / Username Admin)
                                 </label>
                                 <input 
                                     id="nim" 
@@ -123,8 +123,8 @@
                                     required 
                                     autofocus 
                                     autocomplete="username"
-                                    placeholder="Masukkan Identitas"
-                                    class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-[#10A760] focus:border-[#10A760] transition-all"
+                                    placeholder="NIM, NIP, atau adminususclassmapi"
+                                    class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] transition-all"
                                 >
                             </div>
 
@@ -141,7 +141,7 @@
                                         required 
                                         autocomplete="current-password"
                                         placeholder="Masukkan Password"
-                                        class="w-full px-4 py-3 pr-12 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-[#10A760] focus:border-[#10A760] transition-all"
+                                        class="w-full px-4 py-3 pr-12 bg-white border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-[#10B981] focus:border-[#10B981] transition-all"
                                     >
                                     <button 
                                         @click="showPw = !showPw" 
@@ -157,14 +157,14 @@
                             {{-- Remember Me --}}
                             <div class="flex items-center justify-between">
                                 <label for="remember_me" class="inline-flex items-center">
-                                    <input id="remember_me" type="checkbox" name="remember" class="w-4 h-4 text-[#10A760] border-gray-300 rounded-sm focus:ring-[#10A760]">
+                                    <input id="remember_me" type="checkbox" name="remember" class="w-4 h-4 text-[#10B981] border-gray-300 rounded-sm focus:ring-[#10B981]">
                                     <span class="ml-2 text-xs text-gray-600 font-medium">Ingat saya</span>
                                 </label>
                             </div>
 
                             {{-- Submit Button --}}
                             <div class="flex justify-end">
-                                <button type="submit" class="inline-flex items-center gap-2 px-7 py-3 bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer">
+                                <button type="submit" class="inline-flex items-center gap-2 px-7 py-3 bg-[#10B981] hover:bg-emerald-600 text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all cursor-pointer">
                                     Login
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                 </button>

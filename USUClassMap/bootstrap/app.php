@@ -14,6 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
+            'admin.fotokopi' => \App\Http\Middleware\EnsureUserIsAdminFotokopi::class,
+            'cashier.fotokopi' => \App\Http\Middleware\EnsureUserIsCashierFotokopi::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -12,20 +12,44 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Super Admin User
-        User::firstOrCreate(
-            ['email' => 'admin@usu.ac.id'],
+        // 1. Akun Super Admin (Universal Access ke seluruh panel sistem)
+        User::updateOrCreate(
+            ['email' => 'superadmin@usu.ac.id'],
             [
-                'name' => 'Super Admin',
-                'nim' => 'ADM001',
-                'semester' => 'Staff',
-                'password' => bcrypt('Admin123!'),
+                'name' => 'Super Admin USUClassMap',
+                'nim' => 'superadmin',
+                'semester' => 'Super Administrator',
+                'password' => bcrypt('superadmin123'),
                 'role' => 'superadmin',
             ]
         );
 
+        // 2. Akun Admin USUClassMap
+        User::updateOrCreate(
+            ['email' => 'adminususclassmapi'],
+            [
+                'name' => 'Admin USUClassMap',
+                'nim' => 'adminususclassmapi',
+                'semester' => 'Staff',
+                'password' => bcrypt('adminusu123'),
+                'role' => 'admin_usuclassmap',
+            ]
+        );
+
+        // Akun admin tambahan untuk fleksibilitas testing / fallback
+        User::updateOrCreate(
+            ['email' => 'admin@usu.ac.id'],
+            [
+                'name' => 'Admin USUClassMap',
+                'nim' => 'ADM002',
+                'semester' => 'Staff',
+                'password' => bcrypt('adminusu123'),
+                'role' => 'admin_usuclassmap',
+            ]
+        );
+
         // 2. Demo Mahasiswa User (SATU USU Identity)
-        User::firstOrCreate(
+        User::updateOrCreate(
             ['email' => 'daffa@students.usu.ac.id'],
             [
                 'name' => 'Daffa Umayans Saragih',

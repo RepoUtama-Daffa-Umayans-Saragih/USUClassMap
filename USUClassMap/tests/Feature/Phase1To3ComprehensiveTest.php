@@ -28,10 +28,10 @@ class Phase1To3ComprehensiveTest extends TestCase
         parent::setUp();
 
         $this->admin = User::create([
-            'name' => 'Super Admin',
-            'email' => 'admin@usu.ac.id',
-            'password' => bcrypt('Admin123!'),
-            'role' => 'superadmin',
+            'name' => 'Admin USUClassMap',
+            'email' => 'adminususclassmapi',
+            'password' => bcrypt('adminusu123'),
+            'role' => 'admin_usuclassmap',
         ]);
 
         $this->building = Building::create([
@@ -107,8 +107,8 @@ class Phase1To3ComprehensiveTest extends TestCase
     public function test_admin_can_login_and_access_dashboard(): void
     {
         $response = $this->post('/login', [
-            'email' => 'admin@usu.ac.id',
-            'password' => 'Admin123!',
+            'email' => 'adminususclassmapi',
+            'password' => 'adminusu123',
         ]);
 
         $response->assertRedirect('/admin/dashboard');

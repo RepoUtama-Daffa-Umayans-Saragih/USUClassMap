@@ -28,10 +28,10 @@ class ScheduleImportTest extends TestCase
         parent::setUp();
 
         $this->admin = User::create([
-            'name' => 'Super Admin',
-            'email' => 'admin@usu.ac.id',
-            'password' => bcrypt('Admin123!'),
-            'role' => 'superadmin',
+            'name' => 'Admin USUClassMap',
+            'email' => 'adminususclassmapi',
+            'password' => bcrypt('adminusu123'),
+            'role' => 'admin_usuclassmap',
         ]);
 
         $this->building = Building::create([
