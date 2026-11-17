@@ -92,7 +92,7 @@ SPARQL;
             ->sortBy('filename')
             ->values();
 
-        return view('admin.cek-foto', [
+        return view('features.admin.cek-foto', [
             'photos' => $files,
         ]);
     }
@@ -169,7 +169,7 @@ SPARQL;
             ->sortBy('filename')
             ->values();
 
-        return view('admin.cek-foto-p', [
+        return view('features.admin.cek-foto-p', [
             'photos' => $files,
         ]);
     }

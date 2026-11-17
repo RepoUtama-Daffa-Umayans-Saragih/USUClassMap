@@ -259,7 +259,7 @@ class FotocopyRoleAndPanelTest extends TestCase
 
         $response = $this->actingAs($cashier)->get(route('cashier-fotokopi.orders.print', $order));
         $response->assertStatus(200);
-        $response->assertSee('USUClassMap Copy Center');
+        $response->assertSee('USUStarterMap Copy Center');
         $response->assertSee('Lembar Kerja Cetak');
         $response->assertSee('Cetak Dokumen Sekarang (Print)');
     }

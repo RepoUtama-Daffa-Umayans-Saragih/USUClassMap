@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'Admin Fotokopi' }} - USUClassMap</title>
+    <title>{{ $title ?? 'Admin Fotokopi' }} - USUStarterMap</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
@@ -21,16 +21,12 @@
         <!-- Logo Area -->
         <div class="p-5 border-b border-white/15 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center text-white shadow-xs">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                    </svg>
-                </div>
+                <x-application-logo class="w-10 h-10 object-contain rounded-xl bg-white p-0.5 shadow-xs" />
                 <div>
                     <h1 class="text-base font-black tracking-tight leading-tight">Admin Fotokopi</h1>
                     <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-100 uppercase tracking-wider">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
-                        USUClassMap
+                        USUStarterMap
                     </span>
                 </div>
             </div>
@@ -208,7 +204,7 @@
 
         <!-- Footer -->
         <footer class="px-6 py-4 border-t border-gray-200/60 bg-white text-center text-xs text-gray-500">
-            &copy; {{ date('Y') }} USUClassMap — Modul Admin Fotokopi & Percetakan Kampus USU
+            &copy; {{ date('Y') }} USUStarterMap — Modul Admin Fotokopi & Percetakan Kampus USU
         </footer>
     </div>
 

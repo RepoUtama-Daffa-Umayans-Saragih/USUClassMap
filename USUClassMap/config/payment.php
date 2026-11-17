@@ -3,7 +3,7 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | Payment Strategy Configuration for USUClassMap Photocopy Orders
+    | Payment Strategy Configuration for USUStarterMap Photocopy Orders
     |--------------------------------------------------------------------------
     |
     | Configuration for Cash, dynamic QRIS, and Proof of Concept Bank Transfer.

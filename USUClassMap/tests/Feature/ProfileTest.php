@@ -4,6 +4,8 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -18,7 +20,10 @@ class ProfileTest extends TestCase
             ->actingAs($user)
             ->get('/profile');
 
-        $response->assertOk();
+        $response
+            ->assertOk()
+            ->assertSee('profile_photo', false)
+            ->assertSee('multipart/form-data', false);
     }
 
     public function test_profile_information_can_be_updated(): void
@@ -61,9 +66,35 @@ class ProfileTest extends TestCase
         $this->assertNotNull($user->refresh()->email_verified_at);
     }
 
+    public function test_profile_photo_can_be_uploaded(): void
+    {
+        Storage::fake('public');
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->patch('/profile', [
+                'name' => $user->name,
+                'email' => $user->email,
+                'profile_photo' => UploadedFile::fake()->image('student-photo.jpg'),
+            ]);
+
+        $response
+            ->assertSessionHasNoErrors()
+            ->assertRedirect('/profile');
+
+        $photoPath = $user->refresh()->profile_photo_path;
+
+        $this->assertNotNull($photoPath);
+        Storage::disk('public')->assertExists($photoPath);
+    }
+
     public function test_user_can_delete_their_account(): void
     {
-        $user = User::factory()->create();
+        Storage::fake('public');
+        $photoPath = 'profile-photos/student.jpg';
+        Storage::disk('public')->put($photoPath, 'photo');
+        $user = User::factory()->create(['profile_photo_path' => $photoPath]);
 
         $response = $this
             ->actingAs($user)
@@ -77,6 +108,7 @@ class ProfileTest extends TestCase
 
         $this->assertGuest();
         $this->assertNull($user->fresh());
+        Storage::disk('public')->assertMissing($photoPath);
     }
 
     public function test_correct_password_must_be_provided_to_delete_account(): void

@@ -1,4 +1,4 @@
-# 🗺️ USUClassMap — Peta Jadwal Kelas Interaktif Universitas Sumatera Utara
+# 🗺️ USUStarterMap — Peta Jadwal Kelas Interaktif Universitas Sumatera Utara
 
 > **Aplikasi web berbasis Semantic Web** untuk memetakan dan mencari jadwal perkuliahan secara spasial di kampus USU. Mahasiswa dapat melihat lokasi gedung, daftar ruangan, dan jadwal kelas secara real-time di atas peta interaktif Leaflet.js.
 
@@ -126,74 +126,53 @@ SparqlService.searchSchedules()
 
 ```
 USUClassMap/
-├── app/
-│   ├── Console/Commands/
-│   │   └── GenerateRdfCommand.php       # Artisan: php artisan rdf:generate
-│   ├── Exports/
-│   │   └── ScheduleTemplateExport.php   # Template Excel untuk import jadwal
-│   ├── Http/
-│   │   ├── Controllers/
-│   │   │   ├── Admin/                   # Controller CRUD admin (Building, Room, dll)
-│   │   │   ├── AdminMapController.php   # Controller Spatial Map Dashboard (Phase 7.0)
-│   │   │   ├── ScheduleController.php   # API endpoint jadwal & sinkronisasi
-│   │   │   ├── FaqController.php
-│   │   │   └── PhotoInspectorController.php  # 360° photo calibration tool
-│   │   └── Middleware/
-│   │       └── EnsureUserIsAdmin.php
-│   ├── Imports/
-│   │   └── ScheduleImport.php           # Maatwebsite Excel importer
-│   ├── Jobs/
-│   │   └── RegenerateRdfJob.php         # Async job regenerasi RDF
-│   ├── Models/
-│   │   ├── User.php                     # Role: 'admin_usuclassmap', user biasa
-│   │   ├── Building.php                 # Gedung (lat/lng, faculty, floor_count)
-│   │   ├── Room.php                     # Ruangan (photo_360_path, floor, capacity)
-│   │   ├── RoomMedia.php                # Media tambahan per ruangan (Phase 7.3)
-│   │   ├── Course.php                   # Mata Kuliah
-│   │   ├── Lecturer.php                 # Dosen
-│   │   └── Schedule.php                 # Jadwal (penghubung semua entitas)
-│   ├── Observers/
-│   │   └── ScheduleObserver.php         # Auto-trigger RegenerateRdfJob saat data berubah
-│   ├── Repositories/                    # Repository Pattern (lihat Arsitektur)
-│   └── Services/
-│       ├── RdfGeneratorService.php      # EasyRdf → RDF/XML
-│       └── SparqlService.php            # SPARQL query + MySQL fallback
-├── database/
-│   ├── migrations/                      # 12 migration files
-│   └── seeders/
-│       ├── DatabaseSeeder.php           # Entry point utama seeder
-│       ├── AdminUserSeeder.php
-│       ├── BuildingSeeder.php
-│       ├── RoomSeeder.php
-│       ├── LecturerSeeder.php
-│       ├── CourseSeeder.php
-│       ├── ScheduleSeeder.php
-│       └── FibDummySeeder.php           # 100 jadwal MKWU FIB (hardcoded)
-├── public/
-│   ├── js/
-│   │   └── admin-map.js                 # Leaflet admin spatial dashboard
-│   └── build/                           # Output Vite (auto-generated)
+├── app/                         # Laravel MVC, middleware, services, repositories
+├── bootstrap/
+├── config/
+├── database/                    # migrations, factories, seeders
+├── public/                      # public entry point and static files
 ├── resources/
-│   ├── css/app.css                      # Tailwind CSS + custom Leaflet popup overrides
+│   ├── css/
+│   │   ├── app.css              # Global Tailwind entry point
+│   │   └── features/map.css     # Leaflet map styles
 │   ├── js/
-│   │   ├── app.js                       # Alpine.js bootstrap
-│   │   └── map.js                       # Logic peta publik (popup, search, sorting)
+│   │   ├── app.js               # Global Alpine bootstrap
+│   │   └── features/
+│   │       ├── map.js           # Public interactive map
+│   │       └── admin/map.js     # Admin spatial map
 │   └── views/
-│       ├── layouts/                     # app.blade.php, admin.blade.php, guest.blade.php
-│       ├── admin/                       # View admin spatial dashboard
-│       ├── map/index.blade.php          # Halaman peta publik utama
-│       ├── welcome.blade.php            # Landing page
-│       ├── public/                      # Bookmarks, FAQ
-│       └── components/                  # Reusable Blade components
-├── routes/
-│   ├── web.php                          # Semua routing aplikasi
-│   └── auth.php                         # Routing auth (Breeze)
-├── storage/app/rdf/                     # Output file RDF (schedules.rdf)
+│       ├── features/
+│       │   ├── landing/         # Home page
+│       │   ├── map/             # Public map
+│       │   ├── faq/             # FAQ and contacts
+│       │   ├── admin/           # Academic admin and map tools
+│       │   ├── fotocopy/
+│       │   │   ├── public/      # Directory, order, and payment pages
+│       │   │   ├── admin/       # Fotocopy management panel
+│       │   │   ├── cashier/     # Cashier and POS pages
+│       │   │   └── legacy/      # Preserved templates not currently routed
+│       │   ├── profile/
+│       │   └── dashboard/       # Preserved default dashboard template
+│       ├── auth/                # Laravel Breeze authentication pages
+│       ├── components/
+│       │   ├── auth/            # Shared authentication components
+│       │   ├── navbar/          # Landing, public, and account navigation
+│       │   └── layouts/         # Anonymous Blade layout components
+│       ├── layouts/             # Class-based app and guest layouts
+│       ├── errors/              # Error pages
+│       └── vendor/              # Laravel pagination overrides
+├── routes/                      # web, auth, API, and console routes
+├── storage/                     # Runtime data, logs, cache, generated RDF
+├── tests/
 ├── .env.example
 ├── composer.json
 ├── package.json
 └── vite.config.js
 ```
+
+Direktori Laravel inti (`app`, `database`, `routes`, `config`, dan `public`) tetap pada lokasi standarnya. Kode tampilan dan aset sumber dikelompokkan di `resources` berdasarkan fitur; `vendor`, `node_modules`, cache, dan hasil build tetap dikelola di lokasi standar.
+
+Jadwal bookmark disimpan di browser dan ditampilkan sebagai tabel di halaman Home. Mahasiswa yang sudah masuk dapat mengunggah foto profil melalui Pengaturan Profil; file foto disimpan pada disk publik Laravel.
 
 ---
 
@@ -291,7 +270,7 @@ Ini akan menjalankan seluruh seeder secara berurutan (Admin user, Gedung, Ruanga
 
 #### 8. Buat Storage Symlink
 
-> **WAJIB!** Tanpa langkah ini, foto 360° dan media ruangan tidak akan tampil.
+> **WAJIB!** Tanpa langkah ini, foto profil, foto 360°, dan media ruangan tidak akan tampil.
 
 ```bash
 php artisan storage:link
@@ -339,7 +318,7 @@ Variabel penting yang perlu dikonfigurasi selain database:
 
 ```env
 # Nama Aplikasi
-APP_NAME="USUClassMap"
+APP_NAME="USUStarterMap"
 APP_URL=http://localhost:8000
 
 # Timezone (penting untuk jadwal)
@@ -387,7 +366,7 @@ php artisan db:seed
 |---|---|---|---|
 | GET | `/` | Closure | Landing page (welcome.blade.php) |
 | GET | `/map` | Closure | Peta interaktif publik |
-| GET | `/bookmarks` | Closure | Halaman bookmark jadwal |
+| GET | `/bookmarks` | Redirect | Mengarahkan ke tabel bookmark di Home |
 | GET | `/faq` | `FaqController@index` | Halaman FAQ |
 | GET | `/my-schedules` | `ScheduleController@mySchedules` | **API** — JSON jadwal + flag `is_my_class` |
 | GET | `/admin/cek-foto` | `PhotoInspectorController@index` | Tool inspeksi & kalibrasi foto 360° |

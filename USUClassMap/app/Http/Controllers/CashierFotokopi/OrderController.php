@@ -58,7 +58,7 @@ class OrderController extends Controller
 
         $orders = $query->latest()->paginate(12)->withQueryString();
 
-        return view('cashier-fotokopi.orders.index', compact(
+        return view('features.fotocopy.cashier.orders.index', compact(
             'orders',
             'myStore',
             'countMenunggu',
@@ -101,7 +101,7 @@ class OrderController extends Controller
         $myStore = FotocopyStore::where('user_id', $user->id)->first() ?? FotocopyStore::first();
         $services = FotocopyService::where('store_id', $myStore->id)->where('is_available', true)->get();
 
-        return view('cashier-fotokopi.orders.pos', compact('myStore', 'services'));
+        return view('features.fotocopy.cashier.orders.pos', compact('myStore', 'services'));
     }
 
     /**
@@ -205,6 +205,6 @@ class OrderController extends Controller
     public function printJob(FotocopyOrder $order)
     {
         $order->load(['items', 'store']);
-        return view('cashier-fotokopi.orders.print', compact('order'));
+        return view('features.fotocopy.cashier.orders.print', compact('order'));
     }
 }

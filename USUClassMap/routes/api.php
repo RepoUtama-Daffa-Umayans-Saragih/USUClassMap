@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| API Routes - USUClassMap Semantic Web, Geospatial & Sync Endpoints
+| API Routes - USUStarterMap Semantic Web, Geospatial & Sync Endpoints
 |--------------------------------------------------------------------------
 */
 

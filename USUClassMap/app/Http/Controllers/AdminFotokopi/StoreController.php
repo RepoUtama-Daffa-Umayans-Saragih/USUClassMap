@@ -23,13 +23,13 @@ class StoreController extends Controller
 
         $stores = $query->latest()->paginate(10)->withQueryString();
 
-        return view('admin-fotokopi.stores.index', compact('stores'));
+        return view('features.fotocopy.admin.stores.index', compact('stores'));
     }
 
     public function create()
     {
         $cashiers = User::where('role', 'cashier_fotokopi')->get();
-        return view('admin-fotokopi.stores.create', compact('cashiers'));
+        return view('features.fotocopy.admin.stores.create', compact('cashiers'));
     }
 
     public function store(Request $request)
@@ -62,7 +62,7 @@ class StoreController extends Controller
     public function edit(FotocopyStore $store)
     {
         $cashiers = User::where('role', 'cashier_fotokopi')->get();
-        return view('admin-fotokopi.stores.edit', compact('store', 'cashiers'));
+        return view('features.fotocopy.admin.stores.edit', compact('store', 'cashiers'));
     }
 
     public function update(Request $request, FotocopyStore $store)

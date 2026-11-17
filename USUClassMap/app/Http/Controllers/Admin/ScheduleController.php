@@ -31,7 +31,7 @@ class ScheduleController extends Controller
 
         $schedules = $query->latest()->paginate(15)->withQueryString();
 
-        return view('admin.schedules.index', compact('schedules'));
+        return view('features.admin.schedules.index', compact('schedules'));
     }
 
     public function create()
@@ -41,7 +41,7 @@ class ScheduleController extends Controller
         $rooms = Room::with('building')->orderBy('name')->get();
         $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-        return view('admin.schedules.create', compact('courses', 'lecturers', 'rooms', 'days'));
+        return view('features.admin.schedules.create', compact('courses', 'lecturers', 'rooms', 'days'));
     }
 
     public function store(ScheduleRequest $request)
@@ -59,7 +59,7 @@ class ScheduleController extends Controller
         $rooms = Room::with('building')->orderBy('name')->get();
         $days = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
 
-        return view('admin.schedules.edit', compact('schedule', 'courses', 'lecturers', 'rooms', 'days'));
+        return view('features.admin.schedules.edit', compact('schedule', 'courses', 'lecturers', 'rooms', 'days'));
     }
 
     public function update(ScheduleRequest $request, Schedule $schedule)

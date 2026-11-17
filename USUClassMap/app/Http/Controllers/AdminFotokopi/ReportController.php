@@ -40,7 +40,7 @@ class ReportController extends Controller
         $totalOrdersCount = (clone $query)->count();
         $totalRevenueSum = (clone $query)->where('payment_status', 'paid')->sum('total_price');
 
-        return view('admin-fotokopi.reports.index', compact(
+        return view('features.fotocopy.admin.reports.index', compact(
             'orders',
             'stores',
             'totalOrdersCount',

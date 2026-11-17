@@ -1,11 +1,11 @@
-# Panduan Instalasi & Konfigurasi Apache Jena Fuseki untuk USUClassMap
+# Panduan Instalasi & Konfigurasi Apache Jena Fuseki untuk USUStarterMap
 
-Dokumen ini menjelaskan langkah-langkah setup **Apache Jena Fuseki** sebagai server SPARQL triplestore untuk aplikasi USUClassMap.
+Dokumen ini menjelaskan langkah-langkah setup **Apache Jena Fuseki** sebagai server SPARQL triplestore untuk aplikasi USUStarterMap.
 
 ---
 
 ## 1. Apa itu Apache Jena Fuseki?
-Apache Jena Fuseki adalah SPARQL server open-source yang mendukung protokol SPARQL 1.1 (Query, Update, dan Graph Store Protocol). Pada arsitektur USUClassMap:
+Apache Jena Fuseki adalah SPARQL server open-source yang mendukung protokol SPARQL 1.1 (Query, Update, dan Graph Store Protocol). Pada arsitektur USUStarterMap:
 - Laravel bertindak sebagai data producer yang mengekspor data jadwal ke format RDF/XML (`schedules.rdf`).
 - Fuseki bertindak sebagai SPARQL query engine.
 - Mahasiswa mencari jadwal via endpoint SPARQL yang dieksekusi oleh Fuseki.

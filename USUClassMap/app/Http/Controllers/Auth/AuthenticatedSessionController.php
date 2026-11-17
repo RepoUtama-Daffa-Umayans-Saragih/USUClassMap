@@ -260,7 +260,7 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('admin.dashboard', absolute: false));
         }
 
-        // Admin USUClassMap → Admin Dashboard
+        // Admin USUStarterMap → Admin Dashboard
         if ($user && $user->isAdmin()) {
             return redirect()->intended(route('admin.dashboard', absolute: false));
         }

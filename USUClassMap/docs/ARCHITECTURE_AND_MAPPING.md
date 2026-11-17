@@ -1,4 +1,4 @@
-# 🏛️ Dokumentasi Arsitektur & Pemetaan Repositori USUClassMap
+# 🏛️ Dokumentasi Arsitektur & Pemetaan Repositori USUStarterMap
 **Disusun oleh:** Senior Software Architect & Lead Laravel Developer  
 **Status Proyek:** Production Ready / Advanced Semantic GIS  
 **Versi Framework:** Laravel 11.x (PHP 8.2+)  
@@ -9,12 +9,12 @@
 ## 1. Ringkasan Proyek
 
 ### 1.1. Latar Belakang & Tujuan Umum
-**USUClassMap** adalah platform sistem informasi geografis kampus (Campus Web-GIS) interaktif berbasis **Web Semantik (Semantic Web / Linked Data)** yang dirancang untuk memetakan, mengelola, dan menavigasi jadwal perkuliahan di lingkungan **Universitas Sumatera Utara (USU)**. 
+**USUStarterMap** adalah platform sistem informasi geografis kampus (Campus Web-GIS) interaktif berbasis **Web Semantik (Semantic Web / Linked Data)** yang dirancang untuk memetakan, mengelola, dan menavigasi jadwal perkuliahan di lingkungan **Universitas Sumatera Utara (USU)**.
 
 Fokus operasional utamanya adalah memecahkan tantangan logistik mahasiswa dan dosen dalam perkuliahan lintas fakultas, khususnya untuk **Mata Kuliah Wajib Kurikulum (MKWK)** dan **Mata Kuliah Wajib Universitas (MKWU)** yang tersebar di puluhan gedung di seluruh kawasan kampus Padang Bulan USU.
 
 ### 1.2. Pilar Arsitektur Sistem
-Berdasarkan analisis struktur repositori dan basis kode yang telah ditinjau, USUClassMap dibangun di atas fondasi arsitektur multi-layer:
+Berdasarkan analisis struktur repositori dan basis kode yang telah ditinjau, USUStarterMap dibangun di atas fondasi arsitektur multi-layer:
 
 1. **Enterprise Clean Architecture (Repository Pattern & Service Layer):**
    Memisahkan *presentation layer* (Controllers/Blade), *domain business logic* (Services, Observers, Jobs), dan *data access layer* (Repositories & Eloquent ORM). Ini memastikan kode teruji (*testable*), *maintainable*, dan *loosely coupled*.
@@ -33,7 +33,7 @@ Berdasarkan analisis struktur repositori dan basis kode yang telah ditinjau, USU
 
 ## 2. Pemetaan & Penjelasan File per Layer
 
-Berikut adalah rincian fungsional dan teknis dari setiap berkas di dalam repositori USUClassMap.
+Berikut adalah rincian fungsional dan teknis dari setiap berkas di dalam repositori USUStarterMap.
 
 ```
 USUClassMap
@@ -278,7 +278,7 @@ Layer ini bertindak sebagai penerima HTTP Request, mengoordinasikan validasi, me
 
 4. **`app/Http/Controllers/FaqController.php`**
    - **Kategori:** Public Informational Controller
-   - **Fungsi Utama:** Menyusun daftar tanya-jawab interaktif terstruktur mengenai penggunaan peta, pencarian jadwal, tur 360°, petunjuk arah pejalan kaki, bookmark, dan teknologi Web Semantik USUClassMap.
+   - **Fungsi Utama:** Menyusun daftar tanya-jawab interaktif terstruktur mengenai penggunaan peta, pencarian jadwal, tur 360°, petunjuk arah pejalan kaki, bookmark, dan teknologi Web Semantik USUStarterMap.
    - **Kegunaan:** Merender halaman `/faq` untuk membantu civitas akademika memahami fitur sistem.
 
 5. **`app/Http/Controllers/ProfileController.php`**
@@ -372,7 +372,7 @@ Layer ini bertugas memfasilitasi pertukaran data massal antara format spreadshee
 Layer ini menyediakan konfigurasi runtime, pendefinisian rute HTTP, serta orchestrator bundling aset frontend.
 
 #### 1. File Konfigurasi Environment (`.env` & `.env.example`)
-- **Fungsi Utama:** Menyimpan variabel lingkungan sensitif: `APP_NAME="USUClassMap"`, koneksi database (`DB_CONNECTION=sqlite` untuk dev, `mysql` untuk prod), driver queue (`QUEUE_CONNECTION=database`), serta konfigurasi Semantic Web Fuseki (`SPARQL_ENDPOINT=http://localhost:3030/usuclassmap/query`, `SPARQL_TIMEOUT=5`).
+- **Fungsi Utama:** Menyimpan variabel lingkungan sensitif: `APP_NAME="USUStarterMap"`, koneksi database (`DB_CONNECTION=sqlite` untuk dev, `mysql` untuk prod), driver queue (`QUEUE_CONNECTION=database`), serta konfigurasi Semantic Web Fuseki (`SPARQL_ENDPOINT=http://localhost:3030/usuclassmap/query`, `SPARQL_TIMEOUT=5`).
 - **Kegunaan:** Menjaga kredensial tetap aman di luar version control git dan mempermudah deployment multi-environment.
 
 #### 2. Routing (`routes/*`)
@@ -455,11 +455,11 @@ sequenceDiagram
 
 ## 4. Kesimpulan & Rekomendasi Arsitektur
 
-Arsitektur repositori **USUClassMap** menunjukkan kematangan desain perangkat lunak yang sangat tinggi (*enterprise-grade*) dengan menerapkan prinsip-prinsip:
+Arsitektur repositori **USUStarterMap** menunjukkan kematangan desain perangkat lunak yang sangat tinggi (*enterprise-grade*) dengan menerapkan prinsip-prinsip:
 1. **Separation of Concerns (SoC):** Pemisahan tegas antara routing, controller, validasi request, repository, service domain, dan model event listeners.
 2. **Resilience & Fault Tolerance:** Implementasi graceful degradation pada `SparqlService` memastikan bahwa kegagalan service semantik Fuseki tidak pernah mengakibatkan downtime pada aplikasi web publik.
 3. **Optimized I/O:** Serialisasi RDF dilakukan secara asinkron melalui antrean worker, menjaga fluiditas pengalaman pengguna admin saat memanipulasi data berskala besar.
 4. **Extensibility:** Pola Repository Pattern yang diterapkan membuka fleksibilitas pengujian (*unit/feature testing*) dengan mock data serta mempermudah migrasi database di masa mendatang tanpa merombak logika controller.
 
-Dokumentasi ini siap dijadikan referensi teknis utama bagi tim pengembang, akademisi, dan pengelola sistem USUClassMap.
+Dokumentasi ini siap dijadikan referensi teknis utama bagi tim pengembang, akademisi, dan pengelola sistem USUStarterMap.
 

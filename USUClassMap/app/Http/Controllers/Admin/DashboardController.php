@@ -25,6 +25,6 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'recentSchedules'));
+        return view('features.admin.dashboard', compact('stats', 'recentSchedules'));
     }
 }

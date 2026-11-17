@@ -72,28 +72,38 @@ class Phase6PublicFeaturesTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('Pertanyaan yang Sering Diajukan');
         $response->assertSee('Pusat Bantuan');
-        $response->assertSee('Apa itu aplikasi USUClassMap?');
+        $response->assertSee('Apa itu aplikasi USUStarterMap?');
         $response->assertSee('Bagaimana cara mencari jadwal kuliah saya?');
         $response->assertSee('Apa itu Tur Visual 360°');
         $response->assertSee('Bagaimana cara mendapatkan rute petunjuk arah');
         $response->assertSee('Bagaimana cara menyimpan jadwal favorit saya ke Bookmark?');
-        $response->assertSee('Bagaimana data jadwal diproses di USUClassMap?');
+        $response->assertSee('Bagaimana data jadwal diproses di USUStarterMap?');
         $response->assertSee('Apakah mahasiswa perlu login');
         $response->assertSee('Jadwal kuliah saya tidak ditemukan');
     }
 
-    /**
-     * Test 2: Verify Bookmarks page rendering and UI elements
-     */
-    public function test_bookmarks_page_renders_properly(): void
+    public function test_landing_page_contains_bookmark_table(): void
     {
-        $response = $this->get('/bookmarks');
+        $user = User::factory()->create([
+            'name' => 'Mahasiswa USU',
+            'profile_photo_path' => 'profile-photos/student.jpg',
+        ]);
 
-        $response->assertStatus(200);
-        $response->assertSee('Jadwal Tersimpan');
-        $response->assertSee('Jadwal Favorit');
-        $response->assertSee('bookmarks-list-container', false);
-        $response->assertSee('empty-bookmarks-state', false);
+        $response = $this->actingAs($user)->get('/');
+
+        $response->assertOk();
+        $response->assertSee('StarterMap');
+        $response->assertSee('bookmarks-table-body', false);
+        $response->assertSee('Mahasiswa USU');
+        $response->assertSee('/storage/profile-photos/student.jpg');
+        $response->assertSee('<footer', false);
+        $response->assertSee('Pusat Sistem Informasi (PSI) USU');
+        $response->assertDontSee('ClassMap');
+    }
+
+    public function test_legacy_bookmarks_url_redirects_to_home_section(): void
+    {
+        $this->get('/bookmarks')->assertRedirect('/#bookmarks');
     }
 
     /**

@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SATU USU | USUClassMap Login</title>
+    <title>SATU USU | USUStarterMap Login</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         .bg-campus {
-            background-image: url('https://images.unsplash.com/photo-1562774053-701939374585?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-image: url('/images/login-campus.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -29,13 +29,13 @@
             <div class="relative z-10 max-w-lg">
                 {{-- Badge --}}
                 <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/15 backdrop-blur-xs rounded-full text-white/90 text-xs font-semibold mb-6 border border-white/20">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                    USUClassMap × SATU USU
+                    <x-application-logo class="w-5 h-5 object-contain" />
+                    USUStarterMap × SATU USU
                 </div>
 
                 {{-- Heading --}}
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight tracking-tight mb-4">
-                    Halo Sobat USU 👋
+                    Halo Sobat USU !!
                 </h1>
                 <p class="text-base sm:text-lg text-white/85 leading-relaxed font-medium max-w-md">
                     Dengan <span class="font-bold text-white">SATU USU</span> kamu dapat mengakses banyak sistem yang tersedia pada Universitas Sumatera Utara hanya dengan satu akun.
@@ -66,10 +66,7 @@
                 {{-- Logo SATU --}}
                 <div class="text-center mb-8">
                     <div class="inline-flex items-center gap-3 mb-2">
-                        {{-- USU Crest Icon --}}
-                        <div class="w-11 h-11 rounded-xl bg-[#D4A017] text-white flex items-center justify-center shadow-sm">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422A12.083 12.083 0 0121 12.64V17a2 2 0 01-2 2H5a2 2 0 01-2-2v-4.36c0-1.135.396-2.234 1.12-3.107L12 14z"></path></svg>
-                        </div>
+                        <img src="{{ asset('images/usu-logo.png') }}" alt="Logo Universitas Sumatera Utara" class="w-11 h-11 object-contain">
                         <span class="text-3xl font-black tracking-tight">
                             <span class="text-[#10A760]">SATU</span>
                         </span>
@@ -190,7 +187,7 @@
 
                 {{-- Copyright --}}
                 <div class="mt-8 text-center text-[10px] text-gray-400">
-                    &copy; {{ date('Y') }} USUClassMap — Kelompok 3 Web Semantik USU
+                    &copy; {{ date('Y') }} USUStarterMap — Kelompok 3 Web Semantik USU
                 </div>
             </div>
         </div>

@@ -56,7 +56,7 @@ class PhotocopyController extends Controller
         $openCount = $openPlaces->count();
         $totalCount = $allPlaces->count();
 
-        return view('public.fotocopy.index', [
+        return view('features.fotocopy.public.index', [
             'places' => $places,
             'openPlaces' => $openPlaces,
             'search' => $search,
@@ -89,7 +89,7 @@ class PhotocopyController extends Controller
             ->limit(3)
             ->get();
 
-        return view('public.fotocopy.show', [
+        return view('features.fotocopy.public.show', [
             'place' => $place,
             'isOpen' => $isOpen,
             'itemsByCategory' => $itemsByCategory,
@@ -114,7 +114,7 @@ class PhotocopyController extends Controller
         $isOpen = $place->isOpenNow();
         $itemsByCategory = $place->items->where('is_available', true)->groupBy('category');
 
-        return view('public.fotocopy.order', [
+        return view('features.fotocopy.public.order', [
             'place' => $place,
             'isOpen' => $isOpen,
             'itemsByCategory' => $itemsByCategory,
@@ -203,7 +203,7 @@ class PhotocopyController extends Controller
             $waNumber = '62' . substr($waNumber, 1);
         }
 
-        $waText = "Halo {$place->name}, saya telah membuat pesanan di USUClassMap:\n";
+        $waText = "Halo {$place->name}, saya telah membuat pesanan di USUStarterMap:\n";
         $waText .= "Kode Pesanan: #{$order->order_code}\n";
         $waText .= "Nama Pemesan: {$order->customer_name}\n";
         if ($order->customer_phone) {
@@ -261,7 +261,7 @@ class PhotocopyController extends Controller
             'whatsapp' => $order->store?->whatsapp ?? '6285769737410',
         ]);
 
-        return view('public.fotocopy.payment', compact('order', 'place'));
+        return view('features.fotocopy.public.payment', compact('order', 'place'));
     }
 
     /**

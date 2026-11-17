@@ -42,7 +42,7 @@
 
             <!-- Footer note -->
             <div class="mt-8 pt-6 border-t border-gray-100 text-xs text-gray-400">
-                USUClassMap • Kelompok 3 Web Semantik
+                USUStarterMap • Kelompok 3 Web Semantik
             </div>
         </div>
     </div>

@@ -10,12 +10,12 @@ class EnsureUserIsAdmin
 {
     /**
      * Handle an incoming request.
-     * Membatasi akses route untuk Admin USUClassMap dan Super Admin.
+     * Membatasi akses route untuk Admin USUStarterMap dan Super Admin.
      */
     public function handle(Request $request, Closure $next): Response
     {
         if (!auth()->check() || (!auth()->user()->isAdmin() && !auth()->user()->isSuperAdmin())) {
-            session()->flash('error', 'Akses ditolak. Halaman ini hanya untuk Admin USUClassMap.');
+            session()->flash('error', 'Akses ditolak. Halaman ini hanya untuk Admin USUStarterMap.');
             return redirect('/login');
         }
 

@@ -31,7 +31,7 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        return view('admin-fotokopi.dashboard', compact(
+        return view('features.fotocopy.admin.dashboard', compact(
             'totalStores',
             'totalServices',
             'totalOrders',

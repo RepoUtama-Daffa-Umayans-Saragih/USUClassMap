@@ -20,7 +20,7 @@ class AdminMapController extends Controller
         $courses = Course::orderBy('name')->get();
         $lecturers = Lecturer::orderBy('name')->get();
 
-        return view('admin.map', compact('buildings', 'courses', 'lecturers'));
+        return view('features.admin.map', compact('buildings', 'courses', 'lecturers'));
     }
 
     public function storeBuilding(Request $request)

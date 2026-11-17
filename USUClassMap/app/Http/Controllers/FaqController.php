@@ -14,8 +14,8 @@ class FaqController extends Controller
         $faqs = [
             [
                 'category' => 'Tentang Aplikasi Web',
-                'question' => 'Apa itu aplikasi USUClassMap?',
-                'answer' => 'USUClassMap adalah platform peta interaktif kampus dan direktori akademik berbasis Web Semantik (Semantic Web). Aplikasi ini membantu mahasiswa Universitas Sumatera Utara menemukan lokasi ruang kelas perkuliahan MKWK/MKWU, gedung fakultas, navigasi 360°, jadwal kuliah, serta layanan terintegrasi kampus seperti jasa fotocopy & percetakan di sekitar kampus.'
+                'question' => 'Apa itu aplikasi USUStarterMap?',
+                'answer' => 'USUStarterMap adalah platform peta interaktif kampus dan direktori akademik berbasis Web Semantik (Semantic Web). Aplikasi ini membantu mahasiswa Universitas Sumatera Utara menemukan lokasi ruang kelas perkuliahan MKWK/MKWU, gedung fakultas, navigasi 360°, jadwal kuliah, serta layanan terintegrasi kampus seperti jasa fotocopy & percetakan di sekitar kampus.'
             ],
             [
                 'category' => 'Pencarian & Jadwal',
@@ -39,7 +39,7 @@ class FaqController extends Controller
             ],
             [
                 'category' => 'Teknologi & Semantic Web',
-                'question' => 'Bagaimana data jadwal diproses di USUClassMap?',
+                'question' => 'Bagaimana data jadwal diproses di USUStarterMap?',
                 'answer' => 'Data jadwal dikonversi ke format RDF/OWL ontologi Semantic Web dan di-query menggunakan SPARQL Protocol and RDF Query Language melalui Apache Jena Fuseki untuk relasi data yang presisi.'
             ],
             [
@@ -54,8 +54,8 @@ class FaqController extends Controller
             ],
             [
                 'category' => 'Layanan Fotocopy',
-                'question' => 'Apakah USUClassMap terhubung dengan layanan fotocopy di kampus?',
-                'answer' => 'Ya! USUClassMap kini memiliki fitur terintegrasi "Fotocopy" di mana mahasiswa dapat mencari tempat fotocopy terdekat dari ruang kelas, melihat status buka/tutup toko, mengecek harga layanan (print, jilid, laminating, fotocopy), serta memesan langsung via WhatsApp dengan pesan otomatis atau menuju lokasi via Google Maps.'
+                'question' => 'Apakah USUStarterMap terhubung dengan layanan fotocopy di kampus?',
+                'answer' => 'Ya! USUStarterMap kini memiliki fitur terintegrasi "Fotocopy" di mana mahasiswa dapat mencari tempat fotocopy terdekat dari ruang kelas, melihat status buka/tutup toko, mengecek harga layanan (print, jilid, laminating, fotocopy), serta memesan langsung via WhatsApp dengan pesan otomatis atau menuju lokasi via Google Maps.'
             ],
         ];
 
@@ -64,7 +64,7 @@ class FaqController extends Controller
                 'name' => 'Helpdesk WhatsApp Resmi',
                 'type' => 'whatsapp',
                 'contact' => '0812-6000-8787',
-                'url' => 'https://wa.me/6281260008787?text=' . rawurlencode('Halo Tim USUClassMap, saya mahasiswa USU ingin bertanya atau menyampaikan masukan terkait aplikasi web USUClassMap:'),
+                'url' => 'https://wa.me/6281260008787?text=' . rawurlencode('Halo Tim USUStarterMap, saya mahasiswa USU ingin bertanya atau menyampaikan masukan terkait aplikasi web USUStarterMap:'),
                 'desc' => 'Layanan bantuan cepat via WhatsApp aktif Senin - Jumat (08:00 - 17:00 WIB)',
                 'fa_icon' => 'fa-brands fa-whatsapp',
                 'badge' => 'Respon Cepat',
@@ -75,7 +75,7 @@ class FaqController extends Controller
                 'name' => 'Email Pusat Bantuan & Informasi',
                 'type' => 'email',
                 'contact' => 'support@usuclassmap.usu.ac.id',
-                'url' => 'mailto:support@usuclassmap.usu.ac.id?subject=' . rawurlencode('Bantuan Mahasiswa USUClassMap'),
+                'url' => 'mailto:support@usuclassmap.usu.ac.id?subject=' . rawurlencode('Bantuan Mahasiswa USUStarterMap'),
                 'desc' => 'Kirim pertanyaan rinci, laporan bug antarmuka, atau permintaan data ruangan',
                 'fa_icon' => 'fa-solid fa-envelope',
                 'badge' => 'Tiket Dukungan',
@@ -95,6 +95,6 @@ class FaqController extends Controller
             ],
         ];
 
-        return view('faq', compact('faqs', 'contacts'));
+        return view('features.faq.index', compact('faqs', 'contacts'));
     }
 }

@@ -21,7 +21,7 @@ class ScheduleController extends Controller
         $payload = $request->all();
 
         // Log incoming sync payload for audit & diagnostic
-        Log::info('[USUClassMap Sync] Menerima data sinkronisasi jadwal dari Chrome Extension:', [
+        Log::info('[USUStarterMap Sync] Menerima data sinkronisasi jadwal dari Chrome Extension:', [
             'ip' => $request->ip(),
             'total_items' => count($request->input('schedules', [])),
             'payload' => $payload,

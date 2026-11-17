@@ -3,21 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Akun - USUClassMap</title>
+    <title>Daftar Akun - USUStarterMap</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-[#F3F4F6] min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-100 p-8 my-8">
         <!-- Logo -->
         <div class="text-center mb-6">
-            <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-[#10A760] text-white shadow-lg mb-3">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-            </div>
+            <x-application-logo class="inline-block w-14 h-14 object-contain mb-3" />
             <h1 class="text-2xl font-black text-gray-900 tracking-tight">Daftar Akun</h1>
-            <p class="text-xs font-semibold uppercase tracking-wider text-[#10A760] mt-1">USUClassMap Mahasiswa & Pengguna</p>
+            <p class="text-xs font-semibold uppercase tracking-wider text-[#10A760] mt-1">USUStarterMap Mahasiswa & Pengguna</p>
         </div>
 
         <!-- Error Messages -->

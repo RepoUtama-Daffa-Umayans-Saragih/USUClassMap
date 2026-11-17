@@ -31,7 +31,7 @@ class AdminPanelUiTest extends TestCase
 
         $admin = auth()->user();
         $this->assertEquals('admin_usuclassmap', $admin->role);
-        $this->assertEquals('Admin USUClassMap', $admin->name);
+        $this->assertEquals('Admin USUStarterMap', $admin->name);
         $this->assertEquals('adminususclassmapi', $admin->email);
         $this->assertTrue($admin->isAdmin());
     }
@@ -64,7 +64,7 @@ class AdminPanelUiTest extends TestCase
         $response = $this->actingAs($admin)->get('/admin/dashboard');
 
         $response->assertStatus(200);
-        $response->assertSee('Selamat Datang di Admin Panel USUClassMap');
+        $response->assertSee('Selamat Datang di Admin Panel USUStarterMap');
         $response->assertSee('Total Jadwal');
         $response->assertSee('Total Dosen');
         $response->assertSee('Total Gedung');
@@ -75,7 +75,7 @@ class AdminPanelUiTest extends TestCase
         $response->assertSee('Tambah Jadwal Pertama');
 
         // Verify badge and profile texts in layout
-        $response->assertSee('Admin USUClassMap');
+        $response->assertSee('Admin USUStarterMap');
         $response->assertSee('adminususclassmapi');
         $response->assertDontSee('superadmin');
     }

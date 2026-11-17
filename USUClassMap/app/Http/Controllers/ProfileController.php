@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -16,7 +17,7 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        return view('features.profile.edit', [
             'user' => $request->user(),
         ]);
     }
@@ -26,13 +27,28 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->safe()->except('profile_photo'));
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $oldPhotoPath = $user->profile_photo_path;
+        if ($request->hasFile('profile_photo')) {
+            $newPhotoPath = $request->file('profile_photo')->store('profile-photos', 'public');
+            if ($newPhotoPath === false) {
+                throw new \RuntimeException('Foto profil gagal disimpan.');
+            }
+
+            $user->profile_photo_path = $newPhotoPath;
+        }
+
+        $user->save();
+
+        if (isset($newPhotoPath) && $oldPhotoPath) {
+            Storage::disk('public')->delete($oldPhotoPath);
+        }
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
@@ -47,10 +63,15 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        $photoPath = $user->profile_photo_path;
 
         Auth::logout();
 
         $user->delete();
+
+        if ($photoPath) {
+            Storage::disk('public')->delete($photoPath);
+        }
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

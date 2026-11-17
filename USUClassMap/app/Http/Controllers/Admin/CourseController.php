@@ -23,12 +23,12 @@ class CourseController extends Controller
 
         $courses = $query->latest()->paginate(15)->withQueryString();
 
-        return view('admin.courses.index', compact('courses'));
+        return view('features.admin.courses.index', compact('courses'));
     }
 
     public function create()
     {
-        return view('admin.courses.create');
+        return view('features.admin.courses.create');
     }
 
     public function store(CourseRequest $request)
@@ -41,7 +41,7 @@ class CourseController extends Controller
 
     public function edit(Course $course)
     {
-        return view('admin.courses.edit', compact('course'));
+        return view('features.admin.courses.edit', compact('course'));
     }
 
     public function update(CourseRequest $request, Course $course)

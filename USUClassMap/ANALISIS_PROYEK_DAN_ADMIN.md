@@ -1,7 +1,7 @@
-# 🏛️ LAPORAN AUDIT KODE SUMBER & ARSITEKTUR SISTEM: USUClassMap
+# 🏛️ LAPORAN AUDIT KODE SUMBER & ARSITEKTUR SISTEM: USUStarterMap
 **Fokus Utama:** Analisis Komprehensif Ekosistem Fitur Admin, Keamanan, dan Keterkaitannya dengan Fitur Non-Admin  
 **Peran:** Senior Software Architect & Lead Laravel Full-Stack Auditor  
-**Target Proyek:** USUClassMap (Campus Semantic Web-GIS & Academic Service Hub)  
+**Target Proyek:** USUStarterMap (Campus Semantic Web-GIS & Academic Service Hub)  
 **Tanggal Audit:** 14 November 2026  
 **Status Audit:** Verified against Source Code (Deep Codebase Inspection)  
 
@@ -42,7 +42,7 @@
 ## 1. Ringkasan Eksekutif & Arsitektur Sistem
 
 ### 1.1. Gambaran Umum Aplikasi
-**USUClassMap** adalah platform sistem informasi geografis kampus (*Campus Web-GIS*) interaktif berbasis teknologi **Web Semantik (*Semantic Web / Linked Data*)** yang dikembangkan untuk memfasilitasi sivitas akademika Universitas Sumatera Utara (USU) dalam memetakan, menavigasi, dan mengelola jadwal perkuliahan lintas gedung dan fakultas. Fokus utama sistem berpusat pada penanganan logistik jadwal **Mata Kuliah Wajib Kurikulum (MKWK)** dan **Mata Kuliah Wajib Universitas (MKWU)** yang tersebar di puluhan gedung di area Kampus Padang Bulan Medan.
+**USUStarterMap** adalah platform sistem informasi geografis kampus (*Campus Web-GIS*) interaktif berbasis teknologi **Web Semantik (*Semantic Web / Linked Data*)** yang dikembangkan untuk memfasilitasi sivitas akademika Universitas Sumatera Utara (USU) dalam memetakan, menavigasi, dan mengelola jadwal perkuliahan lintas gedung dan fakultas. Fokus utama sistem berpusat pada penanganan logistik jadwal **Mata Kuliah Wajib Kurikulum (MKWK)** dan **Mata Kuliah Wajib Universitas (MKWU)** yang tersebar di puluhan gedung di area Kampus Padang Bulan Medan.
 
 Selain modul navigasi jadwal dan pemetaan spasial gedung dengan media imersif (panorama 360° dan video POV rute), sistem ini telah berkembang mencakup ekosistem **Layanan Fotokopi & Percetakan Terintegrasi**, sinkronisasi otomatis jadwal dari portal resmi mahasiswa (`satu.usu.ac.id`) via Ekstensi Browser Google Chrome, serta scraping cerdas direktori percetakan sekitar kampus via Google Places API (SerpApi).
 
@@ -65,7 +65,7 @@ Berdasarkan pembacaan berkas konfigurasi `composer.json`, `package.json`, `vite.
 | **Browser Extension** | WebExtensions API (Manifest v3) | Custom Chrome Ext | Ingestion otomatis jadwal dari DOM portal `satu.usu.ac.id` |
 
 ### 1.3. Arsitektur Multi-Tier & Dual-Engine Storage
-USUClassMap mengimplementasikan pola **Dual-Engine Data Storage & Event-Driven Synchronization**:
+USUStarterMap mengimplementasikan pola **Dual-Engine Data Storage & Event-Driven Synchronization**:
 1. **Relational Database (MySQL / SQLite):** Berfungsi sebagai *Single Source of Truth* (SSOT) yang mengelola transaksi ACID, data pengguna, data master akademik, katalog toko fotokopi, pesanan kasir, serta media ruangan.
 2. **Graph Database Triplestore (Apache Jena Fuseki):** Menyimpan representasi graf ontologis RDF/XML (`usu:Jadwal`, `usu:MataKuliah`, `usu:Dosen`, `usu:Ruangan`, `usu:Gedung`). Triplestore ini menyediakan endpoint SPARQL 1.1 (`/usuclassmap/query` dan `/usuclassmap/update`) yang dikonsumsi oleh pencarian cerdas publik dan kalibrasi visual foto 360°.
 3. **Synchronization Pipeline:**
@@ -166,7 +166,7 @@ flowchart TD
 ## 2. Peta Struktur Direktori & File Kunci
 
 ### 2.1. Struktur Pohon Direktori Repositori
-Berikut pemetaan struktur repositori secara mendalam pada proyek `USUClassMap`:
+Berikut pemetaan struktur repositori secara mendalam pada proyek `USUStarterMap`:
 
 ```
 USUClassMap/
@@ -300,7 +300,7 @@ USUClassMap/
 ## 3. Inventarisasi Lengkap Route & Modul Admin
 
 ### 3.1. Tabel Inventarisasi Seluruh Route Admin & Turunannya
-Berikut adalah pemetaan menyeluruh terhadap seluruh rute administratif, rute operasional kasir, rute spasial dev, serta rute inspeksi foto pada sistem USUClassMap:
+Berikut adalah pemetaan menyeluruh terhadap seluruh rute administratif, rute operasional kasir, rute spasial dev, serta rute inspeksi foto pada sistem USUStarterMap:
 
 | Modul Fungsional | HTTP Method | Route Name | URI / Endpoint | Action (Controller@Method) | Middleware Terpasang | Deskripsi Singkat & Operasi Data |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -519,7 +519,7 @@ Modul diagnostik dan kalibrasi visual berbasis Web Semantik untuk mengatur sudut
 ---
 
 ### 4.7. Antarmuka Frontend & Aset Vite Admin
-Antarmuka admin USUClassMap dirancang dengan tata letak modern bernuansa *Emerald Green* khas Universitas Sumatera Utara.
+Antarmuka admin USUStarterMap dirancang dengan tata letak modern bernuansa *Emerald Green* khas Universitas Sumatera Utara.
 
 1. **Komposisi Layout Modular:**
    - `resources/views/layouts/admin.blade.php`: Layout utama Admin Akademik dengan sidebar dinamis yang mendeteksi hak akses Super Admin untuk berpindah instan ke panel fotokopi atau kasir.
@@ -585,7 +585,7 @@ Terdapat **dua set model dan tabel database yang berdiri sendiri** untuk menanga
 - File `usu-extension/content.js` pada ekstensi Google Chrome mengirimkan payload JSON jadwal mahasiswa ke `http://127.0.0.1:8000/api/schedule/sync`.
 - Namun, implementasi `ScheduleApiController@sync` dan `ScheduleController@sync` hanya berisi:
   ```php
-  Log::info('[USUClassMap Sync] Menerima data sinkronisasi...', [...]);
+  Log::info('[USUStarterMap Sync] Menerima data sinkronisasi...', [...]);
   return response()->json(['status' => 'success', ...]);
   ```
   Data jadwal mahasiswa tidak pernah diparsing atau disimpan ke tabel relasional `schedules` maupun tabel relasi user.
@@ -754,4 +754,4 @@ Terdapat **dua set model dan tabel database yang berdiri sendiri** untuk menanga
 | **Fase 3: Refaktorisasi & Kualitas** | 1. Hapus file `grep.exe.stackdump`.<br>2. Ekstrak script JS inline dari `admin/map.blade.php` ke bundle Vite.<br>3. Konsolidasikan model `PhotocopyPlace` dan `FotocopyStore`. | **Sedang - Lanjut** | `resources/js/`, `vite.config.js`, `resources/views/admin/map.blade.php` |
 
 ---
-*Laporan audit ini disusun secara independen dan komprehensif berdasarkan penelusuran kode sumber aktual proyek USUClassMap.*
+*Laporan audit ini disusun secara independen dan komprehensif berdasarkan penelusuran kode sumber aktual proyek USUStarterMap.*

@@ -24,12 +24,12 @@ class LecturerController extends Controller
 
         $lecturers = $query->latest()->paginate(15)->withQueryString();
 
-        return view('admin.lecturers.index', compact('lecturers'));
+        return view('features.admin.lecturers.index', compact('lecturers'));
     }
 
     public function create()
     {
-        return view('admin.lecturers.create');
+        return view('features.admin.lecturers.create');
     }
 
     public function store(LecturerRequest $request)
@@ -42,7 +42,7 @@ class LecturerController extends Controller
 
     public function edit(Lecturer $lecturer)
     {
-        return view('admin.lecturers.edit', compact('lecturer'));
+        return view('features.admin.lecturers.edit', compact('lecturer'));
     }
 
     public function update(LecturerRequest $request, Lecturer $lecturer)

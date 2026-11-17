@@ -15,6 +15,7 @@ class User extends Authenticatable
         'email',
         'nim',
         'semester',
+        'profile_photo_path',
         'password',
         'role',
     ];
@@ -41,7 +42,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Memeriksa apakah user memiliki peran Admin USUClassMap (atau Super Admin).
+     * Memeriksa apakah user memiliki peran Admin USUStarterMap (atau Super Admin).
      */
     public function isAdmin(): bool
     {

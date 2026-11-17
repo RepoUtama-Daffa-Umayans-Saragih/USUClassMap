@@ -16,7 +16,7 @@ class AdminUserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'superadmin@usu.ac.id'],
             [
-                'name' => 'Super Admin USUClassMap',
+                'name' => 'Super Admin USUStarterMap',
                 'nim' => 'superadmin',
                 'semester' => 'Super Administrator',
                 'password' => bcrypt('superadmin123'),
@@ -24,11 +24,11 @@ class AdminUserSeeder extends Seeder
             ]
         );
 
-        // 2. Akun Admin USUClassMap
+        // 2. Akun Admin USUStarterMap
         User::updateOrCreate(
             ['email' => 'adminususclassmapi'],
             [
-                'name' => 'Admin USUClassMap',
+                'name' => 'Admin USUStarterMap',
                 'nim' => 'adminususclassmapi',
                 'semester' => 'Staff',
                 'password' => bcrypt('adminusu123'),
@@ -40,7 +40,7 @@ class AdminUserSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'admin@usu.ac.id'],
             [
-                'name' => 'Admin USUClassMap',
+                'name' => 'Admin USUStarterMap',
                 'nim' => 'ADM002',
                 'semester' => 'Staff',
                 'password' => bcrypt('adminusu123'),

@@ -28,7 +28,7 @@ class Phase1To3ComprehensiveTest extends TestCase
         parent::setUp();
 
         $this->admin = User::create([
-            'name' => 'Admin USUClassMap',
+            'name' => 'Admin USUStarterMap',
             'email' => 'adminususclassmapi',
             'password' => bcrypt('adminusu123'),
             'role' => 'admin_usuclassmap',
@@ -73,15 +73,14 @@ class Phase1To3ComprehensiveTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertSee('USUClassMap');
+        $response->assertSee('USUStarterMap');
 
         $response = $this->get('/map');
         $response->assertStatus(200);
         $response->assertSee('Cari mata kuliah atau dosen');
 
         $response = $this->get('/bookmarks');
-        $response->assertStatus(200);
-        $response->assertSee('Jadwal Tersimpan');
+        $response->assertRedirect('/#bookmarks');
 
         $response = $this->get('/faq');
         $response->assertStatus(200);

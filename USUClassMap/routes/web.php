@@ -21,16 +21,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('features.landing.index');
 })->name('home');
 
 Route::get('/map', function () {
-    return view('map.index');
+    return view('features.map.index');
 })->name('map');
 
-Route::get('/bookmarks', function () {
-    return view('public.bookmarks');
-})->name('bookmarks');
+Route::redirect('/bookmarks', '/#bookmarks')->name('bookmarks');
 
 Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 

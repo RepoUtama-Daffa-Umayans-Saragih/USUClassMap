@@ -23,12 +23,12 @@ class BuildingController extends Controller
 
         $buildings = $query->latest()->paginate(15)->withQueryString();
 
-        return view('admin.buildings.index', compact('buildings'));
+        return view('features.admin.buildings.index', compact('buildings'));
     }
 
     public function create()
     {
-        return view('admin.buildings.create');
+        return view('features.admin.buildings.create');
     }
 
     public function store(BuildingRequest $request)
@@ -41,7 +41,7 @@ class BuildingController extends Controller
 
     public function edit(Building $building)
     {
-        return view('admin.buildings.edit', compact('building'));
+        return view('features.admin.buildings.edit', compact('building'));
     }
 
     public function update(BuildingRequest $request, Building $building)

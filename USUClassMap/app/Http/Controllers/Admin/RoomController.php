@@ -27,13 +27,13 @@ class RoomController extends Controller
 
         $rooms = $query->latest()->paginate(15)->withQueryString();
 
-        return view('admin.rooms.index', compact('rooms'));
+        return view('features.admin.rooms.index', compact('rooms'));
     }
 
     public function create()
     {
         $buildings = Building::orderBy('name')->get();
-        return view('admin.rooms.create', compact('buildings'));
+        return view('features.admin.rooms.create', compact('buildings'));
     }
 
     public function store(RoomRequest $request)
@@ -56,7 +56,7 @@ class RoomController extends Controller
     public function edit(Room $room)
     {
         $buildings = Building::orderBy('name')->get();
-        return view('admin.rooms.edit', compact('room', 'buildings'));
+        return view('features.admin.rooms.edit', compact('room', 'buildings'));
     }
 
     public function update(RoomRequest $request, Room $room)

@@ -32,13 +32,13 @@ class ServiceController extends Controller
         $services = $query->latest()->paginate(12)->withQueryString();
         $stores = FotocopyStore::all(['id', 'name']);
 
-        return view('admin-fotokopi.services.index', compact('services', 'stores'));
+        return view('features.fotocopy.admin.services.index', compact('services', 'stores'));
     }
 
     public function create()
     {
         $stores = FotocopyStore::all(['id', 'name']);
-        return view('admin-fotokopi.services.create', compact('stores'));
+        return view('features.fotocopy.admin.services.create', compact('stores'));
     }
 
     public function store(Request $request)
@@ -62,7 +62,7 @@ class ServiceController extends Controller
     public function edit(FotocopyService $service)
     {
         $stores = FotocopyStore::all(['id', 'name']);
-        return view('admin-fotokopi.services.edit', compact('service', 'stores'));
+        return view('features.fotocopy.admin.services.edit', compact('service', 'stores'));
     }
 
     public function update(Request $request, FotocopyService $service)

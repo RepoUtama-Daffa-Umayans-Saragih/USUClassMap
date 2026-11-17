@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'Admin Panel' }} - USUClassMap</title>
+    <title>{{ $title ?? 'Admin Panel' }} - USUStarterMap</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
@@ -21,11 +21,9 @@
         <!-- Logo Area -->
         <div class="p-5 border-b border-white/15 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center font-black text-xl text-white shadow-xs">
-                    U
-                </div>
+                <x-application-logo class="w-10 h-10 object-contain rounded-xl bg-white p-0.5 shadow-xs" />
                 <div>
-                    <h1 class="text-lg font-black tracking-tight leading-tight">USUClassMap</h1>
+                    <h1 class="text-lg font-black tracking-tight leading-tight">USUStarterMap</h1>
                     <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-100 uppercase tracking-wider">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
                         Admin Panel
@@ -143,7 +141,7 @@
                     {{ (auth()->check() && auth()->user()->isSuperAdmin()) ? 'S' : 'A' }}
                 </div>
                 <div class="flex-1 min-w-0">
-                    <p class="text-xs font-bold text-white truncate">{{ (auth()->check() && auth()->user()->isSuperAdmin()) ? 'Super Admin USU' : ((auth()->check() && auth()->user()->isAdmin()) ? 'Admin USUClassMap' : (auth()->user()->name ?? 'Admin USUClassMap')) }}</p>
+                    <p class="text-xs font-bold text-white truncate">{{ (auth()->check() && auth()->user()->isSuperAdmin()) ? 'Super Admin USU' : ((auth()->check() && auth()->user()->isAdmin()) ? 'Admin USUStarterMap' : (auth()->user()->name ?? 'Admin USUStarterMap')) }}</p>
                     <p class="text-[11px] text-emerald-100 truncate font-mono">{{ (auth()->check() && auth()->user()->isSuperAdmin()) ? 'superadmin@usu.ac.id' : ((auth()->check() && auth()->user()->isAdmin()) ? 'adminususclassmapi' : (auth()->user()->email ?? 'adminususclassmapi')) }}</p>
                 </div>
             </div>
@@ -171,7 +169,7 @@
                 </button>
                 <div class="flex items-center gap-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-[#10B981]"></span>
-                    <h2 class="text-lg font-bold text-gray-800">USUClassMap Admin</h2>
+                    <h2 class="text-lg font-bold text-gray-800">USUStarterMap Admin</h2>
                 </div>
             </div>
             
@@ -184,7 +182,7 @@
                 @else
                 <span class="text-xs font-semibold px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-100 rounded-full hidden sm:inline-flex items-center gap-1">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    Admin USUClassMap
+                    Admin USUStarterMap
                 </span>
                 @endif
                 <div class="w-8 h-8 rounded-full bg-[#10B981] text-white flex items-center justify-center font-bold text-xs shadow-xs">
@@ -230,7 +228,7 @@
 
         <!-- Footer -->
         <footer class="px-6 py-4 border-t border-gray-200/60 bg-white text-center text-xs text-gray-500">
-            &copy; {{ date('Y') }} USUClassMap — Sistem Peta Interaktif & Jadwal Kuliah Universitas Sumatera Utara
+            &copy; {{ date('Y') }} USUStarterMap — Sistem Peta Interaktif & Jadwal Kuliah Universitas Sumatera Utara
         </footer>
     </div>
 

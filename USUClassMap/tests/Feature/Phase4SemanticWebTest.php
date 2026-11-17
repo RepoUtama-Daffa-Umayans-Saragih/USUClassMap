@@ -32,7 +32,7 @@ class Phase4SemanticWebTest extends TestCase
         parent::setUp();
 
         $this->admin = User::create([
-            'name' => 'Admin USUClassMap',
+            'name' => 'Admin USUStarterMap',
             'email' => 'adminususclassmapi',
             'password' => bcrypt('adminusu123'),
             'role' => 'admin_usuclassmap',

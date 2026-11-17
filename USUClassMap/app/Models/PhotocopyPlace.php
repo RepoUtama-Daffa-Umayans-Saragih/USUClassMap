@@ -369,7 +369,7 @@ class PhotocopyPlace extends Model
             $phone = '62' . substr($phone, 1);
         }
 
-        $message = $customMessage ?? "Halo *{$this->name}*, saya mahasiswa USU ingin bertanya mengenai layanan fotokopi dan cetak dokumen melalui USUClassMap.";
+        $message = $customMessage ?? "Halo *{$this->name}*, saya mahasiswa USU ingin bertanya mengenai layanan fotokopi dan cetak dokumen melalui USUStarterMap.";
 
         return "https://wa.me/{$phone}?text=" . rawurlencode($message);
     }

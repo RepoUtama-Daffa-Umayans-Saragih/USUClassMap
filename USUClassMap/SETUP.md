@@ -1,6 +1,6 @@
-# 🛠️ SETUP.md — Panduan Instalasi & Menjalankan USUClassMap
+# 🛠️ SETUP.md — Panduan Instalasi & Menjalankan USUStarterMap
 
-> Panduan ini ditujukan untuk developer baru yang ingin menginstal dan menjalankan proyek **USUClassMap** dari nol di lingkungan lokal (Windows / Linux / macOS).
+> Panduan ini ditujukan untuk developer baru yang ingin menginstal dan menjalankan proyek **USUStarterMap** dari nol di lingkungan lokal (Windows / Linux / macOS).
 
 ---
 
@@ -198,7 +198,7 @@ php artisan key:generate
 Buka file `.env` dengan teks editor, pastikan konfigurasi berikut sudah benar:
 
 ```env
-APP_NAME="USUClassMap"
+APP_NAME="USUStarterMap"
 APP_ENV=local
 APP_DEBUG=true
 APP_URL=http://localhost:8000
@@ -347,7 +347,7 @@ Setelah semua langkah selesai, buka browser dan akses:
 
 | URL | Yang Diharapkan |
 |---|---|
-| http://localhost:8000 | Landing page USUClassMap |
+| http://localhost:8000 | Landing page USUStarterMap |
 | http://localhost:8000/map | Peta interaktif dengan marker gedung |
 | http://localhost:8000/login | Halaman login |
 | http://localhost:8000/admin/dashboard | Dashboard admin (login dulu) |
@@ -370,4 +370,4 @@ php artisan test
 
 ---
 
-*SETUP.md ini di-generate berdasarkan analisis source code proyek USUClassMap — November 2026.*
+*SETUP.md ini di-generate berdasarkan analisis source code proyek USUStarterMap — November 2026.*
