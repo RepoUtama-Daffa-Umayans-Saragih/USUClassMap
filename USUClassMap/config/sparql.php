@@ -18,7 +18,11 @@ return [
 
     'data_endpoint' => env('FUSEKI_DATA_ENDPOINT', env('FUSEKI_URL', 'http://localhost:3030') . '/' . env('FUSEKI_DATASET', 'usuclassmap') . '/data'),
 
-    'timeout' => env('SPARQL_TIMEOUT', 5), // in seconds
+    'username' => env('FUSEKI_USERNAME', 'admin'),
+
+    'password' => env('FUSEKI_PASSWORD', 'admin'),
+
+    'timeout' => env('SPARQL_TIMEOUT', 15), // in seconds
 
     'namespaces' => [
         'usu' => 'http://usuclassmap.usu.ac.id/ontology#',

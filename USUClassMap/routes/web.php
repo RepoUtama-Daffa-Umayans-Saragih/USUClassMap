@@ -53,6 +53,11 @@ Route::get('/admin/cek-foto', [PhotoInspectorController::class, 'index'])->name(
 Route::post('/admin/cek-foto/kalibrasi', [PhotoInspectorController::class, 'saveCalibration'])->name('admin.cek-foto.saveCalibration');
 Route::get('/admin/cek-foto-p', [PhotoInspectorController::class, 'indexCylinder'])->name('admin.cek-foto-p');
 
+// Rexa Copilot AI Chatbot (Phase 2 & 3)
+Route::post('/copilot/chat', [\App\Http\Controllers\AiCopilotController::class, 'chat'])
+    ->middleware('throttle:20,1')
+    ->name('copilot.chat');
+
 /*
 |--------------------------------------------------------------------------
 | Authenticated User Profile & Dashboard

@@ -1,32 +1,11 @@
 <x-layouts.app>
     @push('styles')
-        <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <!-- Mapbox GL JS 3D CSS -->
+        <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css" />
         <!-- Pannellum 360 CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
         <style>
-            /* Custom Full-Bleed Popup styling to match USU identity (Phase 6.2) */
-            .custom-popup .leaflet-popup-content-wrapper,
-            .usu-custom-popup .leaflet-popup-content-wrapper {
-                border-radius: 12px !important;
-                padding: 0 !important;
-                overflow: hidden !important;
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.18), 0 10px 10px -5px rgba(0, 0, 0, 0.08) !important;
-                border: 1px solid rgba(229, 231, 235, 0.9) !important;
-                background: #ffffff !important;
-            }
-            .custom-popup .leaflet-popup-content,
-            .usu-custom-popup .leaflet-popup-content {
-                margin: 0 !important;
-                width: 340px !important;
-                max-width: 340px !important;
-                line-height: 1.4 !important;
-            }
-            .custom-popup .leaflet-popup-tip,
-            .usu-custom-popup .leaflet-popup-tip {
-                background: white !important;
-            }
-            .custom-leaflet-marker {
+            .custom-leaflet-marker, .custom-mapbox-marker {
                 background: transparent;
                 border: none;
             }
@@ -177,16 +156,42 @@
 
         <!-- Map Canvas Area -->
         <main class="flex-1 relative h-full w-full bg-gray-200">
-            <!-- Floating Quick Toggle for Photocopy Layer -->
-            <div class="absolute top-3 right-14 z-[999]">
+            <!-- Floating Spatial HUD Controls (Huawei C.O.R.E. Style) -->
+            <div class="absolute top-3 right-14 z-[999] flex flex-wrap items-center gap-2">
+                <!-- 2D / 3D Perspective Toggle Button -->
+                <button 
+                    type="button" 
+                    id="map-perspective-toggle-btn"
+                    onclick="window.USUClassMap && window.USUClassMap.togglePerspective()"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-[#10A760] shadow-md border border-gray-200 hover:border-[#10A760] flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Beralih antara Mode 3D dan Mode 2D Datar"
+                >
+                    <i class="fa-solid fa-cube text-[#10A760]"></i>
+                    <span id="perspective-label">Mode 3D</span>
+                </button>
+
+                <!-- Reset Camera to USU Center Button -->
+                <button 
+                    type="button" 
+                    id="map-reset-center-btn"
+                    onclick="window.USUClassMap && window.USUClassMap.resetCampusView()"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-blue-600 shadow-md border border-gray-200 hover:border-blue-400 flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Pusatkan Kembali Kamera ke Kampus USU"
+                >
+                    <i class="fa-solid fa-crosshairs text-blue-600"></i>
+                    <span>Reset Kamera</span>
+                </button>
+
+                <!-- Floating Quick Toggle for Photocopy Layer -->
                 <button 
                     type="button" 
                     id="map-floating-photocopy-btn"
                     onclick="window.USUClassMap && window.USUClassMap.togglePhotocopyLayer()"
-                    class="bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-emerald-700 shadow-md border border-gray-200 hover:border-emerald-500 flex items-center gap-2 transition-all cursor-pointer"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-emerald-700 shadow-md border border-gray-200 hover:border-emerald-500 flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Tampilkan / Sembunyikan 31 Lokasi Mitra Fotokopi & Percetakan USU"
                 >
                     <i class="fa-solid fa-print text-emerald-600"></i>
-                    <span>Tampilkan Fotokopi (31)</span>
+                    <span>Fotokopi (<span id="floating-photocopy-count">31</span>)</span>
                 </button>
             </div>
             <div id="map" class="w-full h-full z-0"></div>
@@ -475,8 +480,12 @@
     </div>
 
     @push('scripts')
-        <!-- Leaflet JS CDN -->
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <!-- Mapbox GL JS 3D Script & Token Injection -->
+        <script>
+            window.MAPBOX_ACCESS_TOKEN = '{{ env('VITE_MAPBOX_ACCESS_TOKEN', '') }}';
+        </script>
+        <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
+
         <!-- Pannellum 360 JS CDN -->
         <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
         

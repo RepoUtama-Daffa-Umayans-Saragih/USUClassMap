@@ -581,6 +581,14 @@
         </div>
     </div>
 
+    <!-- ========================================================================= -->
+    <!-- REXA COPILOT AI CHATBOT WIDGET (PHASE 3)                                  -->
+    <!-- ========================================================================= -->
+    @if(config('copilot.enabled', env('COPILOT_ENABLED', true)))
+        @vite(['resources/js/copilot.js'])
+        @include('components.chatbot-widget')
+    @endif
+
     @stack('scripts')
 </body>
 </html>

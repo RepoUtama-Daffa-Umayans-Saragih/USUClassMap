@@ -19,8 +19,11 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             ScheduleSeeder::class,
             FibDummySeeder::class,
+            ServiceMasterSeeder::class,
             FotocopySeeder::class,
             PhotocopySeeder::class,
+            MkwuFasilkomSeeder::class,
+            MkwuCsvSeeder::class,
         ]);
     }
 }

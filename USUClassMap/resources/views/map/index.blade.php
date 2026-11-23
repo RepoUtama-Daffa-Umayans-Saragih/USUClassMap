@@ -1,32 +1,11 @@
 <x-layouts.app>
     @push('styles')
-        <!-- Leaflet CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+        <!-- Mapbox GL JS 3D CSS -->
+        <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css" />
         <!-- Pannellum 360 CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
         <style>
-            /* Custom Full-Bleed Popup styling to match USU identity (Phase 6.2) */
-            .custom-popup .leaflet-popup-content-wrapper,
-            .usu-custom-popup .leaflet-popup-content-wrapper {
-                border-radius: 12px !important;
-                padding: 0 !important;
-                overflow: hidden !important;
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.18), 0 10px 10px -5px rgba(0, 0, 0, 0.08) !important;
-                border: 1px solid rgba(229, 231, 235, 0.9) !important;
-                background: #ffffff !important;
-            }
-            .custom-popup .leaflet-popup-content,
-            .usu-custom-popup .leaflet-popup-content {
-                margin: 0 !important;
-                width: 340px !important;
-                max-width: 340px !important;
-                line-height: 1.4 !important;
-            }
-            .custom-popup .leaflet-popup-tip,
-            .usu-custom-popup .leaflet-popup-tip {
-                background: white !important;
-            }
-            .custom-leaflet-marker {
+            .custom-leaflet-marker, .custom-mapbox-marker {
                 background: transparent;
                 border: none;
             }
@@ -142,7 +121,7 @@
 
             <!-- Scrollable Search Results List -->
             <div class="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-3" id="search-results">
-                <!-- Populated dynamically via resources/js/map.js -->
+                <!-- Populated dynamically via resources/js/features/map.js -->
             </div>
 
             <!-- Collapsible Map Legend -->
@@ -177,16 +156,42 @@
 
         <!-- Map Canvas Area -->
         <main class="flex-1 relative h-full w-full bg-gray-200">
-            <!-- Floating Quick Toggle for Photocopy Layer -->
-            <div class="absolute top-3 right-14 z-[999]">
+            <!-- Floating Spatial HUD Controls (Huawei C.O.R.E. Style) -->
+            <div class="absolute top-3 right-14 z-[999] flex flex-wrap items-center gap-2">
+                <!-- 2D / 3D Perspective Toggle Button -->
+                <button 
+                    type="button" 
+                    id="map-perspective-toggle-btn"
+                    onclick="window.USUClassMap && window.USUClassMap.togglePerspective()"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-[#10A760] shadow-md border border-gray-200 hover:border-[#10A760] flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Beralih antara Mode 3D dan Mode 2D Datar"
+                >
+                    <i class="fa-solid fa-cube text-[#10A760]"></i>
+                    <span id="perspective-label">Mode 3D</span>
+                </button>
+
+                <!-- Reset Camera to USU Center Button -->
+                <button 
+                    type="button" 
+                    id="map-reset-center-btn"
+                    onclick="window.USUClassMap && window.USUClassMap.resetCampusView()"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-blue-600 shadow-md border border-gray-200 hover:border-blue-400 flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Pusatkan Kembali Kamera ke Kampus USU"
+                >
+                    <i class="fa-solid fa-crosshairs text-blue-600"></i>
+                    <span>Reset Kamera</span>
+                </button>
+
+                <!-- Floating Quick Toggle for Photocopy Layer -->
                 <button 
                     type="button" 
                     id="map-floating-photocopy-btn"
                     onclick="window.USUClassMap && window.USUClassMap.togglePhotocopyLayer()"
-                    class="bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-emerald-700 shadow-md border border-gray-200 hover:border-emerald-500 flex items-center gap-2 transition-all cursor-pointer"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-emerald-700 shadow-md border border-gray-200 hover:border-emerald-500 flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Tampilkan / Sembunyikan 31 Lokasi Mitra Fotokopi & Percetakan USU"
                 >
                     <i class="fa-solid fa-print text-emerald-600"></i>
-                    <span>Tampilkan Fotokopi (31)</span>
+                    <span>Fotokopi (<span id="floating-photocopy-count">31</span>)</span>
                 </button>
             </div>
             <div id="map" class="w-full h-full z-0"></div>
@@ -298,7 +303,7 @@
         }"
         x-show="isOpen"
         @keydown.escape.window="closeModal()"
-        class="fixed inset-0 z-[9999] flex items-center justify-center p-3 sm:p-6"
+        class="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-5"
         style="display: none;"
     >
         <!-- Backdrop Hitam Transparan -->
@@ -311,7 +316,7 @@
             x-transition:leave-start="opacity-100"
             x-transition:leave-end="opacity-0"
             @click="closeModal()" 
-            class="fixed inset-0 bg-black/80 backdrop-blur-sm"
+            class="fixed inset-0 bg-slate-950/70 backdrop-blur-md"
         ></div>
 
         <!-- Modal Content Card (Dark Navy Elegance) -->
@@ -323,54 +328,54 @@
             x-transition:leave="transition ease-in duration-200"
             x-transition:leave-start="opacity-100 scale-100 translate-y-0"
             x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-            class="relative w-full max-w-3xl bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl overflow-hidden z-10 text-white flex flex-col max-h-[90vh]"
+            class="relative z-10 flex w-full max-w-4xl max-h-[92vh] flex-col overflow-hidden rounded-3xl border border-gray-200 bg-white text-gray-900 shadow-2xl ring-1 ring-black/10"
         >
             <!-- Modal Header with Modern Segmented Control -->
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between px-5 py-3.5 bg-gray-900 border-b border-gray-800 gap-3 shrink-0">
+            <div class="flex shrink-0 flex-col justify-between gap-4 border-b border-gray-100 bg-white px-4 py-4 sm:flex-row sm:items-center sm:px-7 sm:py-5">
                 <!-- Left: Room & Building Title -->
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="inline-block px-2 py-0.5 bg-[#10A760] text-white text-[10px] font-black rounded-md uppercase tracking-wider shadow-2xs">
+                        <span class="inline-block rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-green-700 shadow-sm">
                             <span x-text="building.code || 'GEDUNG'"></span>
                         </span>
-                        <span class="text-xs font-semibold text-gray-400">Lt. <span x-text="room.floor || 1"></span> • Kapasitas <span x-text="room.capacity || 30"></span> Org</span>
+                        <span class="rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-xs font-semibold text-gray-600">Lt. <span x-text="room.floor || 1"></span> • Kapasitas <span x-text="room.capacity || 30"></span> Org</span>
                     </div>
-                    <h3 class="text-lg font-bold text-white mt-1 leading-tight flex items-center gap-1.5">
-                        <span>🚪</span>
+                    <h3 class="mt-2 flex items-center gap-2 text-lg font-bold leading-tight text-gray-900 sm:text-xl">
+                        <i class="fa-solid fa-door-open"></i>
                         <span x-text="room.name ? 'Ruang ' + room.name : 'Detail Ruangan'"></span>
                     </h3>
-                    <p class="text-xs text-gray-400 truncate max-w-sm mt-0.5" x-text="building.name || 'Universitas Sumatera Utara'"></p>
+                    <p class="mt-1 max-w-sm truncate text-xs text-gray-500" x-text="building.name || 'Universitas Sumatera Utara'"></p>
                 </div>
 
                 <!-- Right: Segmented Control & Close Button -->
-                <div class="flex items-center gap-2 self-end sm:self-center">
+                <div class="flex items-center gap-2.5 self-end sm:self-center">
                     <!-- Segmented Control View Selector -->
-                    <div class="inline-flex p-1 bg-gray-800 border border-gray-700/80 rounded-xl">
+                    <div class="inline-flex rounded-2xl border border-green-100 bg-green-50 p-1.5 shadow-inner">
                         <button 
                             type="button" 
                             @click="switchMode('photo')"
-                            class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 flex items-center gap-1.5 cursor-pointer"
-                            :class="currentMode === 'photo' ? 'bg-[#10A760] text-white shadow-xs' : 'text-gray-400 hover:text-gray-200'"
+                            class="flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all duration-200 sm:px-4"
+                            :class="currentMode === 'photo' ? 'bg-[#10A760] text-white shadow-md shadow-green-900/20' : 'bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-800'"
                         >
-                            <span>🖼️</span>
+                            <i class="fa-regular fa-image"></i>
                             <span>Foto</span>
                         </button>
                         <button 
                             type="button" 
                             @click="switchMode('360')"
-                            class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 flex items-center gap-1.5 cursor-pointer"
-                            :class="currentMode === '360' ? 'bg-[#10A760] text-white shadow-xs' : 'text-gray-400 hover:text-gray-200'"
+                            class="flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all duration-200 sm:px-4"
+                            :class="currentMode === '360' ? 'bg-[#10A760] text-white shadow-md shadow-green-900/20' : 'bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-800'"
                         >
-                            <span>🔄</span>
+                            <i class="fa-solid fa-rotate"></i>
                             <span>360°</span>
                         </button>
                         <button 
                             type="button" 
                             @click="switchMode('video')"
-                            class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 flex items-center gap-1.5 cursor-pointer"
-                            :class="currentMode === 'video' ? 'bg-[#10A760] text-white shadow-xs' : 'text-gray-400 hover:text-gray-200'"
+                            class="flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all duration-200 sm:px-4"
+                            :class="currentMode === 'video' ? 'bg-[#10A760] text-white shadow-md shadow-green-900/20' : 'bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-800'"
                         >
-                            <span>🎥</span>
+                            <i class="fa-solid fa-video"></i>
                             <span>Video</span>
                         </button>
                     </div>
@@ -379,7 +384,7 @@
                     <button 
                         type="button"
                         @click="closeModal()" 
-                        class="w-9 h-9 rounded-xl bg-gray-800 hover:bg-red-600/80 text-gray-400 hover:text-white flex items-center justify-center transition-colors cursor-pointer border border-gray-700/80"
+                        class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl border border-green-200 bg-green-50 text-green-700 transition-colors hover:border-green-600 hover:bg-green-600 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500"
                         title="Tutup Jendela"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -390,23 +395,23 @@
             </div>
 
             <!-- Modal Dynamic Body (Scrollable) -->
-            <div class="p-4 sm:p-5 bg-black/60 space-y-4 overflow-y-auto custom-scrollbar flex-1">
+            <div class="flex-1 space-y-5 overflow-y-auto bg-white p-3 custom-scrollbar sm:p-6">
                 <!-- 1. Media Canvas Area -->
-                <div class="relative w-full h-64 sm:h-72 rounded-xl overflow-hidden bg-gray-950 border border-gray-800 shadow-inner">
+                <div class="relative h-56 w-full overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 shadow-lg sm:h-72 lg:h-80">
                     <!-- Photo Mode -->
                     <div x-show="currentMode === 'photo'" class="w-full h-full">
                         <img 
                             :src="room.photo_url || 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=800&q=80'" 
                             :alt="room.name" 
-                            class="w-full h-full object-cover rounded-xl"
+                            class="h-full w-full rounded-2xl object-cover"
                         />
                     </div>
 
                     <!-- 360 Mode (Clean Interactive Panorama Container) -->
                     <div x-show="currentMode === '360'" class="w-full h-full relative">
-                        <div id="modal-panorama-viewer" class="w-full h-full rounded-xl overflow-hidden bg-gray-900"></div>
-                        <div class="absolute bottom-2.5 left-2.5 px-2.5 py-1 bg-black/60 backdrop-blur-xs rounded-full text-[11px] text-gray-300 pointer-events-none flex items-center gap-1.5 border border-white/10">
-                            <span class="animate-pulse">🔄</span>
+                        <div id="modal-panorama-viewer" class="h-full w-full overflow-hidden rounded-2xl bg-gray-100"></div>
+                        <div class="pointer-events-none absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full border border-white/20 bg-black/60 px-3 py-1.5 text-[11px] text-white backdrop-blur-sm">
+                            <i class="fa-solid fa-rotate animate-pulse"></i>
                             <span>Geser kursor / sentuh layar untuk tur 360°</span>
                         </div>
                     </div>
@@ -419,7 +424,7 @@
                             autoplay 
                             loop 
                             playsinline 
-                            class="w-full h-full object-contain rounded-xl"
+                            class="h-full w-full rounded-2xl object-contain"
                         >
                             Browser Anda tidak mendukung tag video.
                         </video>
@@ -427,47 +432,47 @@
                 </div>
 
                 <!-- 2. JADWAL PERKULIAHAN DI RUANGAN INI -->
-                <div class="bg-gray-800/80 rounded-xl p-3.5 border border-gray-700/60">
-                    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 flex items-center justify-between">
+                <div class="rounded-2xl border border-gray-200 bg-gray-50 p-4 shadow-sm sm:p-5">
+                    <div class="mb-3 flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-gray-600">
                         <span>JADWAL PERKULIAHAN DI RUANGAN INI:</span>
-                        <span class="text-[11px] text-[#10A760] font-semibold" x-text="(room.schedules?.length || 0) + ' Kelas Terdaftar'"></span>
+                        <span class="inline-flex items-center rounded-full border border-green-200 bg-green-50 px-2.5 py-1 text-[11px] font-bold text-green-700" x-text="(room.schedules?.length || 0) + ' Kelas Terdaftar'"></span>
                     </div>
-                    <div class="max-h-36 overflow-y-auto custom-scrollbar space-y-1.5">
+                    <div class="max-h-48 space-y-2 overflow-y-auto custom-scrollbar sm:max-h-56">
                         <template x-if="room.schedules && room.schedules.length > 0">
                             <template x-for="s in room.schedules" :key="s.id || Math.random()">
                                 <div 
-                                    class="p-2.5 rounded-lg text-xs"
-                                    :class="s.is_my_class ? 'bg-amber-500/20 border border-amber-400/50 text-amber-200' : 'bg-gray-700/60 border border-gray-600/40 text-gray-300'"
+                                    class="rounded-xl border p-3 text-xs shadow-sm transition-colors duration-200 sm:p-4"
+                                    :class="s.is_my_class ? 'bg-green-50 border-green-300 text-green-900 shadow-sm' : 'bg-white border-gray-200 text-gray-800 hover:bg-green-50 hover:border-green-200'"
                                 >
                                     <div class="flex items-center justify-between font-bold">
-                                        <span class="flex items-center gap-1">
-                                            <span x-show="s.is_my_class" class="text-amber-400">⭐</span>
+                                        <span class="flex items-center gap-2">
+                                            <i x-show="s.is_my_class" class="fa-solid fa-star text-amber-400"></i>
                                             <span x-text="s.mata_kuliah?.nama || 'Mata Kuliah'"></span>
                                         </span>
-                                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-black/30 font-mono" x-text="s.hari + ', ' + s.jam_mulai + '-' + s.jam_selesai"></span>
+                                        <span class="rounded-lg border border-gray-200 bg-gray-100 px-2 py-1 font-mono text-[10px] text-gray-700" x-text="s.hari + ', ' + s.jam_mulai + '-' + s.jam_selesai"></span>
                                     </div>
-                                    <div class="text-[11px] text-gray-400 mt-1 flex items-center justify-between">
-                                        <span x-text="'👨‍🏫 ' + (s.dosen?.nama || 'Dosen Pengampu')"></span>
+                                    <div class="mt-2 flex items-center justify-between text-[11px] text-gray-600">
+                                        <span><i class="fa-solid fa-chalkboard-user"></i> <span x-text="s.dosen?.nama || 'Dosen Pengampu'"></span></span>
                                         <span class="text-[10px] text-gray-500" x-text="'Kelas ' + (s.kelompok_kelas || s.kelas || 'A')"></span>
                                     </div>
                                 </div>
                             </template>
                         </template>
                         <template x-if="!room.schedules || room.schedules.length === 0">
-                            <p class="text-gray-400 text-xs italic py-2 text-center">Tidak ada jadwal perkuliahan terdaftar di ruangan ini.</p>
+                            <p class="py-4 text-center text-xs italic text-gray-500">Tidak ada jadwal perkuliahan terdaftar di ruangan ini.</p>
                         </template>
                     </div>
                 </div>
             </div>
 
             <!-- Modal Footer: Big Navigation CTA -->
-            <div class="p-4 sm:p-5 bg-gray-900 border-t border-gray-800 shrink-0">
+            <div class="shrink-0 border-t border-gray-100 bg-white px-4 py-4 sm:px-7 sm:py-5">
                 <button 
                     type="button"
                     @click="startNavigation(building.latitude, building.longitude)" 
-                    class="w-full bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold py-3.5 px-4 rounded-xl shadow-lg hover:shadow-green-900/30 flex items-center justify-center gap-2 text-sm transition-all duration-200 cursor-pointer active:scale-[0.99]"
+                    class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#10A760] to-[#0D8A4E] px-5 py-4 text-sm font-bold text-white shadow-lg shadow-green-900/20 transition-all duration-200 hover:-translate-y-0.5 hover:from-[#0D8A4E] hover:to-[#0B7442] hover:shadow-xl hover:shadow-green-900/25 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 >
-                    <span class="text-lg">📍</span>
+                    <i class="fa-solid fa-location-dot text-lg"></i>
                     <span>Jalankan Rute Kelas (Google Maps Walk Navigation)</span>
                 </button>
             </div>
@@ -475,12 +480,16 @@
     </div>
 
     @push('scripts')
-        <!-- Leaflet JS CDN -->
-        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+        <!-- Mapbox GL JS 3D Script & Token Injection -->
+        <script>
+            window.MAPBOX_ACCESS_TOKEN = '{{ env('VITE_MAPBOX_ACCESS_TOKEN', '') }}';
+        </script>
+        <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
+
         <!-- Pannellum 360 JS CDN -->
         <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
         
         <!-- App Map Module via Vite -->
-        @vite(['resources/js/map.js'])
+        @vite(['resources/js/features/map.js'])
     @endpush
 </x-layouts.app>

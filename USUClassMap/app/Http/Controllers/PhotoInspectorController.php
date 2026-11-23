@@ -216,11 +216,17 @@ WHERE {
 SPARQL;
 
         try {
-            $response = Http::asForm()
-                ->timeout(5)
-                ->post($this->updateEndpoint, [
-                    'update' => $sparqlUpdate,
-                ]);
+            $username = env('FUSEKI_USERNAME', 'admin');
+            $password = env('FUSEKI_PASSWORD', 'admin');
+
+            $httpRequest = Http::asForm()->timeout(5);
+            if (!empty($username) && !empty($password)) {
+                $httpRequest = $httpRequest->withBasicAuth($username, $password);
+            }
+
+            $response = $httpRequest->post($this->updateEndpoint, [
+                'update' => $sparqlUpdate,
+            ]);
 
             if ($response->successful()) {
                 return response()->json([

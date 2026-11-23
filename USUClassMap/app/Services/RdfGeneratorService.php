@@ -135,15 +135,23 @@ class RdfGeneratorService
         }
 
         $dataEndpoint = config('sparql.data_endpoint');
-        $timeout = config('sparql.timeout', 5);
+        $timeout = config('sparql.timeout', 15);
+        $username = config('sparql.username', env('FUSEKI_USERNAME', 'admin'));
+        $password = config('sparql.password', env('FUSEKI_PASSWORD', 'admin'));
 
         try {
             $rdfContent = file_get_contents($this->rdfFilePath);
 
-            $response = Http::timeout($timeout)
+            $request = Http::timeout($timeout)
                 ->withHeaders([
                     'Content-Type' => 'application/rdf+xml; charset=utf-8',
-                ])
+                ]);
+
+            if (!empty($username) && !empty($password)) {
+                $request = $request->withBasicAuth($username, $password);
+            }
+
+            $response = $request
                 ->withBody($rdfContent, 'application/rdf+xml')
                 ->put($dataEndpoint . '?default');
 

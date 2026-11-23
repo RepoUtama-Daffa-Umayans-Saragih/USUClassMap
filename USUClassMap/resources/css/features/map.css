@@ -1,16 +1,31 @@
 /* ==========================================================================
-   Leaflet Full-Bleed Popup & Custom Scrollbar Overrides (Phase 6.2 & 6.3)
+   Mapbox GL JS 3D & Leaflet Compatibility Popups & Custom Overrides
+   Ported from Huawei C.O.R.E. Digital Twin Architecture
    ========================================================================== */
 
-/* Full-bleed Leaflet Popup wrapper */
+/* ─── MAPBOX GL 3D POPUP OVERRIDES (340px Full-Bleed Card) ─────────────── */
+.mapboxgl-popup {
+    max-width: 360px !important;
+    z-index: 40;
+}
+
+.custom-popup.mapboxgl-popup .mapboxgl-popup-content,
+.usu-custom-popup.mapboxgl-popup .mapboxgl-popup-content,
 .custom-popup .leaflet-popup-content-wrapper,
 .usu-custom-popup .leaflet-popup-content-wrapper {
     padding: 0 !important;
     overflow: hidden !important;
-    border-radius: 12px !important;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.18), 0 10px 10px -5px rgba(0, 0, 0, 0.08) !important;
-    border: 1px solid rgba(229, 231, 235, 0.9) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.22), 0 10px 10px -5px rgba(0, 0, 0, 0.1) !important;
+    border: 1px solid rgba(229, 231, 235, 0.95) !important;
     background: #ffffff !important;
+}
+
+.custom-popup.mapboxgl-popup .mapboxgl-popup-content,
+.usu-custom-popup.mapboxgl-popup .mapboxgl-popup-content {
+    width: 340px !important;
+    max-width: 340px !important;
+    line-height: 1.4 !important;
 }
 
 .custom-popup .leaflet-popup-content,
@@ -21,9 +36,10 @@
     line-height: 1.4 !important;
 }
 
-.custom-popup .leaflet-popup-tip-container,
-.usu-custom-popup .leaflet-popup-tip-container {
-    margin-top: -1px;
+.custom-popup.mapboxgl-popup .mapboxgl-popup-tip,
+.usu-custom-popup.mapboxgl-popup .mapboxgl-popup-tip {
+    border-top-color: #ffffff !important;
+    border-bottom-color: #ffffff !important;
 }
 
 .custom-popup .leaflet-popup-tip,
@@ -32,6 +48,9 @@
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
 }
 
+/* Close Button Override */
+.custom-popup .mapboxgl-popup-close-button,
+.usu-custom-popup .mapboxgl-popup-close-button,
 .custom-popup a.leaflet-popup-close-button,
 .usu-custom-popup a.leaflet-popup-close-button {
     top: 8px !important;
@@ -46,16 +65,77 @@
     justify-content: center !important;
     background: #f3f4f6 !important;
     border-radius: 9999px !important;
+    border: none !important;
+    cursor: pointer !important;
+    z-index: 50 !important;
     transition: all 0.15s ease-in-out !important;
 }
 
+.custom-popup .mapboxgl-popup-close-button:hover,
+.usu-custom-popup .mapboxgl-popup-close-button:hover,
 .custom-popup a.leaflet-popup-close-button:hover,
 .usu-custom-popup a.leaflet-popup-close-button:hover {
     color: #ef4444 !important;
     background: #fee2e2 !important;
 }
 
-/* Custom Elegant Thin Webkit Scrollbar */
+/* ─── HUD & CUSTOM MARKER ANIMATIONS & PHOTOCOPY LAYER ─────────────── */
+.custom-mapbox-marker.photocopy-marker {
+    display: block !important;
+    width: max-content !important;
+    height: auto !important;
+    cursor: pointer !important;
+    z-index: 30 !important;
+    pointer-events: auto !important;
+}
+
+.custom-mapbox-marker.photocopy-marker:hover {
+    z-index: 35 !important;
+}
+
+@keyframes radar-ping {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    70%, 100% { transform: scale(2.2); opacity: 0; }
+}
+
+.animate-radar-ping {
+    animation: radar-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes edit-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
+    50% { box-shadow: 0 0 0 14px rgba(245, 158, 11, 0); }
+}
+
+.animate-edit-pulse {
+    animation: edit-pulse 1.5s infinite;
+}
+
+/* Tooltips */
+.admin-marker-tooltip,
+.edit-marker-tooltip {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 12px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
+}
+
+.admin-marker-tooltip {
+    color: #1e40af;
+    background: #ffffff;
+    border: 2px solid #D4A017;
+}
+
+.edit-marker-tooltip {
+    color: #92400e;
+    background: #fffbeb;
+    border: 2px solid #f59e0b;
+}
+
+/* Custom Thin Webkit Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
     width: 5px;
     height: 5px;
@@ -75,7 +155,6 @@
     background: #94a3b8;
 }
 
-/* Hide scrollbar completely while maintaining scroll functionality */
 .no-scrollbar::-webkit-scrollbar {
     display: none;
     width: 0;
@@ -83,6 +162,6 @@
 }
 
 .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

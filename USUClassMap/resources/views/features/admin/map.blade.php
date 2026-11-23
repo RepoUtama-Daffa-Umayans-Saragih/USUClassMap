@@ -11,8 +11,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+    <!-- Mapbox GL JS 3D CSS -->
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css"/>
 
     <!-- Pannellum 360° Virtual Tour CSS & JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
@@ -24,6 +24,7 @@
     <!-- Data Passing Terisolasi dari Blade ke JS -->
     <script>
         window.ADMIN_MAP_CONFIG = {
+            mapboxToken: '{{ env('VITE_MAPBOX_ACCESS_TOKEN', '') }}',
             csrfToken: '{{ csrf_token() }}',
             buildings: @json($buildings),
             courses: @json($courses),
@@ -1330,7 +1331,10 @@
         }
     </script>
     
-    <!-- Admin Map Script (Leaflet Map Interaction) -->
+    <!-- Mapbox GL JS CDN -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
+
+    <!-- Admin Map Script (Mapbox GL JS 3D Map Interaction) -->
     @vite('resources/js/features/admin/map.js')
 </body>
 </html>
