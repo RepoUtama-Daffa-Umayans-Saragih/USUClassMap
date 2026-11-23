@@ -14,6 +14,13 @@ use Illuminate\Support\Facades\Route;
 // Semantic Web SPARQL Schedule Search
 Route::get('/schedules/search', [ScheduleApiController::class, 'search'])->name('api.schedules.search');
 
+// Semantic Web SPARQL 1.1 Dedicated Concepts (REGEX, ASK, AS)
+Route::prefix('sparql')->group(function () {
+    Route::get('/regex-search', [ScheduleApiController::class, 'regexSearch'])->name('api.sparql.regex');
+    Route::get('/check-room', [ScheduleApiController::class, 'checkRoom'])->name('api.sparql.check-room');
+    Route::get('/building-stats', [ScheduleApiController::class, 'buildingStats'])->name('api.sparql.building-stats');
+});
+
 // Campus Buildings & GPS Map Pins
 Route::get('/buildings', [BuildingApiController::class, 'index'])->name('api.buildings.index');
 Route::get('/buildings/{building}', [BuildingApiController::class, 'show'])->name('api.buildings.show');

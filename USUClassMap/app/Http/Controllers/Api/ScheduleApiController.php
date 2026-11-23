@@ -58,4 +58,71 @@ class ScheduleApiController extends Controller
             'data' => $payload,
         ], 200);
     }
+
+    /**
+     * Endpoint SPARQL 1.1 Konsep 1: REGEX Pattern Search.
+     * GET /api/sparql/regex-search?pattern=...
+     */
+    public function regexSearch(Request $request): JsonResponse
+    {
+        $pattern = $request->query('pattern', 'literacy');
+        $limit = (int) $request->query('limit', 25);
+
+        $result = $this->sparqlService->searchByRegex($pattern, $limit);
+
+        return response()->json($result);
+    }
+
+    /**
+     * Endpoint SPARQL 1.1 Konsep 2: YES/NO Query (ASK).
+     * GET /api/sparql/check-room?room=...&day=...&start_time=...
+     */
+    public function checkRoom(Request $request): JsonResponse
+    {
+        $room = $request->query('room', '');
+        $day = $request->query('day', 'Senin');
+        $startTime = $request->query('start_time');
+
+        if (empty($room)) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Parameter "room" wajib diisi.',
+            ], 422);
+        }
+
+        $exists = $this->sparqlService->checkRoomOccupiedAsk($room, $day, $startTime);
+
+        return response()->json([
+            'status'   => 'success',
+            'concept'  => 'SPARQL ASK (YES/NO Query)',
+            'source'   => 'SPARQL ASK (Apache Jena Fuseki)',
+            'room'     => $room,
+            'day'      => $day,
+            'time'     => $startTime,
+            'exists'   => $exists,
+            'message'  => $exists 
+                ? "Ruangan '{$room}' memiliki jadwal aktif pada hari {$day}" . ($startTime ? " jam {$startTime}" : "")
+                : "Ruangan '{$room}' TIDAK terpakai pada hari {$day}" . ($startTime ? " jam {$startTime}" : ""),
+        ]);
+    }
+
+    /**
+     * Endpoint SPARQL 1.1 Konsep 3: AS (COUNT Aggregation & BIND Assignment).
+     * GET /api/sparql/building-stats
+     */
+    public function buildingStats(Request $request): JsonResponse
+    {
+        $day = $request->query('day');
+        $stats = $this->sparqlService->getBuildingStatsAs();
+        $sampleBind = $this->sparqlService->getSchedulesWithDurationAs($day, 5);
+
+        return response()->json([
+            'status'             => 'success',
+            'concept'            => 'SPARQL AS (COUNT Aggregation & BIND Assignment)',
+            'source'             => 'SPARQL 1.1 AS (Apache Jena Fuseki)',
+            'total_buildings'    => count($stats),
+            'building_schedules' => $stats,
+            'sample_duration_as' => $sampleBind,
+        ]);
+    }
 }

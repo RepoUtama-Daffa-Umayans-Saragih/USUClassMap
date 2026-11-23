@@ -9,6 +9,9 @@ use App\Models\Schedule;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Services\Sparql\SparqlRegexQuery;
+use App\Services\Sparql\SparqlAskQuery;
+use App\Services\Sparql\SparqlAsQuery;
 
 class SparqlService
 {
@@ -877,5 +880,45 @@ SPARQL;
                 ],
             ];
         })->toArray();
+    }
+
+    /**
+     * Delegasi: Pencarian berbasis SPARQL REGEX.
+     */
+    public function searchByRegex(string $pattern, int $limit = 30): array
+    {
+        return (new SparqlRegexQuery())->searchByPattern($pattern, $limit);
+    }
+
+    /**
+     * Delegasi: Cek okupansi ruangan via SPARQL ASK (YES/NO).
+     */
+    public function checkRoomOccupiedAsk(string $roomName, string $day, ?string $startTime = null): bool
+    {
+        return (new SparqlAskQuery())->hasScheduleInRoom($roomName, $day, $startTime);
+    }
+
+    /**
+     * Delegasi: Cek keberadaan jadwal gedung via SPARQL ASK (YES/NO).
+     */
+    public function checkBuildingHasSchedulesAsk(string $buildingCode): bool
+    {
+        return (new SparqlAskQuery())->hasBuildingSchedules($buildingCode);
+    }
+
+    /**
+     * Delegasi: Statistik jadwal per gedung via SPARQL AS (COUNT agregasi).
+     */
+    public function getBuildingStatsAs(): array
+    {
+        return (new SparqlAsQuery())->getScheduleCountPerBuilding();
+    }
+
+    /**
+     * Delegasi: Jadwal dengan rentang waktu via SPARQL AS (BIND assignment).
+     */
+    public function getSchedulesWithDurationAs(?string $day = null, int $limit = 20): array
+    {
+        return (new SparqlAsQuery())->getSchedulesWithFormattedDuration($day, $limit);
     }
 }
