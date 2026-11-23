@@ -2,7 +2,17 @@
 
 namespace App\Providers;
 
+use App\Models\Building;
+use App\Models\Course;
+use App\Models\FotocopyService;
+use App\Models\FotocopyStore;
+use App\Models\Lecturer;
+use App\Models\PhotocopyItem;
+use App\Models\PhotocopyPlace;
+use App\Models\Room;
+use App\Models\RoomMedia;
 use App\Models\Schedule;
+use App\Observers\GitSnapshotObserver;
 use App\Observers\ScheduleObserver;
 use App\Repositories\Contracts\BuildingRepositoryInterface;
 use App\Repositories\Contracts\CourseRepositoryInterface;
@@ -14,6 +24,7 @@ use App\Repositories\Eloquent\CourseRepository;
 use App\Repositories\Eloquent\LecturerRepository;
 use App\Repositories\Eloquent\RoomRepository;
 use App\Repositories\Eloquent\ScheduleRepository;
+use App\Services\GitSnapshotSyncService;
 use App\Services\RdfGeneratorService;
 use App\Services\SparqlService;
 use Illuminate\Pagination\Paginator;
@@ -41,6 +52,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(SparqlService::class, function () {
             return new SparqlService();
         });
+
+        // Auto-Sync Git Snapshot Service
+        $this->app->singleton(GitSnapshotSyncService::class, function () {
+            return new GitSnapshotSyncService();
+        });
     }
 
     /**
@@ -52,5 +68,17 @@ class AppServiceProvider extends ServiceProvider
 
         // Model Observers
         Schedule::observe(ScheduleObserver::class);
+
+        // Auto-Sync Git Snapshot Observers (10 model CRUD utama)
+        Building::observe(GitSnapshotObserver::class);
+        Room::observe(GitSnapshotObserver::class);
+        RoomMedia::observe(GitSnapshotObserver::class);
+        Course::observe(GitSnapshotObserver::class);
+        Lecturer::observe(GitSnapshotObserver::class);
+        Schedule::observe(GitSnapshotObserver::class);
+        FotocopyStore::observe(GitSnapshotObserver::class);
+        PhotocopyPlace::observe(GitSnapshotObserver::class);
+        FotocopyService::observe(GitSnapshotObserver::class);
+        PhotocopyItem::observe(GitSnapshotObserver::class);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Models\Building;
+use App\Models\Room;
 use App\Models\Schedule;
 use EasyRdf\Graph;
 use EasyRdf\RdfNamespace;
@@ -33,8 +35,40 @@ class RdfGeneratorService
     {
         $graph = new Graph();
 
-        // Eager load all relational dependencies
-        $schedules = Schedule::with(['course', 'lecturer', 'room.building'])->get();
+        // 1. Serialisasi seluruh Gedung (usu:Gedung) terlebih dahulu agar gedung baru tanpa jadwal tetap masuk RDF & Fuseki
+        $buildings = Building::orderBy('id')->get();
+        foreach ($buildings as $building) {
+            $buildingUri = $this->resourceBaseUri . 'gedung/' . $building->id;
+            $buildingNode = $graph->resource($buildingUri, 'usu:Gedung');
+            $buildingNode->set('usu:namaGedung', $building->name);
+            $buildingNode->set('usu:kodeGedung', $building->code);
+            $buildingNode->set('usu:latitude', (string) $building->latitude);
+            $buildingNode->set('usu:longitude', (string) $building->longitude);
+            if (!empty($building->faculty)) {
+                $buildingNode->set('usu:fakultas', $building->faculty);
+            }
+        }
+
+        // 2. Serialisasi seluruh Ruangan (usu:Ruangan) beserta relasinya ke Gedung
+        $rooms = Room::with('building')->orderBy('id')->get();
+        foreach ($rooms as $room) {
+            $roomUri = $this->resourceBaseUri . 'ruangan/' . $room->id;
+            $roomNode = $graph->resource($roomUri, 'usu:Ruangan');
+            $roomNode->set('usu:namaRuangan', $room->name);
+            $roomNode->set('usu:lantaiRuangan', (int) $room->floor);
+            $roomNode->set('usu:kapasitasRuangan', (int) $room->capacity);
+            if ($room->photo_360_path) {
+                $roomNode->set('usu:pathFoto360', $room->photo_360_path);
+            }
+            if ($room->building) {
+                $buildingUri = $this->resourceBaseUri . 'gedung/' . $room->building->id;
+                $buildingNode = $graph->resource($buildingUri, 'usu:Gedung');
+                $roomNode->set('usu:beradaDiGedung', $buildingNode);
+            }
+        }
+
+        // 3. Eager load & serialisasi seluruh Jadwal Kuliah (usu:Jadwal)
+        $schedules = Schedule::with(['course', 'lecturer', 'room.building'])->orderBy('id')->get();
 
         foreach ($schedules as $schedule) {
             $scheduleUri = $this->resourceBaseUri . 'jadwal/' . $schedule->id;

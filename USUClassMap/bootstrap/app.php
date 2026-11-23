@@ -17,6 +17,14 @@ return Application::configure(basePath: dirname(__DIR__))
             'photocopy-directory/orders/*/simulate-payment',
         ]);
 
+        $middleware->web(append: [
+            \App\Http\Middleware\AutoSyncGitSnapshotMiddleware::class,
+        ]);
+
+        $middleware->api(append: [
+            \App\Http\Middleware\AutoSyncGitSnapshotMiddleware::class,
+        ]);
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
             'admin.fotokopi' => \App\Http\Middleware\EnsureUserIsAdminFotokopi::class,

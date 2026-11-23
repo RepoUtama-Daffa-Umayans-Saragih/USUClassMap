@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Observers\GitSnapshotObserver;
+use App\Services\GitSnapshotSyncService;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -11,19 +13,30 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            AdminUserSeeder::class,
-            BuildingSeeder::class,
-            RoomSeeder::class,
-            LecturerSeeder::class,
-            CourseSeeder::class,
-            ScheduleSeeder::class,
-            FibDummySeeder::class,
-            ServiceMasterSeeder::class,
-            FotocopySeeder::class,
-            PhotocopySeeder::class,
-            MkwuFasilkomSeeder::class,
-            MkwuCsvSeeder::class,
-        ]);
+        GitSnapshotObserver::withoutSync(function () {
+            $this->call([
+                AdminUserSeeder::class,
+                ServiceMasterSeeder::class,
+            ]);
+
+            if (is_file(database_path('seeders/snapshots/manifest.json'))) {
+                app(GitSnapshotSyncService::class)->importAll(true);
+
+                return;
+            }
+
+            $this->call([
+                BuildingSeeder::class,
+                RoomSeeder::class,
+                LecturerSeeder::class,
+                CourseSeeder::class,
+                ScheduleSeeder::class,
+                FibDummySeeder::class,
+                FotocopySeeder::class,
+                PhotocopySeeder::class,
+                MkwuFasilkomSeeder::class,
+                MkwuCsvSeeder::class,
+            ]);
+        });
     }
 }

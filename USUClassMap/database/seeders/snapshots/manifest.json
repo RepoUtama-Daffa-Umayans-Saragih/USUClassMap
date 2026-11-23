@@ -1,0 +1,32 @@
+{
+    "version": 1,
+    "generated_at": "2026-11-23T22:26:38+07:00",
+    "content_hash": "74d9cccb5d126fd237ce2c8ca1d0eca50b2fab02236a9463009d660c47f18733",
+    "counts": {
+        "buildings": 48,
+        "rooms": 133,
+        "room_media": 0,
+        "courses": 142,
+        "lecturers": 132,
+        "schedules": 318,
+        "fotocopy_stores": 31,
+        "photocopy_places": 31,
+        "fotocopy_services": 204,
+        "photocopy_items": 204,
+        "photo_360_calibrations": 0
+    },
+    "files": [
+        "buildings.json",
+        "rooms.json",
+        "room_media.json",
+        "courses.json",
+        "lecturers.json",
+        "schedules.json",
+        "fotocopy_stores.json",
+        "photocopy_places.json",
+        "fotocopy_services.json",
+        "photocopy_items.json",
+        "photo_360_calibrations.json",
+        "schedules.rdf"
+    ]
+}

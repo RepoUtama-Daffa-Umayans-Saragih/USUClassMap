@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Imports\ScheduleImport;
 use App\Jobs\RegenerateRdfJob;
 use App\Models\Schedule;
+use App\Observers\GitSnapshotObserver;
+use App\Services\GitSnapshotSyncService;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -30,18 +32,21 @@ class ImportController extends Controller
         try {
             $import = new ScheduleImport();
             
-            // Nonaktifkan observer sementara untuk mencegah queue flooding (500 baris = 500 job)
-            Schedule::withoutEvents(function () use ($import, $request) {
-                Excel::import($import, $request->file('file'));
+            // Nonaktifkan observer sementara untuk mencegah queue flooding & export berulang per baris
+            GitSnapshotObserver::withoutSync(function () use ($import, $request) {
+                Schedule::withoutEvents(function () use ($import, $request) {
+                    Excel::import($import, $request->file('file'));
+                });
             });
 
             $successCount = $import->getSuccessCount();
             $failCount = $import->getFailCount();
             $errors = $import->getErrors();
 
-            // Dispatch sinkronisasi RDF ke Fuseki tepat satu kali jika terdapat data yang berhasil diimpor
+            // Dispatch sinkronisasi RDF ke Fuseki & ekspor snapshot Git tepat satu kali jika terdapat data yang berhasil diimpor
             if ($successCount > 0) {
                 RegenerateRdfJob::dispatch();
+                app(GitSnapshotSyncService::class)->exportAll(true);
             }
 
             return redirect()->route('admin.import.index')

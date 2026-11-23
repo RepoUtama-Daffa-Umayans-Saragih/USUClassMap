@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\GitSnapshotSyncService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -229,6 +230,12 @@ SPARQL;
             ]);
 
             if ($response->successful()) {
+                try {
+                    app(GitSnapshotSyncService::class)->savePhotoCalibration($filename, $pitch, $yaw);
+                } catch (\Throwable $snapshotException) {
+                    logger()->warning('Gagal menyimpan kalibrasi foto 360 ke snapshot Git: ' . $snapshotException->getMessage());
+                }
+
                 return response()->json([
                     'success' => true,
                     'message' => "Koordinat Pitch & Yaw untuk {$filename} berhasil disimpan ke Apache Jena Fuseki.",

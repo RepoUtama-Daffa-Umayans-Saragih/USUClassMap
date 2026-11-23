@@ -1,2 +1,10 @@
 *
 !.gitignore
+!rooms/
+!rooms/**
+!room_media/
+!room_media/**
+!foto360/
+!foto360/**
+!foto360p/
+!foto360p/**

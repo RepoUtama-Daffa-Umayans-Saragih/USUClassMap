@@ -1,0 +1,1280 @@
+[
+    {
+        "id": 1,
+        "code": "UNI101",
+        "name": "Pendidikan Agama Islam",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 2,
+        "code": "UNI102",
+        "name": "Pendidikan Agama Kristen",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 3,
+        "code": "UNI103",
+        "name": "Pendidikan Agama Katolik",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 4,
+        "code": "UNI104",
+        "name": "Pendidikan Pancasila",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 5,
+        "code": "UNI105",
+        "name": "Pendidikan Kewarganegaraan",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 6,
+        "code": "UNI106",
+        "name": "Bahasa Indonesia",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 7,
+        "code": "UNI107",
+        "name": "Bahasa Inggris Akademik",
+        "credits": 2,
+        "type": "MKWK",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 8,
+        "code": "UNI108",
+        "name": "Kewirausahaan Berbasis IPTEK",
+        "credits": 2,
+        "type": "MKWK",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 9,
+        "code": "UNI109",
+        "name": "Kearifan Lokal dan Budaya Sumatera Utara",
+        "credits": 2,
+        "type": "MKWK",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 10,
+        "code": "UNI110",
+        "name": "Etika dan Literasi Digital",
+        "credits": 2,
+        "type": "MKWK",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 11,
+        "code": "KOM201",
+        "name": "Web Semantik & Ontologi",
+        "credits": 3,
+        "type": "Prodi",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 12,
+        "code": "KOM202",
+        "name": "Sistem Basis Data",
+        "credits": 3,
+        "type": "Prodi",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 13,
+        "code": "KOM203",
+        "name": "Rekayasa Perangkat Lunak",
+        "credits": 3,
+        "type": "Prodi",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 14,
+        "code": "KOM204",
+        "name": "Kecerdasan Buatan & Sistem Pakar",
+        "credits": 3,
+        "type": "Prodi",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 15,
+        "code": "KOM205",
+        "name": "Pengembangan Aplikasi Web Modern",
+        "credits": 3,
+        "type": "Prodi",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 16,
+        "code": "SAI4109",
+        "name": "Penyiaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 17,
+        "code": "SAE3108",
+        "name": "IELTS Preparation",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 18,
+        "code": "SAI4106",
+        "name": "Manajemen Seni Pertunjukan",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 19,
+        "code": "SAI4102",
+        "name": "Retorika",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 20,
+        "code": "SAI1108",
+        "name": "Folklor",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 21,
+        "code": "ILS2209",
+        "name": "Sejarah Sumatera Utara",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 22,
+        "code": "SAE2104",
+        "name": "Creative Writing",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 23,
+        "code": "SAM1106",
+        "name": "Sejarah Kesusasteraan Melayu",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 24,
+        "code": "ILS2104",
+        "name": "Sejarah Lisan",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 25,
+        "code": "SAE1102",
+        "name": "Basic Speaking",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 26,
+        "code": "SAB2107",
+        "name": "Struktur Masyarakat Batak",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 27,
+        "code": "ILS4104",
+        "name": "Dinamika Kebudayaan Di Indonesia",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 28,
+        "code": "SAA2109",
+        "name": "Percakapan Bahasa Arab Komunikatif",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 29,
+        "code": "SAE1108",
+        "name": "Cultural Awareness",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 30,
+        "code": "SAM4103",
+        "name": "Kuliner Dan Genealogi",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 31,
+        "code": "SAM3136",
+        "name": "Sastra Dan Perfilman",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 32,
+        "code": "ETN3101",
+        "name": "Estetika",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 33,
+        "code": "BAM1207",
+        "name": "Bahasa Hokkian",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 34,
+        "code": "BAM2107",
+        "name": "Bahasa Mandarin Dasar Percakapan",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 35,
+        "code": "BAM1208",
+        "name": "Seni Musik dan Kerajinan Tiongkok",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 36,
+        "code": "SAJ1108",
+        "name": "Bahasa Jepang N5 Dasar Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 37,
+        "code": "SAJ1103",
+        "name": "Huruf Jepang N5 Dasar Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 38,
+        "code": "SAJ1104",
+        "name": "Percakapan/Pendengaran N5 Dasar Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 39,
+        "code": "ILS3102",
+        "name": "Tradisi Dan Kearifan Lokal Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 40,
+        "code": "ILS3101",
+        "name": "Budaya Etnis Di Sumatera Utara Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 41,
+        "code": "ILS2103",
+        "name": "Budaya Masyarakat Perkebunan Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 42,
+        "code": "SAA3210",
+        "name": "Perkembangan Pemikiran Arab Dan Islam Internasionalisasi",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 43,
+        "code": "SAA1208",
+        "name": "Pengantar Kesusastraan Arab Internasionalisasi",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 44,
+        "code": "SAA3208",
+        "name": "Psikolinguistik Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 45,
+        "code": "SAA2208",
+        "name": "Geopolitik Kawasan Timur Tengah Internasionalisasi",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 46,
+        "code": "ETN3105",
+        "name": "Musik Dan Gender Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 47,
+        "code": "ETN2209",
+        "name": "Praktek Tari Sumatera Utara II Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 48,
+        "code": "ETN2207",
+        "name": "Praktek Musik Dunia II Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 49,
+        "code": "ETN2210",
+        "name": "Praktek Teater Sumatera Utara Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 50,
+        "code": "ETN2208",
+        "name": "Praktek Musik Nusantara II Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 51,
+        "code": "ETN2106",
+        "name": "Praktek Musik Dunia I Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 52,
+        "code": "ETN2108",
+        "name": "Paduan Suara Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 53,
+        "code": "ETN2109",
+        "name": "Praktek Tari Sumatera Utara I Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 54,
+        "code": "ETN2107",
+        "name": "Praktek Musik Nusantara I Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 55,
+        "code": "ETN1207",
+        "name": "Praktek Musik Sumatera Utara II Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 56,
+        "code": "ETN1205",
+        "name": "Musikologi Sumatera Utara Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 57,
+        "code": "ETN1105",
+        "name": "Musikologi Nusantara I Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 58,
+        "code": "ETN1108",
+        "name": "Praktek Musik Sumatera Utara I Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 59,
+        "code": "ETN1106",
+        "name": "Seni Pertunjukan Indonesia Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 60,
+        "code": "BAM3203",
+        "name": "Seni Bela Diri Tiongkok Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 61,
+        "code": "BAM4105",
+        "name": "Seni Lukis Dan Kaligrafi Tiongkok Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 62,
+        "code": "BAM3207",
+        "name": "Drama Dan Sinema Tiongkok Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 63,
+        "code": "SAE3204",
+        "name": "English For Journalism And Diplomacy Internasionalisasi",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 64,
+        "code": "SAE3205",
+        "name": "English For Office And Banking Internasionalisasi",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 65,
+        "code": "SAE 2103",
+        "name": "Extensive Reading Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 66,
+        "code": "SAE3105",
+        "name": "Semiotics Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 67,
+        "code": "SAE 2104",
+        "name": "Creative Writing Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 68,
+        "code": "SAE1101",
+        "name": "Basic Listening Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 69,
+        "code": "SAE1103",
+        "name": "Basic Reading Comprehension Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 70,
+        "code": "SAE1104",
+        "name": "Basic English Grammar Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 71,
+        "code": "SAI4101",
+        "name": "Bahasa Indonesia untuk Penutur Asing Internasionalisasi",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 72,
+        "code": "SAI3111",
+        "name": "Linguistik Forensik Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 73,
+        "code": "SAI3102",
+        "name": "Sastra dan Film Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 74,
+        "code": "SAI1106",
+        "name": "Leksikografi Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 75,
+        "code": "SAI1104",
+        "name": "Pengantar Filologi Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 76,
+        "code": "SAM2117",
+        "name": "UPACARA ADAT MELAYU Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 77,
+        "code": "SAM2116",
+        "name": "KERAJAAN MELAYU SUMATERA TIMUR Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 78,
+        "code": "SAM4105",
+        "name": "Kearifan Lokal Melayu Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 79,
+        "code": "SAM2120",
+        "name": "KARYA DAN PENGARANG SASTRA MELAYU Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 80,
+        "code": "SAB4111",
+        "name": "Estetika Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 81,
+        "code": "SAB3110",
+        "name": "Penulisan Artikel Jurnal Ilmiah Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 82,
+        "code": "SAB4248P",
+        "name": "Bahasa Belanda Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 83,
+        "code": "KOM1105",
+        "name": "Teknologi Komunikasi dan Informasi Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 84,
+        "code": "KOM3105",
+        "name": "Produksi Media Digital Jiwa Kewirausahaan",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 85,
+        "code": "AKT4119",
+        "name": "Sistem Bisnis Elektronik Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 86,
+        "code": "AKT1206",
+        "name": "Komputerisasi Ekonomi dan Bisnis Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 87,
+        "code": "AKT2217",
+        "name": "Sistem Informasi Akuntansi Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 88,
+        "code": "EKP3205",
+        "name": "Bank Digital Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 89,
+        "code": "KWU2102",
+        "name": "Digital Bisnis Jiwa Kewirausahaan",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 90,
+        "code": "IAB3239",
+        "name": "E-Business Jiwa Kewirausahaan",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 91,
+        "code": "USU2211",
+        "name": "Badminton Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 92,
+        "code": "ITP2211",
+        "name": "Makanan Tradisional Sumatera Utara Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 93,
+        "code": "SOS4110",
+        "name": "Korporasi dan CSR Internasionalisasi",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 94,
+        "code": "USU2208",
+        "name": "Futsal Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 95,
+        "code": "SOS2101",
+        "name": "Sosiologi Maritim Internasionalisasi",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 96,
+        "code": "SOS1104",
+        "name": "Statistik Sosial Internasionalisasi",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 97,
+        "code": "SOS4104",
+        "name": "Sosiologi Masyarakat Perkebunan Internasionalisasi",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 98,
+        "code": "SOS3106",
+        "name": "Mitigasi Bencana Internasionalisasi",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 99,
+        "code": "USU2214",
+        "name": "Catur Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 100,
+        "code": "PSI4112",
+        "name": "Psikologi Positif untuk Pengembangan Pribadi Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 101,
+        "code": "USU2215",
+        "name": "Karate Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 102,
+        "code": "USU2204",
+        "name": "Tenis Lapangan Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 103,
+        "code": "USU2210",
+        "name": "Taekwondo Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 104,
+        "code": "USU2200",
+        "name": "Sepak Bola Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 105,
+        "code": "USU2216",
+        "name": "Kendo Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 106,
+        "code": "IKM1105",
+        "name": "Seni dan Kebugaran Kesehatan Masyarakat Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 107,
+        "code": "USU2213",
+        "name": "Bola Voli Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 108,
+        "code": "USU2203",
+        "name": "Bola Basket Seni dan Kebugaran",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 109,
+        "code": "PTN2103",
+        "name": "Ilmu Kesehatan Ternak dan Masyarakat Veteriner Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 110,
+        "code": "PTN4102",
+        "name": "Manajemen Industri Ternak Unggas Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 111,
+        "code": "PTN4103",
+        "name": "Manajemen Industri Ternak Perah Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 112,
+        "code": "PTN1101",
+        "name": "Dasar Ilmu Peternakan Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 113,
+        "code": "KOM1103",
+        "name": "Keterampilan Berkomunikasi 1 Reading and Listening Skill Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 114,
+        "code": "KOM1101",
+        "name": "Komunikasi Inovatif dan Kreatif Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 115,
+        "code": "MNJ4106",
+        "name": "Manajemen Perubahan Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 116,
+        "code": "MNJ4105",
+        "name": "Manajemen Perbankan Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 117,
+        "code": "MNJ4107",
+        "name": "Komunikasi Bisnis Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 118,
+        "code": "MNJ4103",
+        "name": "Bisnis Internasional Internasionalisasi",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 119,
+        "code": "MNJ3203",
+        "name": "Manajemen Keuangan Internasional Internasionalisasi",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 120,
+        "code": "MNJ3102",
+        "name": "Studi Kelayakan Bisnis Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 121,
+        "code": "MNJ3104",
+        "name": "Perilaku Konsumen Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 122,
+        "code": "MNJ3103",
+        "name": "Manajemen Investasi Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 123,
+        "code": "MNJ2206",
+        "name": "Etika Bisnis Literacy Skills",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 124,
+        "code": "MNJ2102",
+        "name": "Perilaku Organisasi Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 125,
+        "code": "MNJ2105",
+        "name": "Manajemen Strategi Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 126,
+        "code": "MNJ1201",
+        "name": "Manajemen Sumber Daya Manusia Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 127,
+        "code": "MNJ1203",
+        "name": "Manajemen Pemasaran Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 128,
+        "code": "MNJ1202",
+        "name": "Manajemen Keuangan Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 129,
+        "code": "MNJ1102",
+        "name": "Pengantar Bisnis Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 130,
+        "code": "MNJ1101",
+        "name": "Manajemen Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 131,
+        "code": "AKT4112",
+        "name": "Manajemen Investasi dan Portopolio Literacy Skills",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 132,
+        "code": "EKP4106",
+        "name": "Perekonomian Indonesia Internasionalisasi",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 133,
+        "code": "EKP3212",
+        "name": "Ekonomi ASEAN Internasionalisasi",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 134,
+        "code": "IAP1105",
+        "name": "Pembangunan Berbasis Kearifan Lokal Kearifan Lokal",
+        "credits": 2,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 135,
+        "code": "KWU1101",
+        "name": "Pengantar Kewirausahaan Jiwa Kewirausahaan",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 136,
+        "code": "IAB3253",
+        "name": "Advanced Human Capital Management Jiwa Kewirausahaan",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 137,
+        "code": "IAB3251",
+        "name": "Event Management Jiwa Kewirausahaan",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 138,
+        "code": "IAB3250",
+        "name": "Talent Management And Development Jiwa Kewirausahaan",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 139,
+        "code": "IAB3249",
+        "name": "Tourism And Hospitality Management Jiwa Kewirausahaan",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 140,
+        "code": "IAB3247",
+        "name": "Supply Chain Jiwa Kewirausahaan",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 141,
+        "code": "IAB3238",
+        "name": "Business Strategy Jiwa Kewirausahaan",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 142,
+        "code": "IAB3237",
+        "name": "Entrepreneurship Mentoring Jiwa Kewirausahaan",
+        "credits": 3,
+        "type": "MKWU",
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    }
+]

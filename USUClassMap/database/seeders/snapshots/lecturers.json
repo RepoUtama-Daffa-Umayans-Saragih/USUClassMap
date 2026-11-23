@@ -1,0 +1,1190 @@
+[
+    {
+        "id": 1,
+        "name": "Prof. Dr. H. M. Arif Nasution, M.A.",
+        "nip": "196504151990031002",
+        "email": "arif.nasution@usu.ac.id",
+        "phone": "081260112233",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 2,
+        "name": "Dr. Hj. Siti Rahmah, S.H., M.Hum.",
+        "nip": "197008201995122001",
+        "email": "siti.rahmah@usu.ac.id",
+        "phone": "081370223344",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 3,
+        "name": "Dr. Drs. Budi Santoso, M.Pd.",
+        "nip": "197511102001121003",
+        "email": "budi.santoso@usu.ac.id",
+        "phone": "082165334455",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 4,
+        "name": "Dra. Nur Asiah, M.Si.",
+        "nip": "197803252003122002",
+        "email": "nur.asiah@usu.ac.id",
+        "phone": "085261445566",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 5,
+        "name": "Rahmat Hidayat, S.Kom., M.Sc.",
+        "nip": "198806122015041001",
+        "email": "rahmat.hidayat@usu.ac.id",
+        "phone": "081265556677",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 6,
+        "name": "Dr. Ir. Henry Sitompul, M.T.",
+        "nip": "196812041994031001",
+        "email": "henry.sitompul@usu.ac.id",
+        "phone": "081397667788",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 7,
+        "name": "Dra. Marlina Siregar, M.Hum.",
+        "nip": "197209141998022001",
+        "email": "marlina.siregar@usu.ac.id",
+        "phone": "082273778899",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 8,
+        "name": "Faisal Reza, S.T., M.Kom.",
+        "nip": "199002182019031008",
+        "email": "faisal.reza@usu.ac.id",
+        "phone": "085362889900",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 9,
+        "name": "Prof. Dr. Opim Salim Sitompul, M.Sc.",
+        "nip": "196208101988031002",
+        "email": "opim@usu.ac.id",
+        "phone": "081160889911",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 10,
+        "name": "Dr. Erna Budhiarti Nababan, M.IT.",
+        "nip": "196903221994032001",
+        "email": "erna.nababan@usu.ac.id",
+        "phone": "081260447788",
+        "created_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-08-25 22:11:56"
+    },
+    {
+        "id": 11,
+        "name": "Emma Marsella S.S., M.Si.",
+        "nip": "192739214207",
+        "email": "emma-marsella-ss-msi@usu.ac.id",
+        "phone": "081227068330",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 12,
+        "name": "Fikry Prastya Syahputra S.S., M.Si.",
+        "nip": "193914500531",
+        "email": "fikry-prastya-syahputra-ss-msi@usu.ac.id",
+        "phone": "081273187235",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 13,
+        "name": "Bambang Riyanto S.S., M. Si",
+        "nip": "190462521016",
+        "email": "bambang-riyanto-ss-m-si@usu.ac.id",
+        "phone": "081238800907",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 14,
+        "name": "Latifah Yusri Nasution S.S., M.Si",
+        "nip": "192039615230",
+        "email": "latifah-yusri-nasution-ss-msi@usu.ac.id",
+        "phone": "081267276665",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 15,
+        "name": "Junaidi S.S., M.A.",
+        "nip": "193777234115",
+        "email": "junaidi-ss-ma@usu.ac.id",
+        "phone": "081283718805",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 16,
+        "name": "Dr. Muhammad Yusuf S.Pd., M.A.",
+        "nip": "190904875882",
+        "email": "dr-muhammad-yusuf-spd-ma@usu.ac.id",
+        "phone": "081252432597",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 17,
+        "name": "Arie Azhari Nasution S.S., M.A.",
+        "nip": "191221223295",
+        "email": "arie-azhari-nasution-ss-ma@usu.ac.id",
+        "phone": "081270644616",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 18,
+        "name": "Lestari Dara Cinta Utami Ginting S.S, M.A",
+        "nip": "193685031605",
+        "email": "lestari-dara-cinta-utami-ginting-ss-ma@usu.ac.id",
+        "phone": "081268702394",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 19,
+        "name": "Puan Maharani S.Hum., M.A",
+        "nip": "193106164390",
+        "email": "puan-maharani-shum-ma@usu.ac.id",
+        "phone": "081220718483",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 20,
+        "name": "Dra. Herlina M.Hum.",
+        "nip": "192917909979",
+        "email": "dra-herlina-mhum@usu.ac.id",
+        "phone": "081284949180",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 21,
+        "name": "Dra. Lila Pelita Hati M.Si",
+        "nip": "190461208347",
+        "email": "dra-lila-pelita-hati-msi@usu.ac.id",
+        "phone": "081272881449",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 22,
+        "name": "Dr. Windi Chaldun Lc., M.Hum",
+        "nip": "190051880018",
+        "email": "dr-windi-chaldun-lc-mhum@usu.ac.id",
+        "phone": "081220780437",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 23,
+        "name": "Ely Hayati Nasution S.S., M. Si. CIT",
+        "nip": "191252019049",
+        "email": "ely-hayati-nasution-ss-m-si-cit@usu.ac.id",
+        "phone": "081211581836",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 24,
+        "name": "Dra. Mardiah Mawar Kembaren MA. Ph.D",
+        "nip": "191466945625",
+        "email": "dra-mardiah-mawar-kembaren-ma-phd@usu.ac.id",
+        "phone": "081296539695",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 25,
+        "name": "Dr. Vanesia Amelia Sebayang S.Sn., M.Sn",
+        "nip": "191076340540",
+        "email": "dr-vanesia-amelia-sebayang-ssn-msn@usu.ac.id",
+        "phone": "081239339090",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 26,
+        "name": "Julina B.A.,M.TCSOL.",
+        "nip": "191678473808",
+        "email": "julina-bamtcsol@usu.ac.id",
+        "phone": "081234376606",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 27,
+        "name": "Vivi Adryani Nasution S.S., MTCSOL",
+        "nip": "190988737850",
+        "email": "vivi-adryani-nasution-ss-mtcsol@usu.ac.id",
+        "phone": "081223817475",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 28,
+        "name": "Jessy S.S., MTCSOL",
+        "nip": "190695090894",
+        "email": "jessy-ss-mtcsol@usu.ac.id",
+        "phone": "081231363020",
+        "created_at": "2026-08-30 22:55:55",
+        "updated_at": "2026-08-30 22:55:55"
+    },
+    {
+        "id": 29,
+        "name": "Dr. Alemina Br. Perangin-angin S.S., M.Hum.",
+        "nip": "192362335491",
+        "email": "dr-alemina-br-peranginangin-ss-mhum@usu.ac.id",
+        "phone": "081271769894",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 30,
+        "name": "Prof. Dr. Rusdi Noor Rosa S.S., M.Hum",
+        "nip": "192593244152",
+        "email": "prof-dr-rusdi-noor-rosa-ss-mhum@usu.ac.id",
+        "phone": "081278847741",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 31,
+        "name": "Prof. Dr. Rudy Sofyan SS., M.Hum.",
+        "nip": "192384857119",
+        "email": "prof-dr-rudy-sofyan-ss-mhum@usu.ac.id",
+        "phone": "081225967233",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 32,
+        "name": "Irwan S.S., M.Si",
+        "nip": "193114137189",
+        "email": "irwan-ss-msi@usu.ac.id",
+        "phone": "081234963466",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 33,
+        "name": "Ghaisani Adnjani CH S.S., M.Si",
+        "nip": "194012499347",
+        "email": "ghaisani-adnjani-ch-ss-msi@usu.ac.id",
+        "phone": "081212234012",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 34,
+        "name": "Rani Arfianty SS, M.Phil., CIIQA",
+        "nip": "193614888315",
+        "email": "rani-arfianty-ss-mphil-ciiqa@usu.ac.id",
+        "phone": "081278974744",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 35,
+        "name": "Rachmad Fadillah Maha, S.S., M.Si. / Latifah Yusri Nasution S.S., M.Si",
+        "nip": "190481889919",
+        "email": "rachmad-fadillah-maha-ss-msi-latifah-yusri-nasution-ss-msi@usu.ac.id",
+        "phone": "081247618020",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 36,
+        "name": "Latifah Yusri Nasution S.S., M.Si / Rachmad Fadillah Maha, S.S., M.Si.",
+        "nip": "190610772540",
+        "email": "latifah-yusri-nasution-ss-msi-rachmad-fadillah-maha-ss-msi@usu.ac.id",
+        "phone": "081238668866",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 37,
+        "name": "Dr. Drs. Edi Sumarno M.Hum.",
+        "nip": "190371462692",
+        "email": "dr-drs-edi-sumarno-mhum@usu.ac.id",
+        "phone": "081249048622",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 38,
+        "name": "M. Azis Rizky Lubis S.S., MA",
+        "nip": "191716460592",
+        "email": "m-azis-rizky-lubis-ss-ma@usu.ac.id",
+        "phone": "081256351539",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 39,
+        "name": "Kiki Maulana Affandi S.S., M.A.",
+        "nip": "192780870862",
+        "email": "kiki-maulana-affandi-ss-ma@usu.ac.id",
+        "phone": "081249539002",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 40,
+        "name": "Dra. Junita Setiana Ginting M.Si",
+        "nip": "190955669679",
+        "email": "dra-junita-setiana-ginting-msi@usu.ac.id",
+        "phone": "081264549925",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 41,
+        "name": "Prof. Dr. Drs. Budi Agustono M.S / Muhammad Rasyidin, S.S., M.A.",
+        "nip": "190317993886",
+        "email": "prof-dr-drs-budi-agustono-ms-muhammad-rasyidin-ss-ma@usu.ac.id",
+        "phone": "081238875772",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 42,
+        "name": "Muhammad Jamil M.Hum",
+        "nip": "191540345551",
+        "email": "muhammad-jamil-mhum@usu.ac.id",
+        "phone": "081218786363",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 43,
+        "name": "Muhammad Nashi Huddin Ubaidillah S.Pd., M.A",
+        "nip": "193495198372",
+        "email": "muhammad-nashi-huddin-ubaidillah-spd-ma@usu.ac.id",
+        "phone": "081288662074",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 44,
+        "name": "Dr. Zulfan S.S., M.Hum.",
+        "nip": "191257600666",
+        "email": "dr-zulfan-ss-mhum@usu.ac.id",
+        "phone": "081234608892",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 45,
+        "name": "Rahmatika Luthfiana Sholikhah S.Sn., M.A",
+        "nip": "191333467324",
+        "email": "rahmatika-luthfiana-sholikhah-ssn-ma@usu.ac.id",
+        "phone": "081225344411",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 46,
+        "name": "Drs. Yoe Anto Ginting M.A",
+        "nip": "190220547382",
+        "email": "drs-yoe-anto-ginting-ma@usu.ac.id",
+        "phone": "081278870106",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 47,
+        "name": "Sapna Br Sitopu S.Pd.,M.Sn",
+        "nip": "194236974581",
+        "email": "sapna-br-sitopu-spdmsn@usu.ac.id",
+        "phone": "081288252849",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 48,
+        "name": "Hubari Gulo S.Sn., M.Sn.",
+        "nip": "190312396883",
+        "email": "hubari-gulo-ssn-msn@usu.ac.id",
+        "phone": "081216489947",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 49,
+        "name": "Prof. Drs. Mauly Purba MA, Ph.D",
+        "nip": "192553640415",
+        "email": "prof-drs-mauly-purba-ma-phd@usu.ac.id",
+        "phone": "081211528124",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 50,
+        "name": "Drs. Torang Naiborhu M.Hum.",
+        "nip": "192378627744",
+        "email": "drs-torang-naiborhu-mhum@usu.ac.id",
+        "phone": "081272172172",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 51,
+        "name": "Dra. Heristina Dewi M.Pd",
+        "nip": "190441523820",
+        "email": "dra-heristina-dewi-mpd@usu.ac.id",
+        "phone": "081240851517",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 52,
+        "name": "Dra. Rithaony MA.",
+        "nip": "191487144369",
+        "email": "dra-rithaony-ma@usu.ac.id",
+        "phone": "081245909136",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 53,
+        "name": "Dr. T. Kasa Rullah Adha S.S., MTCSOL",
+        "nip": "192225478848",
+        "email": "dr-t-kasa-rullah-adha-ss-mtcsol@usu.ac.id",
+        "phone": "081284631632",
+        "created_at": "2026-08-31 01:05:09",
+        "updated_at": "2026-08-31 01:05:09"
+    },
+    {
+        "id": 54,
+        "name": "Intan Erwani S.S., M.Hum",
+        "nip": "191640469315",
+        "email": "intan-erwani-ss-mhum@usu.ac.id",
+        "phone": "081277647878",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 55,
+        "name": "Qori Islami Aris S.S., M.Hum",
+        "nip": "193124187793",
+        "email": "qori-islami-aris-ss-mhum@usu.ac.id",
+        "phone": "081264607210",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 56,
+        "name": "Dr. Dian Marisha Putri S.S., M.Si.",
+        "nip": "192127094154",
+        "email": "dr-dian-marisha-putri-ss-msi@usu.ac.id",
+        "phone": "081261605396",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 57,
+        "name": "Dr. Tengku Syarfina S.S., M.Hum",
+        "nip": "193658354659",
+        "email": "dr-tengku-syarfina-ss-mhum@usu.ac.id",
+        "phone": "081271201204",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 58,
+        "name": "Prof. Dr. Dra. Mahriyuni M.Hum",
+        "nip": "191501836137",
+        "email": "prof-dr-dra-mahriyuni-mhum@usu.ac.id",
+        "phone": "081237356403",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 59,
+        "name": "Prof. Dr. Nurlela M.Hum.",
+        "nip": "192914841656",
+        "email": "prof-dr-nurlela-mhum@usu.ac.id",
+        "phone": "081237127785",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 60,
+        "name": "Prof. Dr. Dardanila M.Hum.",
+        "nip": "193863704028",
+        "email": "prof-dr-dardanila-mhum@usu.ac.id",
+        "phone": "081278463760",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 61,
+        "name": "Dr. Jamaluddin Nasution S.S., S.Pd., M.Hum / Prof. Dr. Dwi Widayati M.Hum.",
+        "nip": "192426724720",
+        "email": "dr-jamaluddin-nasution-ss-spd-mhum-prof-dr-dwi-widayati-mhum@usu.ac.id",
+        "phone": "081288846209",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 62,
+        "name": "Rachmad Fadillah Maha, S.S., M.Si.",
+        "nip": "192524835579",
+        "email": "rachmad-fadillah-maha-ss-msi@usu.ac.id",
+        "phone": "081217002696",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 63,
+        "name": "Prof. Dr. Drs. Mulyadi M.Hum.",
+        "nip": "193197642961",
+        "email": "prof-dr-drs-mulyadi-mhum@usu.ac.id",
+        "phone": "081238525345",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 64,
+        "name": "Dra. Rosliana Lubis M.Si",
+        "nip": "192051396336",
+        "email": "dra-rosliana-lubis-msi@usu.ac.id",
+        "phone": "081234433214",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 65,
+        "name": "Dra. Nurhayati Harahap M.Hum.",
+        "nip": "191458697175",
+        "email": "dra-nurhayati-harahap-mhum@usu.ac.id",
+        "phone": "081273849428",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 66,
+        "name": "Prof. Dr. Rozanna Mulyani MA",
+        "nip": "192929333514",
+        "email": "prof-dr-rozanna-mulyani-ma@usu.ac.id",
+        "phone": "081247898075",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 67,
+        "name": "Dra. Mardiah Mawar Kembaren MA. Ph.D / Prof. Drs. Suprayitno M.Hum., Ph.D.",
+        "nip": "190872160086",
+        "email": "dra-mardiah-mawar-kembaren-ma-phd-prof-drs-suprayitno-mhum-phd@usu.ac.id",
+        "phone": "081247969746",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 68,
+        "name": "Prayogo S. S., M. Si",
+        "nip": "193646059138",
+        "email": "prayogo-s-s-m-si@usu.ac.id",
+        "phone": "081252418032",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 69,
+        "name": "Drs. Warisman Sinaga M.Hum.",
+        "nip": "190863665953",
+        "email": "drs-warisman-sinaga-mhum@usu.ac.id",
+        "phone": "081243856878",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 70,
+        "name": "Prof. Dr. Erikson Saragih S.Pd., M.Hum",
+        "nip": "193277419547",
+        "email": "prof-dr-erikson-saragih-spd-mhum@usu.ac.id",
+        "phone": "081262343094",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 71,
+        "name": "Prof. Dr. Dwi Widayati M.Hum.",
+        "nip": "191308026636",
+        "email": "prof-dr-dwi-widayati-mhum@usu.ac.id",
+        "phone": "081273637005",
+        "created_at": "2026-08-31 01:05:10",
+        "updated_at": "2026-08-31 01:05:10"
+    },
+    {
+        "id": 72,
+        "name": "Munzaimah M. S.Sos., M.I.Kom",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 73,
+        "name": "Farida Hanim S.Sos., M.I.Kom",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 74,
+        "name": "Sambas Ade Kesuma SE, M.Si, Ph.D, Ak, CA",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 75,
+        "name": "Taufik Akbar Parluhutan SE, M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 76,
+        "name": "Khairul Ali Hutasuhut S.E., M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 77,
+        "name": "Dr. Lasma Melinda Siahaan S.E., M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 78,
+        "name": "Arif Qaedi Hutagalung SE , M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 79,
+        "name": "Dr. Kartini Harahap S.Sos., M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-08-31 12:36:02",
+        "updated_at": "2026-08-31 12:36:02"
+    },
+    {
+        "id": 80,
+        "name": "Adelia Safrita",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 81,
+        "name": "Prof. Dr. Ir. Elisa Julianti M.Si.\\nProf. Ir Hotnida Sinaga M.Phil. Ph.D\\nEdy Syah Putra Harahap S.TP., M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 82,
+        "name": "Prof. Dr. Badaruddin M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 83,
+        "name": "Alvin Rimanda Nasution",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 84,
+        "name": "Dr. Dra. Lina Sudarwati M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 85,
+        "name": "Henri Sitorus S.Sos., M.Sc., Ph.D",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 86,
+        "name": "Dr. Dra. Linda Elida M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 87,
+        "name": "Arif Rahman Saragih",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 88,
+        "name": "Rika Eliana S.Psi., M.Psi.\\nDra. Josetta Maria Remila Tuapattinaja M.Si\\nEka Danta Jaya Ginting S.Psi., MA\\nSuri Mutia Siregar S.Psi., M. Psi",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 89,
+        "name": "Nurul Azizah Daulay",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 90,
+        "name": "Abdul Hakim Lubis",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 91,
+        "name": "Rici Yannedo Napitupulu",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 92,
+        "name": "Suherman lubis",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 93,
+        "name": "Mhd Sarwo Edhie",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 94,
+        "name": "dr. Rusmalawaty M.Kes",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 95,
+        "name": "Fahmi Hakim",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 96,
+        "name": "Jefri Siahaan",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 97,
+        "name": "Dr. Ir. Nurzainah Ginting M.Sc.",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 98,
+        "name": "Dr. Ade Trisna S.Pt., MM",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 99,
+        "name": "Dr. Usman Budi S.Pt., M.Si.",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 100,
+        "name": "Ir. Achmad Sadeli S.Pt., M.Sc.",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 101,
+        "name": "Endah Rundika Pratiwi S.Sos., M.I.Kom",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 102,
+        "name": "Dr. Emilia Ramadhani S. Sos, M.A",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 103,
+        "name": "Dr. Arief Marizki Purba SE., S.Sos., M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 104,
+        "name": "Prof. Dr. Drs. Budi Agustono M.S",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 105,
+        "name": "Dr. Fivi Rahmatus Sofiyah SE., M.Si.",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:09",
+        "updated_at": "2026-11-22 12:34:09"
+    },
+    {
+        "id": 106,
+        "name": "Adika Fajar Putra SEI, MM",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 107,
+        "name": "Ance Marintan D. Sitohang SP., M.Div., M.Th",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 108,
+        "name": "Haryaji Catur Putera Hasman S.E., M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 109,
+        "name": "Alwi Ihsan Nababan S.E., M.M",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 110,
+        "name": "Muhammad Ananda Fakhri S.E., M.M",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 111,
+        "name": "Farianita Lestari S.E., M.Sc",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 112,
+        "name": "Berry Dhiyashavana S.P., M.S.M",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 113,
+        "name": "Ayulita Ramadhani M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 114,
+        "name": "Mutia Fitri Chania SE, M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 115,
+        "name": "Andrew Satria Lubis SE., M.Si\\nAdika Fajar Putra SEI, MM",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 116,
+        "name": "Muhammad Arif Lubis SE, M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 117,
+        "name": "Fauziah Kumalasari SE, M.Ak",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 118,
+        "name": "Wahyu Sugeng Imam Soeparno S.E., M.Si.",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 119,
+        "name": "Reza Kurnia Sekedang SE, M.SI",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 120,
+        "name": "Sukma Hayati Hakim SE, M.Si.",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 121,
+        "name": "Dewi Ratna Sari Simatupang SE, M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 122,
+        "name": "Siti Hazzah Nur. R S.Sos, M. AP",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 123,
+        "name": "Dr. Doli Muhammad Jafar Dalimunthe SE., M.Si.",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 124,
+        "name": "Walad Altsani HR SE., M.Ec.",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 125,
+        "name": "Arif Nuryawan S.Hut., M.Si., Ph.D",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 126,
+        "name": "Ainun Mardhiyah S.AB., M.AB",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 127,
+        "name": "Nana Dyki Dirbawanto S.E. M.A.B.",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 128,
+        "name": "Hafiza Adlina S,AB., M.AB",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 129,
+        "name": "Feronica Simanjorang S.Sos., M.AB",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 130,
+        "name": "Nicholas Marpaung S.AB., M.Si",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 131,
+        "name": "Feby Aulia Safrin S.AB., MA",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    },
+    {
+        "id": 132,
+        "name": "Dr. Jamaluddin Nasution S.S., S.Pd., M.Hum",
+        "nip": null,
+        "email": null,
+        "phone": null,
+        "created_at": "2026-11-22 12:34:10",
+        "updated_at": "2026-11-22 12:34:10"
+    }
+]
