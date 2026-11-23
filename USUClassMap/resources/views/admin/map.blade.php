@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Spatial Dashboard - USUClassMap</title>
+    <title>Admin Spatial Dashboard - USUStarterMap</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Google Fonts: Inter -->
@@ -11,8 +11,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <!-- Mapbox GL JS 3D CSS -->
     <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.css"/>
+
+    <!-- Leaflet 1.9.4 CSS & JS (Auto-Fallback 2D Engine) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
     <!-- Pannellum 360° Virtual Tour CSS & JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
@@ -38,7 +45,8 @@
                 fetchRooms: '{{ url("/admin-sementara-/map/rooms") }}',
                 roomMedia: '{{ url("/admin-sementara-/map/rooms") }}',
                 updateMetadata: '{{ url("/admin-sementara-/map/media") }}',
-                deleteMedia: '{{ url("/admin-sementara-/map/media") }}'
+                deleteMedia: '{{ url("/admin-sementara-/map/media") }}',
+                copyShops: '{{ route("api.copy-shops.index") }}'
             }
         };
     </script>
@@ -599,8 +607,59 @@
         <!-- ========================================================================= -->
         <!-- RIGHT MAP CANVAS                                                          -->
         <!-- ========================================================================= -->
-        <div class="flex-1 z-10 relative">
-            <div id="admin-map" class="w-full h-full"></div>
+        <div class="flex-1 z-10 relative h-full w-full bg-gray-200">
+            <!-- Floating Spatial HUD Controls (Huawei C.O.R.E. Style — Synchronized with User Map) -->
+            <div class="absolute top-3 right-14 z-[999] flex flex-wrap items-center gap-2">
+                <!-- 2D / 3D Perspective Toggle Button -->
+                <button 
+                    type="button" 
+                    id="admin-perspective-toggle-btn"
+                    onclick="window.USUAdminMap && window.USUAdminMap.togglePerspective()"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-[#10A760] shadow-md border border-gray-200 hover:border-[#10A760] flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Beralih antara Mode 3D dan Mode 2D Datar"
+                >
+                    <i class="fa-solid fa-cube text-[#10A760]"></i>
+                    <span id="admin-perspective-label">Mode 3D</span>
+                </button>
+
+                <!-- Satellite Mode Toggle Button -->
+                <button 
+                    type="button" 
+                    id="admin-satellite-toggle-btn"
+                    onclick="window.USUAdminMap && window.USUAdminMap.toggleSatelliteMode()"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-cyan-700 shadow-md border border-gray-200 hover:border-cyan-500 flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Beralih antara Peta Vektor Standar dan Citra Satelit"
+                >
+                    <i id="admin-satellite-icon" class="fa-solid fa-satellite text-cyan-600"></i>
+                    <span id="admin-satellite-label">Satelit</span>
+                </button>
+
+                <!-- Reset Camera to USU Center Button -->
+                <button 
+                    type="button" 
+                    id="admin-reset-center-btn"
+                    onclick="window.USUAdminMap && window.USUAdminMap.resetCampusView()"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-blue-600 shadow-md border border-gray-200 hover:border-blue-400 flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Pusatkan Kembali Kamera ke Kampus USU"
+                >
+                    <i class="fa-solid fa-crosshairs text-blue-600"></i>
+                    <span>Reset Kamera</span>
+                </button>
+
+                <!-- Floating Quick Toggle for Photocopy Layer -->
+                <button 
+                    type="button" 
+                    id="admin-floating-photocopy-btn"
+                    onclick="window.USUAdminMap && window.USUAdminMap.togglePhotocopyLayer()"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-emerald-700 shadow-md border border-gray-200 hover:border-emerald-500 flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Tampilkan / Sembunyikan 31 Lokasi Mitra Fotokopi & Percetakan USU"
+                >
+                    <i class="fa-solid fa-print text-emerald-600"></i>
+                    <span>Fotokopi (<span id="admin-floating-photocopy-count">31</span>)</span>
+                </button>
+            </div>
+
+            <div id="admin-map" class="w-full h-full min-h-[450px]"></div>
         </div>
 
         <!-- ========================================================================= -->
@@ -1335,6 +1394,6 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
 
     <!-- Admin Map Script (Mapbox GL JS 3D Map Interaction) -->
-    <script src="/js/admin-map.js" defer></script>
+    @vite('resources/js/features/admin/map.js')
 </body>
 </html>

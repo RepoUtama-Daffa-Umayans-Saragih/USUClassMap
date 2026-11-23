@@ -5,10 +5,48 @@ namespace App\Http\Controllers\AdminFotokopi;
 use App\Http\Controllers\Controller;
 use App\Models\FotocopyService;
 use App\Models\FotocopyStore;
+use App\Models\PhotocopyItem;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
+    /**
+     * Sinkronkan FotocopyService ke PhotocopyItem agar halaman publik (/fotocopy/{id}) selalu real-time.
+     */
+    protected function syncToPhotocopyItem(FotocopyService $service, ?int $oldStoreId = null, ?string $oldName = null): void
+    {
+        try {
+            $item = null;
+            if ($oldStoreId && $oldName) {
+                $item = PhotocopyItem::where('photocopy_place_id', $oldStoreId)
+                    ->where('name', $oldName)
+                    ->first();
+            }
+            if (!$item) {
+                $item = PhotocopyItem::where('photocopy_place_id', $service->store_id)
+                    ->where('name', $service->name)
+                    ->first();
+            }
+
+            $payload = [
+                'photocopy_place_id' => $service->store_id,
+                'name' => $service->name,
+                'category' => $service->category,
+                'price' => $service->price,
+                'unit' => $service->unit,
+                'description' => $service->description,
+                'is_available' => (bool) $service->is_available,
+            ];
+
+            if ($item) {
+                $item->update($payload);
+            } else {
+                PhotocopyItem::create($payload);
+            }
+        } catch (\Throwable $e) {
+            logger()->warning('[USUClassMap Sync] Gagal menyinkronkan FotocopyService ke PhotocopyItem: ' . $e->getMessage());
+        }
+    }
     public function index(Request $request)
     {
         $query = FotocopyService::with('store');
@@ -53,7 +91,8 @@ class ServiceController extends Controller
             'is_available' => 'required|boolean',
         ]);
 
-        FotocopyService::create($validated);
+        $service = FotocopyService::create($validated);
+        $this->syncToPhotocopyItem($service);
 
         return redirect()->route('admin-fotokopi.services.index')
             ->with('success', "Item layanan '{$validated['name']}' berhasil ditambahkan ke katalog!");
@@ -67,6 +106,9 @@ class ServiceController extends Controller
 
     public function update(Request $request, FotocopyService $service)
     {
+        $oldStoreId = (int) $service->store_id;
+        $oldName = $service->name;
+
         $validated = $request->validate([
             'store_id' => 'required|exists:fotocopy_stores,id',
             'name' => 'required|string|max:150',
@@ -78,6 +120,7 @@ class ServiceController extends Controller
         ]);
 
         $service->update($validated);
+        $this->syncToPhotocopyItem($service, $oldStoreId, $oldName);
 
         return redirect()->route('admin-fotokopi.services.index')
             ->with('success', "Item layanan '{$service->name}' berhasil diperbarui!");
@@ -85,8 +128,17 @@ class ServiceController extends Controller
 
     public function destroy(FotocopyService $service)
     {
+        $storeId = $service->store_id;
         $name = $service->name;
         $service->delete();
+
+        try {
+            PhotocopyItem::where('photocopy_place_id', $storeId)
+                ->where('name', $name)
+                ->delete();
+        } catch (\Throwable $e) {
+            logger()->warning('[USUClassMap Sync] Gagal menghapus PhotocopyItem: ' . $e->getMessage());
+        }
 
         return redirect()->route('admin-fotokopi.services.index')
             ->with('success', "Layanan '{$name}' berhasil dihapus dari katalog.");

@@ -15,7 +15,17 @@
 
 import mapboxgl from 'mapbox-gl';
 
-document.addEventListener('DOMContentLoaded', () => {
+// Bersihkan konteks WebGL saat berpindah atau me-refresh halaman agar tidak exhaust WebGL
+window.addEventListener('beforeunload', () => {
+    if (window.__usuMapInstance) {
+        try {
+            window.__usuMapInstance.remove();
+        } catch (e) {}
+        window.__usuMapInstance = null;
+    }
+});
+
+function initMapEngine() {
     const mapElement = document.getElementById('map');
     if (!mapElement) return;
 
@@ -29,6 +39,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const DEFAULT_BEARING = -15; // Rotasi dinamis kamera Huawei C.O.R.E.
     const RECENT_SEARCHES_KEY = 'usuclassmap_recent_searches';
     const BOOKMARKS_KEY = 'usuclassmap_bookmarks';
+    const DEFAULT_MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
+    const SATELLITE_STORAGE_KEY = 'usuclassmap_satellite_mode';
+    const SATELLITE_SOURCE_ID = 'google-satellite-source';
+    const SATELLITE_LAYER_ID = 'google-satellite-layer';
+
+    let isSatelliteMode = false;
+    try {
+        const savedSatellite = localStorage.getItem(SATELLITE_STORAGE_KEY);
+        const legacyStyle = localStorage.getItem('usuclassmap_map_style');
+        if (savedSatellite === 'true' || (legacyStyle && legacyStyle.includes('satellite'))) {
+            isSatelliteMode = true;
+        }
+        if (legacyStyle) {
+            localStorage.removeItem('usuclassmap_map_style');
+            localStorage.setItem(SATELLITE_STORAGE_KEY, isSatelliteMode ? 'true' : 'false');
+        }
+    } catch (e) {}
 
     const mapboxToken = window.MAPBOX_ACCESS_TOKEN 
         || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_MAPBOX_ACCESS_TOKEN) 
@@ -38,6 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mb = window.mapboxgl || mapboxgl;
     if (mb) {
         mb.accessToken = mapboxToken;
+    }
+    if (typeof mapboxgl !== 'undefined' && mapboxgl) {
+        mapboxgl.accessToken = mapboxToken;
     }
 
     let map = null;
@@ -77,29 +107,68 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. INITIALIZE MAPBOX GL JS 3D ENGINE
     // =========================================================================
     function initMap() {
+        const mapElement = document.getElementById('map');
+        if (!mapElement) {
+            console.error('[USUClassMap] Container #map tidak ditemukan.');
+            return;
+        }
+
         if (!mb) {
             console.error('[USUClassMap] Mapbox GL JS tidak terdeteksi.');
+            renderFallbackMapError(new Error('Pustaka Mapbox GL JS tidak terdeteksi. Periksa koneksi internet Anda.'));
             return;
+        }
+
+        // Cek eksplisit dukungan WebGL sebelum Mapbox mencoba getContext
+        if (typeof mb.supported === 'function' && !mb.supported({ failIfMajorPerformanceCaveat: false })) {
+            const err = new Error('Browser atau kartu grafis (GPU) Anda saat ini tidak mengizinkan inisialisasi WebGL.');
+            console.error('[USUClassMap]', err);
+            renderFallbackMapError(err);
+            return;
+        }
+
+        // Pastikan container memiliki tinggi dan lebar valid (> 0px)
+        if (mapElement.clientWidth === 0 || mapElement.clientHeight === 0) {
+            mapElement.style.minHeight = '400px';
+            mapElement.style.height = '100%';
+            mapElement.style.width = '100%';
+        }
+
+        // Singleton pattern: bersihkan instance peta lama jika ada
+        if (window.__usuMapInstance) {
+            try {
+                window.__usuMapInstance.remove();
+            } catch (e) {
+                console.warn('[USUClassMap] Gagal membersihkan instance peta sebelumnya:', e);
+            }
+            window.__usuMapInstance = null;
+            map = null;
         }
 
         try {
             map = new mb.Map({
                 container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v12',
+                style: DEFAULT_MAP_STYLE,
                 center: DEFAULT_CENTER,
                 zoom: DEFAULT_ZOOM,
-                pitch: DEFAULT_PITCH,
-                bearing: DEFAULT_BEARING,
-                antialias: true
+                pitch: is3DMode ? DEFAULT_PITCH : 0,
+                bearing: is3DMode ? DEFAULT_BEARING : 0,
+                antialias: true,
+                failIfMajorPerformanceCaveat: false
             });
+
+            window.__usuMapInstance = map;
 
             // Tambahkan kontrol navigasi (Zoom & Compass/Pitch) di pojok kanan atas
             map.addControl(new mb.NavigationControl({ visualizePitch: true }), 'top-right');
 
-            // Injeksi Layer 3D Building Extrusions (Adopsi Huawei C.O.R.E.)
+            // Injeksi Layer Google Satellite & 3D Building Extrusions saat style selesai dimuat
             map.on('style.load', () => {
+                injectSatelliteLayer();
                 inject3DBuildingsLayer();
             });
+
+            updateSatelliteButtonState();
 
             // Initialize Recent Searches UI
             renderRecentSearches();
@@ -113,8 +182,48 @@ document.addEventListener('DOMContentLoaded', () => {
             loadPhotocopyPlaces();
 
         } catch (err) {
-            console.error('[USUClassMap] Inisialisasi peta 3D gagal:', err);
+            console.error('[USUClassMap] Inisialisasi peta 3D/WebGL gagal:', err);
             renderFallbackMapError(err);
+        }
+    }
+
+    /**
+     * Injeksi Raster Layer Google Satellite Hybrid (Citra Satelit + Label Jalan/POI)
+     * Tidak mengganti style Mapbox sehingga bebas context loss WebGL
+     */
+    function injectSatelliteLayer() {
+        if (!map) return;
+
+        if (!map.getSource(SATELLITE_SOURCE_ID)) {
+            map.addSource(SATELLITE_SOURCE_ID, {
+                type: 'raster',
+                tiles: [
+                    'https://mt0.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+                    'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+                    'https://mt2.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+                    'https://mt3.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
+                ],
+                tileSize: 256,
+                attribution: '&copy; Google Maps'
+            });
+        }
+
+        if (!map.getLayer(SATELLITE_LAYER_ID)) {
+            const beforeLayerId = map.getLayer('3d-buildings') ? '3d-buildings' : undefined;
+            map.addLayer({
+                id: SATELLITE_LAYER_ID,
+                type: 'raster',
+                source: SATELLITE_SOURCE_ID,
+                layout: {
+                    visibility: isSatelliteMode ? 'visible' : 'none'
+                },
+                paint: {
+                    'raster-opacity': 1.0,
+                    'raster-fade-duration': 200
+                }
+            }, beforeLayerId);
+        } else {
+            map.setLayoutProperty(SATELLITE_LAYER_ID, 'visibility', isSatelliteMode ? 'visible' : 'none');
         }
     }
 
@@ -157,23 +266,58 @@ document.addEventListener('DOMContentLoaded', () => {
                         ['get', 'min_height']
                     ],
                     'fill-extrusion-opacity': 0.65
+                },
+                'layout': {
+                    'visibility': (is3DMode && !isSatelliteMode) ? 'visible' : 'none'
                 }
             }, labelLayerId);
+        } else {
+            map.setLayoutProperty('3d-buildings', 'visibility', (is3DMode && !isSatelliteMode) ? 'visible' : 'none');
         }
     }
 
     function renderFallbackMapError(error) {
-        if (!mapElement) return;
-        mapElement.innerHTML = `
-            <div class="flex flex-col items-center justify-center h-full p-6 text-center bg-gray-50">
-                <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4 shadow-sm">
+        const el = document.getElementById('map') || mapElement;
+        if (!el) return;
+
+        const errMsg = (error && error.message) ? error.message : String(error || '');
+        const isWebGLError = errMsg.toLowerCase().includes('webgl') || errMsg.toLowerCase().includes('grafis');
+
+        const errorTitle = isWebGLError 
+            ? 'Akselerasi Grafis (WebGL) Terkendala' 
+            : 'Gagal Memuat Engine Peta 3D';
+            
+        const errorDesc = isWebGLError
+            ? 'Browser Anda kehabisan konteks grafis WebGL atau akselerasi hardware sedang nonaktif. Klik tombol "Muat Ulang Peta" di bawah untuk mencoba kembali.'
+            : (errMsg || 'Periksa token Mapbox atau koneksi internet perangkat Anda.');
+
+        el.innerHTML = `
+            <div class="flex flex-col items-center justify-center h-full w-full min-h-[400px] p-6 text-center bg-slate-50 border border-slate-200 rounded-2xl shadow-inner z-10">
+                <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4 shadow-sm ring-8 ring-amber-50">
                     <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
                 </div>
-                <h3 class="text-base font-bold text-gray-800">Gagal Memuat Engine Peta 3D</h3>
-                <p class="text-xs text-gray-500 max-w-sm mt-1">Periksa token Mapbox atau koneksi internet perangkat Anda.</p>
-                <button onclick="location.reload()" class="mt-4 px-4 py-2 bg-[#10A760] text-white text-xs font-bold rounded-xl shadow-md hover:bg-[#0D8A4E] transition-all">
-                    Muat Ulang Halaman
-                </button>
+                <h3 class="text-base font-bold text-gray-800">${errorTitle}</h3>
+                <p class="text-xs text-gray-600 max-w-md mt-2 leading-relaxed">${errorDesc}</p>
+                <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+                    <button 
+                        type="button" 
+                        onclick="if(window.USUClassMap && window.USUClassMap.retryInitMap) { window.USUClassMap.retryInitMap(); } else { location.reload(); }" 
+                        class="px-5 py-2.5 bg-[#10A760] text-white text-xs font-bold rounded-xl shadow-md hover:bg-[#0D8A4E] transition-all flex items-center gap-2 cursor-pointer active:scale-95"
+                    >
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Muat Ulang Peta</span>
+                    </button>
+                    <button 
+                        type="button" 
+                        onclick="location.reload()" 
+                        class="px-4 py-2.5 bg-white text-gray-700 border border-gray-300 text-xs font-semibold rounded-xl hover:bg-gray-50 transition-all cursor-pointer"
+                    >
+                        Refresh Halaman
+                    </button>
+                </div>
+                <div class="mt-4 text-[11px] text-gray-400 font-mono">
+                    Detail: ${errMsg || 'WebGL_Init_Failure'}
+                </div>
             </div>
         `;
     }
@@ -559,6 +703,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /**
      * GENERATE BUILDING POPUP CONTENT (SMART FOCUS & HIGHLIGHT INDEX 0)
+     * - Menempatkan ruangan target hasil pencarian di index 0 (paling atas).
+     * - Menyorot kartu ruangan target dengan border biru, ring menyala, dan lencana Hasil Pencarian.
+     * - Menempatkan jadwal target pilihan di urutan teratas (index 0) kartu ruangan.
+     * - Menampilkan kotak thumbnail foto kelas (w-20 h-20) di sisi kiri.
      */
     function generateBuildingPopupContent(
         building, 
@@ -1686,6 +1834,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 duration: 1000
             });
 
+            if (map.getLayer('3d-buildings')) {
+                map.setLayoutProperty('3d-buildings', 'visibility', (is3DMode && !isSatelliteMode) ? 'visible' : 'none');
+            } else if (is3DMode && !isSatelliteMode) {
+                inject3DBuildingsLayer();
+            }
+
             const labelEl = document.getElementById('perspective-label');
             if (labelEl) {
                 labelEl.textContent = is3DMode ? 'Mode 3D' : 'Mode 2D';
@@ -1697,6 +1851,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     btn.classList.remove('text-[#10A760]', 'border-[#10A760]');
                 }
+            }
+        },
+
+        toggleSatelliteMode: () => {
+            if (!map) return;
+            isSatelliteMode = !isSatelliteMode;
+
+            try {
+                localStorage.setItem(SATELLITE_STORAGE_KEY, isSatelliteMode ? 'true' : 'false');
+            } catch (e) {}
+
+            updateSatelliteButtonState();
+
+            if (map.getLayer(SATELLITE_LAYER_ID)) {
+                map.setLayoutProperty(SATELLITE_LAYER_ID, 'visibility', isSatelliteMode ? 'visible' : 'none');
+            } else {
+                injectSatelliteLayer();
+            }
+
+            if (map.getLayer('3d-buildings')) {
+                map.setLayoutProperty('3d-buildings', 'visibility', (is3DMode && !isSatelliteMode) ? 'visible' : 'none');
             }
         },
 
@@ -1715,11 +1890,67 @@ document.addEventListener('DOMContentLoaded', () => {
             if (labelEl) labelEl.textContent = 'Mode 3D';
             const btn = document.getElementById('map-perspective-toggle-btn');
             if (btn) btn.classList.add('text-[#10A760]', 'border-[#10A760]');
+
+            if (map.getLayer('3d-buildings')) {
+                map.setLayoutProperty('3d-buildings', 'visibility', (!isSatelliteMode) ? 'visible' : 'none');
+            } else if (!isSatelliteMode) {
+                inject3DBuildingsLayer();
+            }
+        },
+
+        retryInitMap: () => {
+            const el = document.getElementById('map');
+            if (el) el.innerHTML = '';
+            initMap();
         },
 
         getMap: () => map
     };
 
+    function updateSatelliteButtonState() {
+        const btn = document.getElementById('map-satellite-toggle-btn');
+        const label = document.getElementById('satellite-label');
+        const icon = document.getElementById('satellite-icon');
+
+        if (!btn) return;
+
+        if (isSatelliteMode) {
+            btn.classList.add('bg-slate-900', 'text-white', 'border-slate-700', 'shadow-slate-900/30');
+            btn.classList.remove('bg-white/95', 'text-gray-700', 'border-gray-200');
+            if (icon) {
+                icon.classList.remove('text-cyan-600');
+                icon.classList.add('text-cyan-400');
+            }
+            if (label) {
+                label.textContent = 'Mode Satelit';
+            }
+        } else {
+            btn.classList.remove('bg-slate-900', 'text-white', 'border-slate-700', 'shadow-slate-900/30');
+            btn.classList.add('bg-white/95', 'text-gray-700', 'border-gray-200');
+            if (icon) {
+                icon.classList.remove('text-cyan-400');
+                icon.classList.add('text-cyan-600');
+            }
+            if (label) {
+                label.textContent = 'Satelit';
+            }
+        }
+    }
+
     // Initialize Mapbox Engine
     initMap();
-});
+}
+
+// Inisialisasi engine secara tangguh (anti-double initialization)
+let isMapEngineStarted = false;
+function startMapEngine() {
+    if (isMapEngineStarted) return;
+    isMapEngineStarted = true;
+    initMapEngine();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startMapEngine, { once: true });
+} else {
+    startMapEngine();
+}

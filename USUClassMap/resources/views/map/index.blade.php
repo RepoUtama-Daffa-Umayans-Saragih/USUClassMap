@@ -170,6 +170,18 @@
                     <span id="perspective-label">Mode 3D</span>
                 </button>
 
+                <!-- Satellite Mode Toggle Button -->
+                <button 
+                    type="button" 
+                    id="map-satellite-toggle-btn"
+                    onclick="window.USUClassMap && window.USUClassMap.toggleSatelliteMode()"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-cyan-700 shadow-md border border-gray-200 hover:border-cyan-500 flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Beralih antara Peta Vektor Standar dan Citra Satelit"
+                >
+                    <i id="satellite-icon" class="fa-solid fa-satellite text-cyan-600"></i>
+                    <span id="satellite-label">Satelit</span>
+                </button>
+
                 <!-- Reset Camera to USU Center Button -->
                 <button 
                     type="button" 
@@ -194,7 +206,7 @@
                     <span>Fotokopi (<span id="floating-photocopy-count">31</span>)</span>
                 </button>
             </div>
-            <div id="map" class="w-full h-full z-0"></div>
+            <div id="map" class="w-full h-full min-h-[400px] z-0"></div>
         </main>
     </div>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\RegenerateRdfJob;
 use App\Models\Building;
 use App\Models\Room;
 use App\Models\Schedule;
@@ -53,6 +54,7 @@ class AdminMapController extends Controller
 
         try {
             $building = Building::create($request->all());
+            RegenerateRdfJob::dispatch();
             return response()->json([
                 'success' => true,
                 'message' => 'Gedung berhasil ditambahkan!',
@@ -92,6 +94,7 @@ class AdminMapController extends Controller
         try {
             $room = Room::create($request->all());
             $room->load('building');
+            RegenerateRdfJob::dispatch();
 
             return response()->json([
                 'success' => true,
@@ -238,6 +241,7 @@ class AdminMapController extends Controller
             $building->update($request->only([
                 'name', 'code', 'faculty', 'latitude', 'longitude', 'description', 'floor_count'
             ]));
+            RegenerateRdfJob::dispatch();
 
             return response()->json([
                 'success' => true,
@@ -278,6 +282,7 @@ class AdminMapController extends Controller
         try {
             $room->update($request->only(['building_id', 'name', 'floor', 'capacity']));
             $room->load('building');
+            RegenerateRdfJob::dispatch();
 
             return response()->json([
                 'success' => true,

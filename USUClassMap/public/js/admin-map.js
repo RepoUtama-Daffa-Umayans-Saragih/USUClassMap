@@ -1,20 +1,40 @@
 /**
- * USUClassMap — Admin Spatial Dashboard (Mapbox GL JS 3D Engine - Standalone CDN Script)
- * Pure Mapbox GL JS 3D Engine — Emits Events to Alpine.js & Manages Admin Map Canvas
+ * USUClassMap — Admin Spatial Dashboard (Mapbox GL JS 3D Engine)
+ * Synchronized with User Map (Google Satellite Hybrid, 3D Mode, Reset Camera, 31 Photocopy Partners, WebGL Guard)
+ * ZERO FEATURE LOSS: Draggable Admin Marker, Edit Marker GPS, Context Selector, Alpine Event Dispatching
  */
 
-document.addEventListener('DOMContentLoaded', function() {
+import mapboxgl from 'mapbox-gl';
+
+// Bersihkan konteks WebGL saat berpindah atau me-refresh halaman agar tidak exhaust WebGL
+window.addEventListener('beforeunload', () => {
+    if (window.__usuAdminMapInstance) {
+        try {
+            window.__usuAdminMapInstance.remove();
+        } catch (e) {}
+        window.__usuAdminMapInstance = null;
+    }
+});
+
+function initAdminMapEngine() {
     const config = window.ADMIN_MAP_CONFIG;
     if (!config) {
-        console.error('ADMIN_MAP_CONFIG not found.');
+        console.error('[USUClassMap Admin] ADMIN_MAP_CONFIG not found.');
         return;
     }
 
     const mapContainer = document.getElementById('admin-map');
     if (!mapContainer) return;
 
+    // Pastikan container memiliki dimensi valid (> 0px)
+    if (mapContainer.clientWidth === 0 || mapContainer.clientHeight === 0) {
+        mapContainer.style.minHeight = '450px';
+        mapContainer.style.height = '100%';
+        mapContainer.style.width = '100%';
+    }
+
     // =========================================================================
-    // 1. INJECT MAP CSS STYLES FOR ADMIN TOOLTIPS & PULSE ANIMATIONS
+    // 1. INJECT MAP CSS STYLES FOR ADMIN TOOLTIPS, MARKERS & PULSE ANIMATIONS
     // =========================================================================
     const style = document.createElement('style');
     style.innerHTML = `
@@ -52,42 +72,166 @@ document.addEventListener('DOMContentLoaded', function() {
             margin-bottom: 6px;
             pointer-events: none;
         }
+        .custom-mapbox-marker {
+            background: transparent;
+            border: none;
+        }
+        .usu-custom-popup .mapboxgl-popup-content {
+            border-radius: 16px;
+            padding: 0;
+            overflow: hidden;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .usu-custom-popup .mapboxgl-popup-close-button {
+            padding: 4px 8px;
+            color: #64748b;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 10;
+        }
     `;
     document.head.appendChild(style);
 
     // =========================================================================
-    // 2. MAP INITIALIZATION (MAPBOX GL JS 3D)
+    // 2. STATE & CONFIGURATION (SYNCHRONIZED WITH USER MAP)
     // =========================================================================
     const DEFAULT_CENTER = [98.656520, 3.565245];
     const DEFAULT_ZOOM = 16;
     const DEFAULT_PITCH = 50;
     const DEFAULT_BEARING = -15;
+    const DEFAULT_MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
+    const SATELLITE_STORAGE_KEY = 'usuclassmap_satellite_mode';
+    const SATELLITE_SOURCE_ID = 'google-satellite-source';
+    const SATELLITE_LAYER_ID = 'google-satellite-layer';
+
+    let is3DMode = true;
+    let isSatelliteMode = false;
+    try {
+        const savedSatellite = localStorage.getItem(SATELLITE_STORAGE_KEY);
+        if (savedSatellite === 'true') {
+            isSatelliteMode = true;
+        }
+    } catch (e) {}
+
+    let isPhotocopyLayerActive = false;
+    let allPhotocopyPlaces = [];
+    let photocopyMarkers = [];
 
     const token = config.mapboxToken 
         || window.MAPBOX_ACCESS_TOKEN 
+        || (typeof import.meta !== 'undefined' && import.meta.env?.VITE_MAPBOX_ACCESS_TOKEN) 
         || '';
 
-    const mb = window.mapboxgl;
+    const mb = window.mapboxgl || mapboxgl;
     if (!mb) {
-        console.error('[AdminMap] window.mapboxgl CDN script belum selesai dimuat.');
+        console.error('[USUClassMap Admin] Mapbox GL JS tidak terdeteksi.');
+        renderFallbackMapError(new Error('Pustaka Mapbox GL JS tidak terdeteksi. Periksa koneksi internet Anda.'));
         return;
     }
     mb.accessToken = token;
+    if (typeof mapboxgl !== 'undefined' && mapboxgl) {
+        mapboxgl.accessToken = token;
+    }
 
-    const map = new mb.Map({
-        container: 'admin-map',
-        style: 'mapbox://styles/mapbox/streets-v12',
-        center: DEFAULT_CENTER,
-        zoom: DEFAULT_ZOOM,
-        pitch: DEFAULT_PITCH,
-        bearing: DEFAULT_BEARING,
-        antialias: true
-    });
+    // Cek dukungan WebGL sebelum instansiasi
+    if (typeof mb.supported === 'function' && !mb.supported({ failIfMajorPerformanceCaveat: false })) {
+        const err = new Error('Browser atau kartu grafis (GPU) Anda saat ini tidak mengizinkan inisialisasi WebGL.');
+        console.error('[USUClassMap Admin]', err);
+        renderFallbackMapError(err);
+        return;
+    }
 
-    map.addControl(new mb.NavigationControl({ visualizePitch: true }), 'top-right');
+    // Singleton cleanup
+    if (window.__usuAdminMapInstance) {
+        try {
+            window.__usuAdminMapInstance.remove();
+        } catch (e) {
+            console.warn('[USUClassMap Admin] Cleanup instance lama:', e);
+        }
+        window.__usuAdminMapInstance = null;
+    }
 
-    map.on('style.load', () => {
-        // Injeksi layer 3D gedung extrusions
+    // =========================================================================
+    // 3. MAP INITIALIZATION (MAPBOX GL JS 3D)
+    // =========================================================================
+    let map = null;
+    try {
+        map = new mb.Map({
+            container: 'admin-map',
+            style: DEFAULT_MAP_STYLE,
+            center: DEFAULT_CENTER,
+            zoom: DEFAULT_ZOOM,
+            pitch: is3DMode ? DEFAULT_PITCH : 0,
+            bearing: is3DMode ? DEFAULT_BEARING : 0,
+            antialias: true,
+            failIfMajorPerformanceCaveat: false
+        });
+
+        window.__usuAdminMapInstance = map;
+
+        // Tambahkan kontrol navigasi (Zoom & Compass/Pitch)
+        map.addControl(new mb.NavigationControl({ visualizePitch: true }), 'top-right');
+
+        // Saat style dimuat, pasang layer Satelit dan layer 3D Extrusion
+        map.on('style.load', () => {
+            injectSatelliteLayer();
+            inject3DBuildingsLayer();
+        });
+
+        updateSatelliteButtonState();
+        updatePerspectiveButtonState();
+
+        // Load photocopy places count for HUD badge
+        loadPhotocopyPlaces();
+
+    } catch (err) {
+        console.error('[USUClassMap Admin] Inisialisasi peta 3D/WebGL gagal:', err);
+        renderFallbackMapError(err);
+        return;
+    }
+
+    // =========================================================================
+    // 4. SPATIAL LAYERS: GOOGLE SATELLITE HYBRID & 3D BUILDINGS
+    // =========================================================================
+    function injectSatelliteLayer() {
+        if (!map) return;
+
+        if (!map.getSource(SATELLITE_SOURCE_ID)) {
+            map.addSource(SATELLITE_SOURCE_ID, {
+                type: 'raster',
+                tiles: [
+                    'https://mt0.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+                    'https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+                    'https://mt2.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',
+                    'https://mt3.google.com/vt/lyrs=y&x={x}&y={y}&z={z}'
+                ],
+                tileSize: 256,
+                attribution: '&copy; Google Maps'
+            });
+        }
+
+        if (!map.getLayer(SATELLITE_LAYER_ID)) {
+            const beforeLayerId = map.getLayer('3d-buildings') ? '3d-buildings' : undefined;
+            map.addLayer({
+                id: SATELLITE_LAYER_ID,
+                type: 'raster',
+                source: SATELLITE_SOURCE_ID,
+                layout: {
+                    visibility: isSatelliteMode ? 'visible' : 'none'
+                },
+                paint: {
+                    'raster-opacity': 1.0,
+                    'raster-fade-duration': 200
+                }
+            }, beforeLayerId);
+        } else {
+            map.setLayoutProperty(SATELLITE_LAYER_ID, 'visibility', isSatelliteMode ? 'visible' : 'none');
+        }
+    }
+
+    function inject3DBuildingsLayer() {
+        if (!map) return;
         const layers = map.getStyle()?.layers || [];
         const labelLayerId = layers.find(
             (layer) => layer.type === 'symbol' && layer.layout && layer.layout['text-field']
@@ -122,13 +266,143 @@ document.addEventListener('DOMContentLoaded', function() {
                         ['get', 'min_height']
                     ],
                     'fill-extrusion-opacity': 0.65
+                },
+                'layout': {
+                    'visibility': (is3DMode && !isSatelliteMode) ? 'visible' : 'none'
                 }
             }, labelLayerId);
+        } else {
+            map.setLayoutProperty('3d-buildings', 'visibility', (is3DMode && !isSatelliteMode) ? 'visible' : 'none');
         }
-    });
+    }
+
+    function renderFallbackMapError(error) {
+        const el = document.getElementById('admin-map') || mapContainer;
+        if (!el) return;
+
+        // Auto-Fallback ke Leaflet 2D OSM jika pustaka Leaflet tersedia
+        if (window.L && typeof window.L.map === 'function') {
+            try {
+                console.info('[USUClassMap Admin] Menjalankan Auto-Fallback Leaflet 2D OSM...');
+                el.innerHTML = '';
+                const lMap = window.L.map('admin-map', {
+                    center: [DEFAULT_CENTER[1], DEFAULT_CENTER[0]],
+                    zoom: DEFAULT_ZOOM,
+                    zoomControl: true
+                });
+                const osmLayer = window.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors',
+                    maxZoom: 19
+                });
+                const googleSatLayer = window.L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                    attribution: '&copy; Google Maps',
+                    maxZoom: 20
+                });
+                if (isSatelliteMode) {
+                    googleSatLayer.addTo(lMap);
+                } else {
+                    osmLayer.addTo(lMap);
+                }
+
+                const lAdminPin = window.L.marker([DEFAULT_CENTER[1], DEFAULT_CENTER[0]], { draggable: true }).addTo(lMap);
+                lAdminPin.on('dragend', (ev) => {
+                    const pos = ev.target.getLatLng();
+                    window.dispatchEvent(new CustomEvent('coordinate-updated', {
+                        detail: { lat: pos.lat.toFixed(8), lng: pos.lng.toFixed(8) }
+                    }));
+                });
+                lMap.on('click', (ev) => {
+                    lAdminPin.setLatLng(ev.latlng);
+                    window.dispatchEvent(new CustomEvent('coordinate-updated', {
+                        detail: { lat: ev.latlng.lat.toFixed(8), lng: ev.latlng.lng.toFixed(8) }
+                    }));
+                });
+
+                if (Array.isArray(config.buildings)) {
+                    config.buildings.forEach(b => {
+                        const bLat = parseFloat(b.latitude);
+                        const bLng = parseFloat(b.longitude);
+                        if (!isNaN(bLat) && !isNaN(bLng)) {
+                            window.L.circleMarker([bLat, bLng], {
+                                radius: 8,
+                                fillColor: '#10A760',
+                                color: '#ffffff',
+                                weight: 2,
+                                fillOpacity: 0.9
+                            }).addTo(lMap).bindPopup(`<b>${b.name}</b><br>Kode: ${b.code}`);
+                        }
+                    });
+                }
+
+                window.USUAdminMap = {
+                    togglePerspective: () => {},
+                    toggleSatelliteMode: () => {
+                        isSatelliteMode = !isSatelliteMode;
+                        updateSatelliteButtonState();
+                        if (isSatelliteMode) {
+                            lMap.removeLayer(osmLayer);
+                            googleSatLayer.addTo(lMap);
+                        } else {
+                            lMap.removeLayer(googleSatLayer);
+                            osmLayer.addTo(lMap);
+                        }
+                    },
+                    resetCampusView: () => lMap.setView([DEFAULT_CENTER[1], DEFAULT_CENTER[0]], DEFAULT_ZOOM),
+                    togglePhotocopyLayer: () => {},
+                    retryInitMap: () => initAdminMapEngine(),
+                    getMap: () => lMap
+                };
+                window.USUClassMap = window.USUAdminMap;
+                return;
+            } catch (leafletErr) {
+                console.error('[USUClassMap Admin] Leaflet fallback gagal:', leafletErr);
+            }
+        }
+
+        const errMsg = (error && error.message) ? error.message : String(error || '');
+        const isWebGLError = errMsg.toLowerCase().includes('webgl') || errMsg.toLowerCase().includes('grafis');
+
+        const errorTitle = isWebGLError 
+            ? 'Akselerasi Grafis (WebGL) Terkendala' 
+            : 'Gagal Memuat Engine Peta Admin 3D';
+            
+        const errorDesc = isWebGLError
+            ? 'Browser Anda kehabisan konteks grafis WebGL atau akselerasi hardware sedang nonaktif. Klik tombol "Muat Ulang Peta" di bawah untuk mencoba kembali.'
+            : (errMsg || 'Periksa token Mapbox atau koneksi internet perangkat Anda.');
+
+        el.innerHTML = `
+            <div class="flex flex-col items-center justify-center h-full w-full min-h-[450px] p-6 text-center bg-slate-50 border border-slate-200 rounded-2xl shadow-inner z-10">
+                <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4 shadow-sm ring-8 ring-amber-50">
+                    <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                </div>
+                <h3 class="text-base font-bold text-gray-800">${errorTitle}</h3>
+                <p class="text-xs text-gray-600 max-w-md mt-2 leading-relaxed">${errorDesc}</p>
+                <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+                    <button 
+                        type="button" 
+                        onclick="if(window.USUAdminMap && window.USUAdminMap.retryInitMap) { window.USUAdminMap.retryInitMap(); } else { location.reload(); }" 
+                        class="px-5 py-2.5 bg-[#10A760] text-white text-xs font-bold rounded-xl shadow-md hover:bg-[#0D8A4E] transition-all flex items-center gap-2 cursor-pointer active:scale-95"
+                    >
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Muat Ulang Peta</span>
+                    </button>
+                    <button 
+                        type="button" 
+                        onclick="location.reload()" 
+                        class="px-4 py-2.5 bg-white text-gray-700 border border-gray-300 text-xs font-semibold rounded-xl hover:bg-gray-50 transition-all cursor-pointer"
+                    >
+                        Refresh Halaman
+                    </button>
+                </div>
+                <div class="mt-4 text-[11px] text-gray-400 font-mono">
+                    Detail: ${errMsg || 'WebGL_Init_Failure'}
+                </div>
+            </div>
+        `;
+    }
 
     // =========================================================================
-    // 3. ICONS FACTORIES (DOM ELEMENTS FOR MAPBOX MARKERS)
+    // 5. ICONS FACTORIES (DOM ELEMENTS FOR MAPBOX MARKERS)
     // =========================================================================
     function createGreenMarkerEl() {
         const el = document.createElement('div');
@@ -177,8 +451,31 @@ document.addEventListener('DOMContentLoaded', function() {
         return el;
     }
 
+    function createPhotocopyMarkerElement(name) {
+        const el = document.createElement('div');
+        el.className = 'custom-mapbox-marker photocopy-marker z-30';
+        el.style.display = 'block';
+        el.style.width = 'max-content';
+        el.style.height = 'auto';
+        el.style.zIndex = '30';
+        el.style.cursor = 'pointer';
+
+        const shortName = name.length > 20 ? name.substring(0, 18) + '...' : name;
+
+        el.innerHTML = `
+            <div class="relative flex flex-col items-center group cursor-pointer" style="filter: drop-shadow(0 4px 6px rgba(0,0,0,0.28));">
+                <div class="px-2.5 py-1.5 bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-white text-[11px] font-black rounded-lg border-2 border-white whitespace-nowrap flex items-center gap-1.5 transition-all transform group-hover:scale-105 shadow-md">
+                    <i class="fa-solid fa-print text-xs text-emerald-200"></i>
+                    <span class="tracking-tight text-white">${shortName}</span>
+                </div>
+                <div class="w-2.5 h-2.5 bg-cyan-600 transform rotate-45 -mt-1 border-r border-b border-white"></div>
+            </div>
+        `;
+        return el;
+    }
+
     // =========================================================================
-    // 4. MARKERS & STATE
+    // 6. BUILDING MARKERS & STATE (CORE ADMIN CRUD)
     // =========================================================================
     const buildingMarkers = {}; // id -> { marker, data }
     let editState = {
@@ -238,7 +535,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // =========================================================================
-    // 5. DRAGGABLE ADMIN MARKER (FOR NEW BUILDINGS)
+    // 7. DRAGGABLE ADMIN MARKER (FOR NEW BUILDINGS)
     // =========================================================================
     const adminMarkerEl = createAdminMarkerEl();
     const adminMarker = new mb.Marker({
@@ -256,15 +553,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }));
     });
 
+    // Klik peta untuk memindahkan pin aktif secara instan (The Magic UX)
+    map.on('click', function(e) {
+        const origTarget = e.originalEvent?.target;
+        if (origTarget && (origTarget.closest('.mapboxgl-marker') || origTarget.closest('.mapboxgl-popup'))) {
+            return;
+        }
+        const clickedLng = e.lngLat.lng;
+        const clickedLat = e.lngLat.lat;
+
+        if (editState.active && editState.marker) {
+            editState.marker.setLngLat([clickedLng, clickedLat]);
+            window.dispatchEvent(new CustomEvent('coordinate-updated', {
+                detail: { lat: clickedLat.toFixed(8), lng: clickedLng.toFixed(8) }
+            }));
+        } else if (adminMarker && adminMarker.getElement()?.isConnected) {
+            adminMarker.setLngLat([clickedLng, clickedLat]);
+            window.dispatchEvent(new CustomEvent('coordinate-updated', {
+                detail: { lat: clickedLat.toFixed(8), lng: clickedLng.toFixed(8) }
+            }));
+        }
+    });
+
     // =========================================================================
-    // 6. EDIT MODE & DRAG LOGIC
+    // 8. EDIT MODE & DRAG LOGIC
     // =========================================================================
     function enterEditMode(buildingData, marker, buildingId) {
         if (editState.active) {
             exitEditMode(false);
         }
 
-        // Sembunyikan admin marker baru sementara
         adminMarker.remove();
 
         const currentLngLat = marker.getLngLat();
@@ -276,12 +594,10 @@ document.addEventListener('DOMContentLoaded', function() {
             originalLngLat: currentLngLat
         };
 
-        // 1. Dispatch CustomEvent to Alpine (Decoupled, Pure Event-Driven)
         window.dispatchEvent(new CustomEvent('edit-building', {
             detail: { id: buildingId, ...buildingData }
         }));
 
-        // 2. Ganti elemen marker dengan edit icon dan jadikan draggable
         marker.remove();
 
         const editEl = createEditMarkerEl();
@@ -365,12 +681,11 @@ document.addEventListener('DOMContentLoaded', function() {
             originalLngLat: null
         };
 
-        // Tampilkan kembali admin marker baru di center peta saat ini
         adminMarker.setLngLat(map.getCenter()).addTo(map);
     }
 
     // =========================================================================
-    // 7. LISTEN TO ALPINE EVENTS
+    // 9. LISTEN TO ALPINE EVENTS
     // =========================================================================
     window.addEventListener('cancel-edit-building', function() {
         exitEditMode(false);
@@ -407,7 +722,262 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // =========================================================================
-    // 8. GLOBAL TOAST NOTIFICATION HELPER
+    // 10. PHOTOCOPY LAYER (31 MITRA FOTOKOPI USU INTEGRATION)
+    // =========================================================================
+    async function loadPhotocopyPlaces() {
+        if (allPhotocopyPlaces.length > 0) return allPhotocopyPlaces;
+        try {
+            const endpoint = config.endpoints?.copyShops || '/api/copy-shops?per_page=50';
+            const resp = await fetch(endpoint);
+            const json = await resp.json();
+            allPhotocopyPlaces = json.data || [];
+            const floatingBadge = document.getElementById('admin-floating-photocopy-count');
+            if (floatingBadge) floatingBadge.textContent = allPhotocopyPlaces.length;
+            return allPhotocopyPlaces;
+        } catch (e) {
+            console.error('[USUClassMap Admin] Gagal memuat data mitra fotokopi:', e);
+            return [];
+        }
+    }
+
+    function renderPhotocopyMarkers(places) {
+        if (!map) return;
+
+        if (Array.isArray(photocopyMarkers)) {
+            photocopyMarkers.forEach(m => m.remove());
+        }
+        photocopyMarkers = [];
+
+        if (!Array.isArray(places) || places.length === 0) return;
+
+        places.forEach(place => {
+            const lat = parseFloat(place.location?.latitude ?? place.latitude);
+            const lng = parseFloat(place.location?.longitude ?? place.longitude);
+
+            if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+            const iconEl = createPhotocopyMarkerElement(place.name || 'Mitra Fotokopi');
+
+            const isOpen = (typeof place.status === 'object' && place.status !== null)
+                ? (place.status.is_open_now ?? true)
+                : (place.is_open_now ?? true);
+
+            const statusBadge = isOpen
+                ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200"><i class="fa-solid fa-circle text-[8px] text-emerald-500"></i> Buka</span>`
+                : `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-red-100 text-red-800 border border-red-200"><i class="fa-solid fa-circle text-[8px] text-red-500"></i> Tutup</span>`;
+
+            const ratingScore = (typeof place.rating === 'object' && place.rating !== null)
+                ? (place.rating.score || '4.8')
+                : (place.rating || '4.8');
+
+            const userRatingCount = (typeof place.rating === 'object' && place.rating !== null)
+                ? (place.rating.user_rating_count || 50)
+                : (place.user_rating_count || 50);
+
+            const waUrl = (typeof place.contacts === 'object' && place.contacts !== null && place.contacts.whatsapp_url)
+                ? place.contacts.whatsapp_url
+                : (place.whatsapp_url || (place.whatsapp ? `https://wa.me/${String(place.whatsapp).replace(/[^0-9]/g, '')}` : 'https://wa.me/6285769737410'));
+
+            const locationName = (typeof place.location === 'object' && place.location !== null && place.location.name)
+                ? place.location.name
+                : (place.location_name || place.address || '');
+
+            const popupContent = `
+                <div class="p-0 overflow-hidden font-sans">
+                    <div class="p-3.5 space-y-2">
+                        <div class="flex items-start justify-between gap-2">
+                            <h4 class="font-bold text-sm text-gray-900 leading-tight">${place.name}</h4>
+                            ${statusBadge}
+                        </div>
+                        <div class="flex items-center gap-1 text-xs text-amber-600 font-bold">
+                            <span><i class="fa-solid fa-star"></i> ${ratingScore}</span>
+                            <span class="text-gray-400 font-normal">(${userRatingCount} ulasan)</span>
+                        </div>
+                        <p class="text-xs text-gray-600 line-clamp-2">${locationName}</p>
+                        <div class="pt-2 border-t border-gray-100 flex items-center gap-2">
+                            <a href="/fotocopy/${place.id}" target="_blank" class="flex-1 py-1.5 px-3 bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold text-xs rounded-lg text-center shadow-xs transition-colors">
+                                Lihat & Pesan
+                            </a>
+                            <a href="${waUrl}" target="_blank" class="p-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg text-xs font-bold transition-colors" title="Chat WhatsApp">
+                                <i class="fa-solid fa-comment-dots"></i> WA
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const popup = new mb.Popup({
+                className: 'custom-popup usu-custom-popup',
+                maxWidth: '300px',
+                offset: [0, -32],
+                closeButton: true,
+                closeOnClick: false,
+                focusAfterOpen: false
+            }).setHTML(popupContent);
+
+            const marker = new mb.Marker({ element: iconEl, anchor: 'bottom' })
+                .setLngLat([lng, lat])
+                .setPopup(popup)
+                .addTo(map);
+
+            photocopyMarkers.push(marker);
+        });
+    }
+
+    async function togglePhotocopyLayer() {
+        if (!map) return;
+        isPhotocopyLayerActive = !isPhotocopyLayerActive;
+        const btn = document.getElementById('admin-floating-photocopy-btn');
+
+        if (isPhotocopyLayerActive) {
+            const places = await loadPhotocopyPlaces();
+            renderPhotocopyMarkers(places);
+            if (btn) {
+                btn.classList.add('bg-emerald-600', 'text-white', 'border-emerald-600');
+                btn.classList.remove('bg-white/95', 'text-gray-700');
+            }
+        } else {
+            photocopyMarkers.forEach(m => m.remove());
+            photocopyMarkers = [];
+            if (btn) {
+                btn.classList.remove('bg-emerald-600', 'text-white', 'border-emerald-600');
+                btn.classList.add('bg-white/95', 'text-gray-700');
+            }
+        }
+    }
+
+    // =========================================================================
+    // 11. HUD CONTROL METHODS & BUTTON STATE MANAGERS
+    // =========================================================================
+    function togglePerspective() {
+        if (!map) return;
+        is3DMode = !is3DMode;
+        const targetPitch = is3DMode ? DEFAULT_PITCH : 0;
+        const targetBearing = is3DMode ? DEFAULT_BEARING : 0;
+
+        map.easeTo({
+            pitch: targetPitch,
+            bearing: targetBearing,
+            duration: 1000
+        });
+
+        if (map.getLayer('3d-buildings')) {
+            map.setLayoutProperty('3d-buildings', 'visibility', (is3DMode && !isSatelliteMode) ? 'visible' : 'none');
+        } else if (is3DMode && !isSatelliteMode) {
+            inject3DBuildingsLayer();
+        }
+
+        updatePerspectiveButtonState();
+    }
+
+    function toggleSatelliteMode() {
+        if (!map) return;
+        isSatelliteMode = !isSatelliteMode;
+
+        try {
+            localStorage.setItem(SATELLITE_STORAGE_KEY, isSatelliteMode ? 'true' : 'false');
+        } catch (e) {}
+
+        updateSatelliteButtonState();
+
+        if (map.getLayer(SATELLITE_LAYER_ID)) {
+            map.setLayoutProperty(SATELLITE_LAYER_ID, 'visibility', isSatelliteMode ? 'visible' : 'none');
+        } else {
+            injectSatelliteLayer();
+        }
+
+        if (map.getLayer('3d-buildings')) {
+            map.setLayoutProperty('3d-buildings', 'visibility', (is3DMode && !isSatelliteMode) ? 'visible' : 'none');
+        }
+    }
+
+    function resetCampusView() {
+        if (!map) return;
+        is3DMode = true;
+        map.flyTo({
+            center: DEFAULT_CENTER,
+            zoom: DEFAULT_ZOOM,
+            pitch: DEFAULT_PITCH,
+            bearing: DEFAULT_BEARING,
+            essential: true,
+            duration: 1500
+        });
+
+        updatePerspectiveButtonState();
+
+        if (map.getLayer('3d-buildings')) {
+            map.setLayoutProperty('3d-buildings', 'visibility', (!isSatelliteMode) ? 'visible' : 'none');
+        } else if (!isSatelliteMode) {
+            inject3DBuildingsLayer();
+        }
+    }
+
+    function updatePerspectiveButtonState() {
+        const labelEl = document.getElementById('admin-perspective-label');
+        if (labelEl) {
+            labelEl.textContent = is3DMode ? 'Mode 3D' : 'Mode 2D';
+        }
+        const btn = document.getElementById('admin-perspective-toggle-btn');
+        if (btn) {
+            if (is3DMode) {
+                btn.classList.add('text-[#10A760]', 'border-[#10A760]');
+            } else {
+                btn.classList.remove('text-[#10A760]', 'border-[#10A760]');
+            }
+        }
+    }
+
+    function updateSatelliteButtonState() {
+        const btn = document.getElementById('admin-satellite-toggle-btn');
+        const label = document.getElementById('admin-satellite-label');
+        const icon = document.getElementById('admin-satellite-icon');
+
+        if (!btn) return;
+
+        if (isSatelliteMode) {
+            btn.classList.add('bg-slate-900', 'text-white', 'border-slate-700', 'shadow-slate-900/30');
+            btn.classList.remove('bg-white/95', 'text-gray-700', 'border-gray-200');
+            if (icon) {
+                icon.classList.remove('text-cyan-600');
+                icon.classList.add('text-cyan-400');
+            }
+            if (label) {
+                label.textContent = 'Mode Satelit';
+            }
+        } else {
+            btn.classList.remove('bg-slate-900', 'text-white', 'border-slate-700', 'shadow-slate-900/30');
+            btn.classList.add('bg-white/95', 'text-gray-700', 'border-gray-200');
+            if (icon) {
+                icon.classList.remove('text-cyan-400');
+                icon.classList.add('text-cyan-600');
+            }
+            if (label) {
+                label.textContent = 'Satelit';
+            }
+        }
+    }
+
+    // =========================================================================
+    // 12. PUBLIC API ADAPTER: window.USUAdminMap & window.USUClassMap
+    // =========================================================================
+    window.USUAdminMap = {
+        togglePerspective: () => togglePerspective(),
+        toggleSatelliteMode: () => toggleSatelliteMode(),
+        resetCampusView: () => resetCampusView(),
+        togglePhotocopyLayer: () => togglePhotocopyLayer(),
+        retryInitMap: () => {
+            const el = document.getElementById('admin-map');
+            if (el) el.innerHTML = '';
+            initAdminMapEngine();
+        },
+        getMap: () => map
+    };
+
+    // Alias compatibility
+    window.USUClassMap = window.USUAdminMap;
+
+    // =========================================================================
+    // 13. GLOBAL TOAST NOTIFICATION HELPER
     // =========================================================================
     window.showAdminToast = function(message, type = 'success') {
         let container = document.getElementById('toast-container');
@@ -438,4 +1008,18 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => toast.remove(), 300);
         }, 4500);
     };
-});
+}
+
+// Inisialisasi engine secara tangguh (anti-double initialization)
+let isAdminMapEngineStarted = false;
+function startAdminMapEngine() {
+    if (isAdminMapEngineStarted) return;
+    isAdminMapEngineStarted = true;
+    initAdminMapEngine();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startAdminMapEngine, { once: true });
+} else {
+    startAdminMapEngine();
+}

@@ -20,10 +20,12 @@ class CopyShopResource extends JsonResource
             'name' => $this->name,
             'slug' => $this->slug,
             'description' => $this->description,
+            'latitude' => $this->latitude !== null ? (float)$this->latitude : null,
+            'longitude' => $this->longitude !== null ? (float)$this->longitude : null,
             'location' => [
                 'name' => $this->location_name,
-                'latitude' => $this->latitude,
-                'longitude' => $this->longitude,
+                'latitude' => $this->latitude !== null ? (float)$this->latitude : null,
+                'longitude' => $this->longitude !== null ? (float)$this->longitude : null,
             ],
             'status' => [
                 'business_status' => $this->business_status,

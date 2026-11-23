@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BuildingRequest;
+use App\Jobs\RegenerateRdfJob;
 use App\Models\Building;
 use Illuminate\Http\Request;
 
@@ -34,6 +35,7 @@ class BuildingController extends Controller
     public function store(BuildingRequest $request)
     {
         Building::create($request->validated());
+        RegenerateRdfJob::dispatch();
 
         return redirect()->route('admin.buildings.index')
             ->with('success', 'Gedung berhasil ditambahkan.');
@@ -47,6 +49,7 @@ class BuildingController extends Controller
     public function update(BuildingRequest $request, Building $building)
     {
         $building->update($request->validated());
+        RegenerateRdfJob::dispatch();
 
         return redirect()->route('admin.buildings.index')
             ->with('success', 'Data gedung berhasil diperbarui.');
@@ -55,6 +58,7 @@ class BuildingController extends Controller
     public function destroy(Building $building)
     {
         $building->delete();
+        RegenerateRdfJob::dispatch();
 
         return redirect()->route('admin.buildings.index')
             ->with('success', 'Gedung berhasil dihapus.');

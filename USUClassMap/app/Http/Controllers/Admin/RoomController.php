@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RoomRequest;
+use App\Jobs\RegenerateRdfJob;
 use App\Models\Building;
 use App\Models\Room;
 use Illuminate\Http\Request;
@@ -48,6 +49,7 @@ class RoomController extends Controller
         }
 
         Room::create($data);
+        RegenerateRdfJob::dispatch();
 
         return redirect()->route('admin.rooms.index')
             ->with('success', 'Ruangan berhasil ditambahkan.');
@@ -75,6 +77,7 @@ class RoomController extends Controller
         }
 
         $room->update($data);
+        RegenerateRdfJob::dispatch();
 
         return redirect()->route('admin.rooms.index')
             ->with('success', 'Data ruangan berhasil diperbarui.');
@@ -86,6 +89,7 @@ class RoomController extends Controller
             Storage::disk('public')->delete($room->photo_360_path);
         }
         $room->delete();
+        RegenerateRdfJob::dispatch();
 
         return redirect()->route('admin.rooms.index')
             ->with('success', 'Ruangan berhasil dihapus.');
