@@ -1,9 +1,9 @@
 {
     "version": 1,
-    "generated_at": "2026-11-23T22:26:38+07:00",
-    "content_hash": "74d9cccb5d126fd237ce2c8ca1d0eca50b2fab02236a9463009d660c47f18733",
+    "generated_at": "2026-11-24T07:11:13+07:00",
+    "content_hash": "9b5927d58c61277c9230124b71759d038e955199857cb0ab13f988e459bef582",
     "counts": {
-        "buildings": 48,
+        "buildings": 51,
         "rooms": 133,
         "room_media": 0,
         "courses": 142,
@@ -11,8 +11,8 @@
         "schedules": 318,
         "fotocopy_stores": 31,
         "photocopy_places": 31,
-        "fotocopy_services": 204,
-        "photocopy_items": 204,
+        "fotocopy_services": 2587,
+        "photocopy_items": 2587,
         "photo_360_calibrations": 0
     },
     "files": [

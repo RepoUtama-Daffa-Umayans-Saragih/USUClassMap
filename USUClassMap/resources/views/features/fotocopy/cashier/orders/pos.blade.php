@@ -7,7 +7,12 @@
         <p class="text-xs text-gray-500 mt-1">Catat transaksi langsung mahasiswa di meja kasir {{ $myStore->name ?? 'Toko' }}.</p>
     </div>
 
-    <div class="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-xs max-w-4xl" x-data="posApp()">
+    @include('features.fotocopy.partials.catalog-filter-script')
+    <script>
+        window.usuPosCatalog = {!! json_encode($catalog ?? [], JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_UNESCAPED_UNICODE) !!};
+    </script>
+
+    <div class="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-xs max-w-5xl" x-data="posApp()">
         <form method="POST" action="{{ route('cashier-fotokopi.orders.pos.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
 
@@ -23,23 +28,70 @@
                 </div>
             </div>
 
-            <!-- Pilih Item Layanan -->
-            <div>
-                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Pilih Item Layanan:</label>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                    @foreach($services as $srv)
-                        <button 
-                            type="button" 
-                            @click="addItem({{ $srv->id }}, '{{ addslashes($srv->name) }}', {{ $srv->price }}, '{{ $srv->unit }}')"
-                            class="p-3 rounded-xl border border-gray-200 hover:border-emerald-500 hover:bg-emerald-50/40 text-left transition-all flex items-center justify-between cursor-pointer"
+            <!-- Pilih Item Layanan & Barang ATK -->
+            <div class="space-y-3">
+                <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Pilih Item Layanan & Barang ATK:</label>
+
+                @include('features.fotocopy.partials.catalog-filter-bar')
+
+                <template x-if="catalogFiltered().length === 0">
+                    <div class="p-6 text-center rounded-xl border border-dashed border-gray-200 text-xs text-gray-400">
+                        Tidak ada item katalog yang sesuai filter pencarian.
+                    </div>
+                </template>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 max-h-[28rem] overflow-y-auto pr-1" x-show="catalogFiltered().length > 0">
+                    <template x-for="srv in catalogFiltered()" :key="srv.id">
+                        <button
+                            type="button"
+                            @click="addItem(srv.id, srv.name, srv.price, srv.unit)"
+                            class="p-3 rounded-xl border border-gray-200 hover:border-emerald-500 hover:bg-emerald-50/40 text-left transition-all flex items-start gap-2.5 cursor-pointer bg-white"
                         >
-                            <div>
-                                <span class="text-xs font-bold text-gray-800 block">{{ $srv->name }}</span>
-                                <span class="text-[10px] text-gray-400 block">{{ $srv->category }} • /{{ $srv->unit }}</span>
+                            <div class="w-12 h-12 rounded-lg bg-gray-50 border border-gray-100 overflow-hidden shrink-0 flex items-center justify-center">
+                                <template x-if="srv.image_url && !srv._imgError">
+                                    <img
+                                        :src="srv.image_url"
+                                        :alt="srv.name"
+                                        loading="lazy"
+                                        x-on:error="srv._imgError = true"
+                                        class="w-full h-full object-contain p-0.5"
+                                    >
+                                </template>
+                                <template x-if="!srv.image_url || srv._imgError">
+                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                                </template>
                             </div>
-                            <span class="text-xs font-extrabold text-[#10B981]">Rp {{ number_format($srv->price, 0, ',', '.') }}</span>
+
+                            <div class="flex-1 min-w-0">
+                                <div class="flex flex-wrap items-center gap-1 mb-0.5">
+                                    <span
+                                        class="text-[9px] font-bold px-1.5 py-0.5 rounded-full"
+                                        :class="srv.item_type === 'barang' ? 'bg-sky-50 text-sky-700' : 'bg-emerald-50 text-emerald-700'"
+                                        x-text="srv.type_label"
+                                    ></span>
+                                    <template x-if="srv.brand">
+                                        <span class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-amber-50 text-amber-700" x-text="srv.brand"></span>
+                                    </template>
+                                    <span class="text-[9px] font-semibold px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-600" x-text="srv.pack_label"></span>
+                                </div>
+
+                                <span class="text-xs font-bold text-gray-800 block line-clamp-2 leading-snug" x-text="srv.name"></span>
+                                <span class="text-[10px] text-gray-400 block truncate" x-show="metadataSummary(srv.metadata)" x-text="metadataSummary(srv.metadata)"></span>
+
+                                <div class="flex items-center justify-between mt-1.5 pt-1 border-t border-gray-100">
+                                    <span class="text-xs font-extrabold text-[#10B981]" x-text="'Rp ' + formatRupiah(srv.price)"></span>
+                                    <span class="text-[10px] text-gray-400" x-text="'/' + srv.unit"></span>
+                                </div>
+                                <template x-if="srv.item_type === 'barang' && srv.stock !== null">
+                                    <span
+                                        class="text-[9px] font-semibold block"
+                                        :class="srv.stock <= 5 ? 'text-red-600' : 'text-gray-400'"
+                                        x-text="'Stok: ' + srv.stock"
+                                    ></span>
+                                </template>
+                            </div>
                         </button>
-                    @endforeach
+                    </template>
                 </div>
             </div>
 
@@ -184,6 +236,7 @@
     <script>
         function posApp() {
             return {
+                ...usuCatalogFilter(window.usuPosCatalog),
                 items: [],
                 fileInfo: null,
                 dragOver: false,

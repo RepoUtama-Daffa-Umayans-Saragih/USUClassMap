@@ -1,9 +1,15 @@
 <x-layouts.app>
     <x-slot name="title">Pesan Layanan - {{ $place->name }}</x-slot>
 
+    @include('features.fotocopy.partials.catalog-filter-script')
+    <script>
+        window.usuFotocopyCatalog = {!! json_encode($catalogItems ?? [], JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_UNESCAPED_UNICODE) !!};
+    </script>
+
     <div
         class="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6"
         x-data="{
+            ...usuCatalogFilter(window.usuFotocopyCatalog),
             cart: {},
             customerName: '',
             customerPhone: '',
@@ -21,6 +27,7 @@
                     this.cart[item.id] = {
                         id: item.id,
                         name: item.name,
+                        category: item.category || 'Fotocopy',
                         price: item.price,
                         unit: item.unit,
                         qty: 1
@@ -87,7 +94,7 @@
                     name: item.name,
                     price: item.price,
                     quantity: item.qty,
-                    category: 'Fotocopy'
+                    category: item.category || 'Fotocopy'
                 }));
 
                 fetch('{{ route('fotocopy.order.store', $place->id) }}', {
@@ -179,59 +186,98 @@
         <!-- Main Layout: Items Grid & Sticky Cart -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-            <!-- LEFT 2 COLS: Card Item & Harga Item -->
-            <div class="lg:col-span-2 space-y-6">
+            <!-- LEFT 2 COLS: Filter Katalog & Grid Kartu Produk -->
+            <div class="lg:col-span-2 space-y-4">
                 <div>
                     <h2 class="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2 mb-1">
                         <span class="w-1.5 h-5 bg-[#10A760] rounded-full"></span>
-                        <span>Pilih Item Layanan</span>
+                        <span>Pilih Layanan Cetak & Barang ATK</span>
                     </h2>
-                    <p class="text-xs text-gray-500">Klik "+ Tambah" untuk memasukkan item ke keranjang pesanan</p>
+                    <p class="text-xs text-gray-500">Filter kategori/merek di bawah lalu klik "+ Tambah" untuk memasukkan item ke keranjang</p>
                 </div>
 
-                @foreach($itemsByCategory as $category => $items)
-                <div class="space-y-3">
-                    <h3 class="font-bold text-xs text-[#0D8A4E] uppercase tracking-wider flex items-center gap-2">
-                        <span class="w-2 h-2 rounded-full bg-[#10A760]"></span>
-                        <span>{{ $category }}</span>
-                    </h3>
+                @include('features.fotocopy.partials.catalog-filter-bar')
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
-                        @foreach($items as $item)
-                        <!-- Card Item -->
-                        <div class="bg-white rounded-2xl border border-gray-100 p-4 shadow-xs hover:border-[#10A760] transition-all flex flex-col justify-between">
-                            <div class="mb-3">
-                                <div class="flex items-start justify-between gap-2 mb-1">
-                                    <h4 class="font-extrabold text-gray-900 text-sm leading-snug">{{ $item->name }}</h4>
-                                    <span class="text-[10px] font-bold text-[#D4A017] bg-amber-50 px-2 py-0.5 rounded-full shrink-0">
-                                        {{ $item->category }}
-                                    </span>
+                <template x-if="catalogFiltered().length === 0">
+                    <div class="bg-white rounded-2xl border border-dashed border-gray-200 p-8 text-center text-xs text-gray-500">
+                        <i class="fa-solid fa-magnifying-glass text-2xl text-gray-300 mb-2 block"></i>
+                        Tidak ada produk atau layanan yang sesuai dengan filter pencarian Anda.
+                    </div>
+                </template>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5" x-show="catalogFiltered().length > 0">
+                    <template x-for="item in catalogFiltered()" :key="item.id">
+                        <div class="bg-white rounded-2xl border border-gray-100 p-3.5 shadow-xs hover:border-[#10A760] transition-all flex flex-col justify-between gap-3">
+                            <div class="flex items-start gap-3">
+                                <!-- Thumbnail Produk -->
+                                <div class="w-16 h-16 rounded-xl bg-gray-50 border border-gray-100 overflow-hidden shrink-0 flex items-center justify-center">
+                                    <template x-if="item.image_url && !item._imgError">
+                                        <img
+                                            :src="item.image_url"
+                                            :alt="item.name"
+                                            loading="lazy"
+                                            x-on:error="item._imgError = true"
+                                            class="w-full h-full object-contain p-1"
+                                        >
+                                    </template>
+                                    <template x-if="!item.image_url || item._imgError">
+                                        <div class="w-full h-full flex items-center justify-center">
+                                            <i class="fa-solid text-lg" :class="item.item_type === 'barang' ? 'fa-box-open text-sky-500' : 'fa-print text-emerald-500'"></i>
+                                        </div>
+                                    </template>
                                 </div>
-                                @if($item->description)
-                                    <p class="text-xs text-gray-500 line-clamp-2">{{ $item->description }}</p>
-                                @endif
+
+                                <!-- Detail & Badges -->
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex flex-wrap items-center gap-1 mb-1">
+                                        <span
+                                            class="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                                            :class="item.item_type === 'barang' ? 'bg-sky-50 text-sky-700 border border-sky-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'"
+                                            x-text="item.type_label"
+                                        ></span>
+                                        <template x-if="item.brand">
+                                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200" x-text="item.brand"></span>
+                                        </template>
+                                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600" x-text="item.pack_label"></span>
+                                    </div>
+
+                                    <h4 class="font-extrabold text-gray-900 text-xs sm:text-sm leading-snug line-clamp-2" x-text="item.name"></h4>
+
+                                    <div class="text-[10px] text-emerald-700 font-semibold mt-0.5" x-show="item.sub_category" x-text="item.sub_category"></div>
+
+                                    <p class="text-[11px] text-gray-500 line-clamp-2 mt-1" x-show="item.description" x-text="item.description"></p>
+
+                                    <p class="text-[10px] text-gray-400 mt-1 truncate" x-show="metadataSummary(item.metadata)" x-text="metadataSummary(item.metadata)"></p>
+                                </div>
                             </div>
 
-                            <div class="flex items-center justify-between pt-2 border-t border-gray-50">
+                            <div class="flex items-center justify-between pt-2.5 border-t border-gray-50">
                                 <div>
-                                    <span class="text-xs sm:text-sm font-black text-[#10A760]">{{ $item->formatted_price }}</span>
-                                    <span class="text-[10px] text-gray-400">/ {{ $item->unit }}</span>
+                                    <div class="flex items-baseline gap-1">
+                                        <span class="text-xs sm:text-sm font-black text-[#10A760]" x-text="item.formatted_price || rupiah(item.price)"></span>
+                                        <span class="text-[10px] text-gray-400" x-text="'/ ' + item.unit"></span>
+                                    </div>
+                                    <template x-if="item.item_type === 'barang' && item.stock !== null">
+                                        <span
+                                            class="text-[10px] font-semibold block"
+                                            :class="item.stock <= 5 ? 'text-red-600' : 'text-gray-400'"
+                                            x-text="'Stok: ' + item.stock"
+                                        ></span>
+                                    </template>
                                 </div>
 
                                 <button
                                     type="button"
-                                    @click="addItem({ id: {{ $item->id }}, name: '{{ addslashes($item->name) }}', price: {{ $item->price }}, unit: '{{ $item->unit }}' })"
-                                    class="bg-[#10A760] hover:bg-[#0D8A4E] text-white px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-2xs cursor-pointer"
+                                    @click="addItem(item)"
+                                    class="bg-[#10A760] hover:bg-[#0D8A4E] text-white px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-2xs cursor-pointer shrink-0"
                                 >
                                     <i class="fa-solid fa-plus text-[10px]"></i>
                                     <span>Tambah</span>
                                 </button>
                             </div>
                         </div>
-                        @endforeach
-                    </div>
+                    </template>
                 </div>
-                @endforeach
             </div>
 
             <!-- RIGHT 1 COL: Keranjang, Pembayaran, Pesan & Lokasi -->

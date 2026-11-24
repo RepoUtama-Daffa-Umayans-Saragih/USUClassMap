@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FotocopyOrder;
 use App\Models\FotocopyOrderItem;
+use App\Models\FotocopyService;
 use App\Models\FotocopyStore;
 use App\Models\PhotocopyPlace;
 use App\Models\PhotocopyItem;
@@ -13,6 +14,36 @@ use Illuminate\Support\Str;
 
 class PhotocopyController extends Controller
 {
+    /**
+     * Pasangkan PhotocopyPlace ke FotocopyStore melalui slug (atau nama), bukan raw ID.
+     */
+    protected function resolveStore(PhotocopyPlace $place): ?FotocopyStore
+    {
+        return FotocopyStore::where('slug', $place->slug)->first()
+            ?? FotocopyStore::where('name', $place->name)->first()
+            ?? FotocopyStore::find($place->id);
+    }
+
+    /**
+     * Siapkan daftar item katalog terurut (Jasa lebih dulu, lalu kategori & nama).
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    protected function buildCatalogItems(PhotocopyPlace $place): array
+    {
+        return $place->items
+            ->where('is_available', true)
+            ->sort(function ($a, $b): int {
+                $ta = $a->item_type === 'jasa' ? 0 : 1;
+                $tb = $b->item_type === 'jasa' ? 0 : 1;
+
+                return [$ta, (string) $a->category, (string) $a->sub_category, (string) $a->name]
+                    <=> [$tb, (string) $b->category, (string) $b->sub_category, (string) $b->name];
+            })
+            ->map->toCatalogArray()
+            ->values()
+            ->all();
+    }
     /**
      * Display a listing of photocopy places with search and sideways cards.
      */
@@ -82,6 +113,7 @@ class PhotocopyController extends Controller
 
         $isOpen = $place->isOpenNow();
         $itemsByCategory = $place->items->where('is_available', true)->groupBy('category');
+        $catalogItems = $this->buildCatalogItems($place);
 
         // Other nearby / recommended places
         $nearbyPlaces = PhotocopyPlace::where('id', '!=', $place->id)
@@ -93,6 +125,7 @@ class PhotocopyController extends Controller
             'place' => $place,
             'isOpen' => $isOpen,
             'itemsByCategory' => $itemsByCategory,
+            'catalogItems' => $catalogItems,
             'nearbyPlaces' => $nearbyPlaces,
         ]);
     }
@@ -113,11 +146,13 @@ class PhotocopyController extends Controller
 
         $isOpen = $place->isOpenNow();
         $itemsByCategory = $place->items->where('is_available', true)->groupBy('category');
+        $catalogItems = $this->buildCatalogItems($place);
 
         return view('features.fotocopy.public.order', [
             'place' => $place,
             'isOpen' => $isOpen,
             'itemsByCategory' => $itemsByCategory,
+            'catalogItems' => $catalogItems,
         ]);
     }
 
@@ -130,8 +165,8 @@ class PhotocopyController extends Controller
             ? PhotocopyPlace::findOrFail($id)
             : PhotocopyPlace::where('slug', $id)->firstOrFail();
 
-        // Match with FotocopyStore to preserve admin/cashier panel integration
-        $store = FotocopyStore::find($place->id) ?? FotocopyStore::where('name', $place->name)->first();
+        // Match with FotocopyStore via slug to preserve admin/cashier panel integration accurately
+        $store = $this->resolveStore($place);
         $storeId = $store ? $store->id : $place->id;
 
         $validated = $request->validate([
@@ -178,9 +213,13 @@ class PhotocopyController extends Controller
 
         foreach ($validated['items'] as $item) {
             $itemName = $item['name'] ?? $item['service_name'] ?? 'Item Cetak';
+            $matchedServiceId = FotocopyService::where('store_id', $storeId)
+                ->where('name', $itemName)
+                ->value('id');
+
             FotocopyOrderItem::create([
                 'order_id' => $order->id,
-                'service_id' => $item['service_id'] ?? null,
+                'service_id' => $matchedServiceId,
                 'service_name' => $itemName,
                 'category' => $item['category'] ?? 'Fotocopy',
                 'price' => $item['price'],

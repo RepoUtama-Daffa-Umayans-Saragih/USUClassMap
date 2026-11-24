@@ -70,7 +70,7 @@ class CopyShopResource extends JsonResource
             }),
             'catalog_items' => $this->whenLoaded('items', function () {
                 return $this->items->map(function ($it) {
-                    return [
+                    return array_merge([
                         'id' => $it->id,
                         'name' => $it->name,
                         'category' => $it->category,
@@ -78,7 +78,7 @@ class CopyShopResource extends JsonResource
                         'formatted_price' => $it->formatted_price,
                         'unit' => $it->unit,
                         'is_available' => (bool)$it->is_available,
-                    ];
+                    ], $it->toCatalogArray());
                 });
             }),
             'reviews' => $this->whenLoaded('reviews', function () {

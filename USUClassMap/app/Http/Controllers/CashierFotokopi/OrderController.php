@@ -99,9 +99,17 @@ class OrderController extends Controller
     {
         $user = auth()->user();
         $myStore = FotocopyStore::where('user_id', $user->id)->first() ?? FotocopyStore::first();
-        $services = FotocopyService::where('store_id', $myStore->id)->where('is_available', true)->get();
+        $services = FotocopyService::where('store_id', $myStore->id)
+            ->where('is_available', true)
+            ->orderByRaw("CASE WHEN item_type = 'jasa' THEN 0 ELSE 1 END")
+            ->orderBy('category')
+            ->orderBy('sub_category')
+            ->orderBy('name')
+            ->get();
 
-        return view('features.fotocopy.cashier.orders.pos', compact('myStore', 'services'));
+        $catalog = $services->map->toCatalogArray()->values()->all();
+
+        return view('features.fotocopy.cashier.orders.pos', compact('myStore', 'services', 'catalog'));
     }
 
     /**

@@ -386,6 +386,30 @@
     <usu:fakultas>FIB</usu:fakultas>
   </usu:Gedung>
 
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/50">
+    <usu:namaGedung>FIB O</usu:namaGedung>
+    <usu:kodeGedung>FIB-O</usu:kodeGedung>
+    <usu:latitude>3.55942980</usu:latitude>
+    <usu:longitude>98.65952850</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/51">
+    <usu:namaGedung>FIB I</usu:namaGedung>
+    <usu:kodeGedung>FIB-I</usu:kodeGedung>
+    <usu:latitude>3.55958390</usu:latitude>
+    <usu:longitude>98.65894200</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/52">
+    <usu:namaGedung>FIB L</usu:namaGedung>
+    <usu:kodeGedung>FIB-L</usu:kodeGedung>
+    <usu:latitude>3.55944570</usu:latitude>
+    <usu:longitude>98.65845780</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
   <usu:Ruangan rdf:about="http://usuclassmap.usu.ac.id/resource/ruangan/1">
     <usu:namaRuangan>Auditorium Utama</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>

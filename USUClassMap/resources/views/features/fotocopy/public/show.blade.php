@@ -234,43 +234,93 @@
                 </div>
 
                 <!-- Daftar Layanan & Harga Katalog -->
-                <div>
-                    <div class="flex items-center justify-between mb-4">
+                @include('features.fotocopy.partials.catalog-filter-script')
+                <script>
+                    window.usuFotocopyCatalog = {!! json_encode($catalogItems ?? [], JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_UNESCAPED_UNICODE) !!};
+                </script>
+                <div x-data="usuCatalogFilter(window.usuFotocopyCatalog)" class="space-y-4">
+                    <div class="flex items-center justify-between">
                         <h3 class="font-extrabold text-gray-900 text-sm sm:text-base flex items-center gap-2">
                             <span class="w-1.5 h-5 bg-[#10A760] rounded-full"></span>
-                            <span>Katalog Layanan & Daftar Harga</span>
+                            <span>Katalog Layanan & Produk ATK</span>
                         </h3>
                         <a href="{{ route('fotocopy.order', $place->id) }}" class="text-xs font-bold text-[#10A760] hover:underline flex items-center gap-1">
-                            <span>Pesan Layanan</span>
+                            <span>Pesan Sekarang</span>
                             <i class="fa-solid fa-arrow-right text-[10px]"></i>
                         </a>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        @foreach($itemsByCategory as $category => $items)
-                        <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100">
-                            <h4 class="font-bold text-xs text-[#0D8A4E] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-[#10A760]"></span>
-                                Kategori: {{ $category }}
-                            </h4>
-                            <div class="space-y-2">
-                                @foreach($items as $item)
-                                <div class="flex items-center justify-between bg-white p-2.5 rounded-xl border border-gray-200/60 text-xs">
-                                    <div>
-                                        <div class="font-bold text-gray-800">{{ $item->name }}</div>
-                                        @if($item->description)
-                                            <div class="text-[10px] text-gray-400">{{ $item->description }}</div>
-                                        @endif
+                    @include('features.fotocopy.partials.catalog-filter-bar')
+
+                    <template x-if="catalogFiltered().length === 0">
+                        <div class="bg-gray-50 rounded-2xl border border-dashed border-gray-200 p-8 text-center text-xs text-gray-500">
+                            <i class="fa-solid fa-magnifying-glass text-2xl text-gray-300 mb-2 block"></i>
+                            Tidak ada item katalog yang cocok dengan filter saat ini.
+                        </div>
+                    </template>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5" x-show="catalogFiltered().length > 0">
+                        <template x-for="item in catalogFiltered()" :key="item.id">
+                            <div class="bg-white rounded-2xl p-3.5 border border-gray-200/75 hover:border-[#10A760] transition flex flex-col justify-between gap-2.5 shadow-2xs">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-16 h-16 rounded-xl bg-gray-50 border border-gray-100 overflow-hidden shrink-0 flex items-center justify-center">
+                                        <template x-if="item.image_url && !item._imgError">
+                                            <img
+                                                :src="item.image_url"
+                                                :alt="item.name"
+                                                loading="lazy"
+                                                x-on:error="item._imgError = true"
+                                                class="w-full h-full object-contain p-1"
+                                            >
+                                        </template>
+                                        <template x-if="!item.image_url || item._imgError">
+                                            <div class="w-full h-full flex items-center justify-center">
+                                                <i class="fa-solid text-lg" :class="item.item_type === 'barang' ? 'fa-box-open text-sky-500' : 'fa-print text-emerald-500'"></i>
+                                            </div>
+                                        </template>
                                     </div>
-                                    <div class="text-right shrink-0 ml-2">
-                                        <span class="font-black text-[#10A760]">{{ $item->formatted_price }}</span>
-                                        <span class="text-[10px] text-gray-400 block">/ {{ $item->unit }}</span>
+
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex flex-wrap items-center gap-1 mb-1">
+                                            <span
+                                                class="text-[10px] font-bold px-2 py-0.5 rounded-full"
+                                                :class="item.item_type === 'barang' ? 'bg-sky-50 text-sky-700 border border-sky-200' : 'bg-emerald-50 text-emerald-700 border border-emerald-200'"
+                                                x-text="item.type_label"
+                                            ></span>
+                                            <template x-if="item.brand">
+                                                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200" x-text="item.brand"></span>
+                                            </template>
+                                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600" x-text="item.pack_label"></span>
+                                        </div>
+
+                                        <div class="font-bold text-gray-900 text-xs sm:text-sm leading-snug" x-text="item.name"></div>
+                                        <div class="text-[10px] text-emerald-700 font-semibold mt-0.5" x-show="item.sub_category" x-text="item.sub_category"></div>
+                                        <p class="text-[11px] text-gray-500 line-clamp-2 mt-1" x-show="item.description" x-text="item.description"></p>
+                                        <p class="text-[10px] text-gray-400 mt-1 truncate" x-show="metadataSummary(item.metadata)" x-text="metadataSummary(item.metadata)"></p>
                                     </div>
                                 </div>
-                                @endforeach
+
+                                <div class="flex items-center justify-between pt-2 border-t border-gray-100 text-xs">
+                                    <div>
+                                        <span class="font-black text-[#10A760] text-sm" x-text="item.formatted_price || rupiah(item.price)"></span>
+                                        <span class="text-[10px] text-gray-400" x-text="'/ ' + item.unit"></span>
+                                        <template x-if="item.item_type === 'barang' && item.stock !== null">
+                                            <span
+                                                class="text-[10px] font-semibold ml-2"
+                                                :class="item.stock <= 5 ? 'text-red-600' : 'text-gray-400'"
+                                                x-text="'Stok: ' + item.stock"
+                                            ></span>
+                                        </template>
+                                    </div>
+                                    <a
+                                        href="{{ route('fotocopy.order', $place->id) }}"
+                                        class="text-[11px] font-bold text-[#0D8A4E] bg-[#E8F5EE] hover:bg-[#10A760] hover:text-white px-2.5 py-1 rounded-lg transition"
+                                    >
+                                        Pesan
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        @endforeach
+                        </template>
                     </div>
                 </div>
 

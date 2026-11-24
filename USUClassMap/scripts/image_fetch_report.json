@@ -1,0 +1,2357 @@
+{
+  "generated_at": "2026-11-24T00:00:50.758615+00:00",
+  "total": 234,
+  "success_count": 234,
+  "failed_count": 0,
+  "failed_slugs": [],
+  "by_source": {
+    "bing": 20,
+    "wikimedia": 209,
+    "sibling": 5,
+    "cached": 0
+  },
+  "wiki_unique_queries": 15,
+  "total_bytes": 5171298,
+  "items": [
+    {
+      "slug": "amplop-coklat-folio-1-pak-50",
+      "image_path": "fotocopy_catalog/amplop-coklat-folio-1-pak-50.webp",
+      "source": "wikimedia",
+      "query_used": "5-digit Envelope",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/c/c6/5-digit_Envelope.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 3270,
+      "width": 306,
+      "height": 600
+    },
+    {
+      "slug": "amplop-coklat-lamaran-kerja-folio",
+      "image_path": "fotocopy_catalog/amplop-coklat-lamaran-kerja-folio.webp",
+      "source": "wikimedia",
+      "query_used": "mailing envelope",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/Padded_Mailer.jpg/500px-Padded_Mailer.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 34228,
+      "width": 500,
+      "height": 321
+    },
+    {
+      "slug": "amplop-coklat-tali-a4-1pcs",
+      "image_path": "fotocopy_catalog/amplop-coklat-tali-a4-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "5-digit Envelope",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/c/c6/5-digit_Envelope.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 3270,
+      "width": 306,
+      "height": 600
+    },
+    {
+      "slug": "amplop-coklat-tali-folio-1pcs",
+      "image_path": "fotocopy_catalog/amplop-coklat-tali-folio-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "Briefumschlag (fcm)",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/13/Briefumschlag_%28fcm%29.jpg/500px-Briefumschlag_%28fcm%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 6242,
+      "width": 500,
+      "height": 419
+    },
+    {
+      "slug": "amplop-putih-no104-box-100",
+      "image_path": "fotocopy_catalog/amplop-putih-no104-box-100.webp",
+      "source": "wikimedia",
+      "query_used": "mailing envelope",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c4/La_Salle_University_Mailing_Envelope.jpg/500px-La_Salle_University_Mailing_Envelope.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 29480,
+      "width": 500,
+      "height": 386
+    },
+    {
+      "slug": "amplop-putih-paperline-90-1pcs",
+      "image_path": "fotocopy_catalog/amplop-putih-paperline-90-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "mailing envelope",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Copy_of_the_Mailing_Envelope_of_Professor_Yamada_for_Alfonso_Claveria.jpg/500px-Copy_of_the_Mailing_Envelope_of_Professor_Yamada_for_Alfonso_Claveria.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 17984,
+      "width": 500,
+      "height": 314
+    },
+    {
+      "slug": "amplop-putih-paperline-90-box-100",
+      "image_path": "fotocopy_catalog/amplop-putih-paperline-90-box-100.webp",
+      "source": "wikimedia",
+      "query_used": "mailing envelope",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/36/Copy_of_the_Mailing_Envelope_of_Professor_Yamada_for_Alfonso_Claveria.jpg/500px-Copy_of_the_Mailing_Envelope_of_Professor_Yamada_for_Alfonso_Claveria.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 17984,
+      "width": 500,
+      "height": 314
+    },
+    {
+      "slug": "amplop-putih-sedang-no104-1pcs",
+      "image_path": "fotocopy_catalog/amplop-putih-sedang-no104-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "small white paper envelope",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/%28White_capped_Noddy_in_Midway%2C_envelope_IE23-085%29_-_DPLA_-_aa2ab7052fd9bd5f21be01136f74d37a.jpg/500px-%28White_capped_Noddy_in_Midway%2C_envelope_IE23-085%29_-_DPLA_-_aa2ab7052fd9bd5f21be01136f74d37a.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 6528,
+      "width": 500,
+      "height": 291
+    },
+    {
+      "slug": "bantalan-stempel-stamp-pad-joyko",
+      "image_path": "fotocopy_catalog/bantalan-stempel-stamp-pad-joyko.webp",
+      "source": "wikimedia",
+      "query_used": "ink pad stamp",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/1990s_Trodat_green_stamp_pad_Austria.jpg/500px-1990s_Trodat_green_stamp_pad_Austria.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 20212,
+      "width": 500,
+      "height": 389
+    },
+    {
+      "slug": "baterai-aa-alkaline-isi-2",
+      "image_path": "fotocopy_catalog/baterai-aa-alkaline-isi-2.webp",
+      "source": "wikimedia",
+      "query_used": "aa alkaline batteries 2 pack",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/2-3rdA-AA-battery.jpg/500px-2-3rdA-AA-battery.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 26784,
+      "width": 469,
+      "height": 600
+    },
+    {
+      "slug": "baterai-aaa-alkaline-isi-2",
+      "image_path": "fotocopy_catalog/baterai-aaa-alkaline-isi-2.webp",
+      "source": "wikimedia",
+      "query_used": "aaa alkaline battery",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/a/aa/Kodak_AAA_Alkaline_Battery_2013_label.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 8022,
+      "width": 300,
+      "height": 600
+    },
+    {
+      "slug": "baterai-kancing-lr44-kalkulator",
+      "image_path": "fotocopy_catalog/baterai-kancing-lr44-kalkulator.webp",
+      "source": "wikimedia",
+      "query_used": "lr44 button cell battery",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/24/LR44_Button_Cell_Battery.jpg/500px-LR44_Button_Cell_Battery.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 17594,
+      "width": 500,
+      "height": 233
+    },
+    {
+      "slug": "binder-clip-no105-1pcs",
+      "image_path": "fotocopy_catalog/binder-clip-no105-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "Binder clip (HDR)",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Binder_clip_%28HDR%29.jpg/500px-Binder_clip_%28HDR%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 68636,
+      "width": 500,
+      "height": 500
+    },
+    {
+      "slug": "binder-clip-no105-box-12",
+      "image_path": "fotocopy_catalog/binder-clip-no105-box-12.webp",
+      "source": "wikimedia",
+      "query_used": "Binder clip (HDR)",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/89/Binder_clip_%28HDR%29.jpg/500px-Binder_clip_%28HDR%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 68636,
+      "width": 500,
+      "height": 500
+    },
+    {
+      "slug": "binder-clip-no107-1pcs",
+      "image_path": "fotocopy_catalog/binder-clip-no107-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "Binder clip (32267518724)",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Binder_clip_%2832267518724%29.jpg/500px-Binder_clip_%2832267518724%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 24050,
+      "width": 500,
+      "height": 281
+    },
+    {
+      "slug": "binder-clip-no107-box-12",
+      "image_path": "fotocopy_catalog/binder-clip-no107-box-12.webp",
+      "source": "wikimedia",
+      "query_used": "Binder Clips",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e9/A_Lot_of_Colorful_Multi_Color_Binder_Clips_Isolate_On_a_White_Background_%2843712539641%29.jpg/500px-A_Lot_of_Colorful_Multi_Color_Binder_Clips_Isolate_On_a_White_Background_%2843712539641%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 20360,
+      "width": 500,
+      "height": 363
+    },
+    {
+      "slug": "binder-clip-no111-1pcs",
+      "image_path": "fotocopy_catalog/binder-clip-no111-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "black steel binder clip",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/b/b2/ESSELTE_stationery.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 24298,
+      "width": 480,
+      "height": 396
+    },
+    {
+      "slug": "binder-clip-no111-box-12",
+      "image_path": "fotocopy_catalog/binder-clip-no111-box-12.webp",
+      "source": "wikimedia",
+      "query_used": "Binder Clips",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d3/Binder_Clips_%284962250175%29.jpg/500px-Binder_Clips_%284962250175%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 11474,
+      "width": 500,
+      "height": 332
+    },
+    {
+      "slug": "binder-clip-no155-1pcs",
+      "image_path": "fotocopy_catalog/binder-clip-no155-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "black office binder clip",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Paper_clip_in_Israel%2C_May_2024_01.jpg/500px-Paper_clip_in_Israel%2C_May_2024_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 15668,
+      "width": 500,
+      "height": 281
+    },
+    {
+      "slug": "binder-clip-no155-box-12",
+      "image_path": "fotocopy_catalog/binder-clip-no155-box-12.webp",
+      "source": "wikimedia",
+      "query_used": "Foldback clip",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b9/A_binder_clip_holding_cables_in_place.jpg/500px-A_binder_clip_holding_cables_in_place.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 10106,
+      "width": 500,
+      "height": 479
+    },
+    {
+      "slug": "binder-clip-no200-1pcs",
+      "image_path": "fotocopy_catalog/binder-clip-no200-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "Foldback clip",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Binder_Clip.jpg/500px-Binder_Clip.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 5386,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "binder-clip-no200-box-12",
+      "image_path": "fotocopy_catalog/binder-clip-no200-box-12.webp",
+      "source": "wikimedia",
+      "query_used": "Binder Clips",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Binder_Clips_-_Office_Supplies_%2816162526749%29.jpg/500px-Binder_Clips_-_Office_Supplies_%2816162526749%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 11050,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "binder-clip-no260-1pcs",
+      "image_path": "fotocopy_catalog/binder-clip-no260-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "Foldback clip",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/Binder_clip.JPG/500px-Binder_clip.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 17906,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "binder-clip-no260-box-12",
+      "image_path": "fotocopy_catalog/binder-clip-no260-box-12.webp",
+      "source": "wikimedia",
+      "query_used": "Binder Clips",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Binder_clips.JPG/500px-Binder_clips.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 26618,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "binder-ring-a5-20-lubang",
+      "image_path": "fotocopy_catalog/binder-ring-a5-20-lubang.webp",
+      "source": "bing",
+      "query_used": "binder ring a5 20 lubang bantex",
+      "source_url": "https://m.media-amazon.com/images/I/51rBK3c2YwL.jpg",
+      "bytes": 5816,
+      "width": 500,
+      "height": 500
+    },
+    {
+      "slug": "binder-ring-b5-26-lubang",
+      "image_path": "fotocopy_catalog/binder-ring-b5-26-lubang.webp",
+      "source": "wikimedia",
+      "query_used": "ring binder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/67/Digital_Equipment_Corporation_-_Educational_Services_-_Ring_binder_Notebook_Textile_bag.jpg/500px-Digital_Equipment_Corporation_-_Educational_Services_-_Ring_binder_Notebook_Textile_bag.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 18194,
+      "width": 418,
+      "height": 600
+    },
+    {
+      "slug": "buku-campus-big-boss-boxy-50lbr",
+      "image_path": "fotocopy_catalog/buku-campus-big-boss-boxy-50lbr.webp",
+      "source": "wikimedia",
+      "query_used": "exercise notebook",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Greek_Interwar_School_Notebooks.jpg/500px-Greek_Interwar_School_Notebooks.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 44756,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "buku-gambar-a3-sidu",
+      "image_path": "fotocopy_catalog/buku-gambar-a3-sidu.webp",
+      "source": "wikimedia",
+      "query_used": "Notebooks",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Notebooks_from_Wikimedia_Malaysia_20250523.jpg/500px-Notebooks_from_Wikimedia_Malaysia_20250523.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 23094,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "buku-gambar-a4-sidu",
+      "image_path": "fotocopy_catalog/buku-gambar-a4-sidu.webp",
+      "source": "wikimedia",
+      "query_used": "Sketch-book",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/b/b6/TheSketchbookTitlePage.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 10130,
+      "width": 339,
+      "height": 600
+    },
+    {
+      "slug": "buku-kwitansi-paperline-sedang",
+      "image_path": "fotocopy_catalog/buku-kwitansi-paperline-sedang.webp",
+      "source": "wikimedia",
+      "query_used": "official payment receipt book",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/68/Elektrostal%2C_payment_receipt.jpg/500px-Elektrostal%2C_payment_receipt.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 40794,
+      "width": 500,
+      "height": 277
+    },
+    {
+      "slug": "buku-nota-kontan-3-ply-sedang",
+      "image_path": "fotocopy_catalog/buku-nota-kontan-3-ply-sedang.webp",
+      "source": "wikimedia",
+      "query_used": "receipt book",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/Wright_Tavern_Receipt_Book_-_DPLA_-_07dc6d5814dbd204c68265c202004e3b_%28page_33%29.jpg/500px-Wright_Tavern_Receipt_Book_-_DPLA_-_07dc6d5814dbd204c68265c202004e3b_%28page_33%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 45988,
+      "width": 498,
+      "height": 600
+    },
+    {
+      "slug": "buku-nota-kontan-paperline-2-ply",
+      "image_path": "fotocopy_catalog/buku-nota-kontan-paperline-2-ply.webp",
+      "source": "wikimedia",
+      "query_used": "receipt book",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Receipt_Book_-_DPLA_-_0b79c682d06e767c95611f0d7bd14ff3_%28page_230%29.jpg/500px-Receipt_Book_-_DPLA_-_0b79c682d06e767c95611f0d7bd14ff3_%28page_230%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 17914,
+      "width": 397,
+      "height": 600
+    },
+    {
+      "slug": "buku-tulis-sidu-38-1-pak-10",
+      "image_path": "fotocopy_catalog/buku-tulis-sidu-38-1-pak-10.webp",
+      "source": "wikimedia",
+      "query_used": "exercise notebook",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/06/Warsaw_Calligraphy_notebook_of_Fryderyk_Chopin.jpg/500px-Warsaw_Calligraphy_notebook_of_Fryderyk_Chopin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 14570,
+      "width": 500,
+      "height": 219
+    },
+    {
+      "slug": "buku-tulis-sidu-38-lembar-1pcs",
+      "image_path": "fotocopy_catalog/buku-tulis-sidu-38-lembar-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "ruled exercise book",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/Book%2C_%22Rules_and_Regulations_for_the_Field_Exercise_and_Manoeuvres_of_Infantry%22_of_Theodore_S._Case_-_DPLA_-_5aea351a11886a42bfa93f86adc67c90_%28page_1%29.jpg/500px-Book%2C_%22Rules_and_Regulations_for_the_Field_Exercise_and_Manoeuvres_of_Infantry%22_of_Theodore_S._Case_-_DPLA_-_5aea351a11886a42bfa93f86adc67c90_%28page_1%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 17244,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "buku-tulis-sidu-58-lembar-1pcs",
+      "image_path": "fotocopy_catalog/buku-tulis-sidu-58-lembar-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "school notebook 58 pages",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Columbus_Schools_levy_notebook_1977_-_DPLA_-_5c320098645acc6f97c6a98ea0684eea_%28page_58%29.jpg/500px-Columbus_Schools_levy_notebook_1977_-_DPLA_-_5c320098645acc6f97c6a98ea0684eea_%28page_58%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 41226,
+      "width": 473,
+      "height": 600
+    },
+    {
+      "slug": "burning-cd-r-skripsi-plus-label",
+      "image_path": "fotocopy_catalog/burning-cd-r-skripsi-plus-label.webp",
+      "source": "wikimedia",
+      "query_used": "cd-r optical disc",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/Audio_CD_with_Copy_Protection_%28Open_Jewel_Case_%E2%80%93_With_Compact_Disc%29.jpg/500px-Audio_CD_with_Copy_Protection_%28Open_Jewel_Case_%E2%80%93_With_Compact_Disc%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 25170,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "burning-dvd-r-skripsi-plus-label",
+      "image_path": "fotocopy_catalog/burning-dvd-r-skripsi-plus-label.webp",
+      "source": "wikimedia",
+      "query_used": "dvd-r disc",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Backside_of_DVD-R_disc_2025-03-01.jpg/500px-Backside_of_DVD-R_disc_2025-03-01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 12410,
+      "width": 500,
+      "height": 281
+    },
+    {
+      "slug": "busur-derajat-180-butterfly",
+      "image_path": "fotocopy_catalog/busur-derajat-180-butterfly.webp",
+      "source": "wikimedia",
+      "query_used": "plastic protractor",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/Aluminum_Angle_Square_and_Plastic_Protractor_02.jpg/500px-Aluminum_Angle_Square_and_Plastic_Protractor_02.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 34870,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "cetak-foto-4r-borderless",
+      "image_path": "fotocopy_catalog/cetak-foto-4r-borderless.webp",
+      "source": "wikimedia",
+      "query_used": "printed photographs",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/17/3D_printed_sugar_cube.gk.jpg/500px-3D_printed_sugar_cube.gk.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 19300,
+      "width": 444,
+      "height": 600
+    },
+    {
+      "slug": "cetak-id-card-pvc-panitia",
+      "image_path": "fotocopy_catalog/cetak-id-card-pvc-panitia.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Identity_document",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Biometric_Argentine_DNI_for_Citizens-Foreigners_Falkland_Islands_Seal.png/330px-Biometric_Argentine_DNI_for_Citizens-Foreigners_Falkland_Islands_Seal.png?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 16914,
+      "width": 330,
+      "height": 209
+    },
+    {
+      "slug": "cetak-kartu-nama-box-100",
+      "image_path": "fotocopy_catalog/cetak-kartu-nama-box-100.webp",
+      "source": "wikimedia",
+      "query_used": "business cards",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8e/Beautifully_illuminated_show_cards_for_every_business_LCCN2003674425.jpg/500px-Beautifully_illuminated_show_cards_for_every_business_LCCN2003674425.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 54308,
+      "width": 500,
+      "height": 403
+    },
+    {
+      "slug": "cetak-pas-foto-2x3-paket-6",
+      "image_path": "fotocopy_catalog/cetak-pas-foto-2x3-paket-6.webp",
+      "source": "wikimedia",
+      "query_used": "photo printer",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/04/Kodak_photo_printer_in_shopping_center%2C_Tomasz%C3%B3w_Mazowiecki%2C_Poland.jpg/500px-Kodak_photo_printer_in_shopping_center%2C_Tomasz%C3%B3w_Mazowiecki%2C_Poland.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 50508,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "cetak-pas-foto-3x4-paket-6",
+      "image_path": "fotocopy_catalog/cetak-pas-foto-3x4-paket-6.webp",
+      "source": "wikimedia",
+      "query_used": "photo printer",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/70/DNP_Photo_Printer_Station.jpg/500px-DNP_Photo_Printer_Station.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 39398,
+      "width": 337,
+      "height": 600
+    },
+    {
+      "slug": "cetak-pas-foto-4x6-paket-4",
+      "image_path": "fotocopy_catalog/cetak-pas-foto-4x6-paket-4.webp",
+      "source": "wikimedia",
+      "query_used": "photo printer",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1d/Cables_and_cartridgne_of_the_old_printer._%2850380625343%29.jpg/500px-Cables_and_cartridgne_of_the_old_printer._%2850380625343%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 21504,
+      "width": 500,
+      "height": 334
+    },
+    {
+      "slug": "clear-holder-display-book-20-pocket",
+      "image_path": "fotocopy_catalog/clear-holder-display-book-20-pocket.webp",
+      "source": "wikimedia",
+      "query_used": "ring binder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/CDC_22-ring_binder.JPG/500px-CDC_22-ring_binder.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 16792,
+      "width": 500,
+      "height": 555
+    },
+    {
+      "slug": "clear-holder-display-book-40-pocket",
+      "image_path": "fotocopy_catalog/clear-holder-display-book-40-pocket.webp",
+      "source": "wikimedia",
+      "query_used": "ring binder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a1/Compare_SpineLess_ringless_binder_with_comparable_Ring_binder_dimensions.jpg/500px-Compare_SpineLess_ringless_binder_with_comparable_Ring_binder_dimensions.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 13600,
+      "width": 500,
+      "height": 280
+    },
+    {
+      "slug": "clear-holder-display-book-60-pocket",
+      "image_path": "fotocopy_catalog/clear-holder-display-book-60-pocket.webp",
+      "source": "wikimedia",
+      "query_used": "large clear display book",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7c/Ornamentglas_B_-_Ansicht_1.jpg/500px-Ornamentglas_B_-_Ansicht_1.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 35808,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "correction-tape-joyko-5mm-12m",
+      "image_path": "fotocopy_catalog/correction-tape-joyko-5mm-12m.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Correction_tape",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/08/Benutzung_eines_Korrekturrollers.gif/330px-Benutzung_eines_Korrekturrollers.gif?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 6422,
+      "width": 330,
+      "height": 354
+    },
+    {
+      "slug": "cutter-besar-joyko-l500",
+      "image_path": "fotocopy_catalog/cutter-besar-joyko-l500.webp",
+      "source": "bing",
+      "query_used": "cutter besar joyko l-500 merah",
+      "source_url": "https://get.pxhere.com/photo/hand-sharp-tool-metal-knife-cut-magenta-strap-cutter-utility-knife-box-cutter-1386757.jpg",
+      "bytes": 6828,
+      "width": 500,
+      "height": 286
+    },
+    {
+      "slug": "cutter-kecil-joyko-a300",
+      "image_path": "fotocopy_catalog/cutter-kecil-joyko-a300.webp",
+      "source": "wikimedia",
+      "query_used": "utility knife cutter",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8b/Sharp_objects_scissors_knife_cutter_illustration_-_colored.png/500px-Sharp_objects_scissors_knife_cutter_illustration_-_colored.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 14096,
+      "width": 500,
+      "height": 500
+    },
+    {
+      "slug": "double-tape-12mm-kecil",
+      "image_path": "fotocopy_catalog/double-tape-12mm-kecil.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Double-sided_tape",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b7/%D0%94%D0%B2%D1%83%D1%85%D1%81%D1%82%D0%BE%D1%80%D0%BE%D0%BD%D0%BD%D0%B8%D0%B9_%D1%81%D0%BA%D0%BE%D1%82%D1%87_f003.jpg/330px-%D0%94%D0%B2%D1%83%D1%85%D1%81%D1%82%D0%BE%D1%80%D0%BE%D0%BD%D0%BD%D0%B8%D0%B9_%D1%81%D0%BA%D0%BE%D1%82%D1%87_f003.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 16404,
+      "width": 330,
+      "height": 440
+    },
+    {
+      "slug": "double-tape-24mm-sedang",
+      "image_path": "fotocopy_catalog/double-tape-24mm-sedang.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Double-sided_tape",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/b/b7/%D0%94%D0%B2%D1%83%D1%85%D1%81%D1%82%D0%BE%D1%80%D0%BE%D0%BD%D0%BD%D0%B8%D0%B9_%D1%81%D0%BA%D0%BE%D1%82%D1%87_f003.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "bytes": 19278,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "double-tape-foam-hijau-24mm",
+      "image_path": "fotocopy_catalog/double-tape-foam-hijau-24mm.webp",
+      "source": "wikimedia",
+      "query_used": "packing tape",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Brown_adhesive_tape.jpg/500px-Brown_adhesive_tape.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 8606,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "flashdisk-kingston-datatraveler-64gb",
+      "image_path": "fotocopy_catalog/flashdisk-kingston-datatraveler-64gb.webp",
+      "source": "wikimedia",
+      "query_used": "kingston usb flash drive",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Kingston_DataTraveler_110_8GB_USB_flash_drive.jpg/500px-Kingston_DataTraveler_110_8GB_USB_flash_drive.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 7582,
+      "width": 500,
+      "height": 280
+    },
+    {
+      "slug": "flashdisk-sandisk-cruzer-blade-16gb",
+      "image_path": "fotocopy_catalog/flashdisk-sandisk-cruzer-blade-16gb.webp",
+      "source": "wikimedia",
+      "query_used": "sandisk usb flash drive",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/af/Sandisk_Ultra_USB_Flash_Drive.png/500px-Sandisk_Ultra_USB_Flash_Drive.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 7174,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "flashdisk-sandisk-cruzer-blade-32gb",
+      "image_path": "fotocopy_catalog/flashdisk-sandisk-cruzer-blade-32gb.webp",
+      "source": "wikimedia",
+      "query_used": "sandisk usb flash drive",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b4/Sandisk_USB_3.0_flashdrive_%288272978749%29.jpg/500px-Sandisk_USB_3.0_flashdrive_%288272978749%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 11720,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "fotokopi-bolak-balik-a4-f4",
+      "image_path": "fotocopy_catalog/fotokopi-bolak-balik-a4-f4.webp",
+      "source": "wikimedia",
+      "query_used": "Canon ImageRUNNER",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/de/Canon_IR5800cn.jpg/500px-Canon_IR5800cn.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 30436,
+      "width": 500,
+      "height": 467
+    },
+    {
+      "slug": "fotokopi-buku-modul-tebal",
+      "image_path": "fotocopy_catalog/fotokopi-buku-modul-tebal.webp",
+      "source": "wikimedia",
+      "query_used": "photocopier",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e6/Photocopier.jpg/500px-Photocopier.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 31060,
+      "width": 500,
+      "height": 500
+    },
+    {
+      "slug": "fotokopi-hitam-putih-a4-1-sisi",
+      "image_path": "fotocopy_catalog/fotokopi-hitam-putih-a4-1-sisi.webp",
+      "source": "bing",
+      "query_used": "mesin fotokopi dokumen kertas a4",
+      "source_url": "https://imgv2-2-f.scribdassets.com/img/document/446527299/original/ee159082a2/1679099019?v=1",
+      "bytes": 28812,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "fotokopi-hitam-putih-f4-1-sisi",
+      "image_path": "fotocopy_catalog/fotokopi-hitam-putih-f4-1-sisi.webp",
+      "source": "wikimedia",
+      "query_used": "copy machine paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/00/Canon_ImageRUNNER_Advance_C7570i_photocopier.jpg/500px-Canon_ImageRUNNER_Advance_C7570i_photocopier.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 30958,
+      "width": 500,
+      "height": 380
+    },
+    {
+      "slug": "fotokopi-ktp-kk-ijazah",
+      "image_path": "fotocopy_catalog/fotokopi-ktp-kk-ijazah.webp",
+      "source": "wikimedia",
+      "query_used": "copying official documents",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Official_documents_in_the_caboose_%2826867209245%29.jpg/500px-Official_documents_in_the_caboose_%2826867209245%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 31604,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "fotokopi-perbesar-perkecil-skala",
+      "image_path": "fotocopy_catalog/fotokopi-perbesar-perkecil-skala.webp",
+      "source": "wikimedia",
+      "query_used": "photocopier",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/42/Konica_Minolta_Bizhub_C454e_photocopier.jpg/500px-Konica_Minolta_Bizhub_C454e_photocopier.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 28552,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "fotokopi-ukuran-besar-a3",
+      "image_path": "fotocopy_catalog/fotokopi-ukuran-besar-a3.webp",
+      "source": "bing",
+      "query_used": "a3 copier machine large paper",
+      "source_url": "https://ts3.mm.bing.net/th?id=OIP.dwOeLGYjJ9ekQO-iG5CIOAHaEz&pid=15.1",
+      "bytes": 22240,
+      "width": 474,
+      "height": 307
+    },
+    {
+      "slug": "fotokopi-warna-a4",
+      "image_path": "fotocopy_catalog/fotokopi-warna-a4.webp",
+      "source": "wikimedia",
+      "query_used": "color photocopier multifunction printer",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/83/D450_4%EB%8B%A8_%EC%A0%95%EB%A9%B4.jpg/500px-D450_4%EB%8B%A8_%EC%A0%95%EB%A9%B4.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 9102,
+      "width": 400,
+      "height": 600
+    },
+    {
+      "slug": "glue-stick-kenko-15gr",
+      "image_path": "fotocopy_catalog/glue-stick-kenko-15gr.webp",
+      "source": "wikimedia",
+      "query_used": "glue stick",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Elmer%27s_Office_Glue_Stick_in_action.JPG/500px-Elmer%27s_Office_Glue_Stick_in_action.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 6998,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "glue-stick-uhu-8-2gr",
+      "image_path": "fotocopy_catalog/glue-stick-uhu-8-2gr.webp",
+      "source": "wikimedia",
+      "query_used": "glue stick uhu",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e3/Uhu.jpeg/500px-Uhu.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 13970,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "gunting-kertas-stainless-joyko-sedang",
+      "image_path": "fotocopy_catalog/gunting-kertas-stainless-joyko-sedang.webp",
+      "source": "bing",
+      "query_used": "gunting stainless joyko sc 838",
+      "source_url": "https://img.mbizmarket.co.id/products/thumbs/800x800/2023/02/04/0f25201a73984e841a797d7807ffe4dd.jpg",
+      "bytes": 5256,
+      "width": 500,
+      "height": 393
+    },
+    {
+      "slug": "id-card-holder-b4-kaku-1pcs",
+      "image_path": "fotocopy_catalog/id-card-holder-b4-kaku-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "Red Cross Youth",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Lanyard_of_a_Red_Cross_Youth_%28Singapore%29_cadet_-_20090403.jpg/500px-Lanyard_of_a_Red_Cross_Youth_%28Singapore%29_cadet_-_20090403.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 18238,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "isi-pensil-mekanik-faber-castell-2b-05",
+      "image_path": "fotocopy_catalog/isi-pensil-mekanik-faber-castell-2b-05.webp",
+      "source": "wikimedia",
+      "query_used": "mechanical pencil lead tube",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b5/Faber-Castell_Lead_pencil_0.7.jpg/500px-Faber-Castell_Lead_pencil_0.7.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 14172,
+      "width": 500,
+      "height": 281
+    },
+    {
+      "slug": "isi-pisau-cutter-joyko-l150",
+      "image_path": "fotocopy_catalog/isi-pisau-cutter-joyko-l150.webp",
+      "source": "wikimedia",
+      "query_used": "utility knife cutter",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/62/Box_Cutter_Knife_Sharp_Tool_Cutter_Edited_2020_%2849902801827%29.jpg/500px-Box_Cutter_Knife_Sharp_Tool_Cutter_Edited_2020_%2849902801827%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 9374,
+      "width": 500,
+      "height": 290
+    },
+    {
+      "slug": "isi-staples-no10-1-box",
+      "image_path": "fotocopy_catalog/isi-staples-no10-1-box.webp",
+      "source": "wikimedia",
+      "query_used": "office stapler",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/2011-365-306_Staplers_On_Parade_%286306848469%29.jpg/500px-2011-365-306_Staplers_On_Parade_%286306848469%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 6738,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "isi-staples-no10-1-pak-20-box",
+      "image_path": "fotocopy_catalog/isi-staples-no10-1-pak-20-box.webp",
+      "source": "wikimedia",
+      "query_used": "office stapler",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/2011-365-306_Staplers_On_Parade_%286306848469%29.jpg/500px-2011-365-306_Staplers_On_Parade_%286306848469%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 6738,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "isi-staples-no3-24-6-box",
+      "image_path": "fotocopy_catalog/isi-staples-no3-24-6-box.webp",
+      "source": "wikimedia",
+      "query_used": "office stapler",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/76/A_KOKUYO_Stapler.jpg/500px-A_KOKUYO_Stapler.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 28690,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "isolasi-bening-kecil-selotip",
+      "image_path": "fotocopy_catalog/isolasi-bening-kecil-selotip.webp",
+      "source": "wikimedia",
+      "query_used": "packing tape",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/25/Sticky_tape.jpg/500px-Sticky_tape.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 28366,
+      "width": 500,
+      "height": 561
+    },
+    {
+      "slug": "jangka-matematika-besi-joyko",
+      "image_path": "fotocopy_catalog/jangka-matematika-besi-joyko.webp",
+      "source": "bing",
+      "query_used": "jangka matematika joyko ms 55 kotak",
+      "source_url": "https://id-test-11.slatic.net/p/941d7b7df9f519bae678bcc90f57077f.jpg",
+      "bytes": 7094,
+      "width": 500,
+      "height": 434
+    },
+    {
+      "slug": "jasa-edit-ganti-background-pas-foto",
+      "image_path": "fotocopy_catalog/jasa-edit-ganti-background-pas-foto.webp",
+      "source": "wikimedia",
+      "query_used": "printed photographs",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/Lemons_photogram.jpg/500px-Lemons_photogram.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 53490,
+      "width": 453,
+      "height": 600
+    },
+    {
+      "slug": "jasa-lipat-brosur-paket-100",
+      "image_path": "fotocopy_catalog/jasa-lipat-brosur-paket-100.webp",
+      "source": "wikimedia",
+      "query_used": "brochure leaflet folded",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/1952_Jersey_holiday_events_brochure.jpg/500px-1952_Jersey_holiday_events_brochure.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 37664,
+      "width": 358,
+      "height": 600
+    },
+    {
+      "slug": "jasa-pasang-pembatas-bab-skripsi",
+      "image_path": "fotocopy_catalog/jasa-pasang-pembatas-bab-skripsi.webp",
+      "source": "wikimedia",
+      "query_used": "spiral binding",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Spiralbinder%C3%BCcken_--_2022_--_9739.jpg/500px-Spiralbinder%C3%BCcken_--_2022_--_9739.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 10552,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "jasa-pengetikan-dokumen-per-halaman",
+      "image_path": "fotocopy_catalog/jasa-pengetikan-dokumen-per-halaman.webp",
+      "source": "wikimedia",
+      "query_used": "microsoft word document editing",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Editing_in_Microsoft_Word.png/500px-Editing_in_Microsoft_Word.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 18374,
+      "width": 500,
+      "height": 382
+    },
+    {
+      "slug": "jasa-potong-kertas-mesin-presisi",
+      "image_path": "fotocopy_catalog/jasa-potong-kertas-mesin-presisi.webp",
+      "source": "wikimedia",
+      "query_used": "paper trimmer",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/f/f2/Paper_trimmer.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 13114,
+      "width": 482,
+      "height": 361
+    },
+    {
+      "slug": "jasa-rapikan-margin-daftar-isi-skripsi",
+      "image_path": "fotocopy_catalog/jasa-rapikan-margin-daftar-isi-skripsi.webp",
+      "source": "wikimedia",
+      "query_used": "laptop typing",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/Hand-laptop-notebook-typing_%2823698140194%29.jpg/500px-Hand-laptop-notebook-typing_%2823698140194%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 11420,
+      "width": 500,
+      "height": 331
+    },
+    {
+      "slug": "jilid-hardcover-skripsi-express",
+      "image_path": "fotocopy_catalog/jilid-hardcover-skripsi-express.webp",
+      "source": "wikimedia",
+      "query_used": "hardcover book spine lettering",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/C109bb16_06.jpg/500px-C109bb16_06.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 44306,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "jilid-hardcover-skripsi-tinta-emas",
+      "image_path": "fotocopy_catalog/jilid-hardcover-skripsi-tinta-emas.webp",
+      "source": "bing",
+      "query_used": "jilid hardcover skripsi tinta emas universitas",
+      "source_url": "https://asset-staging.wellenprint.com/3894/Jenis-Jilid-Buku-Lem-Panas-1400-x-800px.webp",
+      "bytes": 14632,
+      "width": 500,
+      "height": 286
+    },
+    {
+      "slug": "jilid-lakban-biasa-mika-buffalo",
+      "image_path": "fotocopy_catalog/jilid-lakban-biasa-mika-buffalo.webp",
+      "source": "bing",
+      "query_used": "jilid lakban hitam mika buffalo laporan makalah",
+      "source_url": "https://img.mbizmarket.co.id/products/thumbs/800x800/2022/03/18/02c92694a5513597e9f3c2d9d86f62f5.jpg",
+      "bytes": 19452,
+      "width": 500,
+      "height": 500
+    },
+    {
+      "slug": "jilid-mika-slide-binder",
+      "image_path": "fotocopy_catalog/jilid-mika-slide-binder.webp",
+      "source": "bing",
+      "query_used": "jilid tulang plastik slide binder mika",
+      "source_url": "https://ts2.mm.bing.net/th?id=OIP.7KtPVpAB8L6FifKdCJFSxgHaHa&pid=15.1",
+      "bytes": 18238,
+      "width": 474,
+      "height": 474
+    },
+    {
+      "slug": "jilid-softcover-direct-binding",
+      "image_path": "fotocopy_catalog/jilid-softcover-direct-binding.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Bookbinding",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3a/Relieur_JPG01.jpg/330px-Relieur_JPG01.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 29252,
+      "width": 330,
+      "height": 485
+    },
+    {
+      "slug": "jilid-spiral-kawat-ring",
+      "image_path": "fotocopy_catalog/jilid-spiral-kawat-ring.webp",
+      "source": "wikimedia",
+      "query_used": "spiral binding",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d5/Spiralbinder%C3%BCcken_--_2022_--_9722.jpg/500px-Spiralbinder%C3%BCcken_--_2022_--_9722.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 14220,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "jilid-spiral-plastik-a4-f4",
+      "image_path": "fotocopy_catalog/jilid-spiral-plastik-a4-f4.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Spiral_binding",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/93/Notebook.jpg/330px-Notebook.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 29792,
+      "width": 330,
+      "height": 440
+    },
+    {
+      "slug": "joyko-highlighter-pastel-hl",
+      "image_path": "fotocopy_catalog/joyko-highlighter-pastel-hl.webp",
+      "source": "wikimedia",
+      "query_used": "whiteboard marker",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Blue_Expo_marker_in_whiteboard_holder.JPG/500px-Blue_Expo_marker_in_whiteboard_holder.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 11622,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "kabel-otg-micro-usb-ke-usb",
+      "image_path": "fotocopy_catalog/kabel-otg-micro-usb-ke-usb.webp",
+      "source": "wikimedia",
+      "query_used": "micro usb cable",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ad/USB_On_The_Go_%28OTG%29_Cable_%2820170828_204141%29.jpg/500px-USB_On_The_Go_%28OTG%29_Cable_%2820170828_204141%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 21522,
+      "width": 337,
+      "height": 600
+    },
+    {
+      "slug": "kabel-otg-type-c-ke-usb",
+      "image_path": "fotocopy_catalog/kabel-otg-type-c-ke-usb.webp",
+      "source": "wikimedia",
+      "query_used": "usb otg adapter",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/USB_OTG_flash_drive_connected_to_Motorola_ES400_%2830311075233%29.jpg/500px-USB_OTG_flash_drive_connected_to_Motorola_ES400_%2830311075233%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 11452,
+      "width": 500,
+      "height": 493
+    },
+    {
+      "slug": "kalkulator-ilmiah-casio-fx-350ms",
+      "image_path": "fotocopy_catalog/kalkulator-ilmiah-casio-fx-350ms.webp",
+      "source": "wikimedia",
+      "query_used": "casio calculator",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/CASIO_FX-501P_Calculator_%26_FA-1_Interface_with_CASIO_ORIGINAL_PROGRAM_TAPE.jpg/500px-CASIO_FX-501P_Calculator_%26_FA-1_Interface_with_CASIO_ORIGINAL_PROGRAM_TAPE.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 35426,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "kalkulator-ilmiah-casio-fx-991ex",
+      "image_path": "fotocopy_catalog/kalkulator-ilmiah-casio-fx-991ex.webp",
+      "source": "wikimedia",
+      "query_used": "casio fx scientific calculator",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/1980_to_1988_scientific_calculator_Casio_fx_180P_made_in_Japan.jpg/500px-1980_to_1988_scientific_calculator_Casio_fx_180P_made_in_Japan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 55212,
+      "width": 379,
+      "height": 600
+    },
+    {
+      "slug": "kalkulator-saku-joyko-cc-23-12-digit",
+      "image_path": "fotocopy_catalog/kalkulator-saku-joyko-cc-23-12-digit.webp",
+      "source": "wikimedia",
+      "query_used": "pocket calculator",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/88/Casio_fx-83ES_calculator_%28front%29_%28minor_retouch%29.jpg/500px-Casio_fx-83ES_calculator_%28front%29_%28minor_retouch%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 28530,
+      "width": 337,
+      "height": 600
+    },
+    {
+      "slug": "karet-gelang-pentil-pak-kecil",
+      "image_path": "fotocopy_catalog/karet-gelang-pentil-pak-kecil.webp",
+      "source": "wikimedia",
+      "query_used": "rubber bands",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/Rubber_bands_-_Colors_-_Studio_photo_2011.jpg/500px-Rubber_bands_-_Colors_-_Studio_photo_2011.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 68336,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "keping-cd-r-kosong-verbatim-satuan",
+      "image_path": "fotocopy_catalog/keping-cd-r-kosong-verbatim-satuan.webp",
+      "source": "wikimedia",
+      "query_used": "Blank Verbatim CD-R (Front)",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/Blank_Verbatim_CD-R_%28Front%29.jpg/500px-Blank_Verbatim_CD-R_%28Front%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 23522,
+      "width": 500,
+      "height": 491
+    },
+    {
+      "slug": "keping-dvd-r-kosong-verbatim-satuan",
+      "image_path": "fotocopy_catalog/keping-dvd-r-kosong-verbatim-satuan.webp",
+      "source": "wikimedia",
+      "query_used": "dvd-r disc",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/9/97/Verbatim_16x_DVD-R_spindle_20050708.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 4742,
+      "width": 190,
+      "height": 203
+    },
+    {
+      "slug": "kertas-buffalo-jilid-1-pak-100",
+      "image_path": "fotocopy_catalog/kertas-buffalo-jilid-1-pak-100.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Construction_paper",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Construction_Paper_-pcne_%288716718762%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "bytes": 22258,
+      "width": 500,
+      "height": 500
+    },
+    {
+      "slug": "kertas-buffalo-jilid-warna-1-lembar",
+      "image_path": "fotocopy_catalog/kertas-buffalo-jilid-warna-1-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Construction_paper",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Construction_Paper_-pcne_%288716718762%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "bytes": 22258,
+      "width": 500,
+      "height": 500
+    },
+    {
+      "slug": "kertas-concorde-a4-1-pak-50",
+      "image_path": "fotocopy_catalog/kertas-concorde-a4-1-pak-50.webp",
+      "source": "sibling:kertas-concorde-sertifikat-a4-1-lembar",
+      "query_used": "White paper stack",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Victory_Program._Stacking_bales_of_pressed_paper_8c34764v.jpg/500px-Victory_Program._Stacking_bales_of_pressed_paper_8c34764v.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 23670,
+      "width": 500,
+      "height": 332
+    },
+    {
+      "slug": "kertas-concorde-sertifikat-a4-1-lembar",
+      "image_path": "fotocopy_catalog/kertas-concorde-sertifikat-a4-1-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "Certificate paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Paper_Identity_Certificate_for_Taoists_in_Ming_Dynasty_2014-07.JPG/500px-Paper_Identity_Certificate_for_Taoists_in_Ming_Dynasty_2014-07.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 23670,
+      "width": 500,
+      "height": 332
+    },
+    {
+      "slug": "kertas-double-folio-bergaris-1-lembar",
+      "image_path": "fotocopy_catalog/kertas-double-folio-bergaris-1-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "Ruled paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Ruled_or_lined_paper.jpg/500px-Ruled_or_lined_paper.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 6398,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "kertas-double-folio-bergaris-1-pak-100",
+      "image_path": "fotocopy_catalog/kertas-double-folio-bergaris-1-pak-100.webp",
+      "source": "wikimedia",
+      "query_used": "Spiral notebook",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0f/EFTA00002920-Gazebo_-_Spiral-bound_notebook_with_Gazebo_written_in_blue_ink_rests_on_a_textured_stone_surface_outdoors.jpg/500px-EFTA00002920-Gazebo_-_Spiral-bound_notebook_with_Gazebo_written_in_blue_ink_rests_on_a_textured_stone_surface_outdoors.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 34064,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "kertas-hvs-a4-70gsm-1-lembar",
+      "image_path": "fotocopy_catalog/kertas-hvs-a4-70gsm-1-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "white copy paper sheets",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2a/Scattered_white_paper_%28Unsplash%29.jpg/500px-Scattered_white_paper_%28Unsplash%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 12580,
+      "width": 418,
+      "height": 600
+    },
+    {
+      "slug": "kertas-hvs-paperone-a4-80gsm-1-rim",
+      "image_path": "fotocopy_catalog/kertas-hvs-paperone-a4-80gsm-1-rim.webp",
+      "source": "sibling:kertas-hvs-paperone-a4-80gsm-10-lembar",
+      "query_used": "colored paper sheets",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a8/Paper11_Flickr_macro_photo_by_Jordan_Mudrack_-_close-up_view_colored_ink_dye_paint_wet_transparent_opaque_mediums_materials_forming_intricate_simple_abstract_patterns_shapes_images.jpg/500px-thumbnail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 20276,
+      "width": 500,
+      "height": 438
+    },
+    {
+      "slug": "kertas-hvs-paperone-a4-80gsm-10-lembar",
+      "image_path": "fotocopy_catalog/kertas-hvs-paperone-a4-80gsm-10-lembar.webp",
+      "source": "bing",
+      "query_used": "paperone a4 80gsm paper sheets",
+      "source_url": "https://m.media-amazon.com/images/I/71EEa1f09cL._SL1500_.jpg",
+      "bytes": 20276,
+      "width": 500,
+      "height": 438
+    },
+    {
+      "slug": "kertas-hvs-paperone-f4-80gsm-1-rim",
+      "image_path": "fotocopy_catalog/kertas-hvs-paperone-f4-80gsm-1-rim.webp",
+      "source": "sibling:kertas-hvs-paperone-a4-80gsm-10-lembar",
+      "query_used": "colored paper sheets",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1f/Paper12_Flickr_macro_photo_by_Jordan_Mudrack_-_close-up_view_colored_ink_dye_paint_wet_transparent_opaque_mediums_materials_forming_intricate_simple_abstract_patterns_shapes_images.jpg/500px-thumbnail.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 20276,
+      "width": 500,
+      "height": 438
+    },
+    {
+      "slug": "kertas-hvs-sidu-a4-70gsm-1-rim",
+      "image_path": "fotocopy_catalog/kertas-hvs-sidu-a4-70gsm-1-rim.webp",
+      "source": "sibling:kertas-hvs-sidu-f4-70gsm-1-rim",
+      "query_used": "copy paper ream",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Party_Poppers_on_the_Paper_Chains.jpg/500px-Party_Poppers_on_the_Paper_Chains.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 28150,
+      "width": 500,
+      "height": 259
+    },
+    {
+      "slug": "kertas-hvs-sidu-a4-70gsm-paket-10",
+      "image_path": "fotocopy_catalog/kertas-hvs-sidu-a4-70gsm-paket-10.webp",
+      "source": "sibling:kertas-hvs-a4-70gsm-1-lembar",
+      "query_used": "copy paper ream",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/Party_Poppers_on_the_Paper_Chains.jpg/500px-Party_Poppers_on_the_Paper_Chains.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 12580,
+      "width": 418,
+      "height": 600
+    },
+    {
+      "slug": "kertas-hvs-sidu-f4-70gsm-1-rim",
+      "image_path": "fotocopy_catalog/kertas-hvs-sidu-f4-70gsm-1-rim.webp",
+      "source": "wikimedia",
+      "query_used": "copy paper ream",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/1990s_Rank_Xerox_A4_75gsm_copier_paper_cardboard_box_and_A4_paper_made_in_Sweden.jpg/500px-1990s_Rank_Xerox_A4_75gsm_copier_paper_cardboard_box_and_A4_paper_made_in_Sweden.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 28150,
+      "width": 500,
+      "height": 259
+    },
+    {
+      "slug": "kertas-hvs-warna-a4-1-lembar",
+      "image_path": "fotocopy_catalog/kertas-hvs-warna-a4-1-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Construction_paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a3/Construction_Paper_-pcne_%288716718762%29.jpg/330px-Construction_Paper_-pcne_%288716718762%29.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 16900,
+      "width": 330,
+      "height": 330
+    },
+    {
+      "slug": "kertas-kalkir-a4-1-pak-50",
+      "image_path": "fotocopy_catalog/kertas-kalkir-a4-1-pak-50.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Tracing_paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Traceroll.JPG/330px-Traceroll.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 3142,
+      "width": 330,
+      "height": 186
+    },
+    {
+      "slug": "kertas-kalkir-kosong-a3-1-lembar",
+      "image_path": "fotocopy_catalog/kertas-kalkir-kosong-a3-1-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Tracing_paper",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/1/10/Traceroll.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "bytes": 4734,
+      "width": 500,
+      "height": 281
+    },
+    {
+      "slug": "kertas-kalkir-kosong-a4-1-lembar",
+      "image_path": "fotocopy_catalog/kertas-kalkir-kosong-a4-1-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Tracing_paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Traceroll.JPG/330px-Traceroll.JPG?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 3142,
+      "width": 330,
+      "height": 186
+    },
+    {
+      "slug": "kertas-karton-manila-lembaran-besar",
+      "image_path": "fotocopy_catalog/kertas-karton-manila-lembaran-besar.webp",
+      "source": "wikimedia",
+      "query_used": "colored cardstock paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6e/Colored_paper_-_Flickr_-_Dean_Hochman.jpg/500px-Colored_paper_-_Flickr_-_Dean_Hochman.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 19258,
+      "width": 500,
+      "height": 359
+    },
+    {
+      "slug": "kertas-milimeter-blok-a4-1-lembar",
+      "image_path": "fotocopy_catalog/kertas-milimeter-blok-a4-1-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Graph_paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Graph-paper-10sqsm-5sqin-4sqin.jpg/330px-Graph-paper-10sqsm-5sqin-4sqin.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 7348,
+      "width": 330,
+      "height": 173
+    },
+    {
+      "slug": "kertas-milimeter-blok-a4-1-pak-50",
+      "image_path": "fotocopy_catalog/kertas-milimeter-blok-a4-1-pak-50.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Graph_paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Graph-paper-10sqsm-5sqin-4sqin.jpg/330px-Graph-paper-10sqsm-5sqin-4sqin.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 7348,
+      "width": 330,
+      "height": 173
+    },
+    {
+      "slug": "kertas-origami-lipat-16x16-pak",
+      "image_path": "fotocopy_catalog/kertas-origami-lipat-16x16-pak.webp",
+      "source": "wikimedia",
+      "query_used": "origami paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/10/Cranes_made_by_Origami_paper.jpg/500px-Cranes_made_by_Origami_paper.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 6610,
+      "width": 500,
+      "height": 306
+    },
+    {
+      "slug": "kertas-thermal-struk-58x30mm-roll",
+      "image_path": "fotocopy_catalog/kertas-thermal-struk-58x30mm-roll.webp",
+      "source": "wikimedia",
+      "query_used": "Cash-receipt-sampleasdf",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2e/Cash-receipt-sampleasdf.jpg/500px-Cash-receipt-sampleasdf.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 16728,
+      "width": 500,
+      "height": 381
+    },
+    {
+      "slug": "kotak-cd-mika-casing-slim",
+      "image_path": "fotocopy_catalog/kotak-cd-mika-casing-slim.webp",
+      "source": "wikimedia",
+      "query_used": "cd jewel case",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3c/TDK_CD-R_white_jewel_case_in_shrinkwrap%2C_around_2000.jpg/500px-TDK_CD-R_white_jewel_case_in_shrinkwrap%2C_around_2000.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 69966,
+      "width": 500,
+      "height": 500
+    },
+    {
+      "slug": "kotak-pensil-jaring-transparan-ujian",
+      "image_path": "fotocopy_catalog/kotak-pensil-jaring-transparan-ujian.webp",
+      "source": "wikimedia",
+      "query_used": "pencil pouch",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/96/015Aa._Pencil_case.jpg/500px-015Aa._Pencil_case.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 48190,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "label-stiker-tom-jerry-no103",
+      "image_path": "fotocopy_catalog/label-stiker-tom-jerry-no103.webp",
+      "source": "wikimedia",
+      "query_used": "adhesive labels sheet",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/35_adhesive_labels_-_A.jpg/500px-35_adhesive_labels_-_A.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 5884,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "label-stiker-tom-jerry-no121",
+      "image_path": "fotocopy_catalog/label-stiker-tom-jerry-no121.webp",
+      "source": "wikimedia",
+      "query_used": "adhesive labels sheet",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/35_adhesive_labels_-_Ai.jpg/500px-35_adhesive_labels_-_Ai.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 7134,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "lakban-bening-2-inch-daimaru",
+      "image_path": "fotocopy_catalog/lakban-bening-2-inch-daimaru.webp",
+      "source": "wikimedia",
+      "query_used": "adhesive tape",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Adhesive_tape_dispenser.jpg/500px-Adhesive_tape_dispenser.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 15584,
+      "width": 500,
+      "height": 310
+    },
+    {
+      "slug": "lakban-coklat-packing-2-inch",
+      "image_path": "fotocopy_catalog/lakban-coklat-packing-2-inch.webp",
+      "source": "wikimedia",
+      "query_used": "packing tape",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3b/Common_packing_tape_gun.png/500px-Common_packing_tape_gun.png?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 26838,
+      "width": 390,
+      "height": 600
+    },
+    {
+      "slug": "lakban-kain-hitam-jilid-1-5-inch",
+      "image_path": "fotocopy_catalog/lakban-kain-hitam-jilid-1-5-inch.webp",
+      "source": "wikimedia",
+      "query_used": "packing tape",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/Made_in_China_3M_Scotch_Sealing_Tape_Barcode_Yellow_Label_Price_Sticker.jpg/500px-Made_in_China_3M_Scotch_Sealing_Tape_Barcode_Yellow_Label_Price_Sticker.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 29162,
+      "width": 500,
+      "height": 388
+    },
+    {
+      "slug": "lakban-kain-hitam-jilid-2-inch",
+      "image_path": "fotocopy_catalog/lakban-kain-hitam-jilid-2-inch.webp",
+      "source": "wikimedia",
+      "query_used": "Duct Tape and Kapton Tape",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Duct_Tape_and_Kapton_Tape.jpg/500px-Duct_Tape_and_Kapton_Tape.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 24068,
+      "width": 500,
+      "height": 372
+    },
+    {
+      "slug": "laminating-a3-poster-denah",
+      "image_path": "fotocopy_catalog/laminating-a3-poster-denah.webp",
+      "source": "wikimedia",
+      "query_used": "pouch laminator",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Poster_laminating.jpg/500px-Poster_laminating.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 26514,
+      "width": 379,
+      "height": 600
+    },
+    {
+      "slug": "laminating-a4-ijazah-sertifikat",
+      "image_path": "fotocopy_catalog/laminating-a4-ijazah-sertifikat.webp",
+      "source": "wikimedia",
+      "query_used": "pouch laminator",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Laminator.JPG/500px-Laminator.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 29038,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "laminating-f4-folio",
+      "image_path": "fotocopy_catalog/laminating-f4-folio.webp",
+      "source": "wikimedia",
+      "query_used": "Pouch laminator",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/43/Postcard_Plastic_Laminating_Vending_Machine%2C_circa_1950s_-_Postcard_%2850523125432%29.jpg/500px-Postcard_Plastic_Laminating_Vending_Machine%2C_circa_1950s_-_Postcard_%2850523125432%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 12678,
+      "width": 500,
+      "height": 308
+    },
+    {
+      "slug": "laminating-ktp-ktm-kartu",
+      "image_path": "fotocopy_catalog/laminating-ktp-ktm-kartu.webp",
+      "source": "bing",
+      "query_used": "id card thermal lamination",
+      "source_url": "https://media.tegna-media.com/assets/WQAD/images/4892d379-73ae-4243-80c4-f273e68b1c0b/4892d379-73ae-4243-80c4-f273e68b1c0b_1920x1080.jpg",
+      "bytes": 20278,
+      "width": 500,
+      "height": 281
+    },
+    {
+      "slug": "lem-cair-povinal-111",
+      "image_path": "fotocopy_catalog/lem-cair-povinal-111.webp",
+      "source": "wikimedia",
+      "query_used": "glue stick",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Elmer%27s_Office_Glue_Stick.JPG/500px-Elmer%27s_Office_Glue_Stick.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 23658,
+      "width": 500,
+      "height": 563
+    },
+    {
+      "slug": "lem-kertas-glukol-kecil",
+      "image_path": "fotocopy_catalog/lem-kertas-glukol-kecil.webp",
+      "source": "wikimedia",
+      "query_used": "glue stick",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8f/Use_glue_stick_to_seal_the_torn_paper_towel_pieces.JPG/500px-Use_glue_stick_to_seal_the_torn_paper_towel_pieces.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 40554,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "lem-korea-alteco-super-glue",
+      "image_path": "fotocopy_catalog/lem-korea-alteco-super-glue.webp",
+      "source": "wikimedia",
+      "query_used": "glue stick",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Glue-stick_glue_holds_the_doubled_thickness_%285702862600%29.jpg/500px-Glue-stick_glue_holds_the_doubled_thickness_%285702862600%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 17512,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "lem-uhu-all-purpose-cair-tube",
+      "image_path": "fotocopy_catalog/lem-uhu-all-purpose-cair-tube.webp",
+      "source": "wikimedia",
+      "query_used": "glue stick",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/FABER-CASTELL_glue_stick.jpg/500px-FABER-CASTELL_glue_stick.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 9828,
+      "width": 337,
+      "height": 600
+    },
+    {
+      "slug": "loose-leaf-a5-bergaris-50-lembar",
+      "image_path": "fotocopy_catalog/loose-leaf-a5-bergaris-50-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "exercise notebook",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ac/Notebooks-rainbow.jpg/500px-Notebooks-rainbow.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 24764,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "loose-leaf-b5-bergaris-100-lembar",
+      "image_path": "fotocopy_catalog/loose-leaf-b5-bergaris-100-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "exercise notebook",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Notebook_plexiglass_general.jpg/500px-Notebook_plexiglass_general.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 15824,
+      "width": 500,
+      "height": 281
+    },
+    {
+      "slug": "loose-leaf-b5-grid-kotak-50-lembar",
+      "image_path": "fotocopy_catalog/loose-leaf-b5-grid-kotak-50-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "Graph-paper-10sqsm",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f2/Graph-paper-10sqsm-5sqin-4sqin.jpg/500px-Graph-paper-10sqsm-5sqin-4sqin.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 17884,
+      "width": 500,
+      "height": 263
+    },
+    {
+      "slug": "map-kancing-plastik-1-folio",
+      "image_path": "fotocopy_catalog/map-kancing-plastik-1-folio.webp",
+      "source": "wikimedia",
+      "query_used": "ring binder",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/1/18/2_spines_ringless_binder_inside_a_c.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 4884,
+      "width": 300,
+      "height": 300
+    },
+    {
+      "slug": "map-l-plastik-bening-1-pak-12",
+      "image_path": "fotocopy_catalog/map-l-plastik-bening-1-pak-12.webp",
+      "source": "wikimedia",
+      "query_used": "ring binder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/ASC_Leiden_-_NSAG_-_Crebolder_1_-_001_-_Journey_through_Africa%2C_November_1961_-_April_1962._Front_cover_photo_album_ring_binder.jpg/500px-ASC_Leiden_-_NSAG_-_Crebolder_1_-_001_-_Journey_through_Africa%2C_November_1961_-_April_1962._Front_cover_photo_album_ring_binder.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 97046,
+      "width": 494,
+      "height": 600
+    },
+    {
+      "slug": "map-l-plastik-bening-a4-f4-1pcs",
+      "image_path": "fotocopy_catalog/map-l-plastik-bening-a4-f4-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "ring binder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d6/ASC_Leiden_-_NSAG_-_Crebolder_1_-_001_-_Journey_through_Africa%2C_November_1961_-_April_1962._Front_cover_photo_album_ring_binder.jpg/500px-ASC_Leiden_-_NSAG_-_Crebolder_1_-_001_-_Journey_through_Africa%2C_November_1961_-_April_1962._Front_cover_photo_album_ring_binder.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 97046,
+      "width": 494,
+      "height": 600
+    },
+    {
+      "slug": "map-resleting-zipper-bag-f4",
+      "image_path": "fotocopy_catalog/map-resleting-zipper-bag-f4.webp",
+      "source": "wikimedia",
+      "query_used": "ring binder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5e/ASC_Leiden_-_NSAG_-_Crebolder_1_-_101_-_Journey_through_Africa%2C_November_1961_-_April_1962._Photo_album_ring_binder_with_back_flyleaf.jpg/500px-ASC_Leiden_-_NSAG_-_Crebolder_1_-_101_-_Journey_through_Africa%2C_November_1961_-_April_1962._Photo_album_ring_binder_with_back_flyleaf.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 25802,
+      "width": 500,
+      "height": 295
+    },
+    {
+      "slug": "map-snelhecter-kertas-biola",
+      "image_path": "fotocopy_catalog/map-snelhecter-kertas-biola.webp",
+      "source": "wikimedia",
+      "query_used": "ring binder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3d/2_spines_ringless_binder_open.jpg/500px-2_spines_ringless_binder_open.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 15404,
+      "width": 500,
+      "height": 274
+    },
+    {
+      "slug": "map-snelhecter-plastik-transparan-folio",
+      "image_path": "fotocopy_catalog/map-snelhecter-plastik-transparan-folio.webp",
+      "source": "wikimedia",
+      "query_used": "manila folder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3f/Manila_folder.jpg/500px-Manila_folder.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 3840,
+      "width": 500,
+      "height": 341
+    },
+    {
+      "slug": "masking-tape-lakban-kertas-1-inch",
+      "image_path": "fotocopy_catalog/masking-tape-lakban-kertas-1-inch.webp",
+      "source": "wikimedia",
+      "query_used": "packing tape",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/4/4f/Box_Sealing_Tape_Large_Roll.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 4830,
+      "width": 328,
+      "height": 414
+    },
+    {
+      "slug": "materai-10000-resmi-original",
+      "image_path": "fotocopy_catalog/materai-10000-resmi-original.webp",
+      "source": "wikimedia",
+      "query_used": "meterai 10000 indonesia stamp",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f4/E-Meterai_10000.jpg/500px-E-Meterai_10000.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 46948,
+      "width": 500,
+      "height": 486
+    },
+    {
+      "slug": "name-tag-panitia-b2-plus-lanyard-1pcs",
+      "image_path": "fotocopy_catalog/name-tag-panitia-b2-plus-lanyard-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "lanyard badge",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/51/Wikimania_2017_Hackathon-25_do_not_photograph_yellow_lanyard_-_published_with_permission.jpg/500px-Wikimania_2017_Hackathon-25_do_not_photograph_yellow_lanyard_-_published_with_permission.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 14122,
+      "width": 400,
+      "height": 600
+    },
+    {
+      "slug": "name-tag-panitia-b3-lanyard-1-pak-10",
+      "image_path": "fotocopy_catalog/name-tag-panitia-b3-lanyard-1-pak-10.webp",
+      "source": "wikimedia",
+      "query_used": "conference name badge",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bd/WikiCamp_Morocco_2026_Day_4_-_Woman_holding_name_badge_at_conference_table_with_attendees_-_0013.jpg/500px-WikiCamp_Morocco_2026_Day_4_-_Woman_holding_name_badge_at_conference_table_with_attendees_-_0013.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 21826,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "page-marker-indeks-panah-neon",
+      "image_path": "fotocopy_catalog/page-marker-indeks-panah-neon.webp",
+      "source": "wikimedia",
+      "query_used": "sticky notes",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d2/N._Eldon_Tanner_sticky_notes_%2847194656881%29.jpg/500px-N._Eldon_Tanner_sticky_notes_%2847194656881%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 37000,
+      "width": 500,
+      "height": 261
+    },
+    {
+      "slug": "papan-ujian-clipboard-kayu-f4",
+      "image_path": "fotocopy_catalog/papan-ujian-clipboard-kayu-f4.webp",
+      "source": "wikimedia",
+      "query_used": "wooden clipboard",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Wood-clipboard.jpg/500px-Wood-clipboard.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 27354,
+      "width": 500,
+      "height": 500
+    },
+    {
+      "slug": "papan-ujian-clipboard-plastik-a4",
+      "image_path": "fotocopy_catalog/papan-ujian-clipboard-plastik-a4.webp",
+      "source": "wikimedia",
+      "query_used": "wooden clipboard",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a4/Mesa_y_men%C3%BA_de_la_Legi%C3%B3n_Americana_en_La_Condesa%2C_CDMX.jpg/500px-Mesa_y_men%C3%BA_de_la_Legi%C3%B3n_Americana_en_La_Condesa%2C_CDMX.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 15852,
+      "width": 500,
+      "height": 334
+    },
+    {
+      "slug": "paper-bag-skripsi-kraft-tali",
+      "image_path": "fotocopy_catalog/paper-bag-skripsi-kraft-tali.webp",
+      "source": "wikimedia",
+      "query_used": "Paper bag",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7a/DDR_Stencilled_Paper_Bag_1988_%283122237946%29.jpg/500px-DDR_Stencilled_Paper_Bag_1988_%283122237946%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 59856,
+      "width": 321,
+      "height": 600
+    },
+    {
+      "slug": "paper-clip-trigonal-no3-box",
+      "image_path": "fotocopy_catalog/paper-clip-trigonal-no3-box.webp",
+      "source": "wikimedia",
+      "query_used": "paper clip",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a2/Paper_clip_stamp_1999.jpg/500px-Paper_clip_stamp_1999.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 33738,
+      "width": 500,
+      "height": 499
+    },
+    {
+      "slug": "paper-clip-trigonal-no5-besar-box",
+      "image_path": "fotocopy_catalog/paper-clip-trigonal-no5-besar-box.webp",
+      "source": "wikimedia",
+      "query_used": "paper clip",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Paper_Clip_Surface_Tension_1_edit.jpg/500px-Paper_Clip_Surface_Tension_1_edit.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 13104,
+      "width": 402,
+      "height": 600
+    },
+    {
+      "slug": "pembolong-kertas-2-lubang-kenko",
+      "image_path": "fotocopy_catalog/pembolong-kertas-2-lubang-kenko.webp",
+      "source": "wikimedia",
+      "query_used": "hole punch office",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/ab/Hole_Puncher_with_Paper_positioner.jpg/500px-Hole_Puncher_with_Paper_positioner.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 16734,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "penggaris-besi-stainless-30cm",
+      "image_path": "fotocopy_catalog/penggaris-besi-stainless-30cm.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Ruler",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/03/Diverse%C2%B7Ma%C3%9Fst%C3%A4be%2C15.365.jpg/330px-Diverse%C2%B7Ma%C3%9Fst%C3%A4be%2C15.365.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 24126,
+      "width": 330,
+      "height": 217
+    },
+    {
+      "slug": "penggaris-plastik-butterfly-30cm",
+      "image_path": "fotocopy_catalog/penggaris-plastik-butterfly-30cm.webp",
+      "source": "wikimedia",
+      "query_used": "plastic ruler",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/40/Ruler_and_drawing_template_-_plastic_rectagonal_01.jpg/500px-Ruler_and_drawing_template_-_plastic_rectagonal_01.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 33816,
+      "width": 371,
+      "height": 600
+    },
+    {
+      "slug": "penggaris-sablon-huruf-angka-mal",
+      "image_path": "fotocopy_catalog/penggaris-sablon-huruf-angka-mal.webp",
+      "source": "wikimedia",
+      "query_used": "lettering stencil ruler",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/82/Delin_02_PlantillasLetras.jpg/500px-Delin_02_PlantillasLetras.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 29132,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "penggaris-segitiga-sepasang-butterfly",
+      "image_path": "fotocopy_catalog/penggaris-segitiga-sepasang-butterfly.webp",
+      "source": "wikimedia",
+      "query_used": "set square ruler",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/22/Aristro_Navigationsdreieck_Set_square_for_Navigation_2010_PD_2.JPG/500px-Aristro_Navigationsdreieck_Set_square_for_Navigation_2010_PD_2.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 17136,
+      "width": 400,
+      "height": 600
+    },
+    {
+      "slug": "penghapus-faber-castell-dust-free",
+      "image_path": "fotocopy_catalog/penghapus-faber-castell-dust-free.webp",
+      "source": "wikimedia",
+      "query_used": "penghapus faber castell",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a0/Penghapus_fabercasltell.jpg/500px-Penghapus_fabercasltell.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 39626,
+      "width": 500,
+      "height": 415
+    },
+    {
+      "slug": "penghapus-joyko-b40-hitam-putih",
+      "image_path": "fotocopy_catalog/penghapus-joyko-b40-hitam-putih.webp",
+      "source": "wikimedia",
+      "query_used": "rubber pencil eraser",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/cc/Paper_Mate_Union_Pen_%26_Pencil_Rubber_Eraser_%2816972392718%29.jpg/500px-Paper_Mate_Union_Pen_%26_Pencil_Rubber_Eraser_%2816972392718%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 37862,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "penghapus-papan-tulis-whiteboard-magnet",
+      "image_path": "fotocopy_catalog/penghapus-papan-tulis-whiteboard-magnet.webp",
+      "source": "wikimedia",
+      "query_used": "whiteboard eraser",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f6/Whiteboard_with_markers.jpg/500px-Whiteboard_with_markers.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 3280,
+      "width": 500,
+      "height": 305
+    },
+    {
+      "slug": "penghapus-staedtler-rasoplast-b30",
+      "image_path": "fotocopy_catalog/penghapus-staedtler-rasoplast-b30.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Eraser",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e8/Office-pink-erasers.jpg/330px-Office-pink-erasers.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 4492,
+      "width": 330,
+      "height": 165
+    },
+    {
+      "slug": "peniti-kecil-baju-panitia-pak",
+      "image_path": "fotocopy_catalog/peniti-kecil-baju-panitia-pak.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Safety_pin",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Safety_Pin.jpg/330px-Safety_Pin.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 5132,
+      "width": 330,
+      "height": 241
+    },
+    {
+      "slug": "pensil-faber-castell-2b-1-lusin",
+      "image_path": "fotocopy_catalog/pensil-faber-castell-2b-1-lusin.webp",
+      "source": "wikimedia",
+      "query_used": "Faber-Castell pencil and eraser",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Faber-castell-grip2001.JPG/500px-Faber-castell-grip2001.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 29366,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "pensil-faber-castell-2b-ujian-1pcs",
+      "image_path": "fotocopy_catalog/pensil-faber-castell-2b-ujian-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "graphite pencil",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/3e/Closeup_of_pencil_graphite.JPG/500px-Closeup_of_pencil_graphite.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 15954,
+      "width": 500,
+      "height": 365
+    },
+    {
+      "slug": "pensil-joyko-2b-p88-1-lusin",
+      "image_path": "fotocopy_catalog/pensil-joyko-2b-p88-1-lusin.webp",
+      "source": "wikimedia",
+      "query_used": "Faber-Castell Lead pencil",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/98/Faber-Castell_Lead_pencil_0.5.jpg/500px-Faber-Castell_Lead_pencil_0.5.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 9744,
+      "width": 500,
+      "height": 281
+    },
+    {
+      "slug": "pensil-joyko-2b-p88-1pcs",
+      "image_path": "fotocopy_catalog/pensil-joyko-2b-p88-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "Faber-Castell pencil and eraser",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/4/4c/Fabber-Castell_tri-grip.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 5294,
+      "width": 179,
+      "height": 140
+    },
+    {
+      "slug": "pensil-mekanik-joyko-05mm",
+      "image_path": "fotocopy_catalog/pensil-mekanik-joyko-05mm.webp",
+      "source": "wikimedia",
+      "query_used": "mechanical pencil 0.5mm",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c6/Birks_Collection_Chrome_Mechanical_Pencil_0.5mm_-_panoramio.jpg/500px-Birks_Collection_Chrome_Mechanical_Pencil_0.5mm_-_panoramio.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 25932,
+      "width": 500,
+      "height": 281
+    },
+    {
+      "slug": "pensil-staedtler-mars-lumograph-2b",
+      "image_path": "fotocopy_catalog/pensil-staedtler-mars-lumograph-2b.webp",
+      "source": "wikimedia",
+      "query_used": "blue drawing pencil",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4b/Little_girl_drawing_with_blue_pencil.jpg/500px-Little_girl_drawing_with_blue_pencil.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 10204,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "plastik-mika-bening-jilid-a4-1lbr",
+      "image_path": "fotocopy_catalog/plastik-mika-bening-jilid-a4-1lbr.webp",
+      "source": "wikimedia",
+      "query_used": "clear plastic folder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/91/EFTA00001887_-_Clear_plastic_bin_holds_a_red_and_blue_folder_a_black_Duuti_strap_and_stacks_of_white_papers_with_a_gloved_hand_reaching_in.jpg/500px-EFTA00001887_-_Clear_plastic_bin_holds_a_red_and_blue_folder_a_black_Duuti_strap_and_stacks_of_white_papers_with_a_gloved_hand_reaching_in.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 28748,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "plastik-sampul-buku-bening-mika",
+      "image_path": "fotocopy_catalog/plastik-sampul-buku-bening-mika.webp",
+      "source": "wikimedia",
+      "query_used": "book cover paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/90/Brown_paste_paper_book_cover_Met_DP887157.jpg/500px-Brown_paste_paper_book_cover_Met_DP887157.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 46402,
+      "width": 500,
+      "height": 300
+    },
+    {
+      "slug": "print-art-carton-260gsm-a4",
+      "image_path": "fotocopy_catalog/print-art-carton-260gsm-a4.webp",
+      "source": "bing",
+      "query_used": "cetak art carton 260gsm cover kartu",
+      "source_url": "https://ts4.mm.bing.net/th?id=OIP.W_jFRPMdne91mPfJ7of2CwHaFL&pid=15.1",
+      "bytes": 21280,
+      "width": 474,
+      "height": 331
+    },
+    {
+      "slug": "print-art-paper-150gsm-a4",
+      "image_path": "fotocopy_catalog/print-art-paper-150gsm-a4.webp",
+      "source": "bing",
+      "query_used": "cetak brosur kertas art paper 150gsm",
+      "source_url": "https://percetakan.co.id/wp-content/uploads/2025/08/mesin-cetak-offset-3.webp",
+      "bytes": 22186,
+      "width": 500,
+      "height": 350
+    },
+    {
+      "slug": "print-hitam-putih-a3",
+      "image_path": "fotocopy_catalog/print-hitam-putih-a3.webp",
+      "source": "wikimedia",
+      "query_used": "wide format plotter",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b6/Cheap_plotter_paper_soaked_with_ink_-_swelled_fibers_show_papermaking_mesh_belt_pattern.JPG/500px-Cheap_plotter_paper_soaked_with_ink_-_swelled_fibers_show_papermaking_mesh_belt_pattern.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 9078,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "print-hitam-putih-a4-70gsm",
+      "image_path": "fotocopy_catalog/print-hitam-putih-a4-70gsm.webp",
+      "source": "wikimedia",
+      "query_used": "laser printer",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c1/Laser_Printer_Top_Open.JPG/500px-Laser_Printer_Top_Open.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 38736,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "print-hitam-putih-a4-80gsm",
+      "image_path": "fotocopy_catalog/print-hitam-putih-a4-80gsm.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Laser_printing",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b8/Hp_laserjet_4200dtns.jpg/330px-Hp_laserjet_4200dtns.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 12202,
+      "width": 330,
+      "height": 433
+    },
+    {
+      "slug": "print-hitam-putih-bolak-balik-a4",
+      "image_path": "fotocopy_catalog/print-hitam-putih-bolak-balik-a4.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Photocopier",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ef/Fuji_Xerox_Document_Centre_505_and_Taiwan_Xerox_Walk-In_120D_at_ROC_National_Central_Library_20101211.jpg/330px-Fuji_Xerox_Document_Centre_505_and_Taiwan_Xerox_Walk-In_120D_at_ROC_National_Central_Library_20101211.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 25526,
+      "width": 330,
+      "height": 440
+    },
+    {
+      "slug": "print-hitam-putih-booklet-a5",
+      "image_path": "fotocopy_catalog/print-hitam-putih-booklet-a5.webp",
+      "source": "bing",
+      "query_used": "cetak booklet buku saku hitam putih",
+      "source_url": "https://jasamencetak.com/wp-content/uploads/2022/07/Cetak-offset-terdekat.jpg",
+      "bytes": 25602,
+      "width": 500,
+      "height": 281
+    },
+    {
+      "slug": "print-hitam-putih-f4-70gsm",
+      "image_path": "fotocopy_catalog/print-hitam-putih-f4-70gsm.webp",
+      "source": "wikimedia",
+      "query_used": "laser printer",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fc/Canon_imageRUNNER_ADVANCE_DX_C5860_Color_Laser_Multifunction_Printer_%26_Canon_imageRUNNER_ADVANCE_DX_C7770_Color_Laser_Multifunction_Printer.jpg/500px-Canon_imageRUNNER_ADVANCE_DX_C5860_Color_Laser_Multifunction_Printer_%26_Canon_imageRUNNER_ADVANCE_DX_C7770_Color_Laser_Multifunction_Printer.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 28530,
+      "width": 500,
+      "height": 251
+    },
+    {
+      "slug": "print-kertas-kalkir-a4",
+      "image_path": "fotocopy_catalog/print-kertas-kalkir-a4.webp",
+      "source": "wikimedia",
+      "query_used": "photo paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/65/Foxing_over_paper_and_photography_Detail_of_foxing_trough_Albumen_photo_binder.jpg/500px-Foxing_over_paper_and_photography_Detail_of_foxing_trough_Albumen_photo_binder.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 24000,
+      "width": 500,
+      "height": 488
+    },
+    {
+      "slug": "print-langsung-dari-hp-whatsapp",
+      "image_path": "fotocopy_catalog/print-langsung-dari-hp-whatsapp.webp",
+      "source": "wikimedia",
+      "query_used": "smartphone laptop desk",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/87/Focused_individual_working_on_a_laptop_at_a_desk_with_a_planner_and_smartphone_in_a_cozy_indoor_setting.jpg/500px-Focused_individual_working_on_a_laptop_at_a_desk_with_a_planner_and_smartphone_in_a_cozy_indoor_setting.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 15908,
+      "width": 500,
+      "height": 334
+    },
+    {
+      "slug": "print-photo-paper-glossy-a4",
+      "image_path": "fotocopy_catalog/print-photo-paper-glossy-a4.webp",
+      "source": "bing",
+      "query_used": "cetak foto kertas glossy photo paper a4",
+      "source_url": "https://ts2.mm.bing.net/th?id=OIP.FfB-f4se8tA-cASTX3V9uAHaEK&pid=15.1",
+      "bytes": 23196,
+      "width": 474,
+      "height": 266
+    },
+    {
+      "slug": "print-plastik-transparansi-ohp-a4",
+      "image_path": "fotocopy_catalog/print-plastik-transparansi-ohp-a4.webp",
+      "source": "wikimedia",
+      "query_used": "photo paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5c/Graph_paper_stylized_photo_%285804792497%29.jpg/500px-Graph_paper_stylized_photo_%285804792497%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 65832,
+      "width": 500,
+      "height": 500
+    },
+    {
+      "slug": "print-poster-a1-plotter",
+      "image_path": "fotocopy_catalog/print-poster-a1-plotter.webp",
+      "source": "wikimedia",
+      "query_used": "architectural plan large print",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6d/Plan_of_large_room_with_three_niches_MET_DP806365.jpg/500px-Plan_of_large_room_with_three_niches_MET_DP806365.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 8616,
+      "width": 444,
+      "height": 600
+    },
+    {
+      "slug": "print-poster-a2",
+      "image_path": "fotocopy_catalog/print-poster-a2.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Plotter",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Hp_9862a.jpg/3840px-Hp_9862a.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 19602,
+      "width": 500,
+      "height": 414
+    },
+    {
+      "slug": "print-sertifikat-concorde-linen-a4",
+      "image_path": "fotocopy_catalog/print-sertifikat-concorde-linen-a4.webp",
+      "source": "bing",
+      "query_used": "cetak sertifikat kertas concorde linen a4",
+      "source_url": "https://cetakbekasi.com/wp-content/uploads/2020/08/Cetak-Brosur-Bekasi.png",
+      "bytes": 20984,
+      "width": 500,
+      "height": 386
+    },
+    {
+      "slug": "print-stiker-chromo-a4",
+      "image_path": "fotocopy_catalog/print-stiker-chromo-a4.webp",
+      "source": "bing",
+      "query_used": "cetak stiker chromo a4 kemasan",
+      "source_url": "https://percetakan.co.id/wp-content/uploads/2025/08/cetak-offset.webp",
+      "bytes": 34100,
+      "width": 500,
+      "height": 350
+    },
+    {
+      "slug": "print-stiker-hvs-a4",
+      "image_path": "fotocopy_catalog/print-stiker-hvs-a4.webp",
+      "source": "wikimedia",
+      "query_used": "adhesive labels sheet",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6e/35_adhesive_labels_-_B.jpg/500px-35_adhesive_labels_-_B.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 9340,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "print-stiker-vinyl-a4",
+      "image_path": "fotocopy_catalog/print-stiker-vinyl-a4.webp",
+      "source": "bing",
+      "query_used": "cetak stiker vinyl anti air a4",
+      "source_url": "https://ts2.mm.bing.net/th?id=OIP.txzl-fWdVLT-oysjQ4yfcwHaFL&pid=15.1",
+      "bytes": 31596,
+      "width": 474,
+      "height": 331
+    },
+    {
+      "slug": "print-warna-a3",
+      "image_path": "fotocopy_catalog/print-warna-a3.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Plotter",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/12/Hp_9862a.jpg/330px-Hp_9862a.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 15234,
+      "width": 330,
+      "height": 274
+    },
+    {
+      "slug": "print-warna-bolak-balik-a4",
+      "image_path": "fotocopy_catalog/print-warna-bolak-balik-a4.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Photocopier",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/e/ef/Fuji_Xerox_Document_Centre_505_and_Taiwan_Xerox_Walk-In_120D_at_ROC_National_Central_Library_20101211.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "bytes": 29120,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "print-warna-full-block-foto-a4",
+      "image_path": "fotocopy_catalog/print-warna-full-block-foto-a4.webp",
+      "source": "wikimedia",
+      "query_used": "inkjet printer",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/44/Inkjet_printer_side_view%2C_case_open.JPG/500px-Inkjet_printer_side_view%2C_case_open.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 41606,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "print-warna-teks-f4",
+      "image_path": "fotocopy_catalog/print-warna-teks-f4.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Printer_(computing)",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/72/HP_Laserjet_5_DN_1.jpg/330px-HP_Laserjet_5_DN_1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail",
+      "bytes": 13346,
+      "width": 330,
+      "height": 369
+    },
+    {
+      "slug": "print-warna-teks-grafik-a4",
+      "image_path": "fotocopy_catalog/print-warna-teks-grafik-a4.webp",
+      "source": "wikimedia",
+      "query_used": "wp:Printer_(computing)",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/7/72/HP_Laserjet_5_DN_1.jpg?utm_source=en.wikipedia.org&utm_campaign=api&utm_content=thumbnail_unscaled",
+      "bytes": 17176,
+      "width": 500,
+      "height": 559
+    },
+    {
+      "slug": "pulpen-4-warna-multifungsi",
+      "image_path": "fotocopy_catalog/pulpen-4-warna-multifungsi.webp",
+      "source": "wikimedia",
+      "query_used": "Bic penholder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Bic_Atome_penholder_DSC_9639.jpg/500px-Bic_Atome_penholder_DSC_9639.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 2618,
+      "width": 500,
+      "height": 219
+    },
+    {
+      "slug": "pulpen-faber-castell-grip-x5-1pcs",
+      "image_path": "fotocopy_catalog/pulpen-faber-castell-grip-x5-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "ballpoint pen",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/4d/Ballpoint_Pen.jpg/500px-Ballpoint_Pen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 5164,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "pulpen-faber-castell-grip-x5-box-10",
+      "image_path": "fotocopy_catalog/pulpen-faber-castell-grip-x5-box-10.webp",
+      "source": "wikimedia",
+      "query_used": "faber castell ballpoint box",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/ed/Colorex_in_Verpackung.jpg/500px-Colorex_in_Verpackung.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 10640,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "pulpen-faster-c6-1-lusin",
+      "image_path": "fotocopy_catalog/pulpen-faster-c6-1-lusin.webp",
+      "source": "wikimedia",
+      "query_used": "ballpoint pen",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Ballpoint_Pen_DS.jpg/500px-Ballpoint_Pen_DS.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 5562,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "pulpen-faster-c6-1pcs",
+      "image_path": "fotocopy_catalog/pulpen-faster-c6-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "ballpoint pen",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/Ballpoint_Pen_DS.jpg/500px-Ballpoint_Pen_DS.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 5562,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "pulpen-joyko-gp-265-1-lusin",
+      "image_path": "fotocopy_catalog/pulpen-joyko-gp-265-1-lusin.webp",
+      "source": "wikimedia",
+      "query_used": "ballpoint pen",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fd/Ballpoint-pen-parts.jpg/500px-Ballpoint-pen-parts.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 8944,
+      "width": 500,
+      "height": 284
+    },
+    {
+      "slug": "pulpen-joyko-gp-265-q-gel-1pcs",
+      "image_path": "fotocopy_catalog/pulpen-joyko-gp-265-q-gel-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "black gel ink pen",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/94/Pilot_pens.jpg/500px-Pilot_pens.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 12466,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "pulpen-kenko-gel-k1-05-1pcs",
+      "image_path": "fotocopy_catalog/pulpen-kenko-gel-k1-05-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "ballpoint pen",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/A_ballpoint_pen_in_Vietnam_%28cropped%29.jpg/500px-A_ballpoint_pen_in_Vietnam_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 18174,
+      "width": 500,
+      "height": 283
+    },
+    {
+      "slug": "pulpen-kenko-gel-k1-1-lusin",
+      "image_path": "fotocopy_catalog/pulpen-kenko-gel-k1-1-lusin.webp",
+      "source": "wikimedia",
+      "query_used": "ballpoint pen",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a9/A_ballpoint_pen_in_Vietnam_%28cropped%29.jpg/500px-A_ballpoint_pen_in_Vietnam_%28cropped%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 18174,
+      "width": 500,
+      "height": 283
+    },
+    {
+      "slug": "pulpen-pilot-g2-gel-05-1pcs",
+      "image_path": "fotocopy_catalog/pulpen-pilot-g2-gel-05-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "ballpoint pen",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5f/A_ballpoint_pen_in_Vietnam.jpg/500px-A_ballpoint_pen_in_Vietnam.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 17962,
+      "width": 500,
+      "height": 283
+    },
+    {
+      "slug": "pulpen-snowman-v5-07mm-1pcs",
+      "image_path": "fotocopy_catalog/pulpen-snowman-v5-07mm-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "retractable ballpoint pen",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/6/6b/Ballpoint-pen-parts_vert.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 8556,
+      "width": 273,
+      "height": 600
+    },
+    {
+      "slug": "pulpen-standard-ae7-1-lusin",
+      "image_path": "fotocopy_catalog/pulpen-standard-ae7-1-lusin.webp",
+      "source": "wikimedia",
+      "query_used": "ballpoint pen",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/85/Gel_pen_versus_ballpoint_pen.jpg/500px-Gel_pen_versus_ballpoint_pen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 15256,
+      "width": 500,
+      "height": 281
+    },
+    {
+      "slug": "pulpen-standard-ae7-biru-1pcs",
+      "image_path": "fotocopy_catalog/pulpen-standard-ae7-biru-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "blue ballpoint pen standard",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/21/Close-up_of_a_blue_line_being_drawn_with_a_ballpoint_pen_%2849860852267%29.jpg/500px-Close-up_of_a_blue_line_being_drawn_with_a_ballpoint_pen_%2849860852267%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 3846,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "pulpen-standard-ae7-hitam-1pcs",
+      "image_path": "fotocopy_catalog/pulpen-standard-ae7-hitam-1pcs.webp",
+      "source": "bing",
+      "query_used": "ballpoint pen clear barrel",
+      "source_url": "https://static2.jetpens.com/images/a/000/142/142637.jpg?q=90&s=720c96fd0b9a3003d8e2a532975a860c",
+      "bytes": 22934,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "pulpen-standard-ae7-merah-1pcs",
+      "image_path": "fotocopy_catalog/pulpen-standard-ae7-merah-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "red ballpoint pen stationery",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/NH_Collection_hotel_pen.jpg/500px-NH_Collection_hotel_pen.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 39520,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "pulpen-zebra-sarasa-clip-05",
+      "image_path": "fotocopy_catalog/pulpen-zebra-sarasa-clip-05.webp",
+      "source": "wikimedia",
+      "query_used": "japanese gel pen",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/2023_gelpen_from_japan.jpg/500px-2023_gelpen_from_japan.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 8470,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "push-pin-paku-mading-joyko-box",
+      "image_path": "fotocopy_catalog/push-pin-paku-mading-joyko-box.webp",
+      "source": "wikimedia",
+      "query_used": "thumbtack push pin",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/a/a6/Red_pushpin_on_stack_of_dimensional_cards.jpg/500px-Red_pushpin_on_stack_of_dimensional_cards.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 32246,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "rautan-pensil-mini-faber-castell",
+      "image_path": "fotocopy_catalog/rautan-pensil-mini-faber-castell.webp",
+      "source": "wikimedia",
+      "query_used": "pencil sharpener",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b2/Faber-Castell_TK_lead_sharpener_and_2_mm_pencil_lead.jpg/500px-Faber-Castell_TK_lead_sharpener_and_2_mm_pencil_lead.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 6216,
+      "width": 500,
+      "height": 323
+    },
+    {
+      "slug": "refill-isi-pulpen-pilot-g2-05",
+      "image_path": "fotocopy_catalog/refill-isi-pulpen-pilot-g2-05.webp",
+      "source": "wikimedia",
+      "query_used": "gel pen ink refill",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7e/Gel_refill_with_cap.jpg/500px-Gel_refill_with_cap.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 14482,
+      "width": 500,
+      "height": 400
+    },
+    {
+      "slug": "sampul-kertas-coklat-buku-paket",
+      "image_path": "fotocopy_catalog/sampul-kertas-coklat-buku-paket.webp",
+      "source": "wikimedia",
+      "query_used": "book cover paper",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/31/Brown_paste_paper_book_cover_Met_DP887158.jpg/500px-Brown_paste_paper_book_cover_Met_DP887158.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 51722,
+      "width": 500,
+      "height": 358
+    },
+    {
+      "slug": "scan-dokumen-paket-per-bab",
+      "image_path": "fotocopy_catalog/scan-dokumen-paket-per-bab.webp",
+      "source": "wikimedia",
+      "query_used": "document scanner",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/7d/SilverCreations_-_model_%22sceyeX%22_10MP_Document_Scanner_03-2013.jpg/500px-SilverCreations_-_model_%22sceyeX%22_10MP_Document_Scanner_03-2013.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 14592,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "scan-dokumen-pdf-jpg-per-lembar",
+      "image_path": "fotocopy_catalog/scan-dokumen-pdf-jpg-per-lembar.webp",
+      "source": "wikimedia",
+      "query_used": "document scanner",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/99/Fujitsu_-_ScanSnap_SV600_-_Contactless_Document_Scanner_-_Kolkata_2015-12-12_7912.JPG/500px-Fujitsu_-_ScanSnap_SV600_-_Contactless_Document_Scanner_-_Kolkata_2015-12-12_7912.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 25938,
+      "width": 399,
+      "height": 600
+    },
+    {
+      "slug": "sleeve-kantong-cd-kertas-kaca",
+      "image_path": "fotocopy_catalog/sleeve-kantong-cd-kertas-kaca.webp",
+      "source": "wikimedia",
+      "query_used": "Blank Verbatim CD-R (Back)",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/34/Blank_Verbatim_CD-R_%28Back%29.jpg/500px-Blank_Verbatim_CD-R_%28Back%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 13134,
+      "width": 500,
+      "height": 521
+    },
+    {
+      "slug": "spidol-kecil-snowman-12-warna",
+      "image_path": "fotocopy_catalog/spidol-kecil-snowman-12-warna.webp",
+      "source": "wikimedia",
+      "query_used": "whiteboard marker",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/38/HK_stationery_Artline_517_whiteboard_markers_pen_blue_Sept-2012.JPG/500px-HK_stationery_Artline_517_whiteboard_markers_pen_blue_Sept-2012.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 29008,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "spidol-permanen-snowman-g12",
+      "image_path": "fotocopy_catalog/spidol-permanen-snowman-g12.webp",
+      "source": "wikimedia",
+      "query_used": "black permanent marker",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/28/Various_Japanese_Black_Permanent_Markers_in_package.jpg/500px-Various_Japanese_Black_Permanent_Markers_in_package.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 68136,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "spidol-whiteboard-snowman-bg12-1-lusin",
+      "image_path": "fotocopy_catalog/spidol-whiteboard-snowman-bg12-1-lusin.webp",
+      "source": "wikimedia",
+      "query_used": "whiteboard marker",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Whiteboard_marker_and_eraser.jpg/500px-Whiteboard_marker_and_eraser.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 16988,
+      "width": 500,
+      "height": 388
+    },
+    {
+      "slug": "spidol-whiteboard-snowman-bg12-1pcs",
+      "image_path": "fotocopy_catalog/spidol-whiteboard-snowman-bg12-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "dry erase whiteboard marker",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Whiteboard_marker_and_eraser.jpg/500px-Whiteboard_marker_and_eraser.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 16988,
+      "width": 500,
+      "height": 388
+    },
+    {
+      "slug": "stabilo-boss-original-highlighter",
+      "image_path": "fotocopy_catalog/stabilo-boss-original-highlighter.webp",
+      "source": "wikimedia",
+      "query_used": "stabilo boss original",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/2d/Stabilo_Boss_Original_Highlighter_%2841540899571%29.jpg/500px-Stabilo_Boss_Original_Highlighter_%2841540899571%29.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 5462,
+      "width": 500,
+      "height": 388
+    },
+    {
+      "slug": "stapler-joyko-hd-10",
+      "image_path": "fotocopy_catalog/stapler-joyko-hd-10.webp",
+      "source": "wikimedia",
+      "query_used": "office stapler",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9d/Stapler_office.jpg/500px-Stapler_office.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 12286,
+      "width": 500,
+      "height": 375
+    },
+    {
+      "slug": "stapler-kangaro-hd-10",
+      "image_path": "fotocopy_catalog/stapler-kangaro-hd-10.webp",
+      "source": "wikimedia",
+      "query_used": "office stapler",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/Stapler_first_open.jpeg/500px-Stapler_first_open.jpeg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 56676,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "stapler-kangaro-hd-50-besar",
+      "image_path": "fotocopy_catalog/stapler-kangaro-hd-50-besar.webp",
+      "source": "bing",
+      "query_used": "stapler kangaro hd 50 besar",
+      "source_url": "https://m.media-amazon.com/images/I/71Jb02Dg+9L._AC_.jpg",
+      "bytes": 16506,
+      "width": 500,
+      "height": 437
+    },
+    {
+      "slug": "sticky-notes-3x3-joyko-pad",
+      "image_path": "fotocopy_catalog/sticky-notes-3x3-joyko-pad.webp",
+      "source": "wikimedia",
+      "query_used": "sticky notes",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/CityCamp_Idea_Board_with_sticky_notes_4297872645_o.jpg/500px-CityCamp_Idea_Board_with_sticky_notes_4297872645_o.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 38210,
+      "width": 500,
+      "height": 333
+    },
+    {
+      "slug": "stopmap-kertas-biola-folio-1-pak-50",
+      "image_path": "fotocopy_catalog/stopmap-kertas-biola-folio-1-pak-50.webp",
+      "source": "wikimedia",
+      "query_used": "manila folder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Manila_Folders.jpg/500px-Manila_Folders.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 15128,
+      "width": 500,
+      "height": 413
+    },
+    {
+      "slug": "stopmap-kertas-biola-folio-1pcs",
+      "image_path": "fotocopy_catalog/stopmap-kertas-biola-folio-1pcs.webp",
+      "source": "wikimedia",
+      "query_used": "manila folder",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8a/Manila_Folders.jpg/500px-Manila_Folders.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 15128,
+      "width": 500,
+      "height": 413
+    },
+    {
+      "slug": "tali-lanyard-polos-gantungan-id-card",
+      "image_path": "fotocopy_catalog/tali-lanyard-polos-gantungan-id-card.webp",
+      "source": "wikimedia",
+      "query_used": "Lanyard of a Red Cross Youth",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9f/Lanyard_of_a_Red_Cross_Youth_%28Singapore%29_cadet_-_20090403.jpg/500px-Lanyard_of_a_Red_Cross_Youth_%28Singapore%29_cadet_-_20090403.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 18238,
+      "width": 450,
+      "height": 600
+    },
+    {
+      "slug": "tinta-refill-spidol-whiteboard-snowman",
+      "image_path": "fotocopy_catalog/tinta-refill-spidol-whiteboard-snowman.webp",
+      "source": "wikimedia",
+      "query_used": "whiteboard marker",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/fe/Whiteboard_marker_and_eraser.jpg/500px-Whiteboard_marker_and_eraser.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 16988,
+      "width": 500,
+      "height": 388
+    },
+    {
+      "slug": "tinta-stempel-pyramid-ungu-biru",
+      "image_path": "fotocopy_catalog/tinta-stempel-pyramid-ungu-biru.webp",
+      "source": "wikimedia",
+      "query_used": "Pelikan Tintenglas",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/6f/Pelikan-Kolbenf%C3%BCller_u._Tintenglas_2006-07-26.jpg/500px-Pelikan-Kolbenf%C3%BCller_u._Tintenglas_2006-07-26.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 23788,
+      "width": 500,
+      "height": 376
+    },
+    {
+      "slug": "tipe-x-cair-joyko-cf-s205",
+      "image_path": "fotocopy_catalog/tipe-x-cair-joyko-cf-s205.webp",
+      "source": "wikimedia",
+      "query_used": "correction fluid",
+      "source_url": "https://upload.wikimedia.org/wikipedia/commons/f/fb/Correction_Flui_Bic_-_Corrector_l%C3%ADquido.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled",
+      "bytes": 8758,
+      "width": 243,
+      "height": 374
+    },
+    {
+      "slug": "tipe-x-cair-kenko-ke-01",
+      "image_path": "fotocopy_catalog/tipe-x-cair-kenko-ke-01.webp",
+      "source": "wikimedia",
+      "query_used": "liquid correction pen",
+      "source_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/bf/Liquid_paper%2C_picture_and_eraser.jpg/500px-Liquid_paper%2C_picture_and_eraser.jpg?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail",
+      "bytes": 23758,
+      "width": 450,
+      "height": 600
+    }
+  ]
+}
