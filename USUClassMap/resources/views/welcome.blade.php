@@ -380,27 +380,11 @@
             startNavigation(lat, lng) {
                 const destLat = lat || this.building?.latitude;
                 const destLng = lng || this.building?.longitude;
-                if (!destLat || !destLng) return;
-                
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const userLat = position.coords.latitude;
-                            const userLng = position.coords.longitude;
-                            const navUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destLat},${destLng}&travelmode=walking`;
-                            window.open(navUrl, '_blank');
-                        },
-                        (error) => {
-                            console.warn('Geolocation failed or permission denied:', error);
-                            const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLng}&travelmode=walking`;
-                            window.open(navUrl, '_blank');
-                        },
-                        { timeout: 5000, enableHighAccuracy: true }
-                    );
-                } else {
-                    const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLng}&travelmode=walking`;
-                    window.open(navUrl, '_blank');
-                }
+                const targetKey = this.building?.id
+                    ? ('building:' + this.building.id)
+                    : ((destLat && destLng) ? (destLat + ',' + destLng) : '');
+                if (!targetKey) return;
+                window.location.href = '/map?route_to=' + encodeURIComponent(targetKey);
             }
         }"
         x-show="isOpen"
@@ -574,8 +558,8 @@
                     @click="startNavigation(building.latitude, building.longitude)" 
                     class="w-full bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold py-3.5 px-4 rounded-xl shadow-lg hover:shadow-green-900/30 flex items-center justify-center gap-2 text-sm transition-all duration-200 cursor-pointer active:scale-[0.99]"
                 >
-                    <span class="text-lg">📍</span>
-                    <span>Jalankan Rute Kelas (Google Maps Walk Navigation)</span>
+                    <span class="text-lg">🧭</span>
+                    <span>Mulai Navigasi Rute Kampus (In-App)</span>
                 </button>
             </div>
         </div>

@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Jobs\RegenerateRdfJob;
 use App\Models\Building;
-use App\Models\Room;
-use App\Models\Schedule;
+use App\Models\CampusRoutingOverride;
 use App\Models\Course;
 use App\Models\Lecturer;
+use App\Models\PhotocopyPlace;
+use App\Models\Room;
 use App\Models\RoomMedia;
+use App\Models\Schedule;
+use App\Services\GitSnapshotSyncService;
+use App\Services\Routing\CampusGraphBuilderService;
+use App\Services\Routing\CampusRoutingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -20,8 +25,17 @@ class AdminMapController extends Controller
         $buildings = Building::orderBy('name')->get();
         $courses = Course::orderBy('name')->get();
         $lecturers = Lecturer::orderBy('name')->get();
+        $photocopyPlaces = PhotocopyPlace::orderBy('name')->get([
+            'id',
+            'name',
+            'latitude',
+            'longitude',
+            'entrance_lat',
+            'entrance_lng',
+            'address',
+        ]);
 
-        return view('features.admin.map', compact('buildings', 'courses', 'lecturers'));
+        return view('features.admin.map', compact('buildings', 'courses', 'lecturers', 'photocopyPlaces'));
     }
 
     public function storeBuilding(Request $request)
@@ -434,6 +448,232 @@ class AdminMapController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Gagal menghapus media.'
+            ], 500);
+        }
+    }
+
+    public function getRoutingData(CampusRoutingService $routingService)
+    {
+        $graph = $routingService->getCompiledGraph();
+        $stats = is_array($graph['stats'] ?? null) ? $graph['stats'] : [];
+        $obstacles = is_array($graph['obstacles'] ?? null) ? $graph['obstacles'] : [];
+
+        // Ringankan payload overlay peta: konversi edges unik menjadi GeoJSON LineString
+        $nodes = $graph['nodes'] ?? [];
+        $edges = $graph['edges'] ?? [];
+        $edgeFeatures = [];
+        $seenSegments = [];
+
+        foreach ($edges as $edge) {
+            if (!is_array($edge) || !empty($edge['blocked_by_barrier'])) {
+                continue;
+            }
+            $fromId = $edge['u'] ?? null;
+            $toId = $edge['v'] ?? null;
+            if ($fromId === null || $toId === null || !isset($nodes[$fromId], $nodes[$toId])) {
+                continue;
+            }
+            $pairKey = strcmp((string) $fromId, (string) $toId) <= 0
+                ? ($fromId . '->' . $toId)
+                : ($toId . '->' . $fromId);
+            if (isset($seenSegments[$pairKey])) {
+                continue;
+            }
+            $seenSegments[$pairKey] = true;
+            $fromNode = $nodes[$fromId];
+            $toNode = $nodes[$toId];
+            $edgeFeatures[] = [
+                'type' => 'Feature',
+                'properties' => [
+                    'road_class' => $edge['road_class'] ?? 'footway',
+                    'walkable' => (bool) ($edge['walkable'] ?? true),
+                    'drivable' => (bool) ($edge['drivable'] ?? false),
+                ],
+                'geometry' => [
+                    'type' => 'LineString',
+                    'coordinates' => [
+                        [(float) $fromNode['lng'], (float) $fromNode['lat']],
+                        [(float) $toNode['lng'], (float) $toNode['lat']],
+                    ],
+                ],
+            ];
+        }
+
+        $overrides = CampusRoutingOverride::orderByDesc('id')
+            ->get()
+            ->map(static fn (CampusRoutingOverride $ov): array => [
+                'id' => $ov->id,
+                'type' => $ov->type,
+                'name' => $ov->name,
+                'coordinates' => $ov->coordinates_json ?? [],
+                'coordinates_json' => $ov->coordinates_json ?? [],
+                'metadata_json' => $ov->metadata_json ?? [],
+                'notes' => $ov->metadata_json['notes'] ?? null,
+                'is_active' => (bool) $ov->is_active,
+                'created_at' => $ov->created_at?->toIso8601String(),
+            ])
+            ->values();
+
+        $buildings = Building::orderBy('name')->get([
+            'id', 'code', 'name', 'latitude', 'longitude', 'entrance_lat', 'entrance_lng',
+        ]);
+        $photocopyPlaces = PhotocopyPlace::orderBy('name')->get([
+            'id', 'name', 'latitude', 'longitude', 'entrance_lat', 'entrance_lng',
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'metadata' => array_merge($stats, [
+                'nodes_count' => count($nodes),
+                'rendered_edge_count' => count($edgeFeatures),
+                'buildings_polygon_count' => count($obstacles['buildings'] ?? []),
+                'barriers_count' => count($obstacles['barriers'] ?? []),
+            ]),
+            'graph_geojson' => [
+                'type' => 'FeatureCollection',
+                'features' => $edgeFeatures,
+            ],
+            'overrides' => $overrides,
+            'buildings' => $buildings,
+            'photocopy_places' => $photocopyPlaces,
+        ]);
+    }
+
+    public function storeRoutingOverride(Request $request, CampusRoutingService $routingService)
+    {
+        if (!$request->has('coordinates') && $request->has('coordinates_json')) {
+            $request->merge(['coordinates' => $request->input('coordinates_json')]);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'type' => 'required|string|in:walkway,bridge,barrier',
+            'name' => 'nullable|string|max:150',
+            'notes' => 'nullable|string|max:500',
+            'metadata_json' => 'nullable|array',
+            'is_active' => 'nullable|boolean',
+            'coordinates' => 'required|array|min:2',
+            'coordinates.*' => 'required|array|size:2',
+            'coordinates.*.0' => 'required|numeric|between:-180,180',
+            'coordinates.*.1' => 'required|numeric|between:-90,90',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data override rute tidak valid.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $coords = array_map(
+            static fn (array $pair): array => [(float) $pair[0], (float) $pair[1]],
+            $request->input('coordinates')
+        );
+
+        $meta = is_array($request->input('metadata_json')) ? $request->input('metadata_json') : [];
+        if ($request->filled('notes')) {
+            $meta['notes'] = $request->input('notes');
+        }
+
+        $override = CampusRoutingOverride::create([
+            'type' => $request->input('type'),
+            'name' => $request->input('name') ?: ('Override ' . strtoupper($request->input('type'))),
+            'coordinates_json' => $coords,
+            'metadata_json' => !empty($meta) ? $meta : null,
+            'is_active' => $request->boolean('is_active', true),
+            'created_by' => auth()->id(),
+        ]);
+
+        $routingService->invalidateCache();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Override rute berhasil disimpan dan graf di-refresh.',
+            'override' => array_merge($override->toArray(), [
+                'coordinates' => $override->coordinates_json ?? [],
+            ]),
+        ], 201);
+    }
+
+    public function destroyRoutingOverride(CampusRoutingOverride $override, CampusRoutingService $routingService)
+    {
+        $override->delete();
+        $routingService->invalidateCache();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Override rute berhasil dihapus.',
+        ]);
+    }
+
+    public function saveRoutingEntrance(Request $request, CampusRoutingService $routingService)
+    {
+        $validator = Validator::make($request->all(), [
+            'entity_type' => 'required|string|in:building,fotocopy',
+            'entity_id' => 'required|integer|min:1',
+            'entrance_lat' => 'nullable|numeric|between:-90,90|required_with:entrance_lng',
+            'entrance_lng' => 'nullable|numeric|between:-180,180|required_with:entrance_lat',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Koordinat pintu masuk tidak valid.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $entityType = $request->input('entity_type');
+        $entity = $entityType === 'building'
+            ? Building::findOrFail((int) $request->input('entity_id'))
+            : PhotocopyPlace::findOrFail((int) $request->input('entity_id'));
+
+        $lat = $request->input('entrance_lat');
+        $lng = $request->input('entrance_lng');
+
+        $entity->entrance_lat = $lat !== null ? (float) $lat : null;
+        $entity->entrance_lng = $lng !== null ? (float) $lng : null;
+        $entity->save();
+
+        $routingService->invalidateCache();
+
+        return response()->json([
+            'success' => true,
+            'message' => ($lat !== null && $lng !== null)
+                ? 'Titik pintu masuk berhasil diperbarui.'
+                : 'Titik pintu masuk dikembalikan ke default.',
+            'entity' => [
+                'entity_type' => $entityType,
+                'id' => $entity->id,
+                'name' => $entity->name,
+                'latitude' => (float) $entity->latitude,
+                'longitude' => (float) $entity->longitude,
+                'entrance_lat' => $entity->entrance_lat !== null ? (float) $entity->entrance_lat : null,
+                'entrance_lng' => $entity->entrance_lng !== null ? (float) $entity->entrance_lng : null,
+            ],
+        ]);
+    }
+
+    public function rebuildRoutingGraph(
+        Request $request,
+        CampusGraphBuilderService $builder,
+        CampusRoutingService $routingService,
+        GitSnapshotSyncService $gitSync
+    ) {
+        try {
+            $graph = $builder->buildAndSave(fromSnapshot: !$request->boolean('live', false));
+            $routingService->invalidateCache();
+            $gitSync->exportSnapshot();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Graf jalan kampus berhasil dibangun ulang dan disinkronkan ke snapshot.',
+                'metadata' => $graph['stats'] ?? [],
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal membangun ulang graf jalan: ' . $e->getMessage(),
             ], 500);
         }
     }

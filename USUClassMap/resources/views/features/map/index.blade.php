@@ -25,6 +25,14 @@
             .custom-scrollbar::-webkit-scrollbar-thumb:hover {
                 background: #94a3b8;
             }
+            @keyframes usuGpsPulse {
+                0% { transform: scale(1); opacity: 0.75; }
+                70% { transform: scale(2.35); opacity: 0; }
+                100% { transform: scale(2.35); opacity: 0; }
+            }
+            .usu-gps-pulse-ring {
+                animation: usuGpsPulse 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+            }
         </style>
     @endpush
 
@@ -67,7 +75,7 @@
                         id="map-search-input"
                         type="text" 
                         class="block w-full pl-9 pr-8 py-2 text-sm border border-gray-300 rounded-lg bg-gray-50 placeholder-gray-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#10A760] focus:border-transparent transition-all" 
-                        placeholder="Cari mata kuliah atau dosen..."
+                        placeholder="Cari mata kuliah atau dosen, clue gedung (depan FIB...), atau ATK..."
                         autocomplete="off"
                     >
                     <button id="clear-search-btn" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-gray-400 hover:text-gray-600" style="display: none;">
@@ -205,7 +213,335 @@
                     <i class="fa-solid fa-print text-emerald-600"></i>
                     <span>Fotokopi (<span id="floating-photocopy-count">32</span>)</span>
                 </button>
+
+                <!-- Floating Quick Toggle for In-App Campus Route Panel -->
+                <button
+                    type="button"
+                    id="map-route-toggle-btn"
+                    onclick="window.USUClassMap && window.USUClassMap.toggleRoutePanel()"
+                    class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-[#10A760] shadow-md border border-gray-200 hover:border-[#10A760] flex items-center gap-1.5 transition-all cursor-pointer"
+                    title="Buka Navigasi Rute Kampus USU In-App"
+                >
+                    <i class="fa-solid fa-route text-[#10A760]"></i>
+                    <span>Rute Kampus</span>
+                </button>
             </div>
+
+            <!-- In-App Campus Route Navigation Panel -->
+            <div
+                id="usu-route-panel"
+                x-data="usuRoutePanel()"
+                x-show="isOpen"
+                x-cloak
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0 translate-y-2"
+                x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100 translate-y-0"
+                x-transition:leave-end="opacity-0 translate-y-2"
+                class="absolute top-16 right-3 z-[998] w-[calc(100vw-1.5rem)] sm:w-[390px] max-h-[calc(100vh-10rem)] flex flex-col bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-gray-200 overflow-hidden"
+                style="display: none;"
+            >
+                <div class="px-4 py-3 bg-gradient-to-r from-[#0F8F53] to-[#10A760] text-white flex items-center justify-between gap-2 shrink-0">
+                    <div class="flex items-center gap-2 min-w-0">
+                        <i class="fa-solid fa-route text-sm"></i>
+                        <div class="min-w-0">
+                            <h3 class="text-xs font-extrabold tracking-wide uppercase">Navigasi Rute Kampus</h3>
+                            <p class="text-[11px] text-emerald-100 truncate">Jalan &amp; selasar resmi USU (anti-tembok)</p>
+                        </div>
+                    </div>
+                    <button
+                        type="button"
+                        @click="close()"
+                        class="w-7 h-7 rounded-lg bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition-colors cursor-pointer"
+                        title="Tutup Panel Rute"
+                    >
+                        <i class="fa-solid fa-xmark text-sm"></i>
+                    </button>
+                </div>
+
+                <div class="p-3.5 space-y-2.5 overflow-y-auto flex-1">
+                    <!-- Origin selector -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <label for="route-origin-select" class="text-[11px] font-bold text-gray-600 uppercase tracking-wide flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                                Titik Asal
+                            </label>
+                            <div class="flex items-center gap-1">
+                                <button
+                                    type="button"
+                                    @click="useGpsOrigin()"
+                                    :disabled="isLocatingGps"
+                                    :class="originSource === 'gps' ? 'border-sky-500 bg-sky-600 text-white' : 'border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100'"
+                                    class="px-2 py-0.5 rounded-md text-[11px] font-bold border transition-colors cursor-pointer disabled:opacity-50"
+                                    title="Deteksi / Perbarui Lokasi GPS Saya"
+                                >
+                                    <i class="fa-solid" :class="isLocatingGps ? 'fa-spinner fa-spin' : 'fa-crosshairs'"></i>
+                                    <span>GPS</span>
+                                </button>
+                                <template x-if="originSource === 'gps'">
+                                    <button
+                                        type="button"
+                                        @click="toggleLiveTracking()"
+                                        :class="liveGpsTracking ? 'bg-sky-100 text-sky-800 border-sky-300' : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'"
+                                        class="px-2 py-0.5 rounded-md text-[10px] font-bold border transition-colors cursor-pointer"
+                                        title="Ikuti pergerakan GPS secara ringan"
+                                    >
+                                        <i class="fa-solid fa-satellite-dish"></i>
+                                        <span x-text="liveGpsTracking ? 'Live ON' : 'Live'"></span>
+                                    </button>
+                                </template>
+                                <button
+                                    type="button"
+                                    @click="togglePickOriginOnMap()"
+                                    :class="pickingOriginOnMap ? 'bg-amber-500 text-white border-amber-500' : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'"
+                                    class="px-2 py-0.5 rounded-md text-[11px] font-bold border transition-colors cursor-pointer"
+                                    title="Klik sembarang titik di peta sebagai titik asal"
+                                >
+                                    <i class="fa-solid fa-map-pin"></i>
+                                    <span x-text="pickingOriginOnMap ? 'Klik Peta...' : 'Pilih di Peta'"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <select
+                            id="route-origin-select"
+                            x-model="originKey"
+                            @change="onOriginChanged()"
+                            class="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-semibold text-gray-800 focus:border-[#10A760] focus:ring-2 focus:ring-[#10A760]/20"
+                        >
+                            <option value="">-- Pilih titik asal (Gedung / GPS / Peta) --</option>
+                            <option :value="customOriginKey" x-text="customOriginLabel" :hidden="!customOriginKey" :disabled="!customOriginKey"></option>
+                            <optgroup label="Gedung Kampus USU">
+                                <template x-for="b in destinations.buildings" :key="'orig-' + b.key">
+                                    <option :value="b.key" x-text="b.label"></option>
+                                </template>
+                            </optgroup>
+                            <optgroup label="Mitra Fotokopi & Percetakan">
+                                <template x-for="f in destinations.fotocopy" :key="'orig-' + f.key">
+                                    <option :value="f.key" x-text="f.label"></option>
+                                </template>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- Swap + Destination -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between gap-2">
+                            <label for="route-destination-select" class="text-[11px] font-bold text-gray-600 uppercase tracking-wide flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                                Tujuan
+                            </label>
+                            <button
+                                type="button"
+                                @click="swapEndpoints()"
+                                class="px-2 py-0.5 rounded-md text-[11px] font-bold border border-gray-200 bg-white text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
+                                title="Tukar Asal & Tujuan"
+                            >
+                                <i class="fa-solid fa-right-left"></i> Tukar
+                            </button>
+                        </div>
+                        <select
+                            id="route-destination-select"
+                            x-model="destinationKey"
+                            @change="onDestinationChanged()"
+                            class="w-full rounded-xl border border-gray-200 bg-gray-50 px-3 py-2 text-xs font-semibold text-gray-800 focus:border-[#10A760] focus:ring-2 focus:ring-[#10A760]/20"
+                        >
+                            <option value="">-- Pilih tujuan kampus --</option>
+                            <option :value="customDestinationKey" x-text="customDestinationLabel" :hidden="!customDestinationKey" :disabled="!customDestinationKey"></option>
+                            <optgroup label="Gedung Kampus USU">
+                                <template x-for="b in destinations.buildings" :key="'dest-' + b.key">
+                                    <option :value="b.key" x-text="b.label"></option>
+                                </template>
+                            </optgroup>
+                            <optgroup label="Mitra Fotokopi & Percetakan">
+                                <template x-for="f in destinations.fotocopy" :key="'dest-' + f.key">
+                                    <option :value="f.key" x-text="f.label"></option>
+                                </template>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <!-- Transport mode & CTA -->
+                    <div class="flex items-center gap-1.5 pt-0.5">
+                        <button
+                            type="button"
+                            @click="setMode('walking')"
+                            :class="mode === 'walking' ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs' : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'"
+                            class="flex-1 py-1.5 px-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                        >
+                            <i class="fa-solid fa-person-walking"></i>
+                            <span>Jalan Kaki</span>
+                        </button>
+                        <button
+                            type="button"
+                            @click="setMode('driving')"
+                            :class="mode === 'driving' ? 'bg-sky-600 text-white border-sky-600 shadow-xs' : 'bg-gray-50 text-gray-700 border-gray-200 hover:bg-gray-100'"
+                            class="flex-1 py-1.5 px-2.5 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                        >
+                            <i class="fa-solid fa-car-side"></i>
+                            <span>Kendaraan</span>
+                        </button>
+                    </div>
+
+                    <div class="flex items-center gap-1.5">
+                        <button
+                            type="button"
+                            id="calculate-inapp-route-btn"
+                            @click="calculateRoute()"
+                            :disabled="isLoading || !originKey || !destinationKey"
+                            class="flex-1 py-2 px-3 rounded-xl bg-[#10A760] hover:bg-[#0D8A4E] disabled:opacity-50 text-white text-xs font-extrabold flex items-center justify-center gap-1.5 shadow-sm transition-colors cursor-pointer"
+                        >
+                            <i class="fa-solid" :class="isLoading ? 'fa-spinner fa-spin' : 'fa-diamond-turn-right'"></i>
+                            <span x-text="isLoading ? 'Menghitung Rute...' : 'Hitung & Tampilkan Rute'"></span>
+                        </button>
+                        <template x-if="routeResult">
+                            <button
+                                type="button"
+                                @click="focusRoute()"
+                                class="py-2 px-2.5 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold cursor-pointer"
+                                title="Fokus Kamera ke Garis Rute"
+                            >
+                                <i class="fa-solid fa-expand"></i>
+                            </button>
+                        </template>
+                        <template x-if="routeResult || originKey || destinationKey">
+                            <button
+                                type="button"
+                                @click="clearRoute()"
+                                class="py-2 px-2.5 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold cursor-pointer"
+                                title="Bersihkan Rute"
+                            >
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </template>
+                    </div>
+
+                    <!-- Pick on map prompt -->
+                    <div
+                        x-show="pickingOriginOnMap"
+                        class="rounded-xl bg-amber-50 border border-amber-200 px-3 py-2 text-[11px] font-semibold text-amber-800 flex items-center gap-2"
+                    >
+                        <i class="fa-solid fa-hand-pointer"></i>
+                        <span>Klik posisi asal di atas peta kampus USU sekarang.</span>
+                    </div>
+
+                    <!-- Status / Error -->
+                    <div
+                        x-show="statusMsg"
+                        :class="isError ? 'bg-rose-50 border-rose-200 text-rose-700' : 'bg-blue-50 border-blue-200 text-blue-700'"
+                        class="rounded-xl border px-3 py-2 text-[11px] font-semibold"
+                        x-text="statusMsg"
+                    ></div>
+
+                    <!-- Already at Destination Info Banner (< 20m) -->
+                    <div
+                        x-show="alreadyAtDestinationMsg"
+                        id="route-already-arrived-banner"
+                        class="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2.5 text-xs font-bold text-emerald-800 flex items-start gap-2"
+                    >
+                        <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5"></i>
+                        <span x-text="alreadyAtDestinationMsg"></span>
+                    </div>
+
+                    <!-- GPS / External Routing Diagnostic Banner + Shortcut Buttons -->
+                    <template x-if="diagnostic">
+                        <div
+                            id="route-gps-diagnostic-banner"
+                            class="rounded-xl border border-amber-300 bg-amber-50 p-3 text-[11px] font-semibold text-amber-900 space-y-2"
+                        >
+                            <div class="flex items-start gap-2">
+                                <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5 shrink-0"></i>
+                                <span x-text="diagnostic.message"></span>
+                            </div>
+                            <template x-if="diagnostic.showFallbackButtons">
+                                <div class="flex items-center gap-1.5 pt-0.5">
+                                    <button
+                                        type="button"
+                                        @click="focusOriginDropdown()"
+                                        class="flex-1 py-1.5 px-2.5 rounded-lg bg-white border border-amber-300 hover:bg-amber-100 text-amber-900 font-bold text-[11px] transition-colors cursor-pointer"
+                                    >
+                                        <i class="fa-solid fa-building mr-1"></i>Pilih Gedung Asal
+                                    </button>
+                                    <button
+                                        type="button"
+                                        @click="togglePickOriginOnMap()"
+                                        class="flex-1 py-1.5 px-2.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] transition-colors cursor-pointer"
+                                    >
+                                        <i class="fa-solid fa-map-pin mr-1"></i>Klik Titik di Peta
+                                    </button>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Summary Card & Steps -->
+                    <template x-if="routeResult">
+                        <div class="space-y-2.5 pt-1 border-t border-gray-100">
+                            <div class="rounded-xl bg-emerald-50/80 border border-emerald-200 p-3 space-y-2">
+                                <div class="flex items-baseline justify-between gap-2">
+                                    <div>
+                                        <div class="text-lg font-black text-emerald-900 leading-none" x-text="routeResult.distance_text"></div>
+                                        <div class="text-[11px] font-bold text-emerald-700 mt-1">
+                                            Estimasi <span x-text="routeResult.duration_text"></span>
+                                        </div>
+                                    </div>
+                                    <span
+                                        class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wide"
+                                        :class="mode === 'driving' ? 'bg-sky-100 text-sky-800' : 'bg-emerald-100 text-emerald-800'"
+                                        x-text="engineLabel()"
+                                    ></span>
+                                </div>
+
+                                <!-- Geometry Audit Verification Badge -->
+                                <div
+                                    class="rounded-lg px-2.5 py-1.5 text-[11px] font-bold flex items-center gap-1.5"
+                                    :class="routeResult.geometry_audit?.verified ? 'bg-white/90 text-emerald-800 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'"
+                                >
+                                    <i
+                                        class="fa-solid"
+                                        :class="routeResult.geometry_audit?.verified ? 'fa-shield-halved text-emerald-600' : 'fa-triangle-exclamation text-amber-600'"
+                                    ></i>
+                                    <span x-text="auditText()"></span>
+                                </div>
+
+                                <template x-if="routeResult.destination?.is_manual_entrance">
+                                    <div class="text-[10px] font-semibold text-emerald-700 flex items-center gap-1">
+                                        <i class="fa-solid fa-door-open"></i>
+                                        <span>Diarahkan tepat ke titik pintu masuk terverifikasi admin.</span>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <!-- Turn-by-turn steps -->
+                            <div class="space-y-1">
+                                <div class="text-[10px] font-extrabold text-gray-500 uppercase tracking-wider px-0.5">
+                                    Panduan Belokan (<span x-text="(routeResult.steps || []).length"></span> langkah)
+                                </div>
+                                <div class="max-h-52 overflow-y-auto space-y-1.5 pr-1 custom-scrollbar">
+                                    <template x-for="(step, idx) in (routeResult.steps || [])" :key="'step-' + idx">
+                                        <button
+                                            type="button"
+                                            @click="focusStep(step, idx)"
+                                            :class="activeStepIndex === idx ? 'border-emerald-500 bg-emerald-50/70' : 'border-gray-100 bg-gray-50/70 hover:bg-gray-100'"
+                                            class="w-full text-left rounded-xl border px-2.5 py-2 flex items-start gap-2 transition-colors cursor-pointer"
+                                        >
+                                            <span class="w-5 h-5 rounded-full bg-white border border-gray-200 text-[10px] font-extrabold text-gray-700 flex items-center justify-center shrink-0 mt-0.5">
+                                                <i class="fa-solid" :class="maneuverIcon(step.maneuver)"></i>
+                                            </span>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="text-[11px] font-semibold text-gray-800 leading-snug" x-text="step.instruction"></div>
+                                                <div class="text-[10px] font-bold text-gray-500 mt-0.5" x-text="formatStepDistance(step.distance_meters)"></div>
+                                            </div>
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
             <div id="map" class="w-full h-full min-h-[400px] z-0"></div>
         </main>
     </div>
@@ -214,105 +550,7 @@
     <!-- MULTI-MODE MEDIA VIEWER & ROUTE NAVIGATION MODAL (PHASE 6.5)              -->
     <!-- ========================================================================= -->
     <div 
-        x-data="{
-            isOpen: false,
-            currentMode: 'photo',
-            room: {},
-            building: {},
-            pannellumViewer: null,
-            init() {
-                window.addEventListener('open-room-detail-modal', (e) => {
-                    this.room = e.detail?.room || {};
-                    this.building = e.detail?.building || {};
-                    this.currentMode = e.detail?.defaultMode || 'photo';
-                    this.isOpen = true;
-                    this.$nextTick(() => {
-                        if (this.currentMode === '360') {
-                            this.init360Viewer();
-                        }
-                    });
-                });
-            },
-            switchMode(mode) {
-                this.currentMode = mode;
-                if (mode === '360') {
-                    this.$nextTick(() => {
-                        this.init360Viewer();
-                    });
-                }
-                if (mode !== 'video') {
-                    const videoEl = this.$el.querySelector('video');
-                    if (videoEl) {
-                        videoEl.pause();
-                    }
-                }
-            },
-            init360Viewer() {
-                const container = document.getElementById('modal-panorama-viewer');
-                if (!container) return;
-                
-                if (this.pannellumViewer) {
-                    try { this.pannellumViewer.destroy(); } catch(e) {}
-                    this.pannellumViewer = null;
-                }
-                container.innerHTML = '';
-                
-                const photoUrl = this.room?.photo_360_url || this.room?.photo_360 || 'https://images.unsplash.com/photo-1557971370-e7298ee473fb?auto=format&fit=crop&w=2000&q=80';
-                
-                if (typeof pannellum !== 'undefined') {
-                    try {
-                        this.pannellumViewer = pannellum.viewer('modal-panorama-viewer', {
-                            type: 'equirectangular',
-                            panorama: photoUrl,
-                            autoLoad: true,
-                            autoRotate: -1.5,
-                            showControls: true,
-                            showFullscreenCtrl: false,
-                            compass: false
-                        });
-                    } catch (err) {
-                        console.warn('Pannellum init fallback:', err);
-                    }
-                }
-            },
-            closeModal() {
-                this.isOpen = false;
-                if (this.pannellumViewer) {
-                    try { this.pannellumViewer.destroy(); } catch(e) {}
-                    this.pannellumViewer = null;
-                }
-                const videoEl = this.$el.querySelector('video');
-                if (videoEl) {
-                    videoEl.pause();
-                    videoEl.currentTime = 0;
-                }
-            },
-            startNavigation(lat, lng) {
-                const destLat = lat || this.building?.latitude;
-                const destLng = lng || this.building?.longitude;
-                if (!destLat || !destLng) return;
-                
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const userLat = position.coords.latitude;
-                            const userLng = position.coords.longitude;
-                            const navUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destLat},${destLng}&travelmode=walking`;
-                            window.open(navUrl, '_blank');
-                        },
-                        (error) => {
-                            console.warn('Geolocation error or permission denied:', error);
-                            const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLng}&travelmode=walking`;
-                            window.open(navUrl, '_blank');
-                        },
-                        { timeout: 5000, enableHighAccuracy: true }
-                    );
-                } else {
-                    const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLng}&travelmode=walking`;
-                    window.open(navUrl, '_blank');
-                }
-            }
-        }"
+        x-data="usuRoomDetailModal()"
         x-show="isOpen"
         @keydown.escape.window="closeModal()"
         class="fixed inset-0 z-[9999] flex items-center justify-center p-2 sm:p-5"
@@ -484,8 +722,8 @@
                     @click="startNavigation(building.latitude, building.longitude)" 
                     class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#10A760] to-[#0D8A4E] px-5 py-4 text-sm font-bold text-white shadow-lg shadow-green-900/20 transition-all duration-200 hover:-translate-y-0.5 hover:from-[#0D8A4E] hover:to-[#0B7442] hover:shadow-xl hover:shadow-green-900/25 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 >
-                    <i class="fa-solid fa-location-dot text-lg"></i>
-                    <span>Jalankan Rute Kelas (Google Maps Walk Navigation)</span>
+                    <i class="fa-solid fa-route text-lg"></i>
+                    <span>Mulai Navigasi Rute Kampus (In-App)</span>
                 </button>
             </div>
         </div>
@@ -495,6 +733,393 @@
         <!-- Mapbox GL JS 3D Script & Token Injection -->
         <script>
             window.MAPBOX_ACCESS_TOKEN = '{{ env('VITE_MAPBOX_ACCESS_TOKEN', '') }}';
+
+            window.usuRoomDetailModal = function () {
+                return {
+                    isOpen: false,
+                    currentMode: 'photo',
+                    room: {},
+                    building: {},
+                    pannellumViewer: null,
+                    init() {
+                        window.addEventListener('open-room-detail-modal', (e) => {
+                            this.room = e.detail?.room || {};
+                            this.building = e.detail?.building || {};
+                            this.currentMode = e.detail?.defaultMode || 'photo';
+                            this.isOpen = true;
+                            this.$nextTick(() => {
+                                if (this.currentMode === '360') {
+                                    this.init360Viewer();
+                                }
+                            });
+                        });
+                    },
+                    switchMode(mode) {
+                        this.currentMode = mode;
+                        if (mode === '360') {
+                            this.$nextTick(() => {
+                                this.init360Viewer();
+                            });
+                        }
+                        if (mode !== 'video') {
+                            const videoEl = this.$el.querySelector('video');
+                            if (videoEl) {
+                                videoEl.pause();
+                            }
+                        }
+                    },
+                    init360Viewer() {
+                        const container = document.getElementById('modal-panorama-viewer');
+                        if (!container) return;
+
+                        if (this.pannellumViewer) {
+                            try { this.pannellumViewer.destroy(); } catch (e) {}
+                            this.pannellumViewer = null;
+                        }
+                        container.innerHTML = '';
+
+                        const photoUrl = this.room?.photo_360_url || this.room?.photo_360 || 'https://images.unsplash.com/photo-1557971370-e7298ee473fb?auto=format&fit=crop&w=2000&q=80';
+
+                        if (typeof pannellum !== 'undefined') {
+                            try {
+                                this.pannellumViewer = pannellum.viewer('modal-panorama-viewer', {
+                                    type: 'equirectangular',
+                                    panorama: photoUrl,
+                                    autoLoad: true,
+                                    autoRotate: -1.5,
+                                    showControls: true,
+                                    showFullscreenCtrl: false,
+                                    compass: false
+                                });
+                            } catch (err) {
+                                console.warn('Pannellum init fallback:', err);
+                            }
+                        }
+                    },
+                    closeModal() {
+                        this.isOpen = false;
+                        if (this.pannellumViewer) {
+                            try { this.pannellumViewer.destroy(); } catch (e) {}
+                            this.pannellumViewer = null;
+                        }
+                        const videoEl = this.$el.querySelector('video');
+                        if (videoEl) {
+                            videoEl.pause();
+                            videoEl.currentTime = 0;
+                        }
+                    },
+                    startNavigation(lat, lng) {
+                        const destLat = lat || this.building?.latitude;
+                        const destLng = lng || this.building?.longitude;
+                        const targetKey = this.building?.id
+                            ? ('building:' + this.building.id)
+                            : ((destLat && destLng) ? (destLat + ',' + destLng) : '');
+
+                        if (!targetKey) return;
+                        this.closeModal();
+
+                        if (window.USUClassMap && typeof window.USUClassMap.startRouteTo === 'function') {
+                            window.USUClassMap.startRouteTo(targetKey);
+                        } else {
+                            window.location.href = '/map?route_to=' + encodeURIComponent(targetKey);
+                        }
+                    }
+                };
+            };
+
+            window.usuRoutePanel = function () {
+                return {
+                    isOpen: false,
+                    isLoading: false,
+                    isLocatingGps: false,
+                    pickingOriginOnMap: false,
+                    liveGpsTracking: false,
+                    originSource: 'none',
+                    mode: 'walking',
+                    originKey: '',
+                    destinationKey: '',
+                    customOriginKey: '',
+                    customOriginLabel: '',
+                    customDestinationKey: '',
+                    customDestinationLabel: '',
+                    destinations: window.__usuRoutingDestinations || { buildings: [], fotocopy: [] },
+                    routeResult: null,
+                    statusMsg: '',
+                    isError: false,
+                    diagnostic: null,
+                    alreadyAtDestinationMsg: '',
+                    activeStepIndex: null,
+
+                    init() {
+                        if (window.__usuRoutingDestinations) {
+                            this.destinations = window.__usuRoutingDestinations;
+                        }
+
+                        window.addEventListener('usu-routing-destinations-loaded', (e) => {
+                            if (e.detail) {
+                                this.destinations = e.detail;
+                                this.$nextTick(() => {
+                                    if (this.originKey) {
+                                        this.syncCustomEndpointOption('origin', this.originKey, this.customOriginLabel);
+                                    }
+                                    if (this.destinationKey) {
+                                        this.syncCustomEndpointOption('destination', this.destinationKey, this.customDestinationLabel);
+                                    }
+                                });
+                            }
+                        });
+
+                        window.addEventListener('usu-route-state-changed', (e) => {
+                            const d = e.detail || {};
+                            if (typeof d.isOpen === 'boolean') this.isOpen = d.isOpen;
+                            if (typeof d.isLoading === 'boolean') this.isLoading = d.isLoading;
+                            if (typeof d.isLocatingGps === 'boolean') this.isLocatingGps = d.isLocatingGps;
+                            if (typeof d.pickingOriginOnMap === 'boolean') this.pickingOriginOnMap = d.pickingOriginOnMap;
+                            if (typeof d.liveGpsTracking === 'boolean') this.liveGpsTracking = d.liveGpsTracking;
+                            if (d.originSource !== undefined) this.originSource = d.originSource;
+                            if (d.mode) this.mode = d.mode;
+                            if (d.originKey !== undefined) {
+                                this.syncCustomEndpointOption('origin', d.originKey, d.originLabel);
+                                this.$nextTick(() => {
+                                    this.originKey = d.originKey;
+                                });
+                            }
+                            if (d.destinationKey !== undefined) {
+                                this.syncCustomEndpointOption('destination', d.destinationKey, d.destinationLabel);
+                                this.$nextTick(() => {
+                                    this.destinationKey = d.destinationKey;
+                                });
+                            }
+                            if (d.routeResult !== undefined) {
+                                this.routeResult = d.routeResult;
+                                this.activeStepIndex = null;
+                            }
+                            if (d.statusMsg !== undefined) this.statusMsg = d.statusMsg;
+                            if (d.isError !== undefined) this.isError = d.isError;
+                            if (d.diagnostic !== undefined) this.diagnostic = d.diagnostic;
+                            if (d.alreadyAtDestinationMsg !== undefined) this.alreadyAtDestinationMsg = d.alreadyAtDestinationMsg;
+                        });
+                    },
+
+                    syncCustomEndpointOption(side, key, label) {
+                        if (!key) {
+                            if (side === 'origin') {
+                                this.customOriginKey = '';
+                                this.customOriginLabel = '';
+                            } else {
+                                this.customDestinationKey = '';
+                                this.customDestinationLabel = '';
+                            }
+                            return;
+                        }
+
+                        const known = [...(this.destinations.buildings || []), ...(this.destinations.fotocopy || [])]
+                            .some((item) => item.key === key);
+
+                        if (known) {
+                            if (side === 'origin') {
+                                this.customOriginKey = '';
+                                this.customOriginLabel = '';
+                            } else {
+                                this.customDestinationKey = '';
+                                this.customDestinationLabel = '';
+                            }
+                            return;
+                        }
+
+                        const fallbackLabel = label || (key.includes(',') ? ('Koordinat: ' + key) : key);
+                        if (side === 'origin') {
+                            this.customOriginKey = key;
+                            this.customOriginLabel = fallbackLabel;
+                        } else {
+                            this.customDestinationKey = key;
+                            this.customDestinationLabel = fallbackLabel;
+                        }
+                    },
+
+                    open() {
+                        if (window.USUClassMap && typeof window.USUClassMap.openRoutePanel === 'function') {
+                            window.USUClassMap.openRoutePanel();
+                        } else {
+                            this.isOpen = true;
+                        }
+                    },
+
+                    close() {
+                        if (window.USUClassMap && typeof window.USUClassMap.closeRoutePanel === 'function') {
+                            window.USUClassMap.closeRoutePanel();
+                        } else {
+                            this.isOpen = false;
+                        }
+                    },
+
+                    setMode(nextMode) {
+                        this.mode = nextMode;
+                        if (window.USUClassMap && typeof window.USUClassMap.setRouteMode === 'function') {
+                            window.USUClassMap.setRouteMode(nextMode);
+                            return;
+                        }
+                        if (this.originKey && this.destinationKey) {
+                            this.calculateRoute();
+                        }
+                    },
+
+                    onOriginChanged() {
+                        this.statusMsg = '';
+                        this.isError = false;
+                        this.diagnostic = null;
+                        this.alreadyAtDestinationMsg = '';
+                        if (window.USUClassMap && typeof window.USUClassMap.setManualOrigin === 'function') {
+                            window.USUClassMap.setManualOrigin(this.originKey, this.originKey === this.customOriginKey ? this.customOriginLabel : '');
+                            return;
+                        }
+                        if (this.originKey && this.destinationKey) {
+                            this.calculateRoute();
+                        }
+                    },
+
+                    onDestinationChanged() {
+                        this.statusMsg = '';
+                        this.isError = false;
+                        this.diagnostic = null;
+                        this.alreadyAtDestinationMsg = '';
+                        if (!this.destinationKey) {
+                            return;
+                        }
+                        if (window.USUClassMap && typeof window.USUClassMap.selectRouteDestination === 'function') {
+                            window.USUClassMap.selectRouteDestination(this.destinationKey);
+                            return;
+                        }
+                        if (this.originKey && this.destinationKey) {
+                            this.calculateRoute();
+                        }
+                    },
+
+                    focusOriginDropdown() {
+                        const sel = document.getElementById('route-origin-select');
+                        if (sel) {
+                            sel.focus();
+                        }
+                    },
+
+                    toggleLiveTracking() {
+                        if (window.USUClassMap && typeof window.USUClassMap.toggleLiveGpsTracking === 'function') {
+                            window.USUClassMap.toggleLiveGpsTracking();
+                        }
+                    },
+
+                    swapEndpoints() {
+                        const prevOrig = this.originKey;
+                        const prevDest = this.destinationKey;
+                        const prevOrigLabel = this.customOriginLabel;
+                        const prevDestLabel = this.customDestinationLabel;
+
+                        this.syncCustomEndpointOption('origin', prevDest, prevDestLabel);
+                        this.syncCustomEndpointOption('destination', prevOrig, prevOrigLabel);
+                        this.$nextTick(() => {
+                            this.originKey = prevDest;
+                            this.destinationKey = prevOrig;
+                            if (this.originKey && this.destinationKey) {
+                                if (window.USUClassMap && typeof window.USUClassMap.setManualOrigin === 'function') {
+                                    window.USUClassMap.setManualOrigin(this.originKey, this.originKey === this.customOriginKey ? this.customOriginLabel : '', false);
+                                }
+                                this.calculateRoute();
+                            }
+                        });
+                    },
+
+                    useGpsOrigin() {
+                        if (window.USUClassMap && typeof window.USUClassMap.useGpsAsOrigin === 'function') {
+                            window.USUClassMap.useGpsAsOrigin();
+                        }
+                    },
+
+                    togglePickOriginOnMap() {
+                        if (window.USUClassMap && typeof window.USUClassMap.togglePickOriginOnMap === 'function') {
+                            window.USUClassMap.togglePickOriginOnMap();
+                        }
+                    },
+
+                    calculateRoute() {
+                        if (window.USUClassMap && typeof window.USUClassMap.calculateInAppRoute === 'function') {
+                            window.USUClassMap.calculateInAppRoute(this.originKey, this.destinationKey, this.mode);
+                        }
+                    },
+
+                    focusRoute() {
+                        if (window.USUClassMap && typeof window.USUClassMap.focusCurrentRoute === 'function') {
+                            window.USUClassMap.focusCurrentRoute();
+                        }
+                    },
+
+                    clearRoute() {
+                        this.routeResult = null;
+                        this.originKey = '';
+                        this.destinationKey = '';
+                        this.customOriginKey = '';
+                        this.customOriginLabel = '';
+                        this.customDestinationKey = '';
+                        this.customDestinationLabel = '';
+                        this.originSource = 'none';
+                        this.liveGpsTracking = false;
+                        this.statusMsg = '';
+                        this.isError = false;
+                        this.diagnostic = null;
+                        this.alreadyAtDestinationMsg = '';
+                        this.activeStepIndex = null;
+                        if (window.USUClassMap && typeof window.USUClassMap.clearRoute === 'function') {
+                            window.USUClassMap.clearRoute();
+                        }
+                    },
+
+                    focusStep(step, idx) {
+                        this.activeStepIndex = idx;
+                        if (window.USUClassMap && typeof window.USUClassMap.focusRouteStep === 'function') {
+                            window.USUClassMap.focusRouteStep(step);
+                        }
+                    },
+
+                    engineLabel() {
+                        return this.routeResult?.engine_label
+                            || this.routeResult?.engine_source
+                            || (this.mode === 'driving' ? 'Graf Jalan Kendaraan USU' : 'Graf Pejalan Kaki USU');
+                    },
+
+                    auditText() {
+                        const audit = this.routeResult?.geometry_audit;
+                        if (!audit) return 'Geometri rute telah diverifikasi';
+                        if (audit.verified) {
+                            return 'Rute aman: 0 tembus gedung, 0 lompati parit';
+                        }
+                        return `Perlu perhatian: ${audit.building_intersections || 0} gedung, ${audit.barrier_intersections || 0} barrier`;
+                    },
+
+                    maneuverIcon(maneuver) {
+                        switch (maneuver) {
+                            case 'start':
+                            case 'depart': return 'fa-play text-emerald-600';
+                            case 'arrive': return 'fa-flag-checkered text-blue-600';
+                            case 'bridge': return 'fa-bridge text-sky-600';
+                            case 'access': return 'fa-door-open text-amber-600';
+                            case 'turn-left':
+                            case 'turn_left':
+                            case 'slight_left': return 'fa-arrow-turn-up -rotate-90 text-gray-700';
+                            case 'turn-right':
+                            case 'turn_right':
+                            case 'slight_right': return 'fa-arrow-turn-up rotate-90 text-gray-700';
+                            case 'uturn': return 'fa-rotate-left text-gray-700';
+                            default: return 'fa-arrow-up text-gray-700';
+                        }
+                    },
+
+                    formatStepDistance(meters) {
+                        const num = Number(meters || 0);
+                        if (!Number.isFinite(num) || num <= 0) return 'Di titik ini';
+                        if (num >= 1000) return (num / 1000).toFixed(2).replace('.', ',') + ' km';
+                        return Math.round(num) + ' m';
+                    }
+                };
+            };
         </script>
         <script src="https://api.mapbox.com/mapbox-gl-js/v3.9.0/mapbox-gl.js"></script>
 

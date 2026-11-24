@@ -43,4 +43,8 @@ return [
         'key' => env('SERPAPI_KEY'),
     ],
 
+    'mapbox' => [
+        'token' => env('VITE_MAPBOX_ACCESS_TOKEN', ''),
+    ],
+
 ];

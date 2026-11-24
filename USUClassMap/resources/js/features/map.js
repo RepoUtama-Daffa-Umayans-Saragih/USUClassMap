@@ -17,8 +17,15 @@ import mapboxgl from 'mapbox-gl';
 
 // Bersihkan konteks WebGL saat berpindah atau me-refresh halaman agar tidak exhaust WebGL
 window.__usuMapDestroyed = false;
+window.__usuGpsWatchId = null;
 window.addEventListener('beforeunload', () => {
     window.__usuMapDestroyed = true;
+    if (window.__usuGpsWatchId !== null && navigator.geolocation) {
+        try {
+            navigator.geolocation.clearWatch(window.__usuGpsWatchId);
+        } catch (e) {}
+        window.__usuGpsWatchId = null;
+    }
     if (window.__usuMapInstance) {
         try {
             window.__usuMapInstance.remove();
@@ -88,6 +95,37 @@ function initMapEngine() {
     let photocopyMarkers = [];
     let allPhotocopyPlaces = [];
     let isPhotocopyLayerActive = false;
+
+    // In-App Campus Routing & Auto-GPS State
+    const ROUTE_MAIN_SOURCE_ID = 'usu-route-main-source';
+    const ROUTE_ACCESS_SOURCE_ID = 'usu-route-access-source';
+    const GPS_ACCURACY_SOURCE_ID = 'usu-gps-accuracy-source';
+    const GPS_ACCURACY_FILL_LAYER_ID = 'usu-gps-accuracy-fill';
+    const GPS_ACCURACY_LINE_LAYER_ID = 'usu-gps-accuracy-line';
+    const ROUTE_ACCESS_LAYER_ID = 'usu-route-access-line';
+    const ROUTE_CASING_LAYER_ID = 'usu-route-main-casing';
+    const ROUTE_LINE_LAYER_ID = 'usu-route-main-line';
+    const ROUTE_ARROW_LAYER_ID = 'usu-route-arrows';
+
+    let routePanelOpen = false;
+    let routeOriginKey = '';
+    let routeOriginLabel = '';
+    let routeOriginSource = 'none'; // 'none' | 'gps' | 'manual_entity' | 'manual_map'
+    let routeDestinationKey = '';
+    let routeDestinationLabel = '';
+    let routeMode = 'walking';
+    let routeModeExplicitByUser = false;
+    let currentRouteResult = null;
+    let pickingOriginOnMap = false;
+    let routeOriginMarker = null;
+    let routeDestinationMarker = null;
+    let gpsUserMarker = null;
+    let lastGpsFix = null; // { lat, lng, accuracy, timestamp }
+    let liveGpsTracking = false;
+    let activeLocateRequestId = 0;
+    let routingDestinations = { buildings: [], fotocopy: [] };
+    let isRoutingDestinationsLoaded = false;
+    let pendingInitialRouteRequest = null;
 
     /**
      * Helper konversi koordinat Latitude & Longitude ke format Mapbox GL JS [Longitude, Latitude]
@@ -169,6 +207,50 @@ function initMapEngine() {
             map.on('style.load', () => {
                 injectSatelliteLayer();
                 inject3DBuildingsLayer();
+                ensureRouteLayers();
+                if (lastGpsFix && routeOriginSource === 'gps') {
+                    renderGpsLocationOnMap(lastGpsFix.lat, lastGpsFix.lng, lastGpsFix.accuracy);
+                }
+                if (currentRouteResult) {
+                    renderActiveRouteOnMap(false);
+                }
+            });
+
+            map.on('click', (e) => {
+                if (!pickingOriginOnMap || !e?.lngLat) return;
+                const lat = Number(e.lngLat.lat);
+                const lng = Number(e.lngLat.lng);
+                if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+                pickingOriginOnMap = false;
+                activeLocateRequestId++;
+                stopLiveGpsTracking();
+                clearGpsVisuals();
+
+                try {
+                    map.getCanvas().style.cursor = '';
+                } catch (err) {}
+
+                const coordKey = `${lat.toFixed(6)},${lng.toFixed(6)}`;
+                routeOriginKey = coordKey;
+                routeOriginLabel = `Titik Peta (${lat.toFixed(5)}, ${lng.toFixed(5)})`;
+                routeOriginSource = 'manual_map';
+
+                emitRouteState({
+                    isOpen: true,
+                    pickingOriginOnMap: false,
+                    originKey: routeOriginKey,
+                    originLabel: routeOriginLabel,
+                    originSource: routeOriginSource,
+                    diagnostic: null,
+                    alreadyAtDestinationMsg: '',
+                    statusMsg: routeDestinationKey ? 'Menghitung rute dari titik peta...' : 'Titik asal dipilih. Silakan pilih tujuan.',
+                    isError: false
+                });
+
+                if (routeOriginKey && routeDestinationKey) {
+                    fetchAndRenderRoute(routeOriginKey, routeDestinationKey, routeMode, { originLabel: routeOriginLabel });
+                }
             });
 
             updateSatelliteButtonState();
@@ -176,13 +258,14 @@ function initMapEngine() {
             // Initialize Recent Searches UI
             renderRecentSearches();
 
-            // Load Initial Buildings & User Schedules & Photocopy Places
+            // Load Initial Buildings, Schedules, Routing Destinations & Photocopy Places sequentially
+            loadRoutingDestinations();
             fetchBuildings().then(() => {
                 fetchUserSchedules().then(() => {
                     handleInitialUrlParams();
                 });
+                loadPhotocopyPlaces();
             });
-            loadPhotocopyPlaces();
 
         } catch (err) {
             console.error('[USUClassMap] Inisialisasi peta 3D/WebGL gagal:', err);
@@ -595,6 +678,16 @@ function initMapEngine() {
             if (result.status === 'success' && Array.isArray(result.data)) {
                 allBuildings = result.data;
                 renderBuildingMarkers(allBuildings);
+                if (!activeQuery && !activeDay) {
+                    renderDefaultSidebar();
+                    if (resultsCountEl) {
+                        resultsCountEl.textContent = `${allBuildings.length} Gedung`;
+                    }
+                    if (sourceBadgeEl) {
+                        sourceBadgeEl.textContent = 'Semua Gedung';
+                        sourceBadgeEl.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-100 text-emerald-800';
+                    }
+                }
             }
         } catch (error) {
             if (!window.__usuMapDestroyed) {
@@ -731,7 +824,6 @@ function initMapEngine() {
         targetCourseCode = null, 
         targetCourseName = null
     ) {
-        const routeUrl = `https://www.google.com/maps/dir/?api=1&destination=${building.latitude},${building.longitude}&travelmode=walking`;
 
         // 1. Tentukan daftar ruangan
         let roomsList = [];
@@ -1036,11 +1128,11 @@ function initMapEngine() {
                     <h4 class="font-black text-sm text-gray-900 mt-1.5 leading-tight">${building.name}</h4>
                     <p class="text-[11px] text-gray-500 line-clamp-1 mt-0.5">${building.description || 'Fakultas / Fasilitas Kampus Universitas Sumatera Utara'}</p>
 
-                    <!-- Tombol Petunjuk Arah -->
-                    <a href="${routeUrl}" target="_blank" rel="noopener noreferrer" class="w-full mt-2.5 px-3 py-2 bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold text-xs rounded-lg shadow-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>Petunjuk Arah (Google Maps)</span>
-                    </a>
+                    <!-- Tombol Petunjuk Arah In-App -->
+                    <button type="button" onclick="window.USUClassMap && window.USUClassMap.startRouteTo('building:${building.id}')" class="w-full mt-2.5 px-3 py-2 bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold text-xs rounded-lg shadow-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+                        <i class="fa-solid fa-route"></i>
+                        <span>Arahkan Rute ke Gedung Ini</span>
+                    </button>
                 </div>
 
                 <!-- 2. SCROLLABLE BODY (VISUAL SMART ROOM CARDS) -->
@@ -1056,8 +1148,206 @@ function initMapEngine() {
     }
 
     // =========================================================================
-    // 9. SEARCH & FILTER SCHEDULES (SPARQL & SEMANTIC LAYER)
+    // 9. SEARCH & FILTER SCHEDULES (SPARQL & SEMANTIC + SMART SEARCH LAYER)
     // =========================================================================
+    function escapeHtmlSafe(str) {
+        return String(str ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    function looksLikeSmartSearchQuery(query) {
+        if (!query) return false;
+        const spatialPattern = /\b(depan|seberang|sebrang|samping|sebelah|belakang|balik|antara|ingatnya|ingetnya|lupa\s+nama|patokan|fakultas\s+[a-z0-9]{1,2}|gedung\s+[a-z0-9]{1,2})\b/i;
+        const photocopyPattern = /\b(pulpen|pena|bolpen|bulpen|polpen|pensil|kertas|hvs|print|ngeprint|cetak|fotocopy|fotokopi|potokopi|jilid|hardcover|softcover|spiral|spidol|stabilo|highlighter|binder|stopmap|stofmap|materai|meterai|laminating|scan|stapler|lakban|atk|murah|termurah|di\s+bawah)\b/i;
+        return spatialPattern.test(query) || photocopyPattern.test(query);
+    }
+
+    function getAvailableGpsCoords() {
+        if (lastGpsFix && Number.isFinite(Number(lastGpsFix.lat)) && Number.isFinite(Number(lastGpsFix.lng))) {
+            return { lat: Number(lastGpsFix.lat), lng: Number(lastGpsFix.lng) };
+        }
+        try {
+            const raw = sessionStorage.getItem('usu_last_gps_fix');
+            if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && Number.isFinite(Number(parsed.lat)) && Number.isFinite(Number(parsed.lng))) {
+                    return { lat: Number(parsed.lat), lng: Number(parsed.lng) };
+                }
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    async function runMapSmartSearch(query, day) {
+        try {
+            const url = new URL('/api/smart-search', window.location.origin);
+            url.searchParams.set('q', query);
+            if (day) url.searchParams.set('day', day);
+            const gps = getAvailableGpsCoords();
+            if (gps) {
+                url.searchParams.set('lat', String(gps.lat));
+                url.searchParams.set('lng', String(gps.lng));
+            }
+
+            const resp = await fetch(url.toString(), { headers: { Accept: 'application/json' } });
+            if (!resp.ok) return false;
+            const smart = await resp.json();
+
+            if (smart.intent === 'smart_fotocopy_search' && smart.fotocopy?.results?.length > 0) {
+                if (resultsCountEl) resultsCountEl.textContent = `${smart.fotocopy.count} Produk/Jasa Fotokopi`;
+                if (sourceBadgeEl) {
+                    sourceBadgeEl.textContent = 'Smart Fotokopi';
+                    sourceBadgeEl.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-100 text-emerald-800';
+                }
+                renderSmartFotocopySidebar(smart.fotocopy);
+                highlightSmartFotocopyOnMap(smart.fotocopy);
+                return true;
+            }
+
+            if (smart.spatial?.candidates?.length > 0) {
+                if (resultsCountEl) resultsCountEl.textContent = `${smart.spatial.count} Kandidat Gedung`;
+                if (sourceBadgeEl) {
+                    sourceBadgeEl.textContent = 'Tebak Spasial';
+                    sourceBadgeEl.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-amber-100 text-amber-800';
+                }
+                const candidateCodes = new Set();
+                smart.spatial.candidates.forEach(c => {
+                    if (c.code) candidateCodes.add(c.code);
+                    if (c.name) candidateCodes.add(c.name);
+                });
+                renderSearchMarkers(allBuildings, candidateCodes, {});
+                renderSmartSpatialSidebar(smart.spatial);
+                return true;
+            }
+
+            if (smart.fotocopy?.results?.length > 0) {
+                if (resultsCountEl) resultsCountEl.textContent = `${smart.fotocopy.count} Produk/Jasa Fotokopi`;
+                if (sourceBadgeEl) {
+                    sourceBadgeEl.textContent = 'Smart Fotokopi';
+                    sourceBadgeEl.className = 'px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-100 text-emerald-800';
+                }
+                renderSmartFotocopySidebar(smart.fotocopy);
+                highlightSmartFotocopyOnMap(smart.fotocopy);
+                return true;
+            }
+        } catch (err) {
+            console.warn('[USUClassMap] Smart search error:', err);
+        }
+        return false;
+    }
+
+    async function highlightSmartFotocopyOnMap(fotocopyData) {
+        try {
+            const storeIds = new Set((fotocopyData.results || []).map(r => Number(r.store?.id)).filter(Boolean));
+            const places = await loadPhotocopyPlaces();
+            const matchedPlaces = places.filter(p => storeIds.has(Number(p.id)));
+            if (matchedPlaces.length > 0) {
+                renderPhotocopyMarkers(matchedPlaces);
+                if (map) {
+                    const bounds = new mb.LngLatBounds();
+                    matchedPlaces.forEach(p => {
+                        const lat = parseFloat(p.location?.latitude ?? p.latitude);
+                        const lng = parseFloat(p.location?.longitude ?? p.longitude);
+                        if (Number.isFinite(lat) && Number.isFinite(lng)) {
+                            bounds.extend(toMapboxCoord(lat, lng));
+                        }
+                    });
+                    if (!bounds.isEmpty()) {
+                        map.fitBounds(bounds, { padding: 70, maxZoom: 16.5, duration: 1000 });
+                    }
+                }
+            }
+        } catch (e) {}
+    }
+
+    function renderSmartSpatialSidebar(spatialData) {
+        if (!searchResultsContainer) return;
+        const candidates = spatialData.candidates || [];
+        const advisoryHtml = spatialData.advisory_note
+            ? `<div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 mb-3">${escapeHtmlSafe(spatialData.advisory_note)}</div>`
+            : '';
+
+        searchResultsContainer.innerHTML = `
+            <div class="space-y-3">
+                ${advisoryHtml}
+                <div class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Tebakan Gedung Kampus USU:</div>
+                ${candidates.map((c, idx) => `
+                    <div class="p-3.5 bg-white border ${idx === 0 ? 'border-[#10A760] ring-1 ring-emerald-200' : 'border-gray-200'} rounded-xl shadow-xs space-y-2">
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <div class="text-xs font-extrabold text-gray-900">${escapeHtmlSafe(c.name)} (${escapeHtmlSafe(c.code)})</div>
+                                <div class="text-[11px] text-gray-500">${escapeHtmlSafe(c.faculty)}</div>
+                            </div>
+                            <span class="px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded-full text-[10px] font-black shrink-0">${c.confidence_percent}% cocok</span>
+                        </div>
+                        <p class="text-xs text-gray-700 leading-relaxed">${escapeHtmlSafe(c.spatial_reason)}</p>
+                        <div class="flex items-center gap-2 pt-1">
+                            <button type="button" onclick="window.USUClassMap && window.USUClassMap.focusBuilding(${Number(c.building_id)})" class="flex-1 py-1.5 px-2.5 bg-emerald-50 hover:bg-[#10A760] text-[#10A760] hover:text-white text-xs font-bold rounded-lg transition-colors cursor-pointer">
+                                <i class="fa-solid fa-location-dot"></i> Lihat di Peta
+                            </button>
+                            <button type="button" onclick="window.USUClassMap && window.USUClassMap.startRouteTo('building:${Number(c.building_id)}')" class="py-1.5 px-3 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 text-xs font-bold rounded-lg transition-colors cursor-pointer">
+                                <i class="fa-solid fa-route"></i> Rute GPS
+                            </button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    function renderSmartFotocopySidebar(fotocopyData) {
+        if (!searchResultsContainer) return;
+        const items = fotocopyData.results || [];
+        const advisoryHtml = fotocopyData.advisory_note
+            ? `<div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 mb-3">${escapeHtmlSafe(fotocopyData.advisory_note)}</div>`
+            : '';
+
+        searchResultsContainer.innerHTML = `
+            <div class="space-y-3">
+                ${advisoryHtml}
+                <div class="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Anchor: ${escapeHtmlSafe(fotocopyData.anchor?.label || 'Kampus USU')}</div>
+                ${items.map(it => {
+                    const imgHtml = it.image_url
+                        ? `<img src="${escapeHtmlSafe(it.image_url)}" alt="${escapeHtmlSafe(it.name)}" class="w-12 h-12 rounded-lg object-cover border border-gray-200 shrink-0 bg-white">`
+                        : `<div class="w-12 h-12 rounded-lg bg-emerald-50 text-[#10A760] flex items-center justify-center shrink-0"><i class="fa-solid fa-print"></i></div>`;
+                    const badgeClass = it.exact_attribute_match ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800';
+                    const badgeLabel = it.exact_attribute_match ? escapeHtmlSafe(it.category) : 'Alternatif';
+                    const openClass = it.store?.is_open_now ? 'text-emerald-700 font-bold' : 'text-rose-600 font-semibold';
+                    const openText = it.store?.is_open_now ? 'Buka' : 'Tutup';
+                    const storeId = Number(it.store?.id || 0);
+                    return `
+                        <div class="p-3.5 bg-white border border-gray-200 hover:border-[#10A760] rounded-xl shadow-xs space-y-2">
+                            <div class="flex items-start gap-2.5">
+                                ${imgHtml}
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between gap-1.5">
+                                        <h4 class="font-bold text-xs text-gray-900 leading-snug line-clamp-2">${escapeHtmlSafe(it.name)}</h4>
+                                        <span class="px-1.5 py-0.5 rounded text-[9px] font-extrabold shrink-0 ${badgeClass}">${badgeLabel}</span>
+                                    </div>
+                                    <div class="mt-1 text-xs font-black text-[#10A760]">${escapeHtmlSafe(it.formatted_price)} / ${escapeHtmlSafe(it.unit)}</div>
+                                    <div class="text-[11px] font-semibold text-gray-700 truncate">${escapeHtmlSafe(it.store?.name || '')}</div>
+                                    <div class="text-[10px] text-gray-500">~${Number(it.store?.distance_meters || 0)} m (${Number(it.store?.walk_minutes || 1)} mnt) • <span class="${openClass}">${openText}</span></div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-2 pt-1">
+                                <a href="${escapeHtmlSafe(it.actions?.order_url || `/fotocopy/${storeId}/order`)}" class="flex-1 py-1.5 px-2.5 bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs font-bold rounded-lg text-center transition-colors">
+                                    Pesan di Toko
+                                </a>
+                                <button type="button" onclick="window.USUClassMap && window.USUClassMap.startRouteTo('fotocopy:${storeId}')" class="py-1.5 px-3 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 text-xs font-bold rounded-lg transition-colors cursor-pointer">
+                                    <i class="fa-solid fa-route"></i> Rute
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+
     async function searchSchedules() {
         const query = activeQuery.trim();
         const day = activeDay.trim();
@@ -1069,7 +1359,7 @@ function initMapEngine() {
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                     </svg>
-                    <span class="text-xs font-semibold text-gray-600">Mencari via SPARQL & Semantic Layer...</span>
+                    <span class="text-xs font-semibold text-gray-600">Mencari via SPARQL & Smart Search...</span>
                 </div>
             `;
         }
@@ -1086,7 +1376,10 @@ function initMapEngine() {
             return;
         }
 
-        // Note: Riwayat pencarian disimpan saat user menekan Enter atau mengklik hasil pencarian (bukan saat debounce ketik)
+        if (query && looksLikeSmartSearchQuery(query)) {
+            const handled = await runMapSmartSearch(query, day);
+            if (handled) return;
+        }
 
         try {
             const url = new URL('/api/schedules/search', window.location.origin);
@@ -1098,6 +1391,11 @@ function initMapEngine() {
 
             if (result.status === 'success') {
                 currentSchedules = result.data || [];
+
+                if (currentSchedules.length === 0 && query.length >= 3) {
+                    const handledFallback = await runMapSmartSearch(query, day);
+                    if (handledFallback) return;
+                }
 
                 if (resultsCountEl) resultsCountEl.textContent = `${currentSchedules.length} Jadwal`;
                 if (sourceBadgeEl) {
@@ -1338,9 +1636,14 @@ function initMapEngine() {
                                     <i class="fa-solid fa-location-dot"></i>
                                     <span>Lihat di Peta</span>
                                 </button>
-                                <a href="https://www.google.com/maps/dir/?api=1&destination=${s.gedung.latitude},${s.gedung.longitude}&travelmode=walking" target="_blank" rel="noopener noreferrer" class="py-2 px-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-bold transition-colors cursor-pointer" title="Petunjuk Rute Google Maps">
-                                    <i class="fa-solid fa-person-walking"></i>
-                                </a>
+                                <button
+                                    type="button"
+                                    onclick="window.USUClassMap && window.USUClassMap.startRouteTo('${gedungId ? `building:${gedungId}` : `${s.gedung.latitude},${s.gedung.longitude}`}')"
+                                    class="py-2 px-3 bg-emerald-50 hover:bg-[#10A760] text-[#10A760] hover:text-white rounded-lg text-xs font-bold transition-colors cursor-pointer"
+                                    title="Arahkan Rute In-App ke Gedung"
+                                >
+                                    <i class="fa-solid fa-route"></i>
+                                </button>
                             </div>
                         </div>
                     `;
@@ -1350,12 +1653,844 @@ function initMapEngine() {
     }
 
     // =========================================================================
-    // 11. EVENT LISTENERS & URL PARAMS
+    // 11. EVENT LISTENERS, ROUTING ENGINE & URL PARAMS
     // =========================================================================
+    function updateRouteToggleButtonState() {
+        const btn = document.getElementById('map-route-toggle-btn');
+        if (!btn) return;
+        if (routePanelOpen) {
+            btn.classList.add('bg-[#10A760]', 'text-white', 'border-[#10A760]');
+            btn.classList.remove('bg-white/95', 'text-gray-700');
+            const icon = btn.querySelector('i');
+            if (icon) icon.classList.remove('text-[#10A760]');
+        } else {
+            btn.classList.remove('bg-[#10A760]', 'text-white', 'border-[#10A760]');
+            btn.classList.add('bg-white/95', 'text-gray-700');
+            const icon = btn.querySelector('i');
+            if (icon) icon.classList.add('text-[#10A760]');
+        }
+    }
+
+    function emitRouteState(patch = {}) {
+        updateRouteToggleButtonState();
+        window.dispatchEvent(new CustomEvent('usu-route-state-changed', {
+            detail: {
+                isOpen: routePanelOpen,
+                mode: routeMode,
+                originKey: routeOriginKey,
+                originLabel: routeOriginLabel,
+                originSource: routeOriginSource,
+                liveGpsTracking,
+                destinationKey: routeDestinationKey,
+                destinationLabel: routeDestinationLabel,
+                routeResult: currentRouteResult,
+                pickingOriginOnMap,
+                ...patch
+            }
+        }));
+    }
+
+    async function loadRoutingDestinations() {
+        try {
+            const resp = await fetch('/api/routing/destinations', { headers: { Accept: 'application/json' } });
+            if (!resp.ok) return;
+            const data = await resp.json();
+            routingDestinations = {
+                buildings: Array.isArray(data.buildings) ? data.buildings : [],
+                fotocopy: Array.isArray(data.fotocopy) ? data.fotocopy : []
+            };
+            isRoutingDestinationsLoaded = true;
+            window.__usuRoutingDestinations = routingDestinations;
+            window.dispatchEvent(new CustomEvent('usu-routing-destinations-loaded', { detail: routingDestinations }));
+
+            if (pendingInitialRouteRequest) {
+                const req = pendingInitialRouteRequest;
+                pendingInitialRouteRequest = null;
+                startRouteToInternal(req.targetKey, req.options);
+            }
+        } catch (err) {
+            console.warn('[USUClassMap] Gagal memuat daftar tujuan routing:', err);
+        }
+    }
+
+    function resolveEndpointInfo(key) {
+        if (!key) return null;
+        const normalized = String(key).trim();
+
+        const fromCatalog = [...(routingDestinations.buildings || []), ...(routingDestinations.fotocopy || [])]
+            .find((item) => item.key === normalized);
+        if (fromCatalog) {
+            return {
+                key: fromCatalog.key,
+                label: fromCatalog.label,
+                lat: parseFloat(fromCatalog.entrance_lat ?? fromCatalog.lat),
+                lng: parseFloat(fromCatalog.entrance_lng ?? fromCatalog.lng)
+            };
+        }
+
+        if (normalized.startsWith('building:')) {
+            const id = normalized.slice('building:'.length);
+            const b = allBuildings.find((item) => String(item.id) === id);
+            if (b) {
+                return {
+                    key: normalized,
+                    label: b.code ? `${b.code} — ${b.name}` : b.name,
+                    lat: parseFloat(b.entrance_lat ?? b.latitude),
+                    lng: parseFloat(b.entrance_lng ?? b.longitude)
+                };
+            }
+        }
+
+        if (normalized.startsWith('fotocopy:')) {
+            const id = normalized.slice('fotocopy:'.length);
+            const p = allPhotocopyPlaces.find((item) => String(item.id) === id);
+            if (p) {
+                return {
+                    key: normalized,
+                    label: p.name,
+                    lat: parseFloat(p.entrance_lat ?? p.location?.latitude ?? p.latitude),
+                    lng: parseFloat(p.entrance_lng ?? p.location?.longitude ?? p.longitude)
+                };
+            }
+        }
+
+        const match = normalized.match(/^(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)$/);
+        if (match) {
+            return {
+                key: normalized,
+                label: `Koordinat (${parseFloat(match[1]).toFixed(5)}, ${parseFloat(match[2]).toFixed(5)})`,
+                lat: parseFloat(match[1]),
+                lng: parseFloat(match[2])
+            };
+        }
+
+        return null;
+    }
+
+    function ensureRouteLayers() {
+        if (window.__usuMapDestroyed || !map || !map.getCanvasContainer() || !map.isStyleLoaded()) {
+            return false;
+        }
+
+        const emptyGeojson = { type: 'FeatureCollection', features: [] };
+
+        if (!map.getSource(GPS_ACCURACY_SOURCE_ID)) {
+            map.addSource(GPS_ACCURACY_SOURCE_ID, { type: 'geojson', data: emptyGeojson });
+        }
+        if (!map.getSource(ROUTE_MAIN_SOURCE_ID)) {
+            map.addSource(ROUTE_MAIN_SOURCE_ID, { type: 'geojson', data: emptyGeojson });
+        }
+        if (!map.getSource(ROUTE_ACCESS_SOURCE_ID)) {
+            map.addSource(ROUTE_ACCESS_SOURCE_ID, { type: 'geojson', data: emptyGeojson });
+        }
+
+        if (!map.getLayer(GPS_ACCURACY_FILL_LAYER_ID)) {
+            map.addLayer({
+                id: GPS_ACCURACY_FILL_LAYER_ID,
+                type: 'fill',
+                source: GPS_ACCURACY_SOURCE_ID,
+                paint: {
+                    'fill-color': '#0284c7',
+                    'fill-opacity': 0.14
+                }
+            });
+        }
+        if (!map.getLayer(GPS_ACCURACY_LINE_LAYER_ID)) {
+            map.addLayer({
+                id: GPS_ACCURACY_LINE_LAYER_ID,
+                type: 'line',
+                source: GPS_ACCURACY_SOURCE_ID,
+                paint: {
+                    'line-color': '#38bdf8',
+                    'line-width': 1.5,
+                    'line-opacity': 0.65
+                }
+            });
+        }
+
+        if (!map.getLayer(ROUTE_ACCESS_LAYER_ID)) {
+            map.addLayer({
+                id: ROUTE_ACCESS_LAYER_ID,
+                type: 'line',
+                source: ROUTE_ACCESS_SOURCE_ID,
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': '#f59e0b',
+                    'line-width': 4,
+                    'line-dasharray': [2, 2],
+                    'line-opacity': 0.95
+                }
+            });
+        }
+
+        if (!map.getLayer(ROUTE_CASING_LAYER_ID)) {
+            map.addLayer({
+                id: ROUTE_CASING_LAYER_ID,
+                type: 'line',
+                source: ROUTE_MAIN_SOURCE_ID,
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': '#ffffff',
+                    'line-width': 10,
+                    'line-opacity': 0.92
+                }
+            });
+        }
+
+        if (!map.getLayer(ROUTE_LINE_LAYER_ID)) {
+            map.addLayer({
+                id: ROUTE_LINE_LAYER_ID,
+                type: 'line',
+                source: ROUTE_MAIN_SOURCE_ID,
+                layout: {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                paint: {
+                    'line-color': routeMode === 'driving' ? '#0284c7' : '#10b981',
+                    'line-width': 6,
+                    'line-opacity': 0.98
+                }
+            });
+        }
+
+        if (!map.getLayer(ROUTE_ARROW_LAYER_ID)) {
+            map.addLayer({
+                id: ROUTE_ARROW_LAYER_ID,
+                type: 'symbol',
+                source: ROUTE_MAIN_SOURCE_ID,
+                layout: {
+                    'symbol-placement': 'line',
+                    'symbol-spacing': 55,
+                    'text-field': '>',
+                    'text-size': 14,
+                    'text-keep-upright': false,
+                    'text-allow-overlap': true,
+                    'text-ignore-placement': true
+                },
+                paint: {
+                    'text-color': '#064e3b',
+                    'text-halo-color': '#ffffff',
+                    'text-halo-width': 2
+                }
+            });
+        }
+
+        // Pastikan layer akurasi & garis rute selalu di atas satelit & 3D buildings
+        [
+            GPS_ACCURACY_FILL_LAYER_ID,
+            GPS_ACCURACY_LINE_LAYER_ID,
+            ROUTE_ACCESS_LAYER_ID,
+            ROUTE_CASING_LAYER_ID,
+            ROUTE_LINE_LAYER_ID,
+            ROUTE_ARROW_LAYER_ID
+        ].forEach((layerId) => {
+            try {
+                if (map.getLayer(layerId)) {
+                    map.moveLayer(layerId);
+                }
+            } catch (e) {}
+        });
+
+        try {
+            map.setPaintProperty(ROUTE_LINE_LAYER_ID, 'line-color', routeMode === 'driving' ? '#0284c7' : '#10b981');
+        } catch (e) {}
+
+        return true;
+    }
+
+    function createGeoJsonCirclePolygon(lng, lat, radiusMeters, steps = 48) {
+        const clampedRadius = Math.max(8, Math.min(250, Number(radiusMeters) || 25));
+        const coords = [];
+        const dLat = clampedRadius / 111320.0;
+        const cosLat = Math.max(0.1, Math.cos((lat * Math.PI) / 180));
+        const dLng = clampedRadius / (111320.0 * cosLat);
+
+        for (let i = 0; i <= steps; i++) {
+            const angle = (i / steps) * 2 * Math.PI;
+            coords.push([lng + dLng * Math.cos(angle), lat + dLat * Math.sin(angle)]);
+        }
+
+        return {
+            type: 'FeatureCollection',
+            features: [{
+                type: 'Feature',
+                properties: { radius_m: clampedRadius },
+                geometry: { type: 'Polygon', coordinates: [coords] }
+            }]
+        };
+    }
+
+    function clearGpsVisuals() {
+        if (gpsUserMarker) {
+            try { gpsUserMarker.remove(); } catch (e) {}
+            gpsUserMarker = null;
+        }
+        if (window.__usuMapDestroyed || !map || !map.getCanvasContainer()) return;
+        try {
+            const accSrc = map.getSource(GPS_ACCURACY_SOURCE_ID);
+            if (accSrc) accSrc.setData({ type: 'FeatureCollection', features: [] });
+        } catch (e) {}
+    }
+
+    function renderGpsLocationOnMap(lat, lng, accuracy = 25) {
+        if (window.__usuMapDestroyed || !map || !map.getCanvasContainer()) return;
+        if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+        ensureRouteLayers();
+
+        try {
+            const accSrc = map.getSource(GPS_ACCURACY_SOURCE_ID);
+            if (accSrc) {
+                accSrc.setData(createGeoJsonCirclePolygon(lng, lat, accuracy));
+            }
+        } catch (e) {}
+
+        if (gpsUserMarker) {
+            try { gpsUserMarker.remove(); } catch (e) {}
+        }
+
+        const el = document.createElement('div');
+        el.id = 'usu-gps-user-marker';
+        el.className = 'relative flex items-center justify-center w-6 h-6 pointer-events-none';
+        el.innerHTML = `
+            <span class="usu-gps-pulse-ring absolute inset-0 rounded-full bg-sky-500/45"></span>
+            <span class="relative w-3.5 h-3.5 rounded-full bg-sky-600 border-2 border-white shadow-md"></span>
+        `;
+        gpsUserMarker = new mb.Marker({ element: el, anchor: 'center' })
+            .setLngLat([lng, lat])
+            .addTo(map);
+    }
+
+    function stopLiveGpsTracking() {
+        liveGpsTracking = false;
+        if (window.__usuGpsWatchId !== null && navigator.geolocation) {
+            try {
+                navigator.geolocation.clearWatch(window.__usuGpsWatchId);
+            } catch (e) {}
+            window.__usuGpsWatchId = null;
+        }
+    }
+
+    function clearRouteVisuals() {
+        if (routeOriginMarker) {
+            try { routeOriginMarker.remove(); } catch (e) {}
+            routeOriginMarker = null;
+        }
+        if (routeDestinationMarker) {
+            try { routeDestinationMarker.remove(); } catch (e) {}
+            routeDestinationMarker = null;
+        }
+        if (window.__usuMapDestroyed || !map || !map.getCanvasContainer()) return;
+        const emptyGeojson = { type: 'FeatureCollection', features: [] };
+        try {
+            const mainSrc = map.getSource(ROUTE_MAIN_SOURCE_ID);
+            if (mainSrc) mainSrc.setData(emptyGeojson);
+            const accessSrc = map.getSource(ROUTE_ACCESS_SOURCE_ID);
+            if (accessSrc) accessSrc.setData(emptyGeojson);
+        } catch (e) {}
+    }
+
+    function createRouteEndpointBadgeMarker(labelText, bgClass, lng, lat, offset = [0, 0]) {
+        if (!Number.isFinite(lng) || !Number.isFinite(lat) || !map) return null;
+        const el = document.createElement('div');
+        el.className = `px-2.5 py-1 rounded-full text-[11px] font-black text-white shadow-lg border-2 border-white flex items-center gap-1 pointer-events-none ${bgClass}`;
+        el.innerHTML = `<i class="fa-solid ${labelText === 'Asal' ? 'fa-circle-dot' : 'fa-flag-checkered'}"></i><span>${labelText}</span>`;
+        return new mb.Marker({ element: el, anchor: 'bottom', offset })
+            .setLngLat([lng, lat])
+            .addTo(map);
+    }
+
+    function focusRouteBounds() {
+        if (window.__usuMapDestroyed || !map || !currentRouteResult) return;
+        const bounds = new mb.LngLatBounds();
+        let hasPoints = false;
+
+        const addCoordsFromGeojson = (geo) => {
+            if (!geo) return;
+            if (geo.type === 'Feature' && geo.geometry?.type === 'LineString' && Array.isArray(geo.geometry.coordinates)) {
+                geo.geometry.coordinates.forEach((c) => {
+                    if (Array.isArray(c) && c.length >= 2) {
+                        bounds.extend([c[0], c[1]]);
+                        hasPoints = true;
+                    }
+                });
+                return;
+            }
+            if (!Array.isArray(geo.features)) return;
+            geo.features.forEach((f) => {
+                const coords = f?.geometry?.coordinates || [];
+                if (f?.geometry?.type === 'LineString') {
+                    coords.forEach((c) => {
+                        if (Array.isArray(c) && c.length >= 2) {
+                            bounds.extend([c[0], c[1]]);
+                            hasPoints = true;
+                        }
+                    });
+                }
+            });
+        };
+
+        addCoordsFromGeojson(currentRouteResult.main_route_geojson);
+        addCoordsFromGeojson(currentRouteResult.access_segments_geojson);
+
+        if (hasPoints && !bounds.isEmpty()) {
+            const rightPad = window.innerWidth >= 640 ? 430 : 50;
+            map.fitBounds(bounds, {
+                padding: { top: 85, bottom: 75, left: 60, right: rightPad },
+                maxZoom: 18,
+                pitch: is3DMode ? 35 : 0,
+                duration: 950
+            });
+        }
+    }
+
+    function renderActiveRouteOnMap(fitToBounds = true) {
+        if (window.__usuMapDestroyed || !map || !map.getCanvasContainer()) return;
+        if (!currentRouteResult) {
+            clearRouteVisuals();
+            return;
+        }
+
+        const ready = ensureRouteLayers();
+        if (!ready) {
+            setTimeout(() => {
+                if (!window.__usuMapDestroyed && currentRouteResult) {
+                    renderActiveRouteOnMap(fitToBounds);
+                }
+            }, 250);
+            return;
+        }
+
+        const mainSrc = map.getSource(ROUTE_MAIN_SOURCE_ID);
+        if (mainSrc && currentRouteResult.main_route_geojson) {
+            mainSrc.setData(currentRouteResult.main_route_geojson);
+        }
+        const accessSrc = map.getSource(ROUTE_ACCESS_SOURCE_ID);
+        if (accessSrc && currentRouteResult.access_segments_geojson) {
+            accessSrc.setData(currentRouteResult.access_segments_geojson);
+        }
+
+        if (routeOriginMarker) {
+            try { routeOriginMarker.remove(); } catch (e) {}
+        }
+        if (routeDestinationMarker) {
+            try { routeDestinationMarker.remove(); } catch (e) {}
+        }
+
+        const orig = currentRouteResult.origin || {};
+        const dest = currentRouteResult.destination || {};
+        routeOriginMarker = createRouteEndpointBadgeMarker(
+            'Asal',
+            'bg-emerald-600',
+            parseFloat(orig.raw_lng ?? orig.lng),
+            parseFloat(orig.raw_lat ?? orig.lat),
+            routeOriginSource === 'gps' ? [0, -14] : [0, 0]
+        );
+        routeDestinationMarker = createRouteEndpointBadgeMarker(
+            'Tujuan',
+            'bg-blue-600',
+            parseFloat(dest.raw_lng ?? dest.lng),
+            parseFloat(dest.raw_lat ?? dest.lat)
+        );
+
+        if (fitToBounds) {
+            focusRouteBounds();
+        }
+    }
+
+    async function fetchAndRenderRoute(originKey, destKey, mode = routeMode, options = {}) {
+        if (!originKey || !destKey) {
+            emitRouteState({
+                statusMsg: 'Pilih titik asal dan tujuan terlebih dahulu.',
+                isError: true
+            });
+            return null;
+        }
+
+        routeOriginKey = originKey;
+        routeDestinationKey = destKey;
+        routeMode = mode === 'driving' ? 'driving' : 'walking';
+
+        const origInfo = resolveEndpointInfo(originKey);
+        const destInfo = resolveEndpointInfo(destKey);
+        routeOriginLabel = options.originLabel || routeOriginLabel || origInfo?.label || '';
+        routeDestinationLabel = options.destLabel || destInfo?.label || '';
+
+        emitRouteState({
+            isOpen: true,
+            isLoading: true,
+            isError: false,
+            diagnostic: null,
+            alreadyAtDestinationMsg: '',
+            originKey: routeOriginKey,
+            originLabel: routeOriginLabel,
+            originSource: routeOriginSource,
+            destinationKey: routeDestinationKey,
+            destinationLabel: routeDestinationLabel,
+            statusMsg: 'Menghitung jalur jalan & selasar bebas halangan...'
+        });
+
+        try {
+            const params = new URLSearchParams({
+                origin: originKey,
+                destination: destKey,
+                mode: routeMode
+            });
+            if (routeOriginLabel) {
+                params.set('origin_label', routeOriginLabel);
+            }
+            const resp = await fetch(`/api/route?${params.toString()}`, {
+                headers: { Accept: 'application/json' }
+            });
+            const payload = await resp.json();
+
+            if (payload.status === 'already_at_destination') {
+                currentRouteResult = null;
+                clearRouteVisuals();
+                const destCoord = payload.destination;
+                if (destCoord && map) {
+                    map.flyTo({
+                        center: [parseFloat(destCoord.raw_lng ?? destCoord.lng), parseFloat(destCoord.raw_lat ?? destCoord.lat)],
+                        zoom: 18,
+                        duration: 700
+                    });
+                }
+                emitRouteState({
+                    isOpen: true,
+                    isLoading: false,
+                    routeResult: null,
+                    statusMsg: '',
+                    isError: false,
+                    diagnostic: null,
+                    alreadyAtDestinationMsg: payload.message || 'Anda sudah berada di sekitar lokasi tujuan.'
+                });
+                return payload;
+            }
+
+            if (resp.status === 503 || payload.status === 'external_routing_unavailable') {
+                currentRouteResult = null;
+                clearRouteVisuals();
+                emitRouteState({
+                    isOpen: true,
+                    isLoading: false,
+                    routeResult: null,
+                    statusMsg: '',
+                    isError: false,
+                    diagnostic: {
+                        code: 'EXTERNAL_ROUTING_UNAVAILABLE',
+                        message: payload.message || 'Rute jalan luar kampus tidak tersedia sementara waktu.',
+                        showFallbackButtons: true
+                    }
+                });
+                return null;
+            }
+
+            if (!resp.ok || payload.status !== 'ok') {
+                currentRouteResult = null;
+                clearRouteVisuals();
+                emitRouteState({
+                    isLoading: false,
+                    routeResult: null,
+                    statusMsg: payload.message || 'Gagal menghitung rute kampus.',
+                    isError: true
+                });
+                return null;
+            }
+
+            currentRouteResult = payload;
+            renderActiveRouteOnMap(true);
+            emitRouteState({
+                isOpen: true,
+                isLoading: false,
+                routeResult: payload,
+                originLabel: routeOriginSource === 'gps' ? routeOriginLabel : (payload.origin?.label || routeOriginLabel),
+                destinationLabel: payload.destination?.label || routeDestinationLabel,
+                statusMsg: '',
+                isError: false,
+                diagnostic: null,
+                alreadyAtDestinationMsg: ''
+            });
+            return payload;
+        } catch (err) {
+            console.warn('[USUClassMap] Route request error:', err);
+            currentRouteResult = null;
+            clearRouteVisuals();
+            emitRouteState({
+                isLoading: false,
+                routeResult: null,
+                statusMsg: 'Terjadi gangguan jaringan saat menghitung rute.',
+                isError: true
+            });
+            return null;
+        }
+    }
+
+    function haversineMetersJs(lat1, lng1, lat2, lng2) {
+        const toRad = (deg) => (deg * Math.PI) / 180;
+        const R = 6371000;
+        const dLat = toRad(lat2 - lat1);
+        const dLng = toRad(lng2 - lng1);
+        const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * (Math.sin(dLng / 2) ** 2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function mapGeolocationErrorDiagnostic(err) {
+        const code = Number(err?.code || 0);
+        if (code === 1) {
+            return {
+                code: 'PERMISSION_DENIED',
+                message: 'Izin lokasi ditolak browser. Klik ikon gembok/lokasi di sebelah alamat URL lalu izinkan Lokasi, kemudian klik tombol GPS lagi.',
+                showFallbackButtons: true
+            };
+        }
+        return {
+            code: code === 3 ? 'TIMEOUT' : 'POSITION_UNAVAILABLE',
+            message: 'Lokasi perangkat tidak terbaca (di Windows 11 pastikan Settings → Privacy & security → Location aktif). Sementara itu, pilih Gedung Asal atau klik titik di peta.',
+            showFallbackButtons: true
+        };
+    }
+
+    function getCurrentPositionPromise(options) {
+        return new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject, options);
+        });
+    }
+
+    /**
+     * 2-Stage Browser Geolocation for Windows laptops & mobile devices:
+     * Stage 1: enableHighAccuracy: true (7s)
+     * Stage 2 fallback on TIMEOUT/POSITION_UNAVAILABLE: enableHighAccuracy: false (10s)
+     */
+    async function requestUserPosition2Stage(forceFresh = false) {
+        if (!window.isSecureContext) {
+            throw {
+                code: 'INSECURE_CONTEXT',
+                message: 'Deteksi lokasi GPS browser membutuhkan koneksi aman HTTPS atau localhost / 127.0.0.1. Sementara itu, pilih Gedung Asal atau klik titik di peta.',
+                showFallbackButtons: true
+            };
+        }
+
+        if (!navigator.geolocation) {
+            throw {
+                code: 'UNSUPPORTED',
+                message: 'Browser ini tidak mendukung API Lokasi (Geolocation). Pilih Gedung Asal atau klik titik di peta.',
+                showFallbackButtons: true
+            };
+        }
+
+        const now = Date.now();
+        if (!forceFresh && lastGpsFix && (now - lastGpsFix.timestamp) < 60000) {
+            return { fix: lastGpsFix, fromCache: true };
+        }
+
+        try {
+            const pos1 = await getCurrentPositionPromise({
+                enableHighAccuracy: true,
+                timeout: 7000,
+                maximumAge: 30000
+            });
+            const fix = {
+                lat: pos1.coords.latitude,
+                lng: pos1.coords.longitude,
+                accuracy: pos1.coords.accuracy || 25,
+                timestamp: Date.now()
+            };
+            lastGpsFix = fix;
+            return { fix, fromCache: false };
+        } catch (err1) {
+            if (err1 && (err1.code === 2 || err1.code === 3)) {
+                try {
+                    const pos2 = await getCurrentPositionPromise({
+                        enableHighAccuracy: false,
+                        timeout: 10000,
+                        maximumAge: 60000
+                    });
+                    const fix = {
+                        lat: pos2.coords.latitude,
+                        lng: pos2.coords.longitude,
+                        accuracy: pos2.coords.accuracy || 60,
+                        timestamp: Date.now()
+                    };
+                    lastGpsFix = fix;
+                    return { fix, fromCache: false };
+                } catch (err2) {
+                    throw mapGeolocationErrorDiagnostic(err2);
+                }
+            }
+            throw mapGeolocationErrorDiagnostic(err1);
+        }
+    }
+
+    function formatGpsOriginLabel(fix) {
+        const acc = Number(fix?.accuracy);
+        if (Number.isFinite(acc) && acc > 0) {
+            return `Lokasi Saya (GPS • ±${Math.round(acc)} m)`;
+        }
+        return 'Lokasi Saya (GPS)';
+    }
+
+    function applyGpsFixAsOrigin(fix, targetDestKey = routeDestinationKey, calculateRoute = true) {
+        const coordKey = `${fix.lat.toFixed(6)},${fix.lng.toFixed(6)}`;
+        const label = formatGpsOriginLabel(fix);
+        routeOriginKey = coordKey;
+        routeOriginLabel = label;
+        routeOriginSource = 'gps';
+
+        try {
+            sessionStorage.setItem('usu_last_gps_fix', JSON.stringify({
+                lat: Number(fix.lat),
+                lng: Number(fix.lng),
+                accuracy: Number(fix.accuracy || 30),
+                timestamp: Date.now()
+            }));
+        } catch (e) {}
+
+        renderGpsLocationOnMap(fix.lat, fix.lng, fix.accuracy);
+
+        emitRouteState({
+            isOpen: true,
+            isLocatingGps: false,
+            originKey: routeOriginKey,
+            originLabel: routeOriginLabel,
+            originSource: 'gps',
+            diagnostic: null,
+            alreadyAtDestinationMsg: '',
+            statusMsg: calculateRoute && targetDestKey ? 'Menghitung rute dari lokasi GPS...' : 'Lokasi GPS ditetapkan sebagai titik asal.',
+            isError: false
+        });
+
+        if (calculateRoute && targetDestKey) {
+            fetchAndRenderRoute(routeOriginKey, targetDestKey, routeMode, { originLabel: routeOriginLabel });
+        }
+    }
+
+    async function locateUserAndRoute(targetKey, options = {}) {
+        if (!targetKey) return;
+        const reqId = ++activeLocateRequestId;
+
+        routePanelOpen = true;
+        routeDestinationKey = String(targetKey);
+        if (options.mode) {
+            routeMode = options.mode === 'driving' ? 'driving' : 'walking';
+            routeModeExplicitByUser = true;
+        } else if (!routeModeExplicitByUser) {
+            routeMode = 'walking';
+        }
+
+        const destInfo = resolveEndpointInfo(routeDestinationKey);
+        routeDestinationLabel = destInfo?.label || '';
+
+        if (destInfo && Number.isFinite(destInfo.lat) && Number.isFinite(destInfo.lng) && map) {
+            map.flyTo({
+                center: [destInfo.lng, destInfo.lat],
+                zoom: 17.5,
+                pitch: is3DMode ? DEFAULT_PITCH : 0,
+                duration: 850
+            });
+        }
+
+        if (options.origin) {
+            const origInfo = resolveEndpointInfo(options.origin);
+            routeOriginSource = options.origin.includes(',') ? 'manual_map' : 'manual_entity';
+            routeOriginLabel = origInfo?.label || '';
+            fetchAndRenderRoute(options.origin, routeDestinationKey, routeMode);
+            return;
+        }
+
+        // Preserve explicit manual origin when switching destinations
+        if ((routeOriginSource === 'manual_entity' || routeOriginSource === 'manual_map')
+            && routeOriginKey
+            && routeOriginKey !== routeDestinationKey) {
+            fetchAndRenderRoute(routeOriginKey, routeDestinationKey, routeMode, { originLabel: routeOriginLabel });
+            return;
+        }
+
+        if (options.tryGps === false) {
+            emitRouteState({
+                isOpen: true,
+                destinationKey: routeDestinationKey,
+                destinationLabel: routeDestinationLabel,
+                statusMsg: 'Pilih titik asal (gedung kampus, klik peta, atau GPS) untuk menggambar rute.',
+                isError: false
+            });
+            return;
+        }
+
+        emitRouteState({
+            isOpen: true,
+            isLocatingGps: true,
+            destinationKey: routeDestinationKey,
+            destinationLabel: routeDestinationLabel,
+            routeResult: null,
+            diagnostic: null,
+            alreadyAtDestinationMsg: '',
+            statusMsg: 'Mendeteksi lokasi GPS Anda...',
+            isError: false
+        });
+
+        try {
+            const { fix, fromCache } = await requestUserPosition2Stage(false);
+            if (reqId !== activeLocateRequestId) {
+                return;
+            }
+            applyGpsFixAsOrigin(fix, routeDestinationKey, true);
+
+            if (fromCache) {
+                requestUserPosition2Stage(true)
+                    .then((fresh) => {
+                        if (reqId !== activeLocateRequestId || routeOriginSource !== 'gps') return;
+                        const moved = haversineMetersJs(fix.lat, fix.lng, fresh.fix.lat, fresh.fix.lng);
+                        if (moved >= 15.0) {
+                            applyGpsFixAsOrigin(fresh.fix, routeDestinationKey, !!routeDestinationKey);
+                        }
+                    })
+                    .catch(() => {});
+            }
+        } catch (diag) {
+            if (reqId !== activeLocateRequestId) {
+                return;
+            }
+            currentRouteResult = null;
+            clearRouteVisuals();
+            clearGpsVisuals();
+            if (routeOriginSource === 'gps') {
+                routeOriginKey = '';
+                routeOriginLabel = '';
+                routeOriginSource = 'none';
+            }
+            emitRouteState({
+                isOpen: true,
+                isLocatingGps: false,
+                originKey: routeOriginKey,
+                originLabel: routeOriginLabel,
+                originSource: routeOriginSource,
+                routeResult: null,
+                statusMsg: '',
+                isError: false,
+                diagnostic: diag?.message ? diag : mapGeolocationErrorDiagnostic(diag)
+            });
+        }
+    }
+
+    function startRouteToInternal(targetKey, options = {}) {
+        return locateUserAndRoute(targetKey, options);
+    }
+
     function handleInitialUrlParams() {
         const urlParams = new URLSearchParams(window.location.search);
         const queryParam = urlParams.get('q') || urlParams.get('keyword');
         const dayParam = urlParams.get('day');
+        const routeToParam = urlParams.get('route_to');
+        const focusBuildingParam = urlParams.get('focus_building');
+        const originParam = urlParams.get('origin');
+        const modeParam = urlParams.get('mode');
 
         if (queryParam) {
             activeQuery = queryParam;
@@ -1376,6 +2511,38 @@ function initMapEngine() {
 
         if (queryParam || dayParam) {
             searchSchedules();
+        }
+
+        if (focusBuildingParam && !routeToParam) {
+            const focusId = parseInt(focusBuildingParam, 10);
+            if (Number.isFinite(focusId) && focusId > 0) {
+                setTimeout(() => {
+                    window.USUClassMap?.focusBuilding?.(focusId);
+                }, 350);
+            }
+        }
+
+        if (routeToParam) {
+            if (routeToParam.startsWith('fotocopy:') && !isPhotocopyLayerActive && window.USUClassMap?.togglePhotocopyLayer) {
+                window.USUClassMap.togglePhotocopyLayer();
+            }
+
+            if (isRoutingDestinationsLoaded) {
+                locateUserAndRoute(routeToParam, {
+                    origin: originParam || undefined,
+                    mode: modeParam || undefined,
+                    tryGps: !originParam
+                });
+            } else {
+                pendingInitialRouteRequest = {
+                    targetKey: routeToParam,
+                    options: {
+                        origin: originParam || undefined,
+                        mode: modeParam || undefined,
+                        tryGps: !originParam
+                    }
+                };
+            }
         }
     }
 
@@ -1553,12 +2720,16 @@ function initMapEngine() {
                             <span class="text-gray-400 font-normal">(${userRatingCount} ulasan)</span>
                         </div>
                         <p class="text-xs text-gray-600 line-clamp-2">${locationName}</p>
-                        <div class="pt-2 border-t border-gray-100 flex items-center gap-2">
-                            <a href="/fotocopy/${place.id}" target="_blank" class="flex-1 py-1.5 px-3 bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold text-xs rounded-lg text-center shadow-xs transition-colors">
+                        <div class="pt-2 border-t border-gray-100 flex items-center gap-1.5">
+                            <button type="button" onclick="window.USUClassMap && window.USUClassMap.startRouteTo('fotocopy:${place.id}')" class="py-1.5 px-2.5 bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white font-bold text-xs rounded-lg text-center transition-colors cursor-pointer flex items-center gap-1" title="Arahkan Rute In-App ke Fotokopi">
+                                <i class="fa-solid fa-route"></i>
+                                <span>Rute</span>
+                            </button>
+                            <a href="/fotocopy/${place.id}" target="_blank" class="flex-1 py-1.5 px-2.5 bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold text-xs rounded-lg text-center shadow-xs transition-colors">
                                 Lihat & Pesan
                             </a>
                             <a href="${waUrl}" target="_blank" class="p-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-lg text-xs font-bold transition-colors" title="Chat WhatsApp">
-                                <i class="fa-solid fa-comment-dots"></i> WA
+                                <i class="fa-solid fa-comment-dots"></i>
                             </a>
                         </div>
                     </div>
@@ -1886,6 +3057,239 @@ function initMapEngine() {
             if (map.getLayer('3d-buildings')) {
                 map.setLayoutProperty('3d-buildings', 'visibility', (is3DMode && !isSatelliteMode) ? 'visible' : 'none');
             }
+
+            ensureRouteLayers();
+            if (lastGpsFix && routeOriginSource === 'gps') {
+                renderGpsLocationOnMap(lastGpsFix.lat, lastGpsFix.lng, lastGpsFix.accuracy);
+            }
+        },
+
+        openRoutePanel: () => {
+            routePanelOpen = true;
+            emitRouteState({ isOpen: true });
+        },
+
+        closeRoutePanel: () => {
+            routePanelOpen = false;
+            pickingOriginOnMap = false;
+            try {
+                if (map && map.getCanvas()) map.getCanvas().style.cursor = '';
+            } catch (e) {}
+            emitRouteState({ isOpen: false, pickingOriginOnMap: false });
+        },
+
+        toggleRoutePanel: () => {
+            routePanelOpen = !routePanelOpen;
+            if (!routePanelOpen) {
+                pickingOriginOnMap = false;
+                try {
+                    if (map && map.getCanvas()) map.getCanvas().style.cursor = '';
+                } catch (e) {}
+            }
+            emitRouteState({ isOpen: routePanelOpen, pickingOriginOnMap });
+        },
+
+        startRouteTo: (targetKey, options = {}) => {
+            locateUserAndRoute(targetKey, options);
+        },
+
+        selectRouteDestination: (destKey) => {
+            if (!destKey) return;
+            locateUserAndRoute(destKey, {});
+        },
+
+        setManualOrigin: (origKey, customLabel = '', autoCalculate = true) => {
+            activeLocateRequestId++;
+            stopLiveGpsTracking();
+            clearGpsVisuals();
+
+            if (!origKey) {
+                routeOriginKey = '';
+                routeOriginLabel = '';
+                routeOriginSource = 'none';
+                currentRouteResult = null;
+                clearRouteVisuals();
+                emitRouteState({
+                    originKey: '',
+                    originLabel: '',
+                    originSource: 'none',
+                    routeResult: null,
+                    diagnostic: null,
+                    alreadyAtDestinationMsg: '',
+                    statusMsg: '',
+                    isError: false
+                });
+                return;
+            }
+
+            const info = resolveEndpointInfo(origKey);
+            routeOriginKey = origKey;
+            routeOriginLabel = customLabel || info?.label || origKey;
+            routeOriginSource = origKey.includes(',') ? 'manual_map' : 'manual_entity';
+
+            emitRouteState({
+                originKey: routeOriginKey,
+                originLabel: routeOriginLabel,
+                originSource: routeOriginSource,
+                diagnostic: null,
+                alreadyAtDestinationMsg: '',
+                statusMsg: '',
+                isError: false
+            });
+
+            if (autoCalculate && routeDestinationKey) {
+                fetchAndRenderRoute(routeOriginKey, routeDestinationKey, routeMode, { originLabel: routeOriginLabel });
+            }
+        },
+
+        setRouteMode: (nextMode) => {
+            routeMode = nextMode === 'driving' ? 'driving' : 'walking';
+            routeModeExplicitByUser = true;
+            emitRouteState({ mode: routeMode });
+            if (routeOriginKey && routeDestinationKey) {
+                fetchAndRenderRoute(routeOriginKey, routeDestinationKey, routeMode, { originLabel: routeOriginLabel });
+            }
+        },
+
+        useGpsAsOrigin: async () => {
+            const reqId = ++activeLocateRequestId;
+            emitRouteState({
+                isOpen: true,
+                isLocatingGps: true,
+                diagnostic: null,
+                alreadyAtDestinationMsg: '',
+                statusMsg: 'Mengambil koordinat GPS Anda...',
+                isError: false
+            });
+
+            try {
+                const { fix } = await requestUserPosition2Stage(true);
+                if (reqId !== activeLocateRequestId) return;
+                applyGpsFixAsOrigin(fix, routeDestinationKey, !!routeDestinationKey);
+            } catch (diag) {
+                if (reqId !== activeLocateRequestId) return;
+                currentRouteResult = null;
+                clearRouteVisuals();
+                clearGpsVisuals();
+                emitRouteState({
+                    isLocatingGps: false,
+                    routeResult: null,
+                    statusMsg: '',
+                    isError: false,
+                    diagnostic: diag?.message ? diag : mapGeolocationErrorDiagnostic(diag)
+                });
+            }
+        },
+
+        toggleLiveGpsTracking: () => {
+            if (liveGpsTracking) {
+                stopLiveGpsTracking();
+                emitRouteState({ liveGpsTracking: false });
+                return;
+            }
+            if (!window.isSecureContext || !navigator.geolocation) {
+                emitRouteState({
+                    diagnostic: {
+                        code: 'UNSUPPORTED',
+                        message: 'Live tracking GPS membutuhkan browser yang mendukung Geolocation pada localhost/HTTPS.',
+                        showFallbackButtons: true
+                    }
+                });
+                return;
+            }
+            liveGpsTracking = true;
+            emitRouteState({ liveGpsTracking: true });
+            window.__usuGpsWatchId = navigator.geolocation.watchPosition(
+                (pos) => {
+                    if (window.__usuMapDestroyed || routeOriginSource !== 'gps') {
+                        stopLiveGpsTracking();
+                        return;
+                    }
+                    const nextFix = {
+                        lat: pos.coords.latitude,
+                        lng: pos.coords.longitude,
+                        accuracy: pos.coords.accuracy || 25,
+                        timestamp: Date.now()
+                    };
+                    const moved = lastGpsFix
+                        ? haversineMetersJs(lastGpsFix.lat, lastGpsFix.lng, nextFix.lat, nextFix.lng)
+                        : 999;
+                    lastGpsFix = nextFix;
+                    renderGpsLocationOnMap(nextFix.lat, nextFix.lng, nextFix.accuracy);
+                    if (moved >= 15.0 && routeDestinationKey) {
+                        applyGpsFixAsOrigin(nextFix, routeDestinationKey, true);
+                    }
+                },
+                () => {
+                    stopLiveGpsTracking();
+                    emitRouteState({ liveGpsTracking: false });
+                },
+                { enableHighAccuracy: false, maximumAge: 15000, timeout: 10000 }
+            );
+        },
+
+        togglePickOriginOnMap: () => {
+            pickingOriginOnMap = !pickingOriginOnMap;
+            try {
+                if (map && map.getCanvas()) {
+                    map.getCanvas().style.cursor = pickingOriginOnMap ? 'crosshair' : '';
+                }
+            } catch (e) {}
+            emitRouteState({
+                pickingOriginOnMap,
+                diagnostic: pickingOriginOnMap ? null : undefined,
+                statusMsg: pickingOriginOnMap ? 'Klik sembarang titik di peta untuk memilih asal.' : '',
+                isError: false
+            });
+        },
+
+        calculateInAppRoute: (originKey, destKey, mode) => {
+            return fetchAndRenderRoute(originKey, destKey, mode, { originLabel: routeOriginLabel });
+        },
+
+        focusCurrentRoute: () => {
+            focusRouteBounds();
+        },
+
+        focusRouteStep: (step) => {
+            if (!map || !step || !Array.isArray(step.coordinate) || step.coordinate.length < 2) return;
+            map.flyTo({
+                center: [parseFloat(step.coordinate[0]), parseFloat(step.coordinate[1])],
+                zoom: 18.2,
+                pitch: is3DMode ? 45 : 0,
+                duration: 750
+            });
+        },
+
+        clearRoute: () => {
+            activeLocateRequestId++;
+            stopLiveGpsTracking();
+            clearGpsVisuals();
+            currentRouteResult = null;
+            routeOriginKey = '';
+            routeOriginLabel = '';
+            routeOriginSource = 'none';
+            routeDestinationKey = '';
+            routeDestinationLabel = '';
+            pickingOriginOnMap = false;
+            try {
+                if (map && map.getCanvas()) map.getCanvas().style.cursor = '';
+            } catch (e) {}
+            clearRouteVisuals();
+            emitRouteState({
+                routeResult: null,
+                originKey: '',
+                originLabel: '',
+                originSource: 'none',
+                liveGpsTracking: false,
+                destinationKey: '',
+                destinationLabel: '',
+                pickingOriginOnMap: false,
+                diagnostic: null,
+                alreadyAtDestinationMsg: '',
+                statusMsg: '',
+                isError: false
+            });
         },
 
         resetCampusView: () => {
@@ -1909,6 +3313,7 @@ function initMapEngine() {
             } else if (!isSatelliteMode) {
                 inject3DBuildingsLayer();
             }
+            ensureRouteLayers();
         },
 
         retryInitMap: () => {
@@ -1917,7 +3322,8 @@ function initMapEngine() {
             initMap();
         },
 
-        getMap: () => map
+        getMap: () => map,
+        getLastGpsFix: () => lastGpsFix
     };
 
     function updateSatelliteButtonState() {

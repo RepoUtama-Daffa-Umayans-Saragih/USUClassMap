@@ -21,6 +21,8 @@ class PhotocopyPlace extends Model
         'location_name',
         'latitude',
         'longitude',
+        'entrance_lat',
+        'entrance_lng',
         'google_maps_url',
         'open_time',
         'close_time',
@@ -57,6 +59,8 @@ class PhotocopyPlace extends Model
         'user_rating_count' => 'integer',
         'latitude' => 'float',
         'longitude' => 'float',
+        'entrance_lat' => 'float',
+        'entrance_lng' => 'float',
         'opening_hours' => 'array',
         'last_synced_at' => 'datetime',
     ];
@@ -395,11 +399,11 @@ class PhotocopyPlace extends Model
     }
 
     /**
-     * Alias for getEffectiveGoogleMapsUrlAttribute for direction buttons.
+     * In-app navigation URL directly inside USUClassMap interactive map.
      */
     public function getDirectionUrl(): string
     {
-        return $this->effective_google_maps_url;
+        return route('map', ['route_to' => 'fotocopy:' . $this->id]);
     }
 
     /**

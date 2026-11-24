@@ -79,9 +79,9 @@
             </div>
 
             @if($store->latitude && $store->longitude)
-            <a href="https://www.google.com/maps/dir/?api=1&destination={{ $store->latitude }},{{ $store->longitude }}" target="_blank" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-colors shadow-xs">
+            <a href="{{ route('map', ['route_to' => 'fotocopy:' . $store->id]) }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-colors shadow-xs">
                 <span>📍</span>
-                <span>Pergi ke Maps</span>
+                <span>Rute di Peta</span>
             </a>
             @endif
         </div>
@@ -267,8 +267,8 @@
                             </button>
 
                             @if($store->latitude && $store->longitude)
-                            <a href="https://www.google.com/maps/dir/?api=1&destination={{ $store->latitude }},{{ $store->longitude }}" target="_blank" class="w-full py-3 px-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-sm">
-                                <span>📍 Maps</span>
+                            <a href="{{ route('map', ['route_to' => 'fotocopy:' . $store->id]) }}" class="w-full py-3 px-3 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                                <span>📍 Rute Peta</span>
                             </a>
                             @endif
                         </div>

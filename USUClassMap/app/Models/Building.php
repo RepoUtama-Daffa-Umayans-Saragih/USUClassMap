@@ -17,6 +17,8 @@ class Building extends Model
         'category',
         'latitude',
         'longitude',
+        'entrance_lat',
+        'entrance_lng',
         'description',
         'floor_count',
     ];
@@ -26,6 +28,8 @@ class Building extends Model
         return [
             'latitude' => 'decimal:8',
             'longitude' => 'decimal:8',
+            'entrance_lat' => 'float',
+            'entrance_lng' => 'float',
             'floor_count' => 'integer',
         ];
     }

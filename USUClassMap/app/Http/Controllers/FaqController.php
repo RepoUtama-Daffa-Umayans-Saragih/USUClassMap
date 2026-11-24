@@ -86,12 +86,12 @@ class FaqController extends Controller
                 'name' => 'Lokasi Sekretariat PSI USU',
                 'type' => 'location',
                 'contact' => 'Gedung Pusat Sistem Informasi (PSI) USU',
-                'url' => 'https://maps.google.com/?q=Pusat+Sistem+Informasi+USU+Medan',
+                'url' => route('map', ['q' => 'PSI']),
                 'desc' => 'Jl. Universitas No. 9, Kampus Padang Bulan, Medan 20155',
                 'fa_icon' => 'fa-solid fa-location-dot',
                 'badge' => 'Kunjungan Langsung',
                 'color' => '#D4A017',
-                'action_label' => 'Buka di Google Maps'
+                'action_label' => 'Buka Rute di Peta'
             ],
         ];
 

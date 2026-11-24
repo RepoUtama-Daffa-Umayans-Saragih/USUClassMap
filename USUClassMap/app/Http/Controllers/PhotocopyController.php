@@ -16,6 +16,7 @@ use App\Services\Fotocopy\OrderPaymentFulfillmentService;
 use App\Services\Invoice\OrderInvoiceService;
 use App\Services\Payment\PaymentManager;
 use App\Services\Pdf\PdfMetadataInspectorService;
+use App\Services\Search\SmartPhotocopySearchService;
 use App\Services\WhatsApp\WhatsAppManager;
 use App\Services\WhatsApp\WhatsAppPayloadFormatter;
 use App\Support\CatalogBehaviorClassifier;
@@ -82,6 +83,28 @@ class PhotocopyController extends Controller
 
         $allPlaces = $query->orderBy('name')->get();
 
+        $smartInitialResult = null;
+        if (!empty($search)) {
+            $smartInitialResult = app(SmartPhotocopySearchService::class)->search((string) $search, [
+                'open_now' => ($filter === 'open'),
+                'limit'    => 18,
+            ]);
+
+            if ($allPlaces->isEmpty() && !empty($smartInitialResult['stores'])) {
+                $matchedIds = array_values(array_unique(array_filter(array_map(
+                    fn (array $s) => $s['id'] ?? null,
+                    $smartInitialResult['stores']
+                ))));
+                if (!empty($matchedIds)) {
+                    $allPlaces = PhotocopyPlace::with('items')
+                        ->where('is_active', true)
+                        ->whereIn('id', $matchedIds)
+                        ->orderBy('name')
+                        ->get();
+                }
+            }
+        }
+
         // Ensure default dummy items for any place without items
         foreach ($allPlaces as $place) {
             if ($place->items->isEmpty()) {
@@ -102,12 +125,13 @@ class PhotocopyController extends Controller
         $totalCount = $allPlaces->count();
 
         return view('features.fotocopy.public.index', [
-            'places' => $places,
-            'openPlaces' => $openPlaces,
-            'search' => $search,
-            'filter' => $filter,
-            'openCount' => $openCount,
-            'totalCount' => $totalCount,
+            'places'             => $places,
+            'openPlaces'         => $openPlaces,
+            'search'             => $search,
+            'filter'             => $filter,
+            'openCount'          => $openCount,
+            'totalCount'         => $totalCount,
+            'smartInitialResult' => $smartInitialResult,
         ]);
     }
 

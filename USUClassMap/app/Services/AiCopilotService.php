@@ -4,7 +4,11 @@ namespace App\Services;
 
 use App\Models\Building;
 use App\Models\Lecturer;
+use App\Models\PhotocopyPlace;
 use App\Models\Schedule;
+use App\Services\Search\QueryIntentParserService;
+use App\Services\Search\SmartPhotocopySearchService;
+use App\Services\Search\SpatialLandmarkResolverService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -32,6 +36,14 @@ class AiCopilotService
     protected array $lastMapActions = [];
     protected ?array $lastPrimaryMapAction = null;
     protected array $currentMentionedFaculties = [];
+    protected array $lastCards = [];
+    protected array $lastActions = [];
+    protected ?string $lastAdvisoryNote = null;
+    protected array $lastRuntimeContext = [];
+
+    protected QueryIntentParserService $intentParser;
+    protected SmartPhotocopySearchService $photocopySearch;
+    protected SpatialLandmarkResolverService $spatialResolver;
 
     /**
      * Detektor Kemiripan Singkatan & Fakultas USU (Human Confusion Map + Levenshtein Distance <= 2).
@@ -153,44 +165,110 @@ class AiCopilotService
     /**
      * Konstruktor: Inisialisasi kredensial Bearer Token dan konfigurasi ClassAI Router.
      */
-    public function __construct()
-    {
+    public function __construct(
+        ?QueryIntentParserService $intentParser = null,
+        ?SmartPhotocopySearchService $photocopySearch = null,
+        ?SpatialLandmarkResolverService $spatialResolver = null
+    ) {
         $this->endpoint    = config('copilot.endpoint', 'https://router.classai.id/v1/chat/completions');
-        $this->apiKey      = config('copilot.api_key', '');
+        $this->apiKey      = (string) config('copilot.api_key', '');
         $this->modelId     = config('copilot.model_id', 'claude-haiku-4.5');
         $this->timeout     = (int) config('copilot.timeout', 120);
         $this->maxTurns    = (int) config('copilot.max_turns', 4);
         $this->maxTokens   = (int) config('copilot.max_tokens', 1024);
         $this->temperature = (float) config('copilot.temperature', 0.2);
+
+        $this->intentParser    = $intentParser ?? app(QueryIntentParserService::class);
+        $this->photocopySearch = $photocopySearch ?? app(SmartPhotocopySearchService::class);
+        $this->spatialResolver = $spatialResolver ?? app(SpatialLandmarkResolverService::class);
     }
 
     /**
-     * Eksekusi percakapan menggunakan ClassAI Router (OpenAI-compatible) via HTTP Bearer Token.
-     * Mendukung multi-turn function/tool calling (maksimal 4 putaran per siklus percakapan).
+     * Eksekusi percakapan Rexa Copilot dengan arsitektur Local-First Grounded Engines
+     * + optional ClassAI Router enrichment (zero HTTP 500 bila offline/key kosong).
      *
      * @param string $userMessage Pesan baru dari pengguna
      * @param array $history Riwayat percakapan sebelumnya
-     * @return array Respon terformat ['reply' => string, 'map_action' => ?array, 'usage' => ?array]
-     * @throws \RuntimeException
+     * @param array $runtimeContext Konteks koordinat GPS & halaman aktif
+     * @return array Respon terformat lengkap
      */
-    public function chat(string $userMessage, array $history = []): array
+    public function chat(string $userMessage, array $history = [], array $runtimeContext = []): array
     {
-        // 1. Verifikasi Ketersediaan API Key Bearer Token
-        if (empty($this->apiKey)) {
-            throw new \RuntimeException('ClassAI API Key (CLASSAI_API_KEY) belum dikonfigurasi pada file .env.');
-        }
-
         // Reset state interaksi kaya untuk putaran baru
         $this->lastFacultySummary = [];
         $this->lastSchedules = [];
         $this->lastQuickReplies = [];
         $this->lastMapActions = [];
         $this->lastPrimaryMapAction = null;
+        $this->lastCards = [];
+        $this->lastActions = [];
+        $this->lastAdvisoryNote = null;
+        $this->lastRuntimeContext = $runtimeContext;
+
+        // 0. Guardrail Read-Only (mencegah modifikasi jadwal lewat AI)
+        if (preg_match('/\b(hapus|delete|tambah|insert|buatkan\s+jadwal|update|ubah|ganti|drop|kprs|edit\s+jadwal)\b/i', $userMessage)
+            && !preg_match('/\b(pulpen|fotocopy|print|jilid|kertas)\b/i', $userMessage)) {
+            return [
+                'reply'           => "⚠️ **Mode Read-Only Aktif**\nMaaf, Rexa adalah asisten pencarian & navigasi kampus yang bersifat baca-saja. Perubahan atau penghapusan data jadwal tidak dapat dilakukan melalui asisten ini.",
+                'intent'          => 'guardrail_readonly',
+                'advisory_note'   => null,
+                'cards'           => [],
+                'actions'         => [],
+                'map_action'      => null,
+                'faculty_summary' => [],
+                'schedules'       => [],
+                'quick_replies'   => [],
+                'map_actions'     => [],
+                'grounded_source' => 'local_guardrail',
+                'usage'           => null,
+            ];
+        }
+
+        // 1. Jalankan QueryIntentParserService terlebih dahulu (Deterministik, 100% Grounded)
+        $parsedIntent = $this->intentParser->parse($userMessage);
+        $primaryIntent = $parsedIntent['primary_intent'] ?? 'general_campus_qa';
+
+        if ($primaryIntent === 'smart_fotocopy_search') {
+            return $this->handleGroundedPhotocopyChat($userMessage, $parsedIntent, $runtimeContext);
+        }
+
+        if ($primaryIntent === 'spatial_building_finder') {
+            return $this->handleGroundedSpatialChat($userMessage, $parsedIntent, $runtimeContext);
+        }
+
+        if ($primaryIntent === 'route_navigation') {
+            return $this->handleGroundedRouteChat($userMessage, $parsedIntent, $runtimeContext);
+        }
 
         /** @var SparqlService $sparqlService */
         $sparqlService = app(SparqlService::class);
         $parsedUser = $sparqlService->parseConversationalQuery($userMessage);
         $this->currentMentionedFaculties = $parsedUser['detected_faculties'];
+
+        // 2. Untuk query jadwal/umum, coba ClassAI LLM hanya jika API Key terkonfigurasi;
+        //    bila key kosong atau error jaringan, fallback mulus ke Local Grounded Responder (HTTP 200).
+        if (!empty($this->apiKey)) {
+            try {
+                return $this->runClassAiLoop($userMessage, $history, $sparqlService, $parsedUser, $parsedIntent, $primaryIntent);
+            } catch (\Throwable $e) {
+                Log::warning('[AiCopilotService] ClassAI unavailable, switching cleanly to local grounded responder: ' . $e->getMessage());
+            }
+        }
+
+        return $this->respondLocallyForScheduleOrGeneral($userMessage, $history, $sparqlService, $parsedUser, $parsedIntent, $primaryIntent);
+    }
+
+    /**
+     * Pipeline ClassAI OpenAI-compatible multi-turn tool loop (dipanggil hanya bila API key tersedia).
+     */
+    protected function runClassAiLoop(
+        string $userMessage,
+        array $history,
+        SparqlService $sparqlService,
+        array $parsedUser,
+        array $parsedIntent,
+        string $primaryIntent
+    ): array {
 
         // 2. Siapkan array percakapan sesuai format OpenAI Chat Completions API
         $messages = [];
@@ -407,12 +485,434 @@ class AiCopilotService
 
         return [
             'reply'           => $finalReplyText,
+            'intent'          => $primaryIntent,
+            'advisory_note'   => $this->lastAdvisoryNote,
+            'cards'           => $this->lastCards,
+            'actions'         => $this->lastActions,
             'map_action'      => $finalMapAction,
             'faculty_summary' => $this->lastFacultySummary,
             'schedules'       => $this->lastSchedules,
             'quick_replies'   => $this->lastQuickReplies,
             'map_actions'     => $this->lastMapActions,
+            'grounded_source' => 'classai_grounded',
             'usage'           => $accumulatedUsage,
+        ];
+    }
+
+    /**
+     * Handler Grounded 1: Pencarian Cerdas Fotokopi & ATK lintas 32 toko (zero hallucination).
+     */
+    protected function handleGroundedPhotocopyChat(string $userMessage, array $parsedIntent, array $runtimeContext): array
+    {
+        $search = $this->photocopySearch->search($userMessage, [
+            'parsed' => $parsedIntent,
+            'lat'    => $runtimeContext['user_lat'] ?? null,
+            'lng'    => $runtimeContext['user_lng'] ?? null,
+            'limit'  => 6,
+        ]);
+
+        $results = $search['results'] ?? [];
+        $advisory = $search['advisory_note'] ?? null;
+        $anchorLabel = $search['anchor']['label'] ?? 'Pusat Kampus USU';
+
+        $cards = array_map(fn (array $item): array => [
+            'type' => 'fotocopy_item',
+            'data' => $item,
+        ], $results);
+
+        $actions = [];
+        $quickReplies = [];
+        $mapAction = null;
+
+        if (!empty($results)) {
+            $top = $results[0];
+            $actions = [
+                ['label' => 'Pesan di ' . $top['store']['name'], 'url' => $top['actions']['order_url'], 'type' => 'order'],
+                ['label' => 'Rute GPS ke Toko', 'url' => $top['actions']['route_url'], 'type' => 'route'],
+                ['label' => 'Buka Pencarian Fotokopi', 'url' => route('fotocopy.index', ['q' => $userMessage]), 'type' => 'browse'],
+            ];
+            $mapAction = [
+                'type'          => 'start_route',
+                'target_key'    => $top['actions']['route_key'],
+                'building_name' => $top['store']['name'],
+                'lat'           => $top['store']['latitude'],
+                'lng'           => $top['store']['longitude'],
+            ];
+
+            $lines = [];
+            if ($advisory) {
+                $lines[] = "ℹ️ {$advisory}";
+            }
+            $lines[] = "Berikut rekomendasi terbaik di sekitar **{$anchorLabel}** (berdasarkan harga hemat, jarak, dan status toko):";
+            foreach (array_slice($results, 0, 4) as $i => $it) {
+                $no = $i + 1;
+                $statusText = !empty($it['store']['is_open_now']) ? 'Buka' : 'Tutup';
+                $lines[] = "{$no}. **{$it['name']}** — **{$it['formatted_price']}/{$it['unit']}** di *{$it['store']['name']}* (~{$it['store']['distance_meters']} m / {$it['store']['walk_minutes']} mnt jalan • {$statusText})";
+            }
+            $lines[] = "\nKlik **Pesan di Toko** untuk langsung memesan atau **Rute GPS** untuk navigasi in-app menuju toko.";
+            $reply = implode("\n", $lines);
+
+            $quickReplies = [
+                ['label' => 'Urutkan Paling Dekat', 'query' => $userMessage . ' terdekat'],
+                ['label' => 'Cari yang Buka Sekarang', 'query' => $userMessage . ' buka sekarang'],
+            ];
+        } else {
+            $reply = $advisory ?: "Maaf, Rexa belum menemukan produk atau jasa yang cocok di katalog 32 mitra fotokopi USU untuk \"{$userMessage}\". Coba gunakan kata kunci lebih singkat seperti **pulpen**, **print warna**, **jilid hardcover**, atau **kertas HVS**.";
+            $quickReplies = [
+                ['label' => 'Pulpen murah terdekat', 'query' => 'cari pulpen murah terdekat'],
+                ['label' => 'Print warna murah', 'query' => 'print warna murah terdekat'],
+            ];
+        }
+
+        return [
+            'reply'           => $reply,
+            'intent'          => 'smart_fotocopy_search',
+            'advisory_note'   => $advisory,
+            'cards'           => $cards,
+            'actions'         => $actions,
+            'map_action'      => $mapAction,
+            'faculty_summary' => [],
+            'schedules'       => [],
+            'quick_replies'   => $quickReplies,
+            'map_actions'     => [],
+            'grounded_source' => 'smart_photocopy_engine',
+            'usage'           => null,
+        ];
+    }
+
+    /**
+     * Handler Grounded 2: Penalaran Spasial Gedung Kampus & Clue Arah Hadap.
+     */
+    protected function handleGroundedSpatialChat(string $userMessage, array $parsedIntent, array $runtimeContext): array
+    {
+        $resolved = $this->spatialResolver->resolve($userMessage, [
+            'parsed' => $parsedIntent,
+            'limit'  => 5,
+        ]);
+
+        $candidates = $resolved['candidates'] ?? [];
+        $advisory = $resolved['advisory_note'] ?? null;
+
+        $cards = array_map(fn (array $cand): array => [
+            'type' => 'spatial_building',
+            'data' => $cand,
+        ], $candidates);
+
+        $actions = [];
+        $mapAction = null;
+        $quickReplies = [];
+
+        if (!empty($candidates)) {
+            $top = $candidates[0];
+            $mapAction = [
+                'type'          => 'focus_building',
+                'building_id'   => $top['building_id'],
+                'building_name' => $top['name'],
+                'lat'           => $top['latitude'],
+                'lng'           => $top['longitude'],
+                'room_id'       => null,
+                'room_name'     => null,
+                'schedule_id'   => null,
+            ];
+            $actions = [
+                ['label' => "Lihat {$top['code']} di Peta", 'url' => $top['actions']['focus_url'], 'type' => 'focus'],
+                ['label' => "Rute GPS ke {$top['code']}", 'url' => $top['actions']['route_url'], 'type' => 'route'],
+            ];
+
+            $lines = [];
+            if ($advisory) {
+                $lines[] = "ℹ️ {$advisory}";
+            }
+            $lines[] = "Berdasarkan analisis posisi dan orientasi hadap gedung dari patokan yang kamu sebutkan, ini **Top " . count($candidates) . " kemungkinan gedung/kelasmu**:";
+            foreach ($candidates as $i => $c) {
+                $no = $i + 1;
+                $lines[] = "{$no}. **{$c['name']} ({$c['code']})** — **{$c['confidence_percent']}% cocok**\n   {$c['spatial_reason']}";
+            }
+            $lines[] = "\nPilih **Lihat di Peta** untuk memeriksa denah/ruangan gedung atau **Rute GPS ke Sini** untuk langsung dituntun in-app.";
+            $reply = implode("\n", $lines);
+
+            foreach (array_slice($candidates, 0, 2) as $c) {
+                $quickReplies[] = [
+                    'label' => "Cek Jadwal di {$c['code']}",
+                    'query' => "Lihat semua jadwal kuliah di gedung {$c['code']}",
+                ];
+            }
+        } else {
+            $reply = $advisory ?: 'Maaf, Rexa membutuhkan minimal satu patokan gedung (seperti FIB, FMIPA, GKB, atau Perpustakaan USU) agar bisa menebak gedung kelasmu.';
+        }
+
+        return [
+            'reply'           => $reply,
+            'intent'          => 'spatial_building_finder',
+            'advisory_note'   => $advisory,
+            'cards'           => $cards,
+            'actions'         => $actions,
+            'map_action'      => $mapAction,
+            'faculty_summary' => [],
+            'schedules'       => [],
+            'quick_replies'   => $quickReplies,
+            'map_actions'     => [],
+            'grounded_source' => 'spatial_landmark_engine',
+            'usage'           => null,
+        ];
+    }
+
+    /**
+     * Handler Grounded 3: Permintaan Navigasi / Rute Langsung In-App.
+     */
+    protected function handleGroundedRouteChat(string $userMessage, array $parsedIntent, array $runtimeContext): array
+    {
+        // If photocopy item or shop mentioned, route to best matching fotocopy
+        if (!empty($parsedIntent['item_terms']) || preg_match('/\b(fotocopy|percetakan|atk)\b/i', $userMessage)) {
+            $fc = $this->handleGroundedPhotocopyChat($userMessage, $parsedIntent, $runtimeContext);
+            $fc['intent'] = 'route_navigation';
+            return $fc;
+        }
+
+        $mentioned = $parsedIntent['mentioned_buildings'] ?? [];
+        if (!empty($mentioned)) {
+            $b = $mentioned[0];
+            $buildingModel = Building::with('rooms')->find($b['id']);
+            $roomsCount = $buildingModel ? $buildingModel->rooms->count() : 0;
+
+            $card = [
+                'type' => 'spatial_building',
+                'data' => [
+                    'building_id'        => (int) $b['id'],
+                    'code'               => (string) $b['code'],
+                    'name'               => (string) $b['name'],
+                    'faculty'            => (string) ($b['faculty'] ?: 'Universitas Sumatera Utara'),
+                    'category'           => (string) ($b['category'] ?: 'Gedung Kampus'),
+                    'latitude'           => (float) $b['latitude'],
+                    'longitude'          => (float) $b['longitude'],
+                    'confidence_percent' => 100,
+                    'spatial_reason'     => "Siap menavigasikan rute in-app ke **{$b['name']} ({$b['code']})** menggunakan graf jalan & pejalan kaki USU.",
+                    'facing_compass'     => '-',
+                    'distances'          => [],
+                    'rooms_count'        => $roomsCount,
+                    'has_360_tour'       => false,
+                    'matched_schedules'  => [],
+                    'actions'            => [
+                        'focus_url' => url('/map?focus_building=' . $b['id']),
+                        'route_url' => url('/map?route_to=building:' . $b['id']),
+                        'route_key' => 'building:' . $b['id'],
+                    ],
+                ],
+            ];
+
+            return [
+                'reply'           => "🧭 Siap! Klik **Rute GPS ke Sini** di bawah untuk membuka jalur navigasi in-app langsung menuju **{$b['name']} ({$b['code']})**.",
+                'intent'          => 'route_navigation',
+                'advisory_note'   => null,
+                'cards'           => [$card],
+                'actions'         => [
+                    ['label' => "Rute GPS ke {$b['code']}", 'url' => url('/map?route_to=building:' . $b['id']), 'type' => 'route'],
+                    ['label' => "Lihat {$b['code']} di Peta", 'url' => url('/map?focus_building=' . $b['id']), 'type' => 'focus'],
+                ],
+                'map_action'      => [
+                    'type'          => 'start_route',
+                    'target_key'    => 'building:' . $b['id'],
+                    'building_id'   => (int) $b['id'],
+                    'building_name' => (string) $b['name'],
+                    'lat'           => (float) $b['latitude'],
+                    'lng'           => (float) $b['longitude'],
+                ],
+                'faculty_summary' => [],
+                'schedules'       => [],
+                'quick_replies'   => [],
+                'map_actions'     => [],
+                'grounded_source' => 'route_navigation_engine',
+                'usage'           => null,
+            ];
+        }
+
+        return $this->handleGroundedSpatialChat($userMessage, $parsedIntent, $runtimeContext);
+    }
+
+    /**
+     * Handler Grounded 4 (Offline / LLM Fallback): Jadwal Kuliah, Dosen, & Detail Gedung Lokal.
+     */
+    protected function respondLocallyForScheduleOrGeneral(
+        string $userMessage,
+        array $history,
+        SparqlService $sparqlService,
+        array $parsedUser,
+        array $parsedIntent,
+        string $primaryIntent
+    ): array {
+        // 1. Cek permintaan jadwal pribadi ("jadwal saya", "kelasku")
+        if (preg_match('/\b(jadwal\s+saya|jadwal\s+kuliahku|kelasku|my\s+schedule)\b/i', $userMessage)) {
+            $mySched = $this->toolAmbilJadwalSaya(['hari' => $parsedIntent['day'] ?? null]);
+            if (empty($mySched['authenticated'])) {
+                return [
+                    'reply'           => "📅 Untuk menampilkan **Jadwal Kuliah Pribadi** milikmu, silakan **Masuk (Login)** terlebih dahulu menggunakan akun mahasiswa USUClassMap.\n\nNamun kalau kamu belum login, kamu tetap bisa ketik nama mata kuliah, dosen, atau clue lokasi gedungnya (contoh: *\"Jadwal Pancasila hari Senin\"* atau *\"di depan FIB samping FMIPA\"*).",
+                    'intent'          => 'schedule_search',
+                    'advisory_note'   => null,
+                    'cards'           => [],
+                    'actions'         => [],
+                    'map_action'      => null,
+                    'faculty_summary' => [],
+                    'schedules'       => [],
+                    'quick_replies'   => [
+                        ['label' => 'Jadwal MKWU Senin', 'query' => 'Jadwal Pancasila hari Senin'],
+                    ],
+                    'map_actions'     => [],
+                    'grounded_source' => 'local_grounded_academic',
+                    'usage'           => null,
+                ];
+            }
+
+            $total = (int) ($mySched['total_kelas'] ?? 0);
+            $cards = array_map(fn ($s) => ['type' => 'schedule', 'data' => $s], array_slice($this->lastSchedules, 0, 8));
+            return [
+                'reply'           => $total > 0
+                    ? "📅 Ditemukan **{$total} jadwal kuliah pribadi** Anda. Klik **Lihat di Peta** pada kartu di bawah untuk langsung menyorot ruang kelasnya."
+                    : '📅 Anda belum memiliki jadwal kelas terdaftar untuk semester ini.',
+                'intent'          => 'schedule_search',
+                'advisory_note'   => null,
+                'cards'           => $cards,
+                'actions'         => [],
+                'map_action'      => $this->lastSchedules[0]['map_action'] ?? null,
+                'faculty_summary' => [],
+                'schedules'       => $this->lastSchedules,
+                'quick_replies'   => [],
+                'map_actions'     => [],
+                'grounded_source' => 'local_grounded_academic',
+                'usage'           => null,
+            ];
+        }
+
+        // 2. Cek pencarian dosen eksplisit
+        if (preg_match('/\b(dosen|pengajar|prof|dr\.?)\b/i', $userMessage)) {
+            $cleanDosen = trim(preg_replace('/\b(info|cari|jadwal|dosen|mengajar|pengajar|dimana)\b/i', '', $userMessage) ?? '');
+            if (strlen($cleanDosen) >= 3) {
+                $dosenRes = $this->toolCariDosen(['nama_dosen' => $cleanDosen]);
+                if (($dosenRes['status'] ?? '') === 'success' && !empty($dosenRes['dosen'])) {
+                    $firstDosen = $dosenRes['dosen'][0];
+                    $firstJadwal = $firstDosen['jadwal_mengajar'][0] ?? null;
+                    $cards = [];
+                    foreach (array_slice($firstDosen['jadwal_mengajar'], 0, 6) as $jm) {
+                        $this->lastSchedules[] = [
+                            'schedule_id'   => $jm['schedule_id'],
+                            'course_name'   => $jm['mata_kuliah'],
+                            'course_code'   => $jm['kode_mk'],
+                            'sks'           => null,
+                            'day'           => $jm['hari'],
+                            'time'          => $jm['jam'],
+                            'class_group'   => $jm['kelas'],
+                            'room_name'     => $jm['ruangan'],
+                            'floor'         => 1,
+                            'lecturer'      => $firstDosen['nama'],
+                            'building_name' => $jm['gedung'],
+                            'building_code' => '',
+                            'map_action'    => [
+                                'type'          => 'focus_room',
+                                'building_name' => $jm['gedung'],
+                                'lat'           => $jm['latitude'],
+                                'lng'           => $jm['longitude'],
+                                'room_name'     => $jm['ruangan'],
+                                'schedule_id'   => $jm['schedule_id'],
+                            ],
+                        ];
+                    }
+                    $cards = array_map(fn ($s) => ['type' => 'schedule', 'data' => $s], $this->lastSchedules);
+                    return [
+                        'reply'           => "👨‍🏫 Ditemukan profil dosen **{$firstDosen['nama']}** dengan **{$firstDosen['total_jadwal']} jadwal mengajar**.",
+                        'intent'          => 'schedule_search',
+                        'advisory_note'   => null,
+                        'cards'           => $cards,
+                        'actions'         => [],
+                        'map_action'      => $firstJadwal ? [
+                            'type'          => 'focus_room',
+                            'building_name' => $firstJadwal['gedung'],
+                            'lat'           => $firstJadwal['latitude'],
+                            'lng'           => $firstJadwal['longitude'],
+                            'room_name'     => $firstJadwal['ruangan'],
+                        ] : null,
+                        'faculty_summary' => [],
+                        'schedules'       => $this->lastSchedules,
+                        'quick_replies'   => [],
+                        'map_actions'     => [],
+                        'grounded_source' => 'local_grounded_lecturer',
+                        'usage'           => null,
+                    ];
+                }
+            }
+        }
+
+        // 3. Pencarian Jadwal via toolCariJadwalKuliah (mendukung carry-over history + SPARQL/SQLite)
+        $keyword = !empty($parsedIntent['course_terms'])
+            ? implode(' ', $parsedIntent['course_terms'])
+            : ($parsedUser['core_keyword'] ?? '');
+
+        if (empty($keyword) && !empty($history)) {
+            for ($i = count($history) - 1; $i >= 0; $i--) {
+                if (($history[$i]['role'] ?? '') === 'user') {
+                    $prev = $sparqlService->parseConversationalQuery((string) ($history[$i]['content'] ?? ''));
+                    if (!empty($prev['core_keyword'])) {
+                        $keyword = $prev['core_keyword'];
+                        break;
+                    }
+                }
+            }
+        }
+
+        $mentioned = $parsedIntent['mentioned_buildings'] ?? [];
+        $facParam = !empty($this->currentMentionedFaculties)
+            ? implode(',', $this->currentMentionedFaculties)
+            : (!empty($mentioned) ? (string) $mentioned[0]['code'] : '');
+
+        if ($keyword !== '' || ($parsedIntent['day'] ?? null) !== null || $facParam !== '') {
+            $toolOut = $this->toolCariJadwalKuliah([
+                'keyword'  => $keyword ?: $facParam,
+                'fakultas' => $facParam,
+                'hari'     => $parsedIntent['day'] ?? null,
+            ]);
+
+            $total = (int) ($toolOut['total_ditemukan'] ?? 0);
+            if ($total > 0) {
+                $cards = array_map(fn ($s) => ['type' => 'schedule', 'data' => $s], array_slice($this->lastSchedules, 0, 8));
+                $summaryText = $toolOut['ringkasan_agregasi'] ?? "Ditemukan {$total} jadwal kuliah yang cocok.";
+
+                return [
+                    'reply'           => "📚 {$summaryText}",
+                    'intent'          => 'schedule_search',
+                    'advisory_note'   => null,
+                    'cards'           => $cards,
+                    'actions'         => [],
+                    'map_action'      => $this->lastPrimaryMapAction,
+                    'faculty_summary' => $this->lastFacultySummary,
+                    'schedules'       => $this->lastSchedules,
+                    'quick_replies'   => $this->lastQuickReplies,
+                    'map_actions'     => $this->lastMapActions,
+                    'grounded_source' => 'sparql_sqlite_grounded',
+                    'usage'           => null,
+                ];
+            }
+
+            if (!empty($mentioned)) {
+                return $this->handleGroundedRouteChat($userMessage, $parsedIntent, []);
+            }
+        }
+
+        // 4. Fallback Ramah Terpandu (zero error)
+        return [
+            'reply'           => "👋 Halo! Saya **Rexa Kampus**. Saya siap membantumu mencari:\n• **Jadwal kuliah, ruang kelas & dosen** (contoh: *\"Jadwal Pancasila hari Senin\"*)\n• **Tebak gedung dari patokan sekitar** (contoh: *\"kelas saya di depan FIB di samping FMIPA\"*)\n• **Cari ATK, print, jilid & toko fotokopi termurah/terdekat** (contoh: *\"cari pulpen pink murah terdekat\"*)",
+            'intent'          => $primaryIntent,
+            'advisory_note'   => null,
+            'cards'           => [],
+            'actions'         => [],
+            'map_action'      => null,
+            'faculty_summary' => [],
+            'schedules'       => [],
+            'quick_replies'   => [
+                ['label' => 'Cari pulpen murah terdekat', 'query' => 'cari pulpen pink murah terdekat'],
+                ['label' => 'Kelas depan FIB samping FMIPA', 'query' => 'saya ingatnya kelas saya di depan FIB di samping FMIPA'],
+                ['label' => 'Jadwal Pancasila Senin', 'query' => 'Jadwal Pancasila hari Senin'],
+            ],
+            'map_actions'     => [],
+            'grounded_source' => 'local_assistant_guide',
+            'usage'           => null,
         ];
     }
 
@@ -635,6 +1135,44 @@ PROMPT;
                     ],
                 ],
             ],
+
+            // Tool 6: Pencarian Cerdas Fotokopi & ATK
+            [
+                'type' => 'function',
+                'function' => [
+                    'name'        => 'cari_fotokopi_atk',
+                    'description' => 'Mencari produk ATK (pulpen, kertas, map, materai) dan layanan fotokopi/print/jilid lintas 32 mitra toko USU dengan peringkat harga, jarak, status buka, dan fallback jujur.',
+                    'parameters'  => [
+                        'type'       => 'object',
+                        'properties' => [
+                            'query' => [
+                                'type'        => 'string',
+                                'description' => 'Kalimat pencarian produk atau jasa fotokopi/ATK.',
+                            ],
+                        ],
+                        'required'   => ['query'],
+                    ],
+                ],
+            ],
+
+            // Tool 7: Tebak Gedung Spasial dari Patokan Relatif
+            [
+                'type' => 'function',
+                'function' => [
+                    'name'        => 'tebak_gedung_spasial',
+                    'description' => 'Menebak kandidat gedung kampus USU dari clue posisi relatif seperti depan, samping, belakang, antara, atau dekat gedung patokan.',
+                    'parameters'  => [
+                        'type'       => 'object',
+                        'properties' => [
+                            'query' => [
+                                'type'        => 'string',
+                                'description' => 'Deskripsi posisi relatif seperti "depan FIB samping FMIPA".',
+                            ],
+                        ],
+                        'required'   => ['query'],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -653,8 +1191,50 @@ PROMPT;
             'cari_dosen'             => $this->toolCariDosen($input),
             'ambil_jadwal_saya'      => $this->toolAmbilJadwalSaya($input),
             'cek_kemiripan_fakultas' => $this->toolCekKemiripanFakultas($input),
+            'cari_fotokopi_atk'      => $this->toolCariFotokopiAtk($input),
+            'tebak_gedung_spasial'   => $this->toolTebakGedungSpasial($input),
             default                  => ['status' => 'error', 'message' => "Tool '{$toolName}' tidak dikenali."],
         };
+    }
+
+    /**
+     * Wrapper Tool 6: Cari Fotokopi & ATK serta isi lastCards/lastAdvisoryNote.
+     */
+    protected function toolCariFotokopiAtk(array $input): array
+    {
+        $res = $this->photocopySearch->search((string) ($input['query'] ?? ''), [
+            'lat'   => $this->lastRuntimeContext['user_lat'] ?? null,
+            'lng'   => $this->lastRuntimeContext['user_lng'] ?? null,
+            'limit' => 6,
+        ]);
+        $this->lastAdvisoryNote = $res['advisory_note'] ?? $this->lastAdvisoryNote;
+        foreach ($res['results'] ?? [] as $item) {
+            $this->lastCards[] = ['type' => 'fotocopy_item', 'data' => $item];
+        }
+        return $res;
+    }
+
+    /**
+     * Wrapper Tool 7: Tebak Gedung Spasial serta isi lastCards/lastPrimaryMapAction.
+     */
+    protected function toolTebakGedungSpasial(array $input): array
+    {
+        $res = $this->spatialResolver->resolve((string) ($input['query'] ?? ''), ['limit' => 5]);
+        $this->lastAdvisoryNote = $res['advisory_note'] ?? $this->lastAdvisoryNote;
+        foreach ($res['candidates'] ?? [] as $cand) {
+            $this->lastCards[] = ['type' => 'spatial_building', 'data' => $cand];
+        }
+        if (!empty($res['candidates'][0]) && !$this->lastPrimaryMapAction) {
+            $top = $res['candidates'][0];
+            $this->lastPrimaryMapAction = [
+                'type'          => 'focus_building',
+                'building_id'   => $top['building_id'],
+                'building_name' => $top['name'],
+                'lat'           => $top['latitude'],
+                'lng'           => $top['longitude'],
+            ];
+        }
+        return $res;
     }
 
     /**

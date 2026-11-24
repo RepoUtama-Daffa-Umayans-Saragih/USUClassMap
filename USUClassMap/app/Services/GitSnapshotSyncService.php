@@ -26,6 +26,7 @@ class GitSnapshotSyncService
         'photocopy_places',
         'fotocopy_services',
         'photocopy_items',
+        'campus_routing_overrides',
     ];
 
     /**
@@ -61,6 +62,16 @@ class GitSnapshotSyncService
     public function getRdfSnapshotPath(): string
     {
         return $this->getSnapshotDir() . DIRECTORY_SEPARATOR . 'schedules.rdf';
+    }
+
+    public function getRoutingGraphSnapshotPath(): string
+    {
+        return $this->getSnapshotDir() . DIRECTORY_SEPARATOR . 'campus_routing_graph.json';
+    }
+
+    public function getRoutingGraphRuntimePath(): string
+    {
+        return storage_path('app/routing/usu_campus_graph.json');
     }
 
     public function getLocalStatePath(): string
@@ -147,6 +158,11 @@ class GitSnapshotSyncService
             $rdfExported = $this->exportRdfSnapshot($regenerateRdf);
             if ($rdfExported) {
                 $files[] = 'schedules.rdf';
+            }
+
+            // Salin graf routing Kampus USU (jika sudah digenerate) ke snapshot Git
+            if ($this->exportRoutingGraphSnapshot()) {
+                $files[] = 'campus_routing_graph.json';
             }
 
             // Hitung hash deterministik atas seluruh berkas JSON snapshot
@@ -393,6 +409,13 @@ class GitSnapshotSyncService
                                     }
                                 }
 
+                                // Pastikan FK opsional campus_routing_overrides.created_by aman di laptop tujuan
+                                if ($table === 'campus_routing_overrides' && array_key_exists('created_by', $filtered) && $filtered['created_by'] !== null) {
+                                    if (!isset($validUserIds[$filtered['created_by']])) {
+                                        $filtered['created_by'] = null;
+                                    }
+                                }
+
                                 if (!empty($filtered)) {
                                     $sanitizedRows[] = $filtered;
                                 }
@@ -439,6 +462,8 @@ class GitSnapshotSyncService
                 } catch (\Throwable $e) {
                     Log::warning('GitSnapshotSync: Gagal menyinkronkan RDF/Fuseki setelah impor DB: ' . $e->getMessage());
                 }
+
+                $this->importRoutingGraphSnapshot();
 
                 // FASE 4: Catat state lokal agar tidak ter-impor ulang pada request berikutnya
                 $this->writeLocalState($manifestHash, 'import');
@@ -627,6 +652,63 @@ SPARQL;
         }
 
         return false;
+    }
+
+    /**
+     * Salin graf routing Kampus USU (usu_campus_graph.json) ke snapshot Git (campus_routing_graph.json).
+     */
+    protected function exportRoutingGraphSnapshot(): bool
+    {
+        try {
+            $runtime = $this->getRoutingGraphRuntimePath();
+            $snapshot = $this->getRoutingGraphSnapshotPath();
+
+            if (is_file($runtime)) {
+                $content = file_get_contents($runtime);
+                if ($content !== false && $content !== '') {
+                    if (!is_file($snapshot) || file_get_contents($snapshot) !== $content) {
+                        file_put_contents($snapshot, $content, LOCK_EX);
+                    }
+                    return true;
+                }
+            }
+
+            return is_file($snapshot);
+        } catch (\Throwable $e) {
+            Log::warning('GitSnapshotSync: Gagal mengekspor snapshot campus_routing_graph.json: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Pulihkan graf routing Kampus USU dari snapshot Git ke runtime storage jika lebih baru / belum ada.
+     */
+    protected function importRoutingGraphSnapshot(): void
+    {
+        try {
+            $snapshot = $this->getRoutingGraphSnapshotPath();
+            $runtime = $this->getRoutingGraphRuntimePath();
+
+            if (!is_file($snapshot)) {
+                return;
+            }
+
+            $content = file_get_contents($snapshot);
+            if ($content === false || $content === '') {
+                return;
+            }
+
+            $dir = dirname($runtime);
+            if (!is_dir($dir)) {
+                mkdir($dir, 0755, true);
+            }
+
+            if (!is_file($runtime) || file_get_contents($runtime) !== $content) {
+                file_put_contents($runtime, $content, LOCK_EX);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('GitSnapshotSync: Gagal mengimpor snapshot campus_routing_graph.json: ' . $e->getMessage());
+        }
     }
 
     /**

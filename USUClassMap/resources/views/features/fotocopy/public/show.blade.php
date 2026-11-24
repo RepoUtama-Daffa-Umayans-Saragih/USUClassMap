@@ -76,7 +76,7 @@
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-[#E8F5EE] rounded-2xl border border-[#10A760]/20">
                     <div class="text-center sm:text-left">
                         <div class="text-xs sm:text-sm font-bold text-[#0D8A4E]">Siap mencetak tugas atau fotocopy berkas?</div>
-                        <div class="text-xs text-gray-600 mt-0.5">Pesan langsung secara online, navigasi via Maps, atau bagikan info ini ke teman kelas.</div>
+                        <div class="text-xs text-gray-600 mt-0.5">Pesan langsung secara online, navigasi via Peta Kampus USU, atau bagikan info ini ke teman kelas.</div>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
                         <!-- Button Pesan -->
@@ -88,14 +88,13 @@
                             <span>Pesan Sekarang</span>
                         </a>
 
-                        <!-- Button Lokasi (Pergi ke Maps) -->
+                        <!-- Button Lokasi (Rute In-App di Peta) -->
                         <a
                             href="{{ $place->getDirectionUrl() }}"
-                            target="_blank"
                             class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-[#D4A017] hover:bg-[#B8880F] text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2.5 rounded-xl shadow-xs transition-all"
                         >
-                            <i class="fa-solid fa-location-dot text-xs"></i>
-                            <span>Pergi ke Maps</span>
+                            <i class="fa-solid fa-route text-xs"></i>
+                            <span>Rute di Peta</span>
                         </a>
 
                         <!-- Button Bagikan (Web Share API) -->

@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\BuildingApiController;
+use App\Http\Controllers\Api\CampusRoutingController;
 use App\Http\Controllers\Api\ScheduleApiController;
+use App\Http\Controllers\Api\SmartSearchApiController;
 use App\Http\Controllers\ScheduleController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,3 +42,11 @@ Route::prefix('copy-shops')->group(function () {
     Route::get('/', [\App\Http\Controllers\Api\CopyShopApiController::class, 'index'])->name('api.copy-shops.index');
     Route::get('/{id}', [\App\Http\Controllers\Api\CopyShopApiController::class, 'show'])->name('api.copy-shops.show');
 });
+
+// In-App Campus Pedestrian & Vehicle Routing Engine
+Route::match(['get', 'post'], '/route', [CampusRoutingController::class, 'route'])->name('api.routing.route');
+Route::get('/routing/destinations', [CampusRoutingController::class, 'destinations'])->name('api.routing.destinations');
+
+// Unified Smart Search & Smart Photocopy Search Engines
+Route::get('/smart-search', [SmartSearchApiController::class, 'search'])->name('api.smart-search');
+Route::get('/fotocopy/smart-search', [SmartSearchApiController::class, 'fotocopy'])->name('api.fotocopy.smart-search');

@@ -290,26 +290,15 @@
             startNavigation(lat, lng) {
                 const destLat = lat || this.building?.latitude;
                 const destLng = lng || this.building?.longitude;
-                if (!destLat || !destLng) return;
-                
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const userLat = position.coords.latitude;
-                            const userLng = position.coords.longitude;
-                            const navUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destLat},${destLng}&travelmode=walking`;
-                            window.open(navUrl, '_blank');
-                        },
-                        (error) => {
-                            console.warn('Geolocation error or permission denied:', error);
-                            const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLng}&travelmode=walking`;
-                            window.open(navUrl, '_blank');
-                        },
-                        { timeout: 5000, enableHighAccuracy: true }
-                    );
+                const targetKey = this.building?.id
+                    ? ('building:' + this.building.id)
+                    : ((destLat && destLng) ? (destLat + ',' + destLng) : '');
+                if (!targetKey) return;
+                this.closeModal();
+                if (window.USUClassMap && typeof window.USUClassMap.startRouteTo === 'function') {
+                    window.USUClassMap.startRouteTo(targetKey);
                 } else {
-                    const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLng}&travelmode=walking`;
-                    window.open(navUrl, '_blank');
+                    window.location.href = '/map?route_to=' + encodeURIComponent(targetKey);
                 }
             }
         }"
@@ -484,8 +473,8 @@
                     @click="startNavigation(building.latitude, building.longitude)" 
                     class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#10A760] to-[#0D8A4E] px-5 py-4 text-sm font-bold text-white shadow-lg shadow-green-900/20 transition-all duration-200 hover:-translate-y-0.5 hover:from-[#0D8A4E] hover:to-[#0B7442] hover:shadow-xl hover:shadow-green-900/25 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 >
-                    <i class="fa-solid fa-location-dot text-lg"></i>
-                    <span>Jalankan Rute Kelas (Google Maps Walk Navigation)</span>
+                    <i class="fa-solid fa-route text-lg"></i>
+                    <span>Mulai Navigasi Rute Kampus (In-App)</span>
                 </button>
             </div>
         </div>

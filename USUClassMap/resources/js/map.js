@@ -718,7 +718,7 @@ function initMapEngine() {
         targetCourseCode = null, 
         targetCourseName = null
     ) {
-        const routeUrl = `https://www.google.com/maps/dir/?api=1&destination=${building.latitude},${building.longitude}&travelmode=walking`;
+        const routeUrl = `/map?route_to=${encodeURIComponent(building.id ? `building:${building.id}` : `${building.latitude},${building.longitude}`)}`;
 
         // 1. Tentukan daftar ruangan
         let roomsList = [];
@@ -1024,10 +1024,10 @@ function initMapEngine() {
                     <p class="text-[11px] text-gray-500 line-clamp-1 mt-0.5">${building.description || 'Fakultas / Fasilitas Kampus Universitas Sumatera Utara'}</p>
 
                     <!-- Tombol Petunjuk Arah -->
-                    <a href="${routeUrl}" target="_blank" rel="noopener noreferrer" class="w-full mt-2.5 px-3 py-2 bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold text-xs rounded-lg shadow-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span>Petunjuk Arah (Google Maps)</span>
-                    </a>
+                    <button type="button" onclick="window.USUClassMap && window.USUClassMap.startRouteTo ? window.USUClassMap.startRouteTo('building:${building.id}') : (window.location.href='${routeUrl}')" class="w-full mt-2.5 px-3 py-2 bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold text-xs rounded-lg shadow-xs flex items-center justify-center gap-1.5 transition-colors cursor-pointer">
+                        <i class="fa-solid fa-route"></i>
+                        <span>Arahkan Rute ke Gedung Ini</span>
+                    </button>
                 </div>
 
                 <!-- 2. SCROLLABLE BODY (VISUAL SMART ROOM CARDS) -->
@@ -1325,8 +1325,8 @@ function initMapEngine() {
                                     <i class="fa-solid fa-location-dot"></i>
                                     <span>Lihat di Peta</span>
                                 </button>
-                                <a href="https://www.google.com/maps/dir/?api=1&destination=${s.gedung.latitude},${s.gedung.longitude}&travelmode=walking" target="_blank" rel="noopener noreferrer" class="py-2 px-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg text-xs font-bold transition-colors cursor-pointer" title="Petunjuk Rute Google Maps">
-                                    <i class="fa-solid fa-person-walking"></i>
+                                <a href="/map?route_to=${encodeURIComponent(gedungId ? `building:${gedungId}` : `${s.gedung.latitude},${s.gedung.longitude}`)}" onclick="if(window.USUClassMap && window.USUClassMap.startRouteTo){ event.preventDefault(); window.USUClassMap.startRouteTo('${gedungId ? `building:${gedungId}` : `${s.gedung.latitude},${s.gedung.longitude}`}'); }" class="py-2 px-3 bg-emerald-50 hover:bg-[#10A760] text-[#10A760] hover:text-white rounded-lg text-xs font-bold transition-colors cursor-pointer" title="Arahkan Rute In-App ke Gedung">
+                                    <i class="fa-solid fa-route"></i>
                                 </a>
                             </div>
                         </div>

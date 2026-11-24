@@ -194,6 +194,15 @@ Route::prefix('admin-sementara-/map')->group(function () {
     Route::post('/rooms/{room}/media', [AdminMapController::class, 'storeRoomMedia'])->name('admin.map.roomMedia.store');
     Route::put('/media/{media}/metadata', [AdminMapController::class, 'updateMediaMetadata'])->name('admin.map.roomMedia.updateMetadata');
     Route::delete('/media/{media}', [AdminMapController::class, 'destroyRoomMedia'])->name('admin.map.roomMedia.destroy');
+
+    // In-App Campus Spatial Routing Editor Routes (Tahap 4 — RBAC Protected)
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::get('/routing-data', [AdminMapController::class, 'getRoutingData'])->name('admin.map.routing.data');
+        Route::post('/routing-overrides', [AdminMapController::class, 'storeRoutingOverride'])->name('admin.map.routing.overrides.store');
+        Route::delete('/routing-overrides/{override}', [AdminMapController::class, 'destroyRoutingOverride'])->name('admin.map.routing.overrides.destroy');
+        Route::post('/routing-entrance', [AdminMapController::class, 'saveRoutingEntrance'])->name('admin.map.routing.entrance.save');
+        Route::post('/routing-rebuild', [AdminMapController::class, 'rebuildRoutingGraph'])->name('admin.map.routing.rebuild');
+    });
 });
 
 /*

@@ -522,11 +522,10 @@
                                     @if($place->latitude && $place->longitude)
                                         <a
                                             href="{{ $place->getDirectionUrl() }}"
-                                            target="_blank"
                                             class="bg-[#D4A017] hover:bg-[#B8880F] text-white text-xs font-bold px-3 py-2 rounded-lg transition shadow-sm flex items-center gap-1.5"
                                         >
-                                            <i class="fa-solid fa-location-arrow"></i>
-                                            <span>Rute Toko</span>
+                                            <i class="fa-solid fa-route"></i>
+                                            <span>Rute di Peta</span>
                                         </a>
                                     @endif
                                 </div>

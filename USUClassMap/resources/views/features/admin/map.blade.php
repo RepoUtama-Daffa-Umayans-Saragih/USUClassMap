@@ -36,6 +36,7 @@
             buildings: @json($buildings),
             courses: @json($courses),
             lecturers: @json($lecturers),
+            photocopyPlaces: @json($photocopyPlaces ?? []),
             endpoints: {
                 building: '{{ url("/admin-sementara-/map/building") }}',
                 updateBuilding: '{{ url("/admin-sementara-/map/building") }}',
@@ -46,7 +47,12 @@
                 roomMedia: '{{ url("/admin-sementara-/map/rooms") }}',
                 updateMetadata: '{{ url("/admin-sementara-/map/media") }}',
                 deleteMedia: '{{ url("/admin-sementara-/map/media") }}',
-                copyShops: '{{ route("api.copy-shops.index") }}'
+                copyShops: '{{ route("api.copy-shops.index") }}',
+                routingData: '{{ route("admin.map.routing.data") }}',
+                routingOverrides: '{{ route("admin.map.routing.overrides.store") }}',
+                deleteRoutingOverride: '{{ url("/admin-sementara-/map/routing-overrides") }}',
+                routingEntrance: '{{ route("admin.map.routing.entrance.save") }}',
+                routingRebuild: '{{ route("admin.map.routing.rebuild") }}'
             }
         };
     </script>
@@ -91,24 +97,31 @@
             <div class="flex p-2.5 bg-gray-50 gap-1.5 border-b border-gray-100">
                 <button 
                     data-tab="building"
-                    @click="activeTab = 'building'"
+                    @click="switchTab('building')"
                     :class="activeTab === 'building' ? 'bg-[#10A760] text-white shadow-xs' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
                     class="flex-1 py-2 px-1 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-colors cursor-pointer">
                     <span>🏛️</span> Gedung
                 </button>
                 <button 
                     data-tab="room"
-                    @click="activeTab = 'room'"
+                    @click="switchTab('room')"
                     :class="activeTab === 'room' ? 'bg-[#10A760] text-white shadow-xs' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
                     class="flex-1 py-2 px-1 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-colors cursor-pointer">
                     <span>🚪</span> Ruangan
                 </button>
                 <button 
                     data-tab="schedule"
-                    @click="activeTab = 'schedule'"
+                    @click="switchTab('schedule')"
                     :class="activeTab === 'schedule' ? 'bg-[#10A760] text-white shadow-xs' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
                     class="flex-1 py-2 px-1 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-colors cursor-pointer">
                     <span>📅</span> Jadwal
+                </button>
+                <button 
+                    data-tab="routing"
+                    @click="switchTab('routing')"
+                    :class="activeTab === 'routing' ? 'bg-[#10A760] text-white shadow-xs' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+                    class="flex-1 py-2 px-1 rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-colors cursor-pointer">
+                    <span>🛣️</span> Routing
                 </button>
             </div>
 
@@ -601,6 +614,216 @@
                     </form>
                 </div>
 
+                <!-- ========================================================================= -->
+                <!-- TAB 4: SPATIAL ROUTING EDITOR (WALKWAY, BRIDGE, BARRIER, ENTRANCE)        -->
+                <!-- ========================================================================= -->
+                <div x-show="activeTab === 'routing'" class="space-y-4" style="display: none;">
+                    <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl space-y-2">
+                        <div class="flex items-center justify-between gap-2">
+                            <div>
+                                <h3 class="text-xs font-black text-emerald-900 uppercase tracking-wider">Graf Jalan Kampus USU</h3>
+                                <p class="text-[11px] text-emerald-700" x-text="routingAuthError ? routingAuthError : `${routingMeta.nodes_count || 0} simpul • ${routingMeta.rendered_edge_count || 0} segmen jalan`"></p>
+                            </div>
+                            <button
+                                type="button"
+                                @click="rebuildRoutingGraph()"
+                                :disabled="rebuildingGraph"
+                                class="px-2.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white text-[11px] font-bold cursor-pointer shrink-0"
+                            >
+                                <span x-show="!rebuildingGraph">🔄 Rebuild</span>
+                                <span x-show="rebuildingGraph" style="display: none;">⏳...</span>
+                            </button>
+                        </div>
+                        <label class="flex items-center gap-2 text-xs font-semibold text-emerald-900 cursor-pointer">
+                            <input type="checkbox" x-model="showRoutingOverlay" @change="toggleRoutingOverlayVisibility()" class="rounded border-emerald-300 text-emerald-600 focus:ring-emerald-500">
+                            <span>Tampilkan garis graf &amp; override di peta</span>
+                        </label>
+                    </div>
+
+                    <template x-if="routingAuthError">
+                        <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-xs text-amber-800 space-y-2">
+                            <p class="font-bold">Autentikasi Admin Diperlukan</p>
+                            <p x-text="routingAuthError"></p>
+                            <a href="/login" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-amber-600 text-white font-bold text-xs">Login Admin</a>
+                        </div>
+                    </template>
+
+                    <!-- Draw Mode Toolbar -->
+                    <div class="space-y-2">
+                        <label class="text-xs font-bold text-gray-600 uppercase tracking-wider block">Alat Editor Spasial</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button
+                                type="button"
+                                @click="toggleRoutingDrawMode('walkway')"
+                                :class="routingDrawMode === 'walkway' ? 'bg-emerald-600 text-white border-emerald-600' : 'bg-white text-emerald-800 border-emerald-200 hover:bg-emerald-50'"
+                                class="py-2 px-2.5 rounded-xl border text-xs font-bold text-left transition cursor-pointer"
+                            >
+                                🟩 Jalan Pintas
+                            </button>
+                            <button
+                                type="button"
+                                @click="toggleRoutingDrawMode('bridge')"
+                                :class="routingDrawMode === 'bridge' ? 'bg-sky-600 text-white border-sky-600' : 'bg-white text-sky-800 border-sky-200 hover:bg-sky-50'"
+                                class="py-2 px-2.5 rounded-xl border text-xs font-bold text-left transition cursor-pointer"
+                            >
+                                🌉 Jembatan
+                            </button>
+                            <button
+                                type="button"
+                                @click="toggleRoutingDrawMode('barrier')"
+                                :class="routingDrawMode === 'barrier' ? 'bg-rose-600 text-white border-rose-600' : 'bg-white text-rose-800 border-rose-200 hover:bg-rose-50'"
+                                class="py-2 px-2.5 rounded-xl border text-xs font-bold text-left transition cursor-pointer"
+                            >
+                                🚧 Penghalang / Parit
+                            </button>
+                            <button
+                                type="button"
+                                @click="toggleRoutingDrawMode('entrance')"
+                                :class="routingDrawMode === 'entrance' ? 'bg-amber-500 text-white border-amber-500' : 'bg-white text-amber-800 border-amber-200 hover:bg-amber-50'"
+                                class="py-2 px-2.5 rounded-xl border text-xs font-bold text-left transition cursor-pointer"
+                            >
+                                🚪 Pintu Masuk
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Polyline Draft Form -->
+                    <div x-show="['walkway', 'bridge', 'barrier'].includes(routingDrawMode)" class="p-3 bg-gray-50 border border-gray-200 rounded-xl space-y-2.5" style="display: none;">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-extrabold text-gray-800">
+                                Mode Gambar: <span class="uppercase" x-text="routingDrawMode"></span>
+                            </span>
+                            <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-bold" x-text="routingDraftPoints.length + ' titik'"></span>
+                        </div>
+                        <p class="text-[11px] text-gray-600">Klik berurutan di atas peta untuk menambah segmen garis (minimal 2 titik).</p>
+                        <input
+                            type="text"
+                            x-model="routingOverrideForm.name"
+                            placeholder="Nama jalur/penghalang (mis: Jembatan Parit FT)"
+                            class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg bg-white"
+                        >
+                        <input
+                            type="text"
+                            x-model="routingOverrideForm.notes"
+                            placeholder="Catatan opsional"
+                            class="w-full px-3 py-1.5 text-xs border border-gray-300 rounded-lg bg-white"
+                        >
+                        <div class="flex items-center gap-1.5">
+                            <button
+                                type="button"
+                                @click="undoRoutingDraftPoint()"
+                                :disabled="routingDraftPoints.length === 0"
+                                class="px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-700 text-xs font-bold disabled:opacity-40 cursor-pointer"
+                            >
+                                ↩ Undo
+                            </button>
+                            <button
+                                type="button"
+                                @click="saveRoutingOverride()"
+                                :disabled="savingRouting || routingDraftPoints.length < 2"
+                                class="flex-1 py-1.5 px-3 rounded-lg bg-[#10A760] hover:bg-[#0D8A4E] disabled:opacity-50 text-white text-xs font-bold cursor-pointer"
+                            >
+                                <span x-text="savingRouting ? 'Menyimpan...' : 'Simpan Override'"></span>
+                            </button>
+                            <button
+                                type="button"
+                                @click="cancelRoutingMode()"
+                                class="px-2.5 py-1.5 rounded-lg border border-rose-200 bg-rose-50 text-rose-700 text-xs font-bold cursor-pointer"
+                            >
+                                Batal
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Entrance Pin Editor -->
+                    <div x-show="routingDrawMode === 'entrance'" class="p-3 bg-amber-50/70 border border-amber-200 rounded-xl space-y-2.5" style="display: none;">
+                        <div class="text-xs font-extrabold text-amber-900">Atur Titik Pintu Masuk Gedung / Fotokopi</div>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <select x-model="entranceForm.entity_type" @change="onEntranceEntityChanged()" class="px-2.5 py-1.5 text-xs border border-amber-200 rounded-lg bg-white font-semibold">
+                                <option value="building">Gedung Kampus</option>
+                                <option value="fotocopy">Mitra Fotokopi</option>
+                            </select>
+                            <select x-model="entranceForm.entity_id" @change="onEntranceEntityChanged()" class="px-2.5 py-1.5 text-xs border border-amber-200 rounded-lg bg-white font-semibold">
+                                <option value="">-- Pilih target --</option>
+                                <template x-if="entranceForm.entity_type === 'building'">
+                                    <template x-for="b in buildingsList" :key="'ent-b-' + b.id">
+                                        <option :value="String(b.id)" x-text="`${b.code} — ${b.name}`"></option>
+                                    </template>
+                                </template>
+                                <template x-if="entranceForm.entity_type === 'fotocopy'">
+                                    <template x-for="f in photocopyPlacesList" :key="'ent-f-' + f.id">
+                                        <option :value="String(f.id)" x-text="f.name"></option>
+                                    </template>
+                                </template>
+                            </select>
+                        </div>
+                        <div class="grid grid-cols-2 gap-1.5">
+                            <input type="text" x-model="entranceForm.entrance_lat" placeholder="Entrance Lat" class="px-2.5 py-1.5 text-xs font-mono border border-amber-200 rounded-lg bg-white">
+                            <input type="text" x-model="entranceForm.entrance_lng" placeholder="Entrance Lng" class="px-2.5 py-1.5 text-xs font-mono border border-amber-200 rounded-lg bg-white">
+                        </div>
+                        <p class="text-[11px] text-amber-800">Klik lokasi gerbang/pintu di peta untuk mengisi koordinat otomatis.</p>
+                        <div class="flex items-center gap-1.5">
+                            <button
+                                type="button"
+                                @click="saveRoutingEntrance()"
+                                :disabled="savingRouting || !entranceForm.entity_id"
+                                class="flex-1 py-1.5 px-3 rounded-lg bg-amber-600 hover:bg-amber-700 disabled:opacity-50 text-white text-xs font-bold cursor-pointer"
+                            >
+                                Simpan Pintu Masuk
+                            </button>
+                            <button
+                                type="button"
+                                @click="resetRoutingEntrance()"
+                                :disabled="savingRouting || !entranceForm.entity_id"
+                                class="px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-700 text-xs font-bold cursor-pointer"
+                            >
+                                Reset
+                            </button>
+                            <button
+                                type="button"
+                                @click="cancelRoutingMode()"
+                                class="px-2.5 py-1.5 rounded-lg border border-rose-200 bg-rose-50 text-rose-700 text-xs font-bold cursor-pointer"
+                            >
+                                Tutup
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Existing Overrides List -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-extrabold text-gray-700 uppercase tracking-wider">Override Terdaftar</h4>
+                            <span class="text-[11px] font-bold text-gray-500" x-text="`${routingOverrides.length} data`"></span>
+                        </div>
+                        <template x-if="routingOverrides.length === 0">
+                            <p class="text-xs text-gray-400 text-center py-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+                                Belum ada jalur custom, jembatan, atau penghalang.
+                            </p>
+                        </template>
+                        <div class="space-y-2 max-h-64 overflow-y-auto pr-1 custom-scrollbar">
+                            <template x-for="ov in routingOverrides" :key="'ov-' + ov.id">
+                                <div class="p-2.5 bg-white border border-gray-200 rounded-xl flex items-center justify-between gap-2 text-xs shadow-xs">
+                                    <div class="min-w-0 flex-1">
+                                        <div class="flex items-center gap-1.5">
+                                            <span
+                                                class="px-1.5 py-0.5 rounded text-[10px] font-black uppercase"
+                                                :class="ov.type === 'barrier' ? 'bg-rose-100 text-rose-700' : (ov.type === 'bridge' ? 'bg-sky-100 text-sky-700' : 'bg-emerald-100 text-emerald-700')"
+                                                x-text="ov.type"
+                                            ></span>
+                                            <span class="font-bold text-gray-800 truncate" x-text="ov.name || ('Override #' + ov.id)"></span>
+                                        </div>
+                                        <p class="text-[10px] text-gray-500 mt-0.5" x-text="`${(ov.coordinates || []).length} titik`"></p>
+                                    </div>
+                                    <div class="flex items-center gap-1 shrink-0">
+                                        <button type="button" @click="focusOverride(ov)" class="px-2 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700 text-[11px] font-bold cursor-pointer">Fokus</button>
+                                        <button type="button" @click="deleteRoutingOverride(ov.id)" class="px-2 py-1 rounded-md bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-bold cursor-pointer">Hapus</button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
 
@@ -809,8 +1032,31 @@
                 buildingsList: window.ADMIN_MAP_CONFIG?.buildings || [],
                 coursesList: window.ADMIN_MAP_CONFIG?.courses || [],
                 lecturersList: window.ADMIN_MAP_CONFIG?.lecturers || [],
+                photocopyPlacesList: window.ADMIN_MAP_CONFIG?.photocopyPlaces || [],
                 availableRooms: [],
                 loadingRooms: false,
+
+                // Spatial Routing Editor States (Tahap 4)
+                routingLoaded: false,
+                routingAuthError: '',
+                routingMeta: {},
+                routingOverrides: [],
+                routingGraphGeojson: null,
+                routingDrawMode: null,
+                routingDraftPoints: [],
+                showRoutingOverlay: true,
+                savingRouting: false,
+                rebuildingGraph: false,
+                routingOverrideForm: {
+                    name: '',
+                    notes: ''
+                },
+                entranceForm: {
+                    entity_type: 'building',
+                    entity_id: '',
+                    entrance_lat: '',
+                    entrance_lng: ''
+                },
 
                 // Room Management & Multimedia States (Phase 7.3)
                 roomEditMode: false,
@@ -902,6 +1148,250 @@
                         this.buildingForm.latitude = e.detail.lat;
                         this.buildingForm.longitude = e.detail.lng;
                     });
+
+                    // 3. Spatial Routing Draw & Entrance Events
+                    window.addEventListener('admin-routing-draft-updated', (e) => {
+                        this.routingDraftPoints = Array.isArray(e.detail?.points) ? [...e.detail.points] : [];
+                    });
+
+                    window.addEventListener('admin-routing-entrance-picked', (e) => {
+                        if (e.detail?.lat && e.detail?.lng) {
+                            this.entranceForm.entrance_lat = String(e.detail.lat);
+                            this.entranceForm.entrance_lng = String(e.detail.lng);
+                        }
+                    });
+                },
+
+                switchTab(tab) {
+                    this.activeTab = tab;
+                    if (tab === 'routing') {
+                        if (!this.routingLoaded) {
+                            this.loadRoutingData();
+                        } else {
+                            this.syncRoutingMapOverlays();
+                        }
+                    } else if (this.routingDrawMode) {
+                        this.cancelRoutingMode();
+                    }
+                },
+
+                async loadRoutingData() {
+                    try {
+                        const res = await fetch(window.ADMIN_MAP_CONFIG.endpoints.routingData, {
+                            headers: { Accept: 'application/json' }
+                        });
+                        if (res.status === 401 || res.status === 403) {
+                            this.routingAuthError = 'Login sebagai Admin / Super Admin diperlukan untuk mengelola data routing.';
+                            return;
+                        }
+                        const data = await res.json();
+                        if (!res.ok || !data.success) {
+                            window.showAdminToast(data.message || 'Gagal memuat data routing.', 'error');
+                            return;
+                        }
+                        this.routingAuthError = '';
+                        this.routingLoaded = true;
+                        this.routingMeta = data.metadata || {};
+                        this.routingOverrides = Array.isArray(data.overrides) ? data.overrides : [];
+                        this.routingGraphGeojson = data.graph_geojson || { type: 'FeatureCollection', features: [] };
+                        if (Array.isArray(data.buildings)) this.buildingsList = data.buildings;
+                        if (Array.isArray(data.photocopy_places)) this.photocopyPlacesList = data.photocopy_places;
+                        this.syncRoutingMapOverlays();
+                    } catch (err) {
+                        console.warn('loadRoutingData failed:', err);
+                        window.showAdminToast('Gagal menghubungi endpoint routing admin.', 'error');
+                    }
+                },
+
+                syncRoutingMapOverlays() {
+                    if (window.USUAdminMap && typeof window.USUAdminMap.renderRoutingOverlays === 'function') {
+                        window.USUAdminMap.renderRoutingOverlays({
+                            graphGeojson: this.routingGraphGeojson,
+                            overrides: this.routingOverrides,
+                            buildings: this.buildingsList,
+                            photocopyPlaces: this.photocopyPlacesList,
+                            visible: this.showRoutingOverlay
+                        });
+                    }
+                },
+
+                toggleRoutingOverlayVisibility() {
+                    if (window.USUAdminMap && typeof window.USUAdminMap.setRoutingOverlayVisible === 'function') {
+                        window.USUAdminMap.setRoutingOverlayVisible(this.showRoutingOverlay);
+                    }
+                },
+
+                toggleRoutingDrawMode(mode) {
+                    if (this.routingDrawMode === mode) {
+                        this.cancelRoutingMode();
+                        return;
+                    }
+                    this.routingDrawMode = mode;
+                    this.routingDraftPoints = [];
+                    this.showRoutingOverlay = true;
+                    if (window.USUAdminMap && typeof window.USUAdminMap.setRoutingMode === 'function') {
+                        window.USUAdminMap.setRoutingMode(mode);
+                    }
+                    this.syncRoutingMapOverlays();
+                },
+
+                cancelRoutingMode() {
+                    this.routingDrawMode = null;
+                    this.routingDraftPoints = [];
+                    if (window.USUAdminMap && typeof window.USUAdminMap.setRoutingMode === 'function') {
+                        window.USUAdminMap.setRoutingMode(null);
+                    }
+                },
+
+                undoRoutingDraftPoint() {
+                    if (window.USUAdminMap && typeof window.USUAdminMap.undoRoutingDraftPoint === 'function') {
+                        window.USUAdminMap.undoRoutingDraftPoint();
+                    }
+                },
+
+                async saveRoutingOverride() {
+                    if (!this.routingDrawMode || this.routingDraftPoints.length < 2) return;
+                    this.savingRouting = true;
+                    try {
+                        const res = await fetch(window.ADMIN_MAP_CONFIG.endpoints.routingOverrides, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': window.ADMIN_MAP_CONFIG.csrfToken,
+                                Accept: 'application/json'
+                            },
+                            body: JSON.stringify({
+                                type: this.routingDrawMode,
+                                name: this.routingOverrideForm.name || null,
+                                notes: this.routingOverrideForm.notes || null,
+                                coordinates: this.routingDraftPoints,
+                                is_active: true
+                            })
+                        });
+                        const data = await res.json();
+                        if (!res.ok || !data.success) {
+                            window.showAdminToast(data.message || 'Gagal menyimpan override.', 'error');
+                            return;
+                        }
+                        this.routingOverrideForm = { name: '', notes: '' };
+                        this.cancelRoutingMode();
+                        await this.loadRoutingData();
+                        window.showAdminToast(data.message || 'Override tersimpan.', 'success');
+                    } catch (err) {
+                        window.showAdminToast('Gagal menyimpan override.', 'error');
+                    } finally {
+                        this.savingRouting = false;
+                    }
+                },
+
+                focusOverride(ov) {
+                    const first = Array.isArray(ov?.coordinates) && ov.coordinates.length > 0 ? ov.coordinates[0] : null;
+                    if (first && window.USUAdminMap?.focusCoord) {
+                        window.USUAdminMap.focusCoord(first[0], first[1], 18);
+                    }
+                },
+
+                async deleteRoutingOverride(id) {
+                    try {
+                        const res = await fetch(`${window.ADMIN_MAP_CONFIG.endpoints.deleteRoutingOverride}/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': window.ADMIN_MAP_CONFIG.csrfToken,
+                                Accept: 'application/json'
+                            }
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            await this.loadRoutingData();
+                            window.showAdminToast('Override dihapus.', 'success');
+                        } else {
+                            window.showAdminToast(data.message || 'Gagal menghapus override.', 'error');
+                        }
+                    } catch (err) {
+                        window.showAdminToast('Gagal menghubungi server.', 'error');
+                    }
+                },
+
+                onEntranceEntityChanged() {
+                    const list = this.entranceForm.entity_type === 'building' ? this.buildingsList : this.photocopyPlacesList;
+                    const item = list.find((it) => String(it.id) === String(this.entranceForm.entity_id));
+                    if (!item) {
+                        this.entranceForm.entrance_lat = '';
+                        this.entranceForm.entrance_lng = '';
+                        return;
+                    }
+                    const lat = item.entrance_lat ?? item.latitude;
+                    const lng = item.entrance_lng ?? item.longitude;
+                    this.entranceForm.entrance_lat = lat ? String(lat) : '';
+                    this.entranceForm.entrance_lng = lng ? String(lng) : '';
+                    if (lat && lng && window.USUAdminMap?.previewEntrancePin) {
+                        window.USUAdminMap.previewEntrancePin(parseFloat(lat), parseFloat(lng), true);
+                    }
+                },
+
+                async saveRoutingEntrance(resetToNull = false) {
+                    if (!this.entranceForm.entity_id) return;
+                    this.savingRouting = true;
+                    try {
+                        const payload = {
+                            entity_type: this.entranceForm.entity_type,
+                            entity_id: parseInt(this.entranceForm.entity_id, 10),
+                            entrance_lat: resetToNull ? null : (this.entranceForm.entrance_lat !== '' ? parseFloat(this.entranceForm.entrance_lat) : null),
+                            entrance_lng: resetToNull ? null : (this.entranceForm.entrance_lng !== '' ? parseFloat(this.entranceForm.entrance_lng) : null)
+                        };
+                        const res = await fetch(window.ADMIN_MAP_CONFIG.endpoints.routingEntrance, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': window.ADMIN_MAP_CONFIG.csrfToken,
+                                Accept: 'application/json'
+                            },
+                            body: JSON.stringify(payload)
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            await this.loadRoutingData();
+                            window.showAdminToast(data.message || 'Pintu masuk tersimpan.', 'success');
+                        } else {
+                            window.showAdminToast(data.message || 'Gagal menyimpan pintu masuk.', 'error');
+                        }
+                    } catch (err) {
+                        window.showAdminToast('Gagal menghubungi server.', 'error');
+                    } finally {
+                        this.savingRouting = false;
+                    }
+                },
+
+                resetRoutingEntrance() {
+                    this.entranceForm.entrance_lat = '';
+                    this.entranceForm.entrance_lng = '';
+                    return this.saveRoutingEntrance(true);
+                },
+
+                async rebuildRoutingGraph() {
+                    this.rebuildingGraph = true;
+                    try {
+                        const res = await fetch(window.ADMIN_MAP_CONFIG.endpoints.routingRebuild, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': window.ADMIN_MAP_CONFIG.csrfToken,
+                                Accept: 'application/json'
+                            },
+                            body: JSON.stringify({ live: false })
+                        });
+                        const data = await res.json();
+                        if (res.ok && data.success) {
+                            await this.loadRoutingData();
+                            window.showAdminToast(data.message || 'Graf berhasil dibangun ulang.', 'success');
+                        } else {
+                            window.showAdminToast(data.message || 'Gagal rebuild graf.', 'error');
+                        }
+                    } catch (err) {
+                        window.showAdminToast('Gagal menghubungi server.', 'error');
+                    } finally {
+                        this.rebuildingGraph = false;
+                    }
                 },
 
                 cancelEdit() {

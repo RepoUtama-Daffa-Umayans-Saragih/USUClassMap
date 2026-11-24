@@ -221,27 +221,11 @@
             startNavigation(lat, lng) {
                 const destLat = lat || this.building?.latitude;
                 const destLng = lng || this.building?.longitude;
-                if (!destLat || !destLng) return;
-                
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(
-                        (position) => {
-                            const userLat = position.coords.latitude;
-                            const userLng = position.coords.longitude;
-                            const navUrl = `https://www.google.com/maps/dir/?api=1&origin=${userLat},${userLng}&destination=${destLat},${destLng}&travelmode=walking`;
-                            window.open(navUrl, '_blank');
-                        },
-                        (error) => {
-                            console.warn('Geolocation failed or permission denied:', error);
-                            const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLng}&travelmode=walking`;
-                            window.open(navUrl, '_blank');
-                        },
-                        { timeout: 5000, enableHighAccuracy: true }
-                    );
-                } else {
-                    const navUrl = `https://www.google.com/maps/dir/?api=1&destination=${destLat},${destLng}&travelmode=walking`;
-                    window.open(navUrl, '_blank');
-                }
+                const targetKey = this.building?.id
+                    ? ('building:' + this.building.id)
+                    : ((destLat && destLng) ? (destLat + ',' + destLng) : '');
+                if (!targetKey) return;
+                window.location.href = '/map?route_to=' + encodeURIComponent(targetKey);
             }
         }"
         x-show="isOpen"
@@ -510,15 +494,14 @@
                             </a>
 
                             <a
-                                href="https://maps.google.com/?q=Pusat+Sistem+Informasi+USU+Medan"
-                                target="_blank"
+                                href="{{ route('map', ['route_to' => '3.5620,98.6565']) }}"
                                 class="w-full flex items-center justify-between px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-lg text-xs font-semibold transition-colors"
                             >
                                 <div class="flex items-center gap-2">
                                     <i class="fa-solid fa-diamond-turn-right text-[#D4A017]"></i>
-                                    <span>Petunjuk Arah Google Maps</span>
+                                    <span>Lihat Rute di Peta Kampus</span>
                                 </div>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-gray-400"></i>
+                                <i class="fa-solid fa-arrow-right text-[10px] text-gray-400"></i>
                             </a>
                         </div>
                     </div>
@@ -575,7 +558,10 @@
                     const longitude = Number.parseFloat(bookmark.longitude);
                     const destinationLatitude = Number.isFinite(latitude) ? latitude : 3.565245;
                     const destinationLongitude = Number.isFinite(longitude) ? longitude : 98.656520;
-                    const routeUrl = `https://www.google.com/maps/dir/?api=1&destination=${destinationLatitude},${destinationLongitude}&travelmode=walking`;
+                    const routeTarget = bookmark.buildingId
+                        ? `building:${bookmark.buildingId}`
+                        : `${destinationLatitude},${destinationLongitude}`;
+                    const routeUrl = `/map?route_to=${encodeURIComponent(routeTarget)}`;
                     const mapUrl = `/map?q=${encodeURIComponent(bookmark.kodeMk || bookmark.namaMk || '')}`;
 
                     return `
@@ -595,7 +581,7 @@
                             </td>
                             <td class="whitespace-nowrap px-3 py-4 text-right">
                                 <a href="${escapeHtml(mapUrl)}" class="inline-flex rounded-md bg-green-50 px-2.5 py-1.5 text-xs font-bold text-[#10A760] hover:bg-green-100">Peta</a>
-                                <a href="${escapeHtml(routeUrl)}" target="_blank" rel="noopener noreferrer" class="ml-1 inline-flex rounded-md bg-gray-100 px-2.5 py-1.5 text-xs font-bold text-gray-700 hover:bg-gray-200">Rute</a>
+                                <a href="${escapeHtml(routeUrl)}" class="ml-1 inline-flex rounded-md bg-gray-100 px-2.5 py-1.5 text-xs font-bold text-gray-700 hover:bg-gray-200">Rute</a>
                                 <button type="button" data-remove-bookmark="${index}" class="ml-1 inline-flex rounded-md bg-red-50 px-2.5 py-1.5 text-xs font-bold text-red-600 hover:bg-red-100">Hapus</button>
                             </td>
                         </tr>

@@ -10,7 +10,9 @@
         "description": "Gedung Biro Pusat Administrasi Rektorat Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 2,
@@ -23,7 +25,9 @@
         "description": "Gedung Auditorium Universitas Sumatera Utara untuk acara wisuda, seminar, dan pertemuan akbar.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 3,
@@ -36,7 +40,9 @@
         "description": "Gedung Perpustakaan Pusat Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 4,
@@ -49,7 +55,9 @@
         "description": "Gedung Kuliah Bersama (GKB) untuk perkuliahan MKWK dan MKWU antar fakultas.",
         "floor_count": 4,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 5,
@@ -62,7 +70,9 @@
         "description": "Digital Learning & Collaborative Building (DLCB) Universitas Sumatera Utara.",
         "floor_count": 4,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 6,
@@ -75,7 +85,9 @@
         "description": "Pusat Sistem Informasi (PSI) pengelola infrastruktur IT dan server jaringan USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 7,
@@ -88,7 +100,9 @@
         "description": "Gedung Lembaga Penelitian dan Pengabdian kepada Masyarakat (LPPM) USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 8,
@@ -101,7 +115,9 @@
         "description": "Pusat percetakan dan penerbitan buku ilmiah Universitas Sumatera Utara Press.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 9,
@@ -114,7 +130,9 @@
         "description": "Unit Manajemen Mutu penjaminan standar mutu akademik dan pelayanan Universitas Sumatera Utara.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 10,
@@ -127,7 +145,9 @@
         "description": "Pusat landmark dan administrasi koordinasi Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 11,
@@ -140,7 +160,9 @@
         "description": "Kompleks perkuliahan Universitas Sumatera Utara (Zona Kampus Selatan).",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 12,
@@ -153,7 +175,9 @@
         "description": "Gedung utama Fakultas Ilmu Komputer dan Teknologi Informasi USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 13,
@@ -166,7 +190,9 @@
         "description": "Gedung B FASILKOM-TI ruang kelas kuliah dan laboratorium rekayasa perangkat lunak.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 14,
@@ -179,7 +205,9 @@
         "description": "Gedung utama Fakultas Kedokteran Universitas Sumatera Utara.",
         "floor_count": 4,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 15,
@@ -192,7 +220,9 @@
         "description": "Gedung utama dan administrasi Fakultas Kedokteran Gigi USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 16,
@@ -205,7 +235,9 @@
         "description": "Gedung perkuliahan dan administrasi Fakultas Kesehatan Masyarakat USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 17,
@@ -218,7 +250,9 @@
         "description": "Gedung perkuliahan dan laboratorium terpadu Fakultas Farmasi USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 18,
@@ -231,7 +265,9 @@
         "description": "Gedung Departemen dan Laboratorium Teknik Mesin Fakultas Teknik USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 19,
@@ -244,7 +280,9 @@
         "description": "Gedung Departemen Teknik Kimia Fakultas Teknik Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 20,
@@ -257,7 +295,9 @@
         "description": "Gedung Departemen Teknik Lingkungan Fakultas Teknik USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 21,
@@ -270,7 +310,9 @@
         "description": "Gedung utama perkuliahan Fakultas Ekonomi dan Bisnis Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 22,
@@ -283,7 +325,9 @@
         "description": "Gedung perkuliahan program pascasarjana Magister Manajemen FEB USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 23,
@@ -296,7 +340,9 @@
         "description": "Gedung utama Fakultas Hukum Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 24,
@@ -309,7 +355,9 @@
         "description": "Gedung perkuliahan dan administrasi Fakultas Ilmu Sosial dan Ilmu Politik USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 25,
@@ -322,7 +370,9 @@
         "description": "Pusat konsultasi perpajakan dan riset fiskal FISIP USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 26,
@@ -335,7 +385,9 @@
         "description": "Gedung program pascasarjana Magister Studi Pembangunan USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 27,
@@ -348,7 +400,9 @@
         "description": "Gedung perkuliahan dan administrasi Fakultas Ilmu Budaya USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 28,
@@ -361,7 +415,9 @@
         "description": "Gedung Dekanat dan ruang kuliah Fakultas Psikologi Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-11-17 14:26:59"
+        "updated_at": "2026-11-17 14:26:59",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 29,
@@ -374,7 +430,9 @@
         "description": "Gedung Departemen Keteknikan Pertanian Fakultas Pertanian USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 30,
@@ -387,7 +445,9 @@
         "description": "Gedung Dekanat dan ruang kuliah terpadu Fakultas Vokasi USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 31,
@@ -400,7 +460,9 @@
         "description": "Perpustakaan cabang FMIPA penyedia literatur sains dan teknologi.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 32,
@@ -413,7 +475,9 @@
         "description": "Gedung kantor administrasi unit pelaksana teknis kampus USU (Zona Utara).",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 33,
@@ -426,7 +490,9 @@
         "description": "Gedung kantor pelayanan akademik dan tata usaha unit kampus USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 34,
@@ -439,7 +505,9 @@
         "description": "Gedung perkantoran pengelola fasilitas dan sarana prasarana USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 35,
@@ -452,7 +520,9 @@
         "description": "Gedung kantor layanan administrasi pendukung perkuliahan USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 36,
@@ -465,7 +535,9 @@
         "description": "Gedung kantor staf dan pengelola operasional kampus USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 37,
@@ -478,7 +550,9 @@
         "description": "Gedung kantor layanan umum dan urusan rumah tangga kampus USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 38,
@@ -491,7 +565,9 @@
         "description": "Gedung kantor pengawasan operasional dan pemeliharaan gedung USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 39,
@@ -504,7 +580,9 @@
         "description": "Masjid As-Syifa' di lingkungan Fakultas Farmasi Universitas Sumatera Utara.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 40,
@@ -517,7 +595,9 @@
         "description": "Masjid Al-Ikhlas di lingkungan Fakultas Kedokteran Gigi USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 41,
@@ -530,7 +610,9 @@
         "description": "Gereja GBKP Majelis Runggun Pembangunan di kawasan kampus USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 42,
@@ -543,7 +625,9 @@
         "description": "Kantin sentra kuliner mahasiswa di area FISIP USU.",
         "floor_count": 1,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 43,
@@ -556,7 +640,9 @@
         "description": "Kantin mahasiswa Fakultas Pertanian Universitas Sumatera Utara.",
         "floor_count": 1,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 44,
@@ -569,7 +655,9 @@
         "description": "Area gazebo dan fasilitas ruang terbuka tempat duduk mahasiswa USU.",
         "floor_count": 1,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 45,
@@ -582,7 +670,9 @@
         "description": "Gedung perkuliahan Politeknik Negeri Medan di dalam kompleks kampus USU.",
         "floor_count": 4,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 46,
@@ -595,7 +685,9 @@
         "description": "Akomodasi dan fasilitas penginapan di sekitar kawasan kampus USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56"
+        "updated_at": "2026-08-25 22:11:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 47,
@@ -608,7 +700,9 @@
         "description": "Gedung Perkuliahan FASILKOM-TI USU",
         "floor_count": 3,
         "created_at": "2026-08-31 12:36:00",
-        "updated_at": "2026-08-31 12:36:00"
+        "updated_at": "2026-08-31 12:36:00",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 48,
@@ -621,7 +715,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-23 20:52:32",
-        "updated_at": "2026-11-23 20:52:32"
+        "updated_at": "2026-11-23 20:52:32",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 50,
@@ -634,7 +730,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 06:54:35",
-        "updated_at": "2026-11-24 06:54:35"
+        "updated_at": "2026-11-24 06:54:35",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 51,
@@ -647,7 +745,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 06:57:18",
-        "updated_at": "2026-11-24 06:57:18"
+        "updated_at": "2026-11-24 06:57:18",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 52,
@@ -660,7 +760,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 06:58:35",
-        "updated_at": "2026-11-24 06:58:35"
+        "updated_at": "2026-11-24 06:58:35",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 53,
@@ -673,7 +775,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 09:52:11",
-        "updated_at": "2026-11-24 09:52:11"
+        "updated_at": "2026-11-24 09:52:11",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 54,
@@ -686,7 +790,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 09:53:51",
-        "updated_at": "2026-11-24 09:53:51"
+        "updated_at": "2026-11-24 09:53:51",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 55,
@@ -699,7 +805,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 09:56:09",
-        "updated_at": "2026-11-24 09:56:09"
+        "updated_at": "2026-11-24 09:56:09",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 56,
@@ -712,7 +820,9 @@
         "description": null,
         "floor_count": 3,
         "created_at": "2026-11-24 09:57:48",
-        "updated_at": "2026-11-24 09:57:48"
+        "updated_at": "2026-11-24 09:57:48",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 57,
@@ -725,7 +835,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 09:58:59",
-        "updated_at": "2026-11-24 09:58:59"
+        "updated_at": "2026-11-24 09:58:59",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 58,
@@ -738,7 +850,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:00:38",
-        "updated_at": "2026-11-24 10:00:38"
+        "updated_at": "2026-11-24 10:00:38",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 59,
@@ -751,7 +865,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:01:43",
-        "updated_at": "2026-11-24 10:01:43"
+        "updated_at": "2026-11-24 10:01:43",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 60,
@@ -764,7 +880,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:02:57",
-        "updated_at": "2026-11-24 10:02:57"
+        "updated_at": "2026-11-24 10:02:57",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 61,
@@ -777,7 +895,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:04:20",
-        "updated_at": "2026-11-24 10:04:20"
+        "updated_at": "2026-11-24 10:04:20",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 62,
@@ -790,7 +910,9 @@
         "description": null,
         "floor_count": 2,
         "created_at": "2026-11-24 10:08:52",
-        "updated_at": "2026-11-24 10:08:52"
+        "updated_at": "2026-11-24 10:08:52",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 63,
@@ -803,7 +925,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:11:07",
-        "updated_at": "2026-11-24 10:11:07"
+        "updated_at": "2026-11-24 10:11:07",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 64,
@@ -816,7 +940,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:12:48",
-        "updated_at": "2026-11-24 10:12:48"
+        "updated_at": "2026-11-24 10:12:48",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 66,
@@ -829,7 +955,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:23:42",
-        "updated_at": "2026-11-24 10:23:42"
+        "updated_at": "2026-11-24 10:23:42",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 67,
@@ -842,7 +970,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:04:57",
-        "updated_at": "2026-11-24 14:04:57"
+        "updated_at": "2026-11-24 14:04:57",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 68,
@@ -855,7 +985,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:05:56",
-        "updated_at": "2026-11-24 14:05:56"
+        "updated_at": "2026-11-24 14:05:56",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 69,
@@ -868,7 +1000,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:08:24",
-        "updated_at": "2026-11-24 14:08:24"
+        "updated_at": "2026-11-24 14:08:24",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 70,
@@ -881,7 +1015,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:09:30",
-        "updated_at": "2026-11-24 14:09:30"
+        "updated_at": "2026-11-24 14:09:30",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 71,
@@ -894,7 +1030,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:12:31",
-        "updated_at": "2026-11-24 14:12:31"
+        "updated_at": "2026-11-24 14:12:31",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 72,
@@ -907,7 +1045,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:13:40",
-        "updated_at": "2026-11-24 14:13:40"
+        "updated_at": "2026-11-24 14:13:40",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 73,
@@ -920,7 +1060,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:15:52",
-        "updated_at": "2026-11-24 14:15:52"
+        "updated_at": "2026-11-24 14:15:52",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 74,
@@ -933,7 +1075,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:17:21",
-        "updated_at": "2026-11-24 14:17:21"
+        "updated_at": "2026-11-24 14:17:21",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 75,
@@ -946,7 +1090,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:20:51",
-        "updated_at": "2026-11-24 14:20:51"
+        "updated_at": "2026-11-24 14:20:51",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 76,
@@ -959,7 +1105,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:22:03",
-        "updated_at": "2026-11-24 14:22:03"
+        "updated_at": "2026-11-24 14:22:03",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 77,
@@ -972,7 +1120,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:22:46",
-        "updated_at": "2026-11-24 14:22:46"
+        "updated_at": "2026-11-24 14:22:46",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 78,
@@ -985,7 +1135,9 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:23:17",
-        "updated_at": "2026-11-24 14:23:17"
+        "updated_at": "2026-11-24 14:23:17",
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 79,
@@ -998,6 +1150,8 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:24:30",
-        "updated_at": "2026-11-24 14:24:30"
+        "updated_at": "2026-11-24 14:24:30",
+        "entrance_lat": null,
+        "entrance_lng": null
     }
 ]

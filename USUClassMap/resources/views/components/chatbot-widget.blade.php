@@ -197,6 +197,99 @@
                             x-html="formatMessage(msg.content)"
                         ></div>
 
+                        <!-- Honest Advisory Note Banner (jika atribut langka/tidak tersedia persis) -->
+                        <template x-if="msg.advisory_note">
+                            <div class="mt-2.5 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-[11px] leading-snug flex items-start gap-2">
+                                <span class="shrink-0 mt-0.5">ℹ️</span>
+                                <span x-text="msg.advisory_note"></span>
+                            </div>
+                        </template>
+
+                        <!-- Rich Smart Search Cards (Fotokopi/ATK & Tebak Gedung Spasial) -->
+                        <template x-if="msg.cards && msg.cards.some(c => c.type === 'fotocopy_item' || c.type === 'spatial_building')">
+                            <div class="mt-3 pt-2.5 border-t border-gray-150 space-y-2" data-copilot-cards>
+                                <template x-for="(card, cIdx) in msg.cards" :key="cIdx">
+                                    <div>
+                                        <!-- Kartu Produk / Jasa Fotokopi -->
+                                        <template x-if="card.type === 'fotocopy_item'">
+                                            <div class="p-2.5 bg-gray-50/90 hover:bg-emerald-50/40 rounded-xl border border-gray-200/90 transition-all">
+                                                <div class="flex items-start gap-2.5">
+                                                    <template x-if="card.data.image_url">
+                                                        <img :src="card.data.image_url" :alt="card.data.name" class="w-12 h-12 rounded-lg object-cover border border-gray-200 shrink-0 bg-white">
+                                                    </template>
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="flex items-start justify-between gap-1.5">
+                                                            <div class="font-bold text-[11px] text-gray-900 leading-snug line-clamp-2" x-text="card.data.name"></div>
+                                                            <span
+                                                                class="px-1.5 py-0.5 rounded text-[9px] font-extrabold shrink-0"
+                                                                :class="card.data.exact_attribute_match ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'"
+                                                                x-text="card.data.exact_attribute_match ? card.data.category : 'Alternatif'"
+                                                            ></span>
+                                                        </div>
+                                                        <div class="mt-1 flex items-center flex-wrap gap-1.5 text-[10px]">
+                                                            <span class="font-black text-[#10A760]" x-text="card.data.formatted_price + '/' + card.data.unit"></span>
+                                                            <span class="text-gray-300">•</span>
+                                                            <span class="font-semibold text-gray-700 truncate" x-text="card.data.store?.name"></span>
+                                                        </div>
+                                                        <div class="mt-0.5 flex items-center flex-wrap gap-1.5 text-[10px] text-gray-500">
+                                                            <span x-text="'~' + (card.data.store?.distance_meters ?? '-') + ' m (' + (card.data.store?.walk_minutes ?? '-') + ' mnt)'"></span>
+                                                            <span class="text-gray-300">•</span>
+                                                            <span :class="card.data.store?.is_open_now ? 'text-emerald-700 font-bold' : 'text-rose-600 font-semibold'" x-text="card.data.store?.is_open_now ? 'Buka' : 'Tutup'"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-2 flex items-center gap-1.5">
+                                                    <a
+                                                        :href="card.data.actions?.order_url || ('/fotocopy/' + card.data.store?.id + '/order')"
+                                                        class="flex-1 py-1.5 px-2 bg-[#10A760] hover:bg-[#0D8A4E] text-white rounded-lg font-bold text-[10px] text-center transition-colors"
+                                                    >
+                                                        Pesan di Toko
+                                                    </a>
+                                                    <button
+                                                        type="button"
+                                                        @click="routeCardTarget(card)"
+                                                        class="py-1.5 px-2.5 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 rounded-lg font-bold text-[10px] transition-colors cursor-pointer"
+                                                    >
+                                                        🧭 Rute GPS
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </template>
+
+                                        <!-- Kartu Kandidat Gedung Spasial -->
+                                        <template x-if="card.type === 'spatial_building'">
+                                            <div class="p-2.5 bg-gray-50/90 hover:bg-emerald-50/40 rounded-xl border border-gray-200/90 transition-all">
+                                                <div class="flex items-start justify-between gap-2">
+                                                    <div class="min-w-0">
+                                                        <div class="font-bold text-[11px] text-gray-900 leading-snug" x-text="card.data.name + ' (' + card.data.code + ')'"></div>
+                                                        <div class="text-[10px] text-gray-500" x-text="card.data.faculty"></div>
+                                                    </div>
+                                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 shrink-0" x-text="card.data.confidence_percent + '% cocok'"></span>
+                                                </div>
+                                                <p class="mt-1.5 text-[10px] text-gray-700 leading-relaxed" x-text="card.data.spatial_reason"></p>
+                                                <div class="mt-2 flex items-center gap-1.5">
+                                                    <button
+                                                        type="button"
+                                                        @click="focusCardBuilding(card)"
+                                                        class="flex-1 py-1.5 px-2 bg-emerald-100/80 hover:bg-[#10A760] text-emerald-900 hover:text-white rounded-lg font-bold text-[10px] transition-colors cursor-pointer"
+                                                    >
+                                                        📍 Lihat di Peta
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        @click="routeCardTarget(card)"
+                                                        class="py-1.5 px-2.5 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 rounded-lg font-bold text-[10px] transition-colors cursor-pointer"
+                                                    >
+                                                        🧭 Rute GPS ke Sini
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
                         <!-- Multi-Faculty Summary Cards (Pilihan Fakultas Interaktif) -->
                         <template x-if="msg.facultySummary && msg.facultySummary.length > 0">
                             <div class="mt-3 pt-2.5 border-t border-gray-150 space-y-2">
@@ -356,7 +449,7 @@
                         </template>
 
                         <!-- Interactive Map Action Card (Jika ada instruksi koordinat peta tunggal) -->
-                        <template x-if="msg.mapAction && (!msg.facultySummary || msg.facultySummary.length <= 1)">
+                        <template x-if="msg.mapAction && (!msg.facultySummary || msg.facultySummary.length <= 1) && (!msg.cards || !msg.cards.some(c => c.type === 'fotocopy_item' || c.type === 'spatial_building'))">
                             <div class="mt-2.5 pt-2 border-t border-gray-150">
                                 <button 
                                     @click="triggerMapAction(msg.mapAction)" 
@@ -410,7 +503,7 @@
                     type="text" 
                     x-model="inputMessage" 
                     :disabled="isLoading"
-                    placeholder="Tanya jadwal, nama gedung, atau ruang kelas..." 
+                    placeholder="Tanya jadwal, patokan gedung, atau cari ATK/fotokopi..." 
                     class="flex-1 px-3.5 py-2.5 text-xs bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#10A760]/30 focus:border-[#10A760] disabled:bg-gray-100 disabled:cursor-not-allowed transition-all"
                     maxlength="500"
                 />

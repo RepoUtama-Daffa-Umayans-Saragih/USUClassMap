@@ -22,10 +22,10 @@ window.usuCopilot = function () {
 
         // Saran Cepat (Quick Chips)
         quickPrompts: [
-            'Jadwal saya hari ini',
+            'Cari pulpen pink murah terdekat',
+            'Kelas saya di depan FIB samping FMIPA',
+            'Jadwal Pancasila hari Senin',
             'Dimana Gedung Fasilkom-TI?',
-            'Cari matkul IELTS',
-            'Info dosen Prof. Rudy Sofyan',
         ],
 
         // Daftar Pesan Chat
@@ -288,14 +288,37 @@ window.usuCopilot = function () {
                 .slice(-7, -1)
                 .map((m) => ({
                     role: m.role,
-                    content: m.content,
+                    content: String(m.content || '').slice(0, 1200),
                 }));
 
+            // Ambil koordinat GPS terakhir jika tersedia dari peta atau sessionStorage
+            let gpsLat = null;
+            let gpsLng = null;
             try {
-                // 3. Panggil Endpoint Backend Laravel
+                const liveFix = window.USUClassMap?.getLastGpsFix?.();
+                if (liveFix && Number.isFinite(Number(liveFix.lat)) && Number.isFinite(Number(liveFix.lng))) {
+                    gpsLat = Number(liveFix.lat);
+                    gpsLng = Number(liveFix.lng);
+                } else {
+                    const cachedFixRaw = sessionStorage.getItem('usu_last_gps_fix');
+                    if (cachedFixRaw) {
+                        const cachedFix = JSON.parse(cachedFixRaw);
+                        if (cachedFix && Number.isFinite(Number(cachedFix.lat)) && Number.isFinite(Number(cachedFix.lng))) {
+                            gpsLat = Number(cachedFix.lat);
+                            gpsLng = Number(cachedFix.lng);
+                        }
+                    }
+                }
+            } catch (e) {}
+
+            try {
+                // 3. Panggil Endpoint Backend Laravel Grounded Copilot
                 const response = await window.axios.post('/copilot/chat', {
                     message: rawText,
                     history: apiHistory,
+                    user_lat: gpsLat,
+                    user_lng: gpsLng,
+                    current_page: typeof window !== 'undefined' ? window.location.pathname : '/',
                 });
 
                 if (response.data && response.data.status === 'success') {
@@ -305,6 +328,10 @@ window.usuCopilot = function () {
                     const quickReplies = response.data.quickReplies || response.data.quick_replies || [];
                     const mapActions = response.data.mapActions || response.data.map_actions || [];
                     const schedules = response.data.schedules || [];
+                    const cards = response.data.cards || [];
+                    const actions = response.data.actions || [];
+                    const advisoryNote = response.data.advisory_note || null;
+                    const intent = response.data.intent || 'general_campus_qa';
 
                     // Parsing fallback jika tag [MAP_ACTION: {...}] masih tersisa di dalam teks
                     const actionRegex = /\[MAP_ACTION:\s*(\{.*?\})\]/s;
@@ -324,6 +351,10 @@ window.usuCopilot = function () {
                         role: 'assistant',
                         content: replyText,
                         time: this.getCurrentTime(),
+                        intent: intent,
+                        advisory_note: advisoryNote,
+                        cards: cards,
+                        actions: actions,
                         mapAction: mapAction,
                         facultySummary: facultySummary,
                         quickReplies: quickReplies,
@@ -335,8 +366,8 @@ window.usuCopilot = function () {
 
                     this.isOffline = false;
 
-                    // Jika ada aksi peta, picu peta otomatis jika pada layar lebar (opsional)
-                    if (mapAction && window.innerWidth >= 1024) {
+                    // Jika ada aksi focus peta (bukan fotocopy auto-redirect), picu peta otomatis di layar lebar
+                    if (mapAction && mapAction.type !== 'start_route' && window.innerWidth >= 1024 && window.USUClassMap) {
                         this.triggerMapAction(mapAction, false);
                     }
                 } else {
@@ -376,7 +407,17 @@ window.usuCopilot = function () {
         triggerMapAction(action, autoCloseMobile = true) {
             if (!action) return;
 
-            console.log('[Rexa Copilot] Mematuk Aksi Peta Leaflet:', action);
+            if (action.type === 'start_route' && action.target_key) {
+                if (window.USUClassMap && typeof window.USUClassMap.startRouteTo === 'function') {
+                    window.USUClassMap.startRouteTo(action.target_key);
+                    if (autoCloseMobile && window.innerWidth < 768) {
+                        this.isOpen = false;
+                    }
+                } else {
+                    window.location.href = '/map?route_to=' + encodeURIComponent(action.target_key);
+                }
+                return;
+            }
 
             // Periksa ketersediaan API global USUClassMap (dari map.js)
             if (window.USUClassMap && typeof window.USUClassMap.focusBuildingWithTarget === 'function') {
@@ -396,8 +437,47 @@ window.usuCopilot = function () {
                 if (autoCloseMobile && window.innerWidth < 768) {
                     this.isOpen = false;
                 }
-            } else {
-                console.warn('[Rexa Copilot] window.USUClassMap belum siap atau fungsi focusBuildingWithTarget tidak ditemukan.');
+            } else if (action.building_id) {
+                window.location.href = '/map?focus_building=' + encodeURIComponent(action.building_id);
+            }
+        },
+
+        /**
+         * Fokuskan kartu gedung (dari Smart Spatial Search) secara in-page di /map atau redirect ke /map?focus_building=...
+         */
+        focusCardBuilding(card) {
+            const d = card?.data;
+            if (!d) return;
+            if (window.USUClassMap && typeof window.USUClassMap.focusBuildingWithTarget === 'function') {
+                window.USUClassMap.focusBuildingWithTarget(
+                    d.building_id || null,
+                    d.name || null,
+                    d.latitude ? parseFloat(d.latitude) : null,
+                    d.longitude ? parseFloat(d.longitude) : null,
+                    null, null, null, null, null
+                );
+                if (window.innerWidth < 768) {
+                    this.isOpen = false;
+                }
+            } else if (d.actions?.focus_url) {
+                window.location.href = d.actions.focus_url;
+            }
+        },
+
+        /**
+         * Mulai navigasi rute GPS in-app dari kartu hasil Smart Search (fotokopi atau gedung).
+         */
+        routeCardTarget(card) {
+            const d = card?.data;
+            const targetKey = d?.actions?.route_key;
+            const routeUrl = d?.actions?.route_url;
+            if (targetKey && window.USUClassMap && typeof window.USUClassMap.startRouteTo === 'function') {
+                window.USUClassMap.startRouteTo(targetKey);
+                if (window.innerWidth < 768) {
+                    this.isOpen = false;
+                }
+            } else if (routeUrl) {
+                window.location.href = routeUrl;
             }
         },
 
@@ -411,7 +491,7 @@ window.usuCopilot = function () {
                 if (window.USUClassMap && typeof window.USUClassMap.applyRecentSearch === 'function') {
                     window.USUClassMap.applyRecentSearch(item.sidebar_search);
                 } else {
-                    const searchInput = document.getElementById('search-input');
+                    const searchInput = document.getElementById('map-search-input') || document.getElementById('search-input');
                     if (searchInput) {
                         searchInput.value = item.sidebar_search;
                         searchInput.dispatchEvent(new Event('input', { bubbles: true }));

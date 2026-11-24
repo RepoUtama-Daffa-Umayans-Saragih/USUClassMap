@@ -7,7 +7,9 @@
 import mapboxgl from 'mapbox-gl';
 
 // Bersihkan konteks WebGL saat berpindah atau me-refresh halaman agar tidak exhaust WebGL
+window.__usuAdminMapDestroyed = false;
 window.addEventListener('beforeunload', () => {
+    window.__usuAdminMapDestroyed = true;
     if (window.__usuAdminMapInstance) {
         try {
             window.__usuAdminMapInstance.remove();
@@ -152,6 +154,25 @@ function initAdminMapEngine() {
         window.__usuAdminMapInstance = null;
     }
 
+    // Spatial Routing Editor State (Tahap 4)
+    const ADMIN_ROUTE_GRAPH_SOURCE = 'admin-routing-graph-source';
+    const ADMIN_ROUTE_WALKWAYS_SOURCE = 'admin-routing-walkways-source';
+    const ADMIN_ROUTE_BRIDGES_SOURCE = 'admin-routing-bridges-source';
+    const ADMIN_ROUTE_BARRIERS_SOURCE = 'admin-routing-barriers-source';
+    const ADMIN_ROUTE_DRAFT_SOURCE = 'admin-routing-draft-source';
+    const ADMIN_ROUTE_ENTRANCES_SOURCE = 'admin-routing-entrances-source';
+
+    let adminRoutingMode = null;
+    let adminRoutingOverlayVisible = true;
+    let adminRoutingDraftCoords = [];
+    let adminRoutingPayload = {
+        graphGeojson: { type: 'FeatureCollection', features: [] },
+        overrides: [],
+        buildings: [],
+        photocopyPlaces: []
+    };
+    let adminEntrancePreviewMarker = null;
+
     // =========================================================================
     // 3. MAP INITIALIZATION (MAPBOX GL JS 3D)
     // =========================================================================
@@ -173,10 +194,12 @@ function initAdminMapEngine() {
         // Tambahkan kontrol navigasi (Zoom & Compass/Pitch)
         map.addControl(new mb.NavigationControl({ visualizePitch: true }), 'top-right');
 
-        // Saat style dimuat, pasang layer Satelit dan layer 3D Extrusion
+        // Saat style dimuat, pasang layer Satelit, 3D Extrusion & Overlay Graf Routing
         map.on('style.load', () => {
             injectSatelliteLayer();
             inject3DBuildingsLayer();
+            ensureAdminRoutingLayers();
+            refreshAdminRoutingSources();
         });
 
         updateSatelliteButtonState();
@@ -553,7 +576,7 @@ function initAdminMapEngine() {
         }));
     });
 
-    // Klik peta untuk memindahkan pin aktif secara instan (The Magic UX)
+    // Klik peta untuk memindahkan pin aktif ATAU menggambar overlay routing admin
     map.on('click', function(e) {
         const origTarget = e.originalEvent?.target;
         if (origTarget && (origTarget.closest('.mapboxgl-marker') || origTarget.closest('.mapboxgl-popup'))) {
@@ -561,6 +584,26 @@ function initAdminMapEngine() {
         }
         const clickedLng = e.lngLat.lng;
         const clickedLat = e.lngLat.lat;
+
+        if (['walkway', 'bridge', 'barrier'].includes(adminRoutingMode)) {
+            adminRoutingDraftCoords.push([
+                Number(clickedLng.toFixed(7)),
+                Number(clickedLat.toFixed(7))
+            ]);
+            refreshAdminRoutingDraftSource();
+            window.dispatchEvent(new CustomEvent('admin-routing-draft-updated', {
+                detail: { points: adminRoutingDraftCoords }
+            }));
+            return;
+        }
+
+        if (adminRoutingMode === 'entrance') {
+            previewEntrancePinInternal(clickedLat, clickedLng, false);
+            window.dispatchEvent(new CustomEvent('admin-routing-entrance-picked', {
+                detail: { lat: clickedLat.toFixed(7), lng: clickedLng.toFixed(7) }
+            }));
+            return;
+        }
 
         if (editState.active && editState.marker) {
             editState.marker.setLngLat([clickedLng, clickedLat]);
@@ -958,6 +1001,207 @@ function initAdminMapEngine() {
     }
 
     // =========================================================================
+    // 11B. SPATIAL ROUTING OVERLAY & EDITOR HELPERS (TAHAP 4)
+    // =========================================================================
+    function ensureAdminRoutingLayers() {
+        if (window.__usuAdminMapDestroyed || !map || !map.getCanvasContainer() || !map.isStyleLoaded()) {
+            return false;
+        }
+        const emptyFC = { type: 'FeatureCollection', features: [] };
+
+        [
+            ADMIN_ROUTE_GRAPH_SOURCE,
+            ADMIN_ROUTE_WALKWAYS_SOURCE,
+            ADMIN_ROUTE_BRIDGES_SOURCE,
+            ADMIN_ROUTE_BARRIERS_SOURCE,
+            ADMIN_ROUTE_DRAFT_SOURCE,
+            ADMIN_ROUTE_ENTRANCES_SOURCE
+        ].forEach((srcId) => {
+            if (!map.getSource(srcId)) {
+                map.addSource(srcId, { type: 'geojson', data: emptyFC });
+            }
+        });
+
+        const vis = adminRoutingOverlayVisible ? 'visible' : 'none';
+
+        if (!map.getLayer('admin-routing-graph-edges')) {
+            map.addLayer({
+                id: 'admin-routing-graph-edges',
+                type: 'line',
+                source: ADMIN_ROUTE_GRAPH_SOURCE,
+                layout: { 'line-join': 'round', 'line-cap': 'round', visibility: vis },
+                paint: { 'line-color': '#06b6d4', 'line-width': 2, 'line-opacity': 0.55 }
+            });
+        }
+        if (!map.getLayer('admin-routing-walkways-line')) {
+            map.addLayer({
+                id: 'admin-routing-walkways-line',
+                type: 'line',
+                source: ADMIN_ROUTE_WALKWAYS_SOURCE,
+                layout: { 'line-join': 'round', 'line-cap': 'round', visibility: vis },
+                paint: { 'line-color': '#10b981', 'line-width': 4, 'line-opacity': 0.95 }
+            });
+        }
+        if (!map.getLayer('admin-routing-bridges-line')) {
+            map.addLayer({
+                id: 'admin-routing-bridges-line',
+                type: 'line',
+                source: ADMIN_ROUTE_BRIDGES_SOURCE,
+                layout: { 'line-join': 'round', 'line-cap': 'round', visibility: vis },
+                paint: { 'line-color': '#0284c7', 'line-width': 4.5, 'line-opacity': 0.95 }
+            });
+        }
+        if (!map.getLayer('admin-routing-barriers-line')) {
+            map.addLayer({
+                id: 'admin-routing-barriers-line',
+                type: 'line',
+                source: ADMIN_ROUTE_BARRIERS_SOURCE,
+                layout: { 'line-join': 'round', 'line-cap': 'round', visibility: vis },
+                paint: { 'line-color': '#ef4444', 'line-width': 3.5, 'line-dasharray': [3, 2], 'line-opacity': 0.95 }
+            });
+        }
+        if (!map.getLayer('admin-routing-entrances-points')) {
+            map.addLayer({
+                id: 'admin-routing-entrances-points',
+                type: 'circle',
+                source: ADMIN_ROUTE_ENTRANCES_SOURCE,
+                layout: { visibility: vis },
+                paint: {
+                    'circle-radius': 6,
+                    'circle-color': '#f59e0b',
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#ffffff'
+                }
+            });
+        }
+        if (!map.getLayer('admin-routing-draft-line')) {
+            map.addLayer({
+                id: 'admin-routing-draft-line',
+                type: 'line',
+                source: ADMIN_ROUTE_DRAFT_SOURCE,
+                layout: { 'line-join': 'round', 'line-cap': 'round' },
+                paint: { 'line-color': '#f59e0b', 'line-width': 4, 'line-dasharray': [2, 1] }
+            });
+        }
+        if (!map.getLayer('admin-routing-draft-points')) {
+            map.addLayer({
+                id: 'admin-routing-draft-points',
+                type: 'circle',
+                source: ADMIN_ROUTE_DRAFT_SOURCE,
+                filter: ['==', '$type', 'Point'],
+                paint: {
+                    'circle-radius': 5,
+                    'circle-color': '#f59e0b',
+                    'circle-stroke-width': 2,
+                    'circle-stroke-color': '#ffffff'
+                }
+            });
+        }
+
+        return true;
+    }
+
+    function refreshAdminRoutingDraftSource() {
+        if (window.__usuAdminMapDestroyed || !map || !map.getCanvasContainer()) return;
+        ensureAdminRoutingLayers();
+        const features = [];
+        if (adminRoutingDraftCoords.length >= 2) {
+            features.push({
+                type: 'Feature',
+                properties: {},
+                geometry: { type: 'LineString', coordinates: adminRoutingDraftCoords }
+            });
+        }
+        adminRoutingDraftCoords.forEach((pt) => {
+            features.push({
+                type: 'Feature',
+                properties: {},
+                geometry: { type: 'Point', coordinates: pt }
+            });
+        });
+        const src = map.getSource(ADMIN_ROUTE_DRAFT_SOURCE);
+        if (src) src.setData({ type: 'FeatureCollection', features });
+    }
+
+    function refreshAdminRoutingSources() {
+        if (window.__usuAdminMapDestroyed || !map || !map.getCanvasContainer()) return;
+        if (!ensureAdminRoutingLayers()) {
+            setTimeout(refreshAdminRoutingSources, 250);
+            return;
+        }
+
+        const graphSrc = map.getSource(ADMIN_ROUTE_GRAPH_SOURCE);
+        if (graphSrc) {
+            graphSrc.setData(adminRoutingPayload.graphGeojson || { type: 'FeatureCollection', features: [] });
+        }
+
+        const splitByType = (type) => ({
+            type: 'FeatureCollection',
+            features: (adminRoutingPayload.overrides || [])
+                .filter((ov) => ov.type === type && Array.isArray(ov.coordinates) && ov.coordinates.length >= 2)
+                .map((ov) => ({
+                    type: 'Feature',
+                    properties: { id: ov.id, name: ov.name || type },
+                    geometry: { type: 'LineString', coordinates: ov.coordinates }
+                }))
+        });
+
+        map.getSource(ADMIN_ROUTE_WALKWAYS_SOURCE)?.setData(splitByType('walkway'));
+        map.getSource(ADMIN_ROUTE_BRIDGES_SOURCE)?.setData(splitByType('bridge'));
+        map.getSource(ADMIN_ROUTE_BARRIERS_SOURCE)?.setData(splitByType('barrier'));
+
+        const entranceFeatures = [];
+        [...(adminRoutingPayload.buildings || []), ...(adminRoutingPayload.photocopyPlaces || [])].forEach((entity) => {
+            const eLat = parseFloat(entity.entrance_lat);
+            const eLng = parseFloat(entity.entrance_lng);
+            if (Number.isFinite(eLat) && Number.isFinite(eLng)) {
+                entranceFeatures.push({
+                    type: 'Feature',
+                    properties: { name: entity.name },
+                    geometry: { type: 'Point', coordinates: [eLng, eLat] }
+                });
+            }
+        });
+        map.getSource(ADMIN_ROUTE_ENTRANCES_SOURCE)?.setData({ type: 'FeatureCollection', features: entranceFeatures });
+
+        setRoutingOverlayVisibleInternal(adminRoutingOverlayVisible);
+        refreshAdminRoutingDraftSource();
+    }
+
+    function setRoutingOverlayVisibleInternal(flag) {
+        adminRoutingOverlayVisible = !!flag;
+        if (window.__usuAdminMapDestroyed || !map || !map.getCanvasContainer()) return;
+        const vis = adminRoutingOverlayVisible ? 'visible' : 'none';
+        [
+            'admin-routing-graph-edges',
+            'admin-routing-walkways-line',
+            'admin-routing-bridges-line',
+            'admin-routing-barriers-line',
+            'admin-routing-entrances-points'
+        ].forEach((layerId) => {
+            try {
+                if (map.getLayer(layerId)) {
+                    map.setLayoutProperty(layerId, 'visibility', vis);
+                }
+            } catch (e) {}
+        });
+    }
+
+    function previewEntrancePinInternal(lat, lng, flyTo = true) {
+        if (window.__usuAdminMapDestroyed || !map || !Number.isFinite(lat) || !Number.isFinite(lng)) return;
+        if (!adminEntrancePreviewMarker) {
+            const el = document.createElement('div');
+            el.className = 'px-2 py-1 rounded-full bg-amber-500 text-white text-[11px] font-black border-2 border-white shadow-lg';
+            el.textContent = '🚪 Pintu Masuk';
+            adminEntrancePreviewMarker = new mb.Marker({ element: el, anchor: 'bottom' });
+        }
+        adminEntrancePreviewMarker.setLngLat([lng, lat]).addTo(map);
+        if (flyTo) {
+            map.flyTo({ center: [lng, lat], zoom: 18, duration: 700 });
+        }
+    }
+
+    // =========================================================================
     // 12. PUBLIC API ADAPTER: window.USUAdminMap & window.USUClassMap
     // =========================================================================
     window.USUAdminMap = {
@@ -965,6 +1209,54 @@ function initAdminMapEngine() {
         toggleSatelliteMode: () => toggleSatelliteMode(),
         resetCampusView: () => resetCampusView(),
         togglePhotocopyLayer: () => togglePhotocopyLayer(),
+        setRoutingMode: (mode) => {
+            adminRoutingMode = mode || null;
+            adminRoutingDraftCoords = [];
+            refreshAdminRoutingDraftSource();
+            if (adminRoutingMode !== 'entrance' && adminEntrancePreviewMarker) {
+                try { adminEntrancePreviewMarker.remove(); } catch (e) {}
+            }
+            try {
+                if (map && map.getCanvas()) {
+                    map.getCanvas().style.cursor = adminRoutingMode ? 'crosshair' : '';
+                }
+            } catch (e) {}
+        },
+        setRoutingOverlayVisible: (flag) => setRoutingOverlayVisibleInternal(flag),
+        renderRoutingOverlays: (payload = {}) => {
+            adminRoutingPayload = {
+                graphGeojson: payload.graphGeojson || { type: 'FeatureCollection', features: [] },
+                overrides: Array.isArray(payload.overrides) ? payload.overrides : [],
+                buildings: Array.isArray(payload.buildings) ? payload.buildings : [],
+                photocopyPlaces: Array.isArray(payload.photocopyPlaces) ? payload.photocopyPlaces : []
+            };
+            if (typeof payload.visible === 'boolean') {
+                adminRoutingOverlayVisible = payload.visible;
+            }
+            refreshAdminRoutingSources();
+        },
+        previewEntrancePin: (lat, lng, flyTo = true) => previewEntrancePinInternal(parseFloat(lat), parseFloat(lng), flyTo),
+        undoRoutingDraftPoint: () => {
+            adminRoutingDraftCoords.pop();
+            refreshAdminRoutingDraftSource();
+            window.dispatchEvent(new CustomEvent('admin-routing-draft-updated', {
+                detail: { points: adminRoutingDraftCoords }
+            }));
+        },
+        clearRoutingDraft: () => {
+            adminRoutingDraftCoords = [];
+            refreshAdminRoutingDraftSource();
+            window.dispatchEvent(new CustomEvent('admin-routing-draft-updated', {
+                detail: { points: adminRoutingDraftCoords }
+            }));
+        },
+        focusCoord: (lng, lat, zoom = 18) => {
+            if (!map) return;
+            const nLng = parseFloat(lng);
+            const nLat = parseFloat(lat);
+            if (!Number.isFinite(nLng) || !Number.isFinite(nLat)) return;
+            map.flyTo({ center: [nLng, nLat], zoom, duration: 750 });
+        },
         retryInitMap: () => {
             const el = document.getElementById('admin-map');
             if (el) el.innerHTML = '';

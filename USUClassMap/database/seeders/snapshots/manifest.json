@@ -1,7 +1,7 @@
 {
     "version": 1,
-    "generated_at": "2026-11-24T14:24:31+07:00",
-    "content_hash": "619cc5e3464830c7c6ccf35034f9b4334a77d5beb1e8e76f65d2e8d9355dc682",
+    "generated_at": "2026-11-24T23:09:20+07:00",
+    "content_hash": "67447b8a8cba47f42f4692e81657b867ba5193add3c14547ab3c44443ff548dd",
     "counts": {
         "buildings": 77,
         "rooms": 133,
@@ -13,7 +13,8 @@
         "photocopy_places": 32,
         "fotocopy_services": 2689,
         "photocopy_items": 2689,
-        "photo_360_calibrations": 0
+        "campus_routing_overrides": 0,
+        "photo_360_calibrations": 11
     },
     "files": [
         "buildings.json",
@@ -26,7 +27,9 @@
         "photocopy_places.json",
         "fotocopy_services.json",
         "photocopy_items.json",
+        "campus_routing_overrides.json",
         "photo_360_calibrations.json",
-        "schedules.rdf"
+        "schedules.rdf",
+        "campus_routing_graph.json"
     ]
 }

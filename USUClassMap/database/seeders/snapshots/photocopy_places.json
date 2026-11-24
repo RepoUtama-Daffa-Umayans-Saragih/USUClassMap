@@ -33,7 +33,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 2,
@@ -69,7 +71,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 3,
@@ -105,7 +109,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 4,
@@ -141,7 +147,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 5,
@@ -177,7 +185,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 6,
@@ -213,7 +223,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 7,
@@ -249,7 +261,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 8,
@@ -285,7 +299,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 9,
@@ -321,7 +337,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 10,
@@ -357,7 +375,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 11,
@@ -393,7 +413,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 12,
@@ -429,7 +451,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 13,
@@ -465,7 +489,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 14,
@@ -501,7 +527,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 15,
@@ -537,7 +565,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 16,
@@ -573,7 +603,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 17,
@@ -609,7 +641,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 18,
@@ -645,7 +679,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 19,
@@ -681,7 +717,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 20,
@@ -717,7 +755,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 21,
@@ -753,7 +793,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 22,
@@ -789,7 +831,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 23,
@@ -825,7 +869,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 24,
@@ -861,7 +907,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 25,
@@ -897,7 +945,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 26,
@@ -933,7 +983,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 27,
@@ -969,7 +1021,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 28,
@@ -1005,7 +1059,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 29,
@@ -1041,7 +1097,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 30,
@@ -1077,7 +1135,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 31,
@@ -1113,7 +1173,9 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": null
+        "last_synced_at": null,
+        "entrance_lat": null,
+        "entrance_lng": null
     },
     {
         "id": 32,
@@ -1149,6 +1211,8 @@
         "opening_hours": null,
         "is_verified": 1,
         "is_manually_verified": 1,
-        "last_synced_at": "2026-11-24 07:32:09"
+        "last_synced_at": "2026-11-24 07:32:09",
+        "entrance_lat": null,
+        "entrance_lng": null
     }
 ]

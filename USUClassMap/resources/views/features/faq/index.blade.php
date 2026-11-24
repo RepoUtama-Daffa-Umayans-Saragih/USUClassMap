@@ -165,15 +165,14 @@
                             </a>
 
                             <a
-                                href="https://maps.google.com/?q=Pusat+Sistem+Informasi+USU+Medan"
-                                target="_blank"
+                                href="{{ route('map', ['q' => 'PSI']) }}"
                                 class="w-full flex items-center justify-between px-4 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 border border-gray-300 rounded-lg text-xs font-semibold transition-colors"
                             >
                                 <div class="flex items-center gap-2">
                                     <i class="fa-solid fa-diamond-turn-right text-[#D4A017]"></i>
-                                    <span>Petunjuk Arah Google Maps</span>
+                                    <span>Rute Jalan Kaki Kampus</span>
                                 </div>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] text-gray-400"></i>
+                                <i class="fa-solid fa-route text-[10px] text-[#10A760]"></i>
                             </a>
                         </div>
                     </div>

@@ -90,7 +90,8 @@
                 listContainer.innerHTML = bookmarks.map((b, index) => {
                     const lat = b.latitude || 3.565245;
                     const lng = b.longitude || 98.656520;
-                    const routeUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}&travelmode=walking`;
+                    const routeTarget = b.buildingId ? `building:${b.buildingId}` : `${lat},${lng}`;
+                    const routeUrl = `/map?route_to=${encodeURIComponent(routeTarget)}`;
                     const mapUrl = `/map?q=${encodeURIComponent(b.kodeMk || b.namaMk || '')}`;
 
                     return `
@@ -134,7 +135,7 @@
                                 <a href="${mapUrl}" class="flex-1 py-2 px-3 bg-green-50 hover:bg-[#10A760] text-[#10A760] hover:text-white text-xs font-bold rounded-lg text-center transition-colors flex items-center justify-center gap-1">
                                     📍 Lihat di Peta
                                 </a>
-                                <a href="${routeUrl}" target="_blank" rel="noopener noreferrer" class="py-2 px-3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-lg transition-colors flex items-center gap-1" title="Buka Petunjuk Arah Google Maps">
+                                <a href="${routeUrl}" class="py-2 px-3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-lg transition-colors flex items-center gap-1" title="Buka Navigasi Rute In-App">
                                     🚶 Rute
                                 </a>
                             </div>

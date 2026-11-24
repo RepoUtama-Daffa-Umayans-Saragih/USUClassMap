@@ -88,14 +88,13 @@
                             <span>Pesan Sekarang</span>
                         </a>
 
-                        <!-- Button Lokasi (Pergi ke Maps) -->
+                        <!-- Button Lokasi (Rute In-App) -->
                         <a
                             href="{{ $place->getDirectionUrl() }}"
-                            target="_blank"
                             class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 bg-[#D4A017] hover:bg-[#B8880F] text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2.5 rounded-xl shadow-xs transition-all"
                         >
-                            <i class="fa-solid fa-location-dot text-xs"></i>
-                            <span>Pergi ke Maps</span>
+                            <i class="fa-solid fa-route text-xs"></i>
+                            <span>Rute di Peta Kampus</span>
                         </a>
 
                         <!-- Button Bagikan (Web Share API) -->

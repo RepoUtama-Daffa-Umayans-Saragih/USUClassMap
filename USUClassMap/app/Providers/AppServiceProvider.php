@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Building;
+use App\Models\CampusRoutingOverride;
 use App\Models\Course;
 use App\Models\FotocopyService;
 use App\Models\FotocopyStore;
@@ -80,5 +81,6 @@ class AppServiceProvider extends ServiceProvider
         PhotocopyPlace::observe(GitSnapshotObserver::class);
         FotocopyService::observe(GitSnapshotObserver::class);
         PhotocopyItem::observe(GitSnapshotObserver::class);
+        CampusRoutingOverride::observe(GitSnapshotObserver::class);
     }
 }

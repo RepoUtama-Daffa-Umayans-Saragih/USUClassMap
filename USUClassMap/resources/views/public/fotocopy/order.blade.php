@@ -168,11 +168,10 @@
             <!-- Lokasi Button -->
             <a
                 href="{{ $place->getDirectionUrl() }}"
-                target="_blank"
                 class="inline-flex items-center gap-2 bg-[#D4A017] hover:bg-[#B8880F] text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-xs w-full sm:w-auto justify-center"
             >
-                <i class="fa-solid fa-location-dot text-xs"></i>
-                <span>Pergi ke Maps</span>
+                <i class="fa-solid fa-route text-xs"></i>
+                <span>Rute di Peta Kampus</span>
             </a>
         </div>
 
@@ -380,15 +379,14 @@
                             <span x-text="submitting ? 'Memproses Pesanan...' : 'Lanjut ke Pembayaran'"></span>
                         </button>
 
-                        <!-- Button Lokasi (Sejajar dengan Button Pesan -> Ke Maps) -->
+                        <!-- Button Lokasi (Sejajar dengan Button Pesan -> Rute In-App) -->
                         <a
                             href="{{ $place->getDirectionUrl() }}"
-                            target="_blank"
                             class="bg-[#D4A017] hover:bg-[#B8880F] text-white px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-1.5 shrink-0"
-                            title="Pergi ke Maps"
+                            title="Rute di Peta Kampus"
                         >
-                            <i class="fa-solid fa-location-dot"></i>
-                            <span class="hidden sm:inline">Maps</span>
+                            <i class="fa-solid fa-route"></i>
+                            <span class="hidden sm:inline">Rute</span>
                         </a>
                     </div>
 
