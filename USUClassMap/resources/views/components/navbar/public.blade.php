@@ -75,7 +75,19 @@
 
                         @if(Auth::user()->isAdmin())
                             <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:text-[#10A760]">
-                                Admin Dashboard
+                                Admin Dashboard (Akademik)
+                            </a>
+                        @endif
+
+                        @if(Auth::user()->isAdminFotokopi())
+                            <a href="{{ route('admin-fotokopi.dashboard') }}" class="block px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:text-[#10A760]">
+                                Panel Admin Fotokopi
+                            </a>
+                        @endif
+
+                        @if(Auth::user()->isCashierFotokopi())
+                            <a href="{{ route('cashier-fotokopi.orders.index') }}" class="block px-4 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 hover:text-[#10A760]">
+                                Panel Kasir &amp; POS
                             </a>
                         @endif
 
@@ -148,6 +160,18 @@
                                 Keluar
                             </button>
                         </form>
+                    </div>
+                    <div class="mt-3 pt-2.5 border-t border-gray-200/80 flex flex-wrap gap-2">
+                        @if(Auth::user()->isAdmin())
+                            <a href="{{ route('admin.dashboard') }}" class="px-2.5 py-1 text-[11px] font-bold bg-white border border-gray-200 text-gray-700 hover:text-[#10A760] rounded-lg">Admin Dashboard</a>
+                        @endif
+                        @if(Auth::user()->isAdminFotokopi())
+                            <a href="{{ route('admin-fotokopi.dashboard') }}" class="px-2.5 py-1 text-[11px] font-bold bg-white border border-gray-200 text-gray-700 hover:text-[#10A760] rounded-lg">Panel Admin Fotokopi</a>
+                        @endif
+                        @if(Auth::user()->isCashierFotokopi())
+                            <a href="{{ route('cashier-fotokopi.orders.index') }}" class="px-2.5 py-1 text-[11px] font-bold bg-white border border-gray-200 text-gray-700 hover:text-[#10A760] rounded-lg">Panel Kasir &amp; POS</a>
+                        @endif
+                        <a href="{{ route('profile.edit') }}" class="px-2.5 py-1 text-[11px] font-bold bg-white border border-gray-200 text-gray-700 hover:text-[#10A760] rounded-lg">Pengaturan Profil</a>
                     </div>
                 </div>
             @endauth

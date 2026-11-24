@@ -106,7 +106,7 @@
                         class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-lg border border-emerald-300 text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition-all shadow-2xs cursor-pointer"
                     >
                         <i class="fa-solid fa-print text-emerald-600 text-xs"></i>
-                        <span>Mitra Fotokopi (<span id="fotocopy-count-badge">31</span>)</span>
+                        <span>Mitra Fotokopi (<span id="fotocopy-count-badge">32</span>)</span>
                     </button>
                 </div>
             </div>
@@ -200,10 +200,10 @@
                     id="map-floating-photocopy-btn"
                     onclick="window.USUClassMap && window.USUClassMap.togglePhotocopyLayer()"
                     class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-emerald-700 shadow-md border border-gray-200 hover:border-emerald-500 flex items-center gap-1.5 transition-all cursor-pointer"
-                    title="Tampilkan / Sembunyikan 31 Lokasi Mitra Fotokopi & Percetakan USU"
+                    title="Tampilkan / Sembunyikan Lokasi Mitra Fotokopi & Percetakan USU"
                 >
                     <i class="fa-solid fa-print text-emerald-600"></i>
-                    <span>Fotokopi (<span id="floating-photocopy-count">31</span>)</span>
+                    <span>Fotokopi (<span id="floating-photocopy-count">32</span>)</span>
                 </button>
             </div>
             <div id="map" class="w-full h-full min-h-[400px] z-0"></div>

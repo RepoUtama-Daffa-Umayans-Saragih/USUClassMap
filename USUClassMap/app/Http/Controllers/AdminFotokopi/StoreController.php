@@ -99,9 +99,13 @@ class StoreController extends Controller
         }
 
         $driver = $waManager->driver();
+        $senderDisplay = WhatsAppPhoneNormalizer::formatDisplay(
+            (string) config('whatsapp.sender_phone', '6281283575656')
+        );
         $message = implode("\n", [
             '*TES KONEKSI WHATSAPP - USUCLASSMAP*',
             "Mitra Toko : {$store->name}",
+            "No. Pengirim : {$senderDisplay}",
             'No. Tujuan : ' . WhatsAppPhoneNormalizer::formatDisplay($targetDigits),
             'Driver     : ' . strtoupper($driver->driverName()),
             'Waktu      : ' . now('Asia/Jakarta')->format('d M Y, H:i:s') . ' WIB',

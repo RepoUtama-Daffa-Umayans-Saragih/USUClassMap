@@ -7,6 +7,7 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
+                'resources/js/copilot.js',
                 'resources/js/features/map.js',
                 'resources/js/features/admin/map.js',
                 'resources/js/features/fotocopy-pdf-uploader.js',

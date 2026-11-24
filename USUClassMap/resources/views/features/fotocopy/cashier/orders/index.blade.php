@@ -198,10 +198,16 @@
                                             <span class="text-[10px] text-gray-500 block">{{ $order->file_size ?? 'Dokumen Siap Cetak' }} &bull; Lampiran Mahasiswa</span>
                                         </div>
                                     </div>
+                                    @php
+                                        $legacyPreviewUrl = $order->fileUrl();
+                                        if ($legacyPreviewUrl && !str_contains($legacyPreviewUrl, 'inline=')) {
+                                            $legacyPreviewUrl .= (str_contains($legacyPreviewUrl, '?') ? '&' : '?') . 'inline=1';
+                                        }
+                                    @endphp
                                     <div class="flex items-center gap-1.5 shrink-0">
                                         <button
                                             type="button"
-                                            @click="openPreview('{{ $order->order_code }}', '{{ addslashes($order->customer_name) }}', '{{ addslashes($order->file_name) }}', '{{ $order->file_size }}', '{{ $order->file_type }}', '{{ $order->fileUrl() }}', '{{ route('cashier-fotokopi.orders.print', $order) }}', '{{ addslashes($order->notes ?? '') }}')"
+                                            @click="openPreview({{ \Illuminate\Support\Js::from($order->order_code) }}, {{ \Illuminate\Support\Js::from($order->customer_name) }}, {{ \Illuminate\Support\Js::from($order->file_name) }}, {{ \Illuminate\Support\Js::from($order->file_size) }}, {{ \Illuminate\Support\Js::from($order->file_type) }}, {{ \Illuminate\Support\Js::from($legacyPreviewUrl) }}, {{ \Illuminate\Support\Js::from(route('cashier-fotokopi.orders.print', $order)) }}, {{ \Illuminate\Support\Js::from($order->notes ?? '') }})"
                                             class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-white hover:bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold transition-all shadow-2xs cursor-pointer"
                                             title="Pratinjau Dokumen"
                                         >

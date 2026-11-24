@@ -215,7 +215,7 @@ class ServiceController extends Controller
             'store_id' => 'required|exists:fotocopy_stores,id',
             'name' => 'required|string|max:150',
             'category' => 'required|in:' . implode(',', self::ALLOWED_CATEGORIES),
-            'item_type' => 'required|in:jasa,barang',
+            'item_type' => 'nullable|in:jasa,barang',
             'sub_category' => 'nullable|string|max:100',
             'brand' => 'nullable|string|max:100',
             'pack_qty' => 'nullable|integer|min:1',
@@ -228,6 +228,9 @@ class ServiceController extends Controller
         ]);
 
         unset($validated['image']);
+        $validated['item_type'] = !empty($validated['item_type'])
+            ? $validated['item_type']
+            : (($validated['category'] ?? '') === 'ATK' ? 'barang' : 'jasa');
         $validated['pack_qty'] = (int) ($validated['pack_qty'] ?? 1);
         $validated['brand'] = !empty($validated['brand']) ? $validated['brand'] : null;
         $validated['sub_category'] = !empty($validated['sub_category']) ? $validated['sub_category'] : null;

@@ -30,7 +30,11 @@ class OrderPaymentFulfillmentService
             $order->wa_dispatch_status = 'queued';
             $order->save();
 
-            DispatchOrderToWhatsAppJob::dispatch($order->id);
+            if (config('whatsapp.sync_dispatch', true)) {
+                DispatchOrderToWhatsAppJob::dispatchSync($order->id);
+            } else {
+                DispatchOrderToWhatsAppJob::dispatch($order->id);
+            }
         }
     }
 }

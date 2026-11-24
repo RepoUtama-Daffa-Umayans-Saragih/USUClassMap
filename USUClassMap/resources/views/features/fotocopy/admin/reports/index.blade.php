@@ -93,8 +93,8 @@
                         </td>
                         <td class="p-4">
                             <div class="font-bold text-gray-900 text-xs">{{ $order->customer_name }}</div>
-                            @if($order->customer_phone)
-                                <div class="text-[11px] text-gray-400 font-mono mt-0.5">{{ $order->customer_phone }}</div>
+                            @if($order->customer_whatsapp || $order->customer_phone)
+                                <div class="text-[11px] text-gray-500 font-mono mt-0.5">{{ \App\Support\WhatsAppPhoneNormalizer::formatDisplay($order->customer_whatsapp ?: $order->customer_phone) }}</div>
                             @endif
                         </td>
                         <td class="p-4">
@@ -113,11 +113,16 @@
                             <span class="inline-block px-2 py-0.5 rounded text-[11px] font-bold bg-gray-100 text-gray-800 font-mono">
                                 {{ $order->payment_method }}
                             </span>
-                            <div class="mt-1">
+                            <div class="mt-1 flex flex-col items-center gap-1">
                                 @if($order->payment_status === 'paid')
                                     <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">Lunas</span>
                                 @else
                                     <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">Belum Bayar</span>
+                                @endif
+                                @if($order->wa_dispatch_status && $order->wa_dispatch_status !== 'not_ready')
+                                    <span class="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                                        WA: {{ strtoupper($order->wa_dispatch_status) }}
+                                    </span>
                                 @endif
                             </div>
                         </td>

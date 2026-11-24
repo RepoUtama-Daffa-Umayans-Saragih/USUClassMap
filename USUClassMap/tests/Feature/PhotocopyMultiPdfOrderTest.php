@@ -9,12 +9,15 @@ use App\Models\PhotocopyItem;
 use App\Models\PhotocopyPlace;
 use App\Models\User;
 use App\Models\WhatsappDispatchLog;
+use App\Services\WhatsApp\Drivers\WahaWhatsAppDriver;
+use App\Services\WhatsApp\WhatsAppManager;
 use Database\Seeders\AdminUserSeeder;
 use Database\Seeders\FotocopySeeder;
 use Database\Seeders\TrialAdminFotocopySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 use ZipArchive;
@@ -390,15 +393,20 @@ class PhotocopyMultiPdfOrderTest extends TestCase
 
         $html = $response->getContent();
 
+        // Upload global di bawah katalog sudah dihapus total (100% Cart-Bound)
+        $response->assertDontSee('id="contextual-pdf-section"', false);
+
         $catalogPos = strpos($html, 'Pilih Layanan Cetak');
-        $pdfSectionPos = strpos($html, 'id="contextual-pdf-section"');
+        $cartPanelPos = strpos($html, 'id="cart-panel"');
         $this->assertNotFalse($catalogPos);
-        $this->assertNotFalse($pdfSectionPos);
-        $this->assertLessThan($pdfSectionPos, $catalogPos, 'Katalog harus tampil di atas panel contextual PDF.');
+        $this->assertNotFalse($cartPanelPos);
+        $this->assertLessThan($cartPanelPos, $catalogPos, 'Katalog harus tampil lebih dulu sebelum panel keranjang.');
 
         $response->assertSee('Keranjang Pesanan', false);
-        $response->assertSee('pdfPanelVisible: false', false);
-        $response->assertSee('x-show="pdfPanelVisible || pdfFiles.length > 0"', false);
+        $response->assertSee('x-data="usuFotocopyOrderPage()"', false);
+        $response->assertSee('printCartItems:', false);
+        $response->assertSee('addOrIncrementPrintMenu(', false);
+        $response->assertSee('isCheckoutDisabled()', false);
 
         foreach (['digital_print', 'hybrid_finishing', 'physical_only', 'physical_goods'] as $behavior) {
             $this->assertStringContainsString($behavior, $html);
@@ -603,7 +611,12 @@ class PhotocopyMultiPdfOrderTest extends TestCase
             'this.offlineCart[key].qty',
             'selectHybridOffline',
             'handleCatalogItemClick',
-            'getPdfFileBreakdown',
+            'printCartItems',
+            'addOrIncrementPrintMenu',
+            'decrementPrintMenuQuota',
+            'handleSlotFileChange',
+            'isCheckoutDisabled',
+            'getSlotBreakdown',
             'submitOrder()',
             'window.usuFotocopyOrderPage',
         ] as $leakedJs) {
@@ -645,6 +658,469 @@ class PhotocopyMultiPdfOrderTest extends TestCase
 
         foreach (['simulatePayment()', 'copyToClipboard'] as $leakedPayJs) {
             $this->assertStringNotContainsString($leakedPayJs, $payCheck['visibleText']);
+        }
+    }
+
+    public function test_store_order_rejects_mismatched_pdf_quota_vs_uploaded_files(): void
+    {
+        $initialOrderCount = FotocopyOrder::count();
+
+        $printSvc = PhotocopyItem::where('photocopy_place_id', $this->trialPlace->id)
+            ->where('item_type', 'jasa')
+            ->where('category', 'Print')
+            ->firstOrFail();
+
+        // Case 1: 2 slot configs provided, but only 1 physical PDF file uploaded => 422
+        $respConfigMismatch = $this->post(route('fotocopy.order.store', $this->trialPlace->id), [
+            'customer_name' => 'Uji Kuota Kurang 1',
+            'payment_method' => 'qris',
+            'items' => json_encode([]),
+            'pdf_configs' => json_encode([
+                [
+                    'page_count' => 2,
+                    'copies' => 1,
+                    'print_service_id' => $printSvc->id,
+                    'paper_size' => 'A4',
+                    'note' => 'Slot 1 terisi',
+                ],
+                [
+                    'page_count' => 1,
+                    'copies' => 1,
+                    'print_service_id' => $printSvc->id,
+                    'paper_size' => 'A4',
+                    'note' => 'Slot 2 kosong tanpa file',
+                ],
+            ]),
+            'pdf_files' => [
+                $this->createValidPdfUpload('SatuFileSaja.pdf', 2),
+            ],
+        ], ['Accept' => 'application/json']);
+
+        $respConfigMismatch->assertStatus(422);
+        $this->assertSame($initialOrderCount, FotocopyOrder::count());
+
+        // Case 2: expected_pdf_count = 2 while only 1 file + 1 config uploaded => 422
+        $respExpectedMismatch = $this->post(route('fotocopy.order.store', $this->trialPlace->id), [
+            'customer_name' => 'Uji Kuota Kurang 2',
+            'payment_method' => 'qris',
+            'items' => json_encode([]),
+            'expected_pdf_count' => 2,
+            'pdf_configs' => json_encode([
+                [
+                    'page_count' => 2,
+                    'copies' => 1,
+                    'print_service_id' => $printSvc->id,
+                    'paper_size' => 'A4',
+                    'note' => 'Hanya kirim satu',
+                ],
+            ]),
+            'pdf_files' => [
+                $this->createValidPdfUpload('HanyaSatu.pdf', 2),
+            ],
+        ], ['Accept' => 'application/json']);
+
+        $respExpectedMismatch->assertStatus(422);
+        $this->assertSame($initialOrderCount, FotocopyOrder::count());
+    }
+
+    public function test_cart_bound_multi_menu_flattened_submission_with_different_quotas_and_hybrid_bundle(): void
+    {
+        $printSvc = PhotocopyItem::where('photocopy_place_id', $this->trialPlace->id)
+            ->where('item_type', 'jasa')
+            ->where('category', 'Print')
+            ->firstOrFail();
+
+        $laminatingSvc = PhotocopyItem::where('photocopy_place_id', $this->trialPlace->id)
+            ->where('item_type', 'jasa')
+            ->where('name', 'like', '%Laminating%')
+            ->firstOrFail();
+
+        $atkItem = PhotocopyItem::where('photocopy_place_id', $this->trialPlace->id)
+            ->where('item_type', 'barang')
+            ->firstOrFail();
+
+        // Simulate Menu A (Print, quota=2 -> 2 files) + Menu B (Hybrid Print+Laminating, quota=1 -> 1 file) + ATK (qty=2)
+        $response = $this->post(route('fotocopy.order.store', $this->trialPlace->id), [
+            'customer_name' => 'Nadia Cart Bound',
+            'customer_whatsapp' => '085270009988',
+            'payment_method' => 'qris',
+            'expected_pdf_count' => 3,
+            'items' => json_encode([
+                [
+                    'service_id' => $atkItem->id,
+                    'name' => $atkItem->name,
+                    'category' => $atkItem->category,
+                    'price' => 1, // tampered price; server resolves $atkItem->price
+                    'quantity' => 2,
+                    'fulfillment_mode' => 'standard',
+                ],
+            ]),
+            'pdf_configs' => json_encode([
+                [
+                    'page_count' => 2,
+                    'copies' => 1,
+                    'print_service_id' => $printSvc->id,
+                    'paper_size' => 'A4',
+                    'finishing_service_id' => null,
+                    'note' => 'Menu A Slot 1: cetak bolak-balik',
+                ],
+                [
+                    'page_count' => 3,
+                    'copies' => 2,
+                    'print_service_id' => $printSvc->id,
+                    'paper_size' => 'F4',
+                    'finishing_service_id' => null,
+                    'note' => 'Menu A Slot 2: kertas F4 80gr',
+                ],
+                [
+                    'page_count' => 1,
+                    'copies' => 1,
+                    'print_service_id' => $printSvc->id,
+                    'paper_size' => 'A4',
+                    'finishing_service_id' => $laminatingSvc->id,
+                    'note' => 'Menu B Bundel: laminating sudut rapi',
+                ],
+            ]),
+            'pdf_files' => [
+                $this->createValidPdfUpload('MenuA_Slot1.pdf', 2),
+                $this->createValidPdfUpload('MenuA_Slot2.pdf', 3),
+                $this->createValidPdfUpload('MenuB_BundelLam.pdf', 1),
+            ],
+        ], ['Accept' => 'application/json']);
+
+        $response->assertStatus(200);
+        $order = FotocopyOrder::with(['files', 'items'])
+            ->where('order_code', $response->json('order_code'))
+            ->firstOrFail();
+
+        $this->assertCount(3, $order->files);
+
+        $expectedTotal = (1 * (2 * $printSvc->price))
+            + (2 * (3 * $printSvc->price))
+            + (1 * ($printSvc->price + $laminatingSvc->price))
+            + (2 * $atkItem->price);
+
+        $this->assertEquals($expectedTotal, $order->total_price);
+
+        $this->postJson(route('fotocopy.orders.simulate-payment', $order->order_code))->assertStatus(200);
+        $order->refresh();
+
+        Storage::disk('local')->assertExists($order->invoice_pdf_path);
+        $this->assertSame('%PDF-', substr(Storage::disk('local')->get($order->invoice_pdf_path), 0, 5));
+
+        $storeLogs = WhatsappDispatchLog::where('fotocopy_order_id', $order->id)
+            ->where('recipient_role', 'store')
+            ->orderBy('id')
+            ->get();
+
+        $pdfLogs = $storeLogs->where('message_type', 'pdf_attachment')->values();
+        $this->assertCount(3, $pdfLogs);
+        $this->assertStringContainsString('Menu A Slot 1: cetak bolak-balik', $pdfLogs[0]->payload_json['caption']);
+        $this->assertStringContainsString('Menu A Slot 2: kertas F4 80gr', $pdfLogs[1]->payload_json['caption']);
+        $this->assertStringContainsString('Menu B Bundel: laminating sudut rapi', $pdfLogs[2]->payload_json['caption']);
+        $this->assertStringContainsString('*BUNDEL FINISHING:*', $pdfLogs[2]->payload_json['caption']);
+    }
+
+    public function test_signed_pdf_and_invoice_preview_headers_and_unsigned_rejection(): void
+    {
+        $printSvc = PhotocopyItem::where('photocopy_place_id', $this->trialPlace->id)
+            ->where('item_type', 'jasa')
+            ->where('category', 'Print')
+            ->firstOrFail();
+
+        $resp = $this->post(route('fotocopy.order.store', $this->trialPlace->id), [
+            'customer_name' => 'Rania Uji Preview',
+            'customer_whatsapp' => '085270002211',
+            'payment_method' => 'qris',
+            'items' => json_encode([]),
+            'pdf_configs' => json_encode([[
+                'page_count' => 2,
+                'copies' => 1,
+                'print_service_id' => $printSvc->id,
+                'paper_size' => 'A4',
+                'note' => 'Preview inline check',
+            ]]),
+            'pdf_files' => [$this->createValidPdfUpload('Materi_Ujian.pdf', 2)],
+        ], ['Accept' => 'application/json'])->assertStatus(200);
+
+        $order = FotocopyOrder::with('files')->where('order_code', $resp->json('order_code'))->firstOrFail();
+        $file = $order->files->firstOrFail();
+
+        // Unsigned preview / zip requests MUST return 403
+        $this->get(route('fotocopy.orders.files.preview', ['orderCode' => $order->order_code, 'file' => $file->id]))
+            ->assertStatus(403);
+        $this->get(route('fotocopy.orders.download-zip', ['orderCode' => $order->order_code]))
+            ->assertStatus(403);
+
+        // Signed PDF preview MUST return 200 with inline disposition
+        $previewResp = $this->get($file->signedPreviewUrl(15));
+        $previewResp->assertStatus(200);
+        $this->assertStringContainsString('application/pdf', (string) $previewResp->headers->get('Content-Type'));
+        $this->assertStringContainsString('inline', (string) $previewResp->headers->get('Content-Disposition'));
+
+        // Pay order to generate Invoice PDF
+        $this->postJson(route('fotocopy.orders.simulate-payment', $order->order_code))->assertStatus(200);
+        $order->refresh();
+
+        $this->get(route('fotocopy.orders.invoice.preview', ['orderCode' => $order->order_code]))
+            ->assertStatus(403);
+
+        $invPreviewResp = $this->get($order->invoicePreviewUrl(15));
+        $invPreviewResp->assertStatus(200);
+        $this->assertStringContainsString('application/pdf', (string) $invPreviewResp->headers->get('Content-Type'));
+        $this->assertStringContainsString('inline', (string) $invPreviewResp->headers->get('Content-Disposition'));
+
+        // Signed ZIP archive download MUST contain PDF + Invoice + CATATAN_CETAK.txt
+        $zipResp = $this->get($order->signedZipUrl(15));
+        $zipResp->assertStatus(200);
+        $this->assertStringContainsString('zip', strtolower((string) $zipResp->headers->get('Content-Type')));
+        $zipPath = $zipResp->getFile()->getPathname();
+        $zip = new ZipArchive();
+        $this->assertTrue($zip->open($zipPath) === true);
+        $entries = [];
+        for ($i = 0; $i < $zip->numFiles; $i++) {
+            $entries[] = $zip->getNameIndex($i);
+        }
+        $zip->close();
+        @unlink($zipPath);
+        $this->assertContains('CATATAN_CETAK.txt', $entries);
+        $this->assertContains('01_Materi_Ujian.pdf', $entries);
+        $this->assertTrue(collect($entries)->contains(fn ($e) => str_starts_with($e, 'INV-') && str_ends_with($e, '.pdf')));
+    }
+
+    public function test_public_dispatch_whatsapp_guards_unpaid_and_dispatches_full_bundle_when_paid(): void
+    {
+        $printSvc = PhotocopyItem::where('photocopy_place_id', $this->trialPlace->id)
+            ->where('item_type', 'jasa')
+            ->where('category', 'Print')
+            ->firstOrFail();
+
+        $resp = $this->post(route('fotocopy.order.store', $this->trialPlace->id), [
+            'customer_name' => 'Farhan Uji Dispatch WA',
+            'customer_whatsapp' => '085270004455',
+            'payment_method' => 'qris',
+            'items' => json_encode([]),
+            'pdf_configs' => json_encode([
+                [
+                    'page_count' => 2,
+                    'copies' => 1,
+                    'print_service_id' => $printSvc->id,
+                    'paper_size' => 'A4',
+                    'note' => 'Note file satu WA',
+                ],
+                [
+                    'page_count' => 3,
+                    'copies' => 2,
+                    'print_service_id' => $printSvc->id,
+                    'paper_size' => 'F4',
+                    'note' => 'Note file dua WA',
+                ],
+            ]),
+            'pdf_files' => [
+                $this->createValidPdfUpload('Berkas_Satu.pdf', 2),
+                $this->createValidPdfUpload('Berkas_Dua.pdf', 3),
+            ],
+        ], ['Accept' => 'application/json'])->assertStatus(200);
+
+        $order = FotocopyOrder::where('order_code', $resp->json('order_code'))->firstOrFail();
+
+        // Pending order MUST be rejected (422) with ZERO WA logs
+        $this->postJson(route('fotocopy.orders.dispatchWhatsapp', $order->order_code))
+            ->assertStatus(422);
+        $this->assertSame(0, WhatsappDispatchLog::where('fotocopy_order_id', $order->id)->count());
+
+        // Mark paid (triggers initial dispatch), clear logs, then trigger explicit resend via public endpoint
+        $this->postJson(route('fotocopy.orders.simulate-payment', $order->order_code))->assertStatus(200);
+        WhatsappDispatchLog::where('fotocopy_order_id', $order->id)->delete();
+
+        $dispatchResp = $this->postJson(route('fotocopy.orders.dispatchWhatsapp', $order->order_code));
+        $dispatchResp->assertStatus(200);
+        $dispatchResp->assertJson([
+            'success' => true,
+            'sent_summary' => true,
+            'sent_pdfs' => 2,
+            'total_pdfs' => 2,
+            'sent_invoice' => true,
+        ]);
+
+        $storeLogs = WhatsappDispatchLog::where('fotocopy_order_id', $order->id)
+            ->where('recipient_role', 'store')
+            ->get();
+        $this->assertSame(1, $storeLogs->where('message_type', 'summary')->count());
+        $this->assertSame(2, $storeLogs->where('message_type', 'pdf_attachment')->count());
+        $this->assertSame(1, $storeLogs->where('message_type', 'invoice')->count());
+    }
+
+    public function test_payment_page_shows_pdf_preview_buttons_rich_wa_link_and_no_alpine_leak(): void
+    {
+        $printSvc = PhotocopyItem::where('photocopy_place_id', $this->trialPlace->id)
+            ->where('item_type', 'jasa')
+            ->where('category', 'Print')
+            ->firstOrFail();
+
+        $resp = $this->post(route('fotocopy.order.store', $this->trialPlace->id), [
+            'customer_name' => 'Salma Payment Preview',
+            'customer_whatsapp' => '085270006677',
+            'payment_method' => 'qris',
+            'items' => json_encode([]),
+            'pdf_configs' => json_encode([[
+                'page_count' => 2,
+                'copies' => 1,
+                'print_service_id' => $printSvc->id,
+                'paper_size' => 'A4',
+                'note' => 'Tolong cetak kertas 80gr jangan blur',
+            ]]),
+            'pdf_files' => [$this->createValidPdfUpload('Laporan_Bab2.pdf', 2)],
+        ], ['Accept' => 'application/json'])->assertStatus(200);
+
+        $order = FotocopyOrder::where('order_code', $resp->json('order_code'))->firstOrFail();
+        $this->postJson(route('fotocopy.orders.simulate-payment', $order->order_code))->assertStatus(200);
+        $order->refresh();
+
+        $payResp = $this->get(route('fotocopy.orders.payment', $order->order_code));
+        $payResp->assertStatus(200);
+        $html = $payResp->getContent();
+
+        $payResp->assertSee('Preview PDF', false);
+        $payResp->assertSee('Preview Invoice', false);
+        $payResp->assertSee('Kirim Bukti & File PDF ke WA Toko', false);
+        $payResp->assertSee('Buka Chat WA Manual', false);
+        $payResp->assertSee('Unduh Semua PDF + Invoice (.zip)', false);
+
+        // Verify serialized usuFotocopyPaymentConfig embeds rich wa.me message with PDF spec, note & Invoice link
+        $this->assertSame(1, preg_match('/window\.usuFotocopyPaymentConfig\s*=\s*(\{.*?\});/s', $html, $matches));
+        $cfg = json_decode($matches[1], true);
+        $this->assertIsArray($cfg);
+        $this->assertNotEmpty($cfg['waManualUrl']);
+
+        $parsedQuery = [];
+        parse_str((string) parse_url($cfg['waManualUrl'], PHP_URL_QUERY), $parsedQuery);
+        $waText = $parsedQuery['text'] ?? '';
+        $this->assertStringContainsString($order->invoice_number, $waText);
+        $this->assertStringContainsString($order->pickup_code, $waText);
+        $this->assertStringContainsString('Laporan_Bab2.pdf', $waText);
+        $this->assertStringContainsString('Tolong cetak kertas 80gr jangan blur', $waText);
+        $this->assertStringContainsString('/preview', $waText);
+        $this->assertStringContainsString('/invoice', $waText);
+
+        // DOM anti-JS leak check
+        $check = $this->inspectHtmlDomXDataAndVisibleText($html);
+        $this->assertSame(1, $check['xpath']->query('//*[@x-data="usuFotocopyPaymentPage()"]')->length);
+        foreach (['openDocPreview', 'dispatchWhatsApp', 'waStatusBadgeText', 'simulatePayment()'] as $leaked) {
+            $this->assertStringNotContainsString($leaked, $check['visibleText']);
+        }
+    }
+
+    public function test_whatsapp_sender_phone_config_and_waha_driver_http_dispatch(): void
+    {
+        config([
+            'whatsapp.default' => 'waha',
+            'whatsapp.sender_phone' => '6281283575656',
+            'whatsapp.drivers.waha.base_url' => 'http://localhost:3000',
+            'whatsapp.drivers.waha.session' => 'default',
+            'whatsapp.drivers.waha.api_key' => 'usuclassmap-waha-2026',
+        ]);
+
+        $sessionState = 'WORKING';
+        Http::fake(function ($request) use (&$sessionState) {
+            $url = $request->url();
+            if (str_ends_with($url, '/api/sessions/default')) {
+                if ($sessionState === 'WORKING') {
+                    return Http::response([
+                        'name' => 'default',
+                        'status' => 'WORKING',
+                        'me' => ['id' => '6281283575656@c.us'],
+                    ], 200);
+                }
+
+                return Http::response([
+                    'name' => 'default',
+                    'status' => 'SCAN_QR_CODE',
+                ], 200);
+            }
+
+            if (str_ends_with($url, '/api/sendText')) {
+                if ($sessionState !== 'WORKING') {
+                    return Http::response(['error' => 'Session status is SCAN_QR_CODE'], 422);
+                }
+                return Http::response(['id' => 'waha-msg-1'], 201);
+            }
+
+            if (str_ends_with($url, '/api/sendFile')) {
+                if ($sessionState !== 'WORKING') {
+                    return Http::response(['error' => 'Session status is SCAN_QR_CODE'], 422);
+                }
+                return Http::response(['id' => 'waha-file-1'], 201);
+            }
+
+            return Http::response([], 404);
+        });
+
+        $summary = app(WhatsAppManager::class)->statusSummary();
+        $this->assertSame('waha', $summary['driver']);
+        $this->assertTrue($summary['healthy']);
+        $this->assertSame('WORKING', $summary['session_status']);
+        $this->assertSame('6281283575656', $summary['sender_phone']);
+        $this->assertSame('+62 812-8357-5656', $summary['sender_phone_display']);
+        $this->assertSame('+62 812-8357-5656', $summary['connected_phone']);
+        $this->assertSame('http://localhost:3000/dashboard', $summary['dashboard_url']);
+
+        $driver = new WahaWhatsAppDriver();
+        $this->assertTrue($driver->isHealthy());
+
+        $textRes = $driver->sendText('6285769737410', 'Tes ping dari laptop bot');
+        $this->assertTrue($textRes['success']);
+        $this->assertSame('waha-msg-1', $textRes['external_message_id']);
+
+        $tmpPdf = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'waha_doc_test_' . uniqid() . '.pdf';
+        file_put_contents($tmpPdf, "%PDF-1.4\n%%EOF");
+        try {
+            $docRes = $driver->sendDocument('6285769737410', $tmpPdf, 'INV-TEST.pdf', 'Lampiran Invoice');
+            $this->assertTrue($docRes['success']);
+            $this->assertSame('waha-file-1', $docRes['external_message_id']);
+        } finally {
+            @unlink($tmpPdf);
+        }
+
+        // Flip simulated session state to SCAN_QR_CODE -> graceful degradation without throwing
+        $sessionState = 'SCAN_QR_CODE';
+        $this->assertFalse($driver->isHealthy());
+
+        $qrSummary = app(WhatsAppManager::class)->statusSummary();
+        $this->assertFalse($qrSummary['healthy']);
+        $this->assertSame('SCAN_QR_CODE', $qrSummary['session_status']);
+
+        $qrTextRes = $driver->sendText('6285769737410', 'Tes saat SCAN_QR_CODE');
+        $this->assertFalse($qrTextRes['success']);
+        $this->assertStringContainsString('http://localhost:3000/dashboard', (string) $qrTextRes['error']);
+        $this->assertStringContainsString('+62 812-8357-5656', (string) $qrTextRes['error']);
+    }
+
+    public function test_admin_stores_page_displays_laptop_sender_phone_and_has_no_inline_xdata_leak(): void
+    {
+        config([
+            'whatsapp.default' => 'sandbox',
+            'whatsapp.sender_phone' => '6281283575656',
+        ]);
+
+        Http::fake([
+            'http://localhost:3000/*' => Http::response(['status' => 'SCAN_QR_CODE'], 200),
+        ]);
+
+        $adminFotokopi = User::where('email', 'adminfotokopi@usu.ac.id')->firstOrFail();
+
+        $resp = $this->actingAs($adminFotokopi)->get(route('admin-fotokopi.stores.index'));
+        $resp->assertStatus(200);
+        $html = $resp->getContent();
+
+        $resp->assertSee('+62 812-8357-5656', false);
+        $resp->assertSee('x-data="usuAdminStoresPage()"', false);
+        $resp->assertSee('Buka Dashboard WAHA (Scan QR)', false);
+
+        $check = $this->inspectHtmlDomXDataAndVisibleText($html);
+        $this->assertSame(1, $check['xpath']->query('//*[@x-data="usuAdminStoresPage()"]')->length);
+        foreach (['openSandboxViewer', 'sandboxLogs', 'usuAdminStoresPage'] as $leaked) {
+            $this->assertStringNotContainsString($leaked, $check['visibleText']);
         }
     }
 

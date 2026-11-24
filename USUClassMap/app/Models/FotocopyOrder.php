@@ -135,7 +135,7 @@ class FotocopyOrder extends Model
         return in_array((string) $this->wa_dispatch_status, ['sent', 'sandbox'], true);
     }
 
-    public function invoiceUrl(int $minutes = 30): ?string
+    public function invoiceUrl(int $minutes = 1440): ?string
     {
         if (empty($this->invoice_pdf_path) && !$this->isPaid()) {
             return null;
@@ -147,6 +147,40 @@ class FotocopyOrder extends Model
 
         return URL::temporarySignedRoute(
             'fotocopy.orders.invoice',
+            now()->addMinutes($minutes),
+            ['orderCode' => $this->order_code]
+        );
+    }
+
+    public function invoicePreviewUrl(int $minutes = 1440): ?string
+    {
+        if (empty($this->invoice_pdf_path) && !$this->isPaid()) {
+            return null;
+        }
+
+        if (!Route::has('fotocopy.orders.invoice.preview')) {
+            return null;
+        }
+
+        return URL::temporarySignedRoute(
+            'fotocopy.orders.invoice.preview',
+            now()->addMinutes($minutes),
+            ['orderCode' => $this->order_code]
+        );
+    }
+
+    public function signedZipUrl(int $minutes = 1440): ?string
+    {
+        if (!$this->hasMultiFiles() && !$this->isPaid()) {
+            return null;
+        }
+
+        if (!Route::has('fotocopy.orders.download-zip')) {
+            return null;
+        }
+
+        return URL::temporarySignedRoute(
+            'fotocopy.orders.download-zip',
             now()->addMinutes($minutes),
             ['orderCode' => $this->order_code]
         );

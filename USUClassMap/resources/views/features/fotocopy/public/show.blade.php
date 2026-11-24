@@ -242,7 +242,7 @@
                     <div class="flex items-center justify-between">
                         <h3 class="font-extrabold text-gray-900 text-sm sm:text-base flex items-center gap-2">
                             <span class="w-1.5 h-5 bg-[#10A760] rounded-full"></span>
-                            <span>Katalog Layanan & Produk ATK</span>
+                            <span>Katalog Layanan &amp; Daftar Harga Produk ATK</span>
                         </h3>
                         <a href="{{ route('fotocopy.order', $place->id) }}" class="text-xs font-bold text-[#10A760] hover:underline flex items-center gap-1">
                             <span>Pesan Sekarang</span>

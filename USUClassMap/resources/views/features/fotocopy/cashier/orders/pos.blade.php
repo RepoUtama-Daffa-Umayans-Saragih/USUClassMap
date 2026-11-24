@@ -217,9 +217,20 @@
                                         </p>
                                     </div>
                                 </div>
-                                <button type="button" @click="removeFile(idx)" class="px-2.5 py-1 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
-                                    Hapus
-                                </button>
+                                <div class="flex items-center gap-1.5 shrink-0">
+                                    <button
+                                        type="button"
+                                        x-show="f.previewUrl"
+                                        @click="openFilePreview(f)"
+                                        class="px-2.5 py-1 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition-colors cursor-pointer inline-flex items-center gap-1"
+                                    >
+                                        <i class="fa-regular fa-eye"></i>
+                                        <span>Preview</span>
+                                    </button>
+                                    <button type="button" @click="removeFile(idx)" class="px-2.5 py-1 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
+                                        Hapus
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -253,6 +264,51 @@
                 </button>
             </div>
         </form>
+
+        <!-- POS In-Page File Preview Modal -->
+        <div
+            x-show="previewModalOpen"
+            x-cloak
+            class="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-xs flex items-center justify-center p-4"
+            @keydown.escape.window="closeFilePreview()"
+        >
+            <div @click.away="closeFilePreview()" class="bg-white rounded-2xl shadow-2xl border border-gray-100 max-w-4xl w-full overflow-hidden flex flex-col max-h-[90vh]">
+                <div class="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-emerald-600 text-white text-[10px] font-black uppercase" x-text="(previewFile.ext || 'PDF').toUpperCase()"></span>
+                            <h3 class="text-xs sm:text-sm font-black truncate" x-text="previewFile.name"></h3>
+                        </div>
+                        <p class="text-[11px] text-slate-300 mt-0.5" x-text="previewFile.size + ' • ' + previewFile.pageCount + ' halaman'"></p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <a
+                            :href="previewFile.url"
+                            target="_blank"
+                            rel="noopener"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition"
+                        >
+                            <span>Buka di Tab Baru</span>
+                        </a>
+                        <button type="button" @click="closeFilePreview()" class="text-slate-300 hover:text-white px-2.5 py-1 text-lg font-bold cursor-pointer">&times;</button>
+                    </div>
+                </div>
+                <div class="flex-1 bg-slate-800 min-h-[65vh] flex items-center justify-center">
+                    <template x-if="previewModalOpen && previewFile.url && ['jpg', 'jpeg', 'png', 'webp'].includes(previewFile.ext)">
+                        <img :src="previewFile.url" :alt="previewFile.name" class="max-h-[70vh] max-w-full object-contain bg-white" />
+                    </template>
+                    <template x-if="previewModalOpen && previewFile.url && previewFile.ext === 'pdf'">
+                        <iframe :src="previewFile.url" class="w-full h-[70vh] border-0 bg-white" title="Pratinjau PDF POS"></iframe>
+                    </template>
+                    <template x-if="previewModalOpen && previewFile.url && !['pdf', 'jpg', 'jpeg', 'png', 'webp'].includes(previewFile.ext)">
+                        <div class="p-8 text-center text-white space-y-3 text-xs">
+                            <p>Browser tidak mendukung pratinjau langsung format <span class="font-bold uppercase" x-text="previewFile.ext"></span>.</p>
+                            <a :href="previewFile.url" target="_blank" rel="noopener" class="inline-block px-4 py-2 rounded-xl bg-emerald-600 font-bold">Buka / Unduh File</a>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -262,6 +318,35 @@
                 items: [],
                 uploadedFiles: [],
                 dragOver: false,
+                previewModalOpen: false,
+                previewFile: { name: '', size: '', pageCount: 1, url: '', ext: 'pdf' },
+                init() {
+                    window.addEventListener('beforeunload', () => {
+                        this.uploadedFiles.forEach(entry => this.revokeFilePreview(entry));
+                    });
+                },
+                revokeFilePreview(entry) {
+                    if (entry && entry.previewUrl) {
+                        try {
+                            URL.revokeObjectURL(entry.previewUrl);
+                        } catch (e) {}
+                        entry.previewUrl = '';
+                    }
+                },
+                openFilePreview(entry) {
+                    if (!entry || !entry.previewUrl) return;
+                    this.previewFile = {
+                        name: entry.name || 'Dokumen',
+                        size: entry.size || '',
+                        pageCount: Number(entry.pageCount || 1),
+                        url: entry.previewUrl,
+                        ext: (entry.ext || 'pdf').toLowerCase()
+                    };
+                    this.previewModalOpen = true;
+                },
+                closeFilePreview() {
+                    this.previewModalOpen = false;
+                },
                 addItem(id, name, price, unit) {
                     const existing = this.items.find(i => i.service_id === id);
                     if (existing) {
@@ -316,9 +401,12 @@
                             }
                         }
 
+                        const previewUrl = typeof URL.createObjectURL === 'function' ? URL.createObjectURL(file) : '';
+
                         this.uploadedFiles.push({
                             uid,
                             file,
+                            previewUrl,
                             name: file.name,
                             size: sizeStr,
                             ext,
@@ -330,6 +418,7 @@
                     this.syncFileInput();
                 },
                 removeFile(idx) {
+                    this.revokeFilePreview(this.uploadedFiles[idx]);
                     this.uploadedFiles.splice(idx, 1);
                     this.syncFileInput();
                 },

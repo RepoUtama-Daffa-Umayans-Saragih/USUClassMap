@@ -39,8 +39,12 @@ Route::get('/fotocopy/{id}/order', [PhotocopyController::class, 'order'])->name(
 Route::post('/fotocopy/{id}/order', [PhotocopyController::class, 'storeOrder'])->name('fotocopy.order.store');
 Route::get('/fotocopy/orders/{orderCode}/payment', [PhotocopyController::class, 'paymentInstructions'])->name('fotocopy.orders.payment');
 Route::post('/fotocopy/orders/{orderCode}/simulate-payment', [PhotocopyController::class, 'simulatePayment'])->name('fotocopy.orders.simulate-payment');
+Route::post('/fotocopy/orders/{orderCode}/dispatch-whatsapp', [PhotocopyController::class, 'dispatchWhatsapp'])->name('fotocopy.orders.dispatchWhatsapp');
 Route::get('/fotocopy/orders/{orderCode}/invoice', [PhotocopyController::class, 'downloadInvoice'])->name('fotocopy.orders.invoice');
-Route::get('/fotocopy/orders/{orderCode}/files/{file}', [PhotocopyController::class, 'downloadOrderFile'])->name('fotocopy.orders.files.download');
+Route::get('/fotocopy/orders/{orderCode}/invoice/preview', [PhotocopyController::class, 'previewInvoice'])->middleware('signed')->name('fotocopy.orders.invoice.preview');
+Route::get('/fotocopy/orders/{orderCode}/download-zip', [PhotocopyController::class, 'downloadOrderZip'])->middleware('signed')->name('fotocopy.orders.download-zip');
+Route::get('/fotocopy/orders/{orderCode}/files/{file}/preview', [PhotocopyController::class, 'previewOrderFile'])->middleware('signed')->name('fotocopy.orders.files.preview');
+Route::get('/fotocopy/orders/{orderCode}/files/{file}/download', [PhotocopyController::class, 'downloadOrderFile'])->middleware('signed')->name('fotocopy.orders.files.download');
 
 // Rute alternatif direktori mitra fotocopy tim
 Route::get('/photocopy-directory', [PhotocopyController::class, 'index'])->name('photocopy.directory');
@@ -49,8 +53,12 @@ Route::get('/photocopy-directory/{id}/order', [PhotocopyController::class, 'orde
 Route::post('/photocopy-directory/{id}/order', [PhotocopyController::class, 'storeOrder'])->name('photocopy.directory.order.store');
 Route::get('/photocopy-directory/orders/{orderCode}/payment', [PhotocopyController::class, 'paymentInstructions'])->name('photocopy.directory.orders.payment');
 Route::post('/photocopy-directory/orders/{orderCode}/simulate-payment', [PhotocopyController::class, 'simulatePayment'])->name('photocopy.directory.orders.simulate-payment');
+Route::post('/photocopy-directory/orders/{orderCode}/dispatch-whatsapp', [PhotocopyController::class, 'dispatchWhatsapp'])->name('photocopy.directory.orders.dispatchWhatsapp');
 Route::get('/photocopy-directory/orders/{orderCode}/invoice', [PhotocopyController::class, 'downloadInvoice'])->name('photocopy.directory.orders.invoice');
-Route::get('/photocopy-directory/orders/{orderCode}/files/{file}', [PhotocopyController::class, 'downloadOrderFile'])->name('photocopy.directory.orders.files.download');
+Route::get('/photocopy-directory/orders/{orderCode}/invoice/preview', [PhotocopyController::class, 'previewInvoice'])->middleware('signed')->name('photocopy.directory.orders.invoice.preview');
+Route::get('/photocopy-directory/orders/{orderCode}/download-zip', [PhotocopyController::class, 'downloadOrderZip'])->middleware('signed')->name('photocopy.directory.orders.download-zip');
+Route::get('/photocopy-directory/orders/{orderCode}/files/{file}/preview', [PhotocopyController::class, 'previewOrderFile'])->middleware('signed')->name('photocopy.directory.orders.files.preview');
+Route::get('/photocopy-directory/orders/{orderCode}/files/{file}/download', [PhotocopyController::class, 'downloadOrderFile'])->middleware('signed')->name('photocopy.directory.orders.files.download');
 
 // 360 Photo Inspector & SPARQL Calibration (No Auth Required)
 Route::get('/admin/cek-foto', [PhotoInspectorController::class, 'index'])->name('admin.cek-foto');

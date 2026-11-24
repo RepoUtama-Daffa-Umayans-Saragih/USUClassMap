@@ -196,4 +196,104 @@ class WhatsAppPayloadFormatter
 
         return WhatsAppPhoneNormalizer::toWaMeUrl($rawPhone, $this->formatStoreSummary($order));
     }
+
+    /**
+     * Format rich customer-initiated manual wa.me message containing Invoice, pickup code,
+     * every PDF document spec + note + 24h signed preview URL, offline/ATK items, and ZIP link.
+     */
+    public function formatManualCustomerWaText(FotocopyOrder $order, int $signedMinutes = 1440): string
+    {
+        $order->loadMissing(['store', 'items', 'files']);
+        $place = $order->photocopy_place_resolved;
+        $storeName = $place?->name ?? $order->store?->name ?? 'Mitra Fotokopi USU';
+        $statusLabel = $order->isPaid() ? '*LUNAS*' : 'Menunggu Pembayaran';
+        $custWa = WhatsAppPhoneNormalizer::formatDisplay($order->customer_whatsapp ?: $order->customer_phone);
+
+        $channel = $order->payment_channel ? ' (' . $order->getPaymentChannelLabel() . ')' : '';
+        $lines = [
+            "Halo *{$storeName}*, saya mengirim rincian pesanan cetak dari USUClassMap:",
+            "Kode Order   : #{$order->order_code}",
+            'No. Invoice  : ' . ($order->invoice_number ?: '-'),
+            'Kode Ambil   : *' . ($order->pickup_code ?: $order->order_code) . '*',
+            "Status Bayar : {$statusLabel} — {$order->getPaymentMethodLabel()}{$channel}",
+            'Est. Selesai : ' . ($order->pickup_estimate ?: '+/- 20 menit'),
+            "Pemesan      : {$order->customer_name}",
+            "No. WA       : {$custWa}",
+        ];
+
+        if ($order->files->isNotEmpty()) {
+            $lines[] = '';
+            $lines[] = "*Dokumen PDF ({$order->files->count()} File):*";
+            foreach ($order->files as $idx => $file) {
+                $num = $idx + 1;
+                $finishTag = $file->finishing_option ? " + Bundel {$file->finishing_option}" : '';
+                $lines[] = "{$num}. {$file->original_name} ({$file->page_count} hal x {$file->copies} rangkap | {$file->print_mode} {$file->paper_size}{$finishTag})";
+                if (!empty($file->note)) {
+                    $lines[] = "   Note: \"{$file->note}\"";
+                }
+                if ($file->isPhysicallyAvailable()) {
+                    $lines[] = '   Link PDF: ' . $file->signedPreviewUrl($signedMinutes);
+                }
+            }
+        }
+
+        $fileLinkedItemIds = $order->files
+            ->pluck('fotocopy_order_item_id')
+            ->filter()
+            ->map(fn ($id): int => (int) $id)
+            ->all();
+
+        $otherItems = $order->files->isNotEmpty()
+            ? $order->items->reject(fn ($item): bool => in_array((int) $item->id, $fileLinkedItemIds, true))
+            : $order->items;
+
+        $offlineItems = $otherItems->filter(fn ($item): bool => str_contains((string) $item->category, 'Offline Fisik'));
+        $atkItems = $otherItems->reject(fn ($item): bool => str_contains((string) $item->category, 'Offline Fisik'));
+
+        if ($offlineItems->isNotEmpty()) {
+            $lines[] = '';
+            $lines[] = '*Layanan Berkas Fisik (Offline di Toko):*';
+            foreach ($offlineItems as $oi) {
+                $lines[] = "• {$oi->service_name} (x{$oi->quantity}) [Wajib Bawa Berkas Fisik]";
+            }
+        }
+
+        if ($atkItems->isNotEmpty()) {
+            $lines[] = '';
+            $lines[] = '*Barang ATK & Perlengkapan:*';
+            foreach ($atkItems as $ai) {
+                $lines[] = "• {$ai->service_name} (x{$ai->quantity})";
+            }
+        }
+
+        if (!empty($order->notes)) {
+            $lines[] = '';
+            $lines[] = "Catatan Umum : \"{$order->notes}\"";
+        }
+
+        $lines[] = '';
+        $lines[] = "*Total Tagihan : {$order->getFormattedTotal()}*";
+
+        if ($order->isPaid()) {
+            if ($invUrl = $order->invoiceUrl($signedMinutes)) {
+                $lines[] = 'Link Invoice PDF : ' . $invUrl;
+            }
+        }
+        if ($zipUrl = $order->signedZipUrl($signedMinutes)) {
+            $lines[] = 'Unduh Paket ZIP (.zip) : ' . $zipUrl;
+        }
+
+        return implode("\n", $lines);
+    }
+
+    /**
+     * Build customer manual wa.me URL carrying full order, file links, notes, and invoice link.
+     */
+    public function buildRichCustomerWaMeUrl(FotocopyOrder $order, int $signedMinutes = 1440): string
+    {
+        $place = $order->photocopy_place_resolved;
+        $rawPhone = $order->store?->whatsapp ?: $place?->whatsapp ?: $place?->phone ?: '6285769737410';
+
+        return WhatsAppPhoneNormalizer::toWaMeUrl($rawPhone, $this->formatManualCustomerWaText($order, $signedMinutes));
+    }
 }

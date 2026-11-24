@@ -2,6 +2,23 @@
     <x-slot name="title">Instruksi Pembayaran - #{{ $order->order_code }}</x-slot>
 
     @php
+        $resolvedWaStatus = $waStatus ?? app(\App\Services\WhatsApp\WhatsAppManager::class)->statusSummary();
+        $resolvedFiles = $orderFilesPayload ?? ($order->files ? $order->files->map(fn ($f) => [
+            'id' => $f->id,
+            'original_name' => $f->original_name,
+            'formatted_size' => $f->formatted_size,
+            'page_count' => $f->page_count,
+            'copies' => $f->copies,
+            'spec' => $f->getDisplaySpecSummary(),
+            'note' => $f->note,
+            'finishing_option' => $f->finishing_option,
+            'subtotal_estimated' => $f->subtotal_estimated,
+            'available' => $f->isPhysicallyAvailable(),
+            'preview_url' => $f->signedPreviewUrl(1440),
+            'download_url' => $f->signedDownloadUrl(1440),
+        ])->values()->all() : []);
+        $resolvedWaManualUrl = $waManualUrl ?? app(\App\Services\WhatsApp\WhatsAppPayloadFormatter::class)->buildRichCustomerWaMeUrl($order, 1440);
+
         $usuPaymentConfig = [
             'isPaid' => $order->isPaid(),
             'paymentStatus' => $order->payment_status,
@@ -10,8 +27,16 @@
             'invoiceNumber' => $order->invoice_number ?? '',
             'pickupCode' => $order->pickup_code ?? '',
             'invoiceUrl' => $invoiceDownloadUrl ?? '',
+            'invoicePreviewUrl' => $invoicePreviewUrl ?? ($order->isPaid() ? ($order->invoicePreviewUrl(1440) ?? '') : ''),
+            'zipDownloadUrl' => $zipDownloadUrl ?? ($order->signedZipUrl(1440) ?? ''),
             'waDispatchStatus' => $order->wa_dispatch_status ?? 'not_ready',
+            'waDriver' => $resolvedWaStatus['driver'] ?? 'sandbox',
+            'waDriverLabel' => $resolvedWaStatus['label'] ?? 'Mode Sandbox',
+            'waHealthy' => (bool) ($resolvedWaStatus['healthy'] ?? false),
+            'waManualUrl' => $resolvedWaManualUrl,
+            'totalPdfs' => count($resolvedFiles),
             'simulateUrl' => route('fotocopy.orders.simulate-payment', $order->order_code),
+            'dispatchWaUrl' => route('fotocopy.orders.dispatchWhatsapp', $order->order_code),
             'csrfToken' => csrf_token(),
         ];
     @endphp
@@ -29,10 +54,89 @@
                 invoiceNumber: cfg.invoiceNumber || '',
                 pickupCode: cfg.pickupCode || '',
                 invoiceUrl: cfg.invoiceUrl || '',
+                invoicePreviewUrl: cfg.invoicePreviewUrl || '',
+                zipDownloadUrl: cfg.zipDownloadUrl || '',
                 waDispatchStatus: cfg.waDispatchStatus || 'not_ready',
+                waDriver: cfg.waDriver || 'sandbox',
+                waDriverLabel: cfg.waDriverLabel || 'Mode Sandbox',
+                waHealthy: Boolean(cfg.waHealthy),
+                waManualUrl: cfg.waManualUrl || '',
+                totalPdfs: Number(cfg.totalPdfs || 0),
                 simulating: false,
+                waSending: false,
+                waFeedback: '',
+                waFeedbackType: 'info',
                 copied: false,
                 copiedText: '',
+
+                // In-page PDF/Invoice preview modal state
+                previewModalOpen: false,
+                previewDoc: {
+                    title: '',
+                    subtitle: '',
+                    url: '',
+                    downloadUrl: '',
+                    note: ''
+                },
+
+                openDocPreview(doc) {
+                    if (!doc || !doc.url) return;
+                    this.previewDoc = {
+                        title: doc.title || 'Dokumen PDF',
+                        subtitle: doc.subtitle || '',
+                        url: doc.url,
+                        downloadUrl: doc.downloadUrl || doc.url,
+                        note: doc.note || ''
+                    };
+                    this.previewModalOpen = true;
+                },
+
+                openInvoicePreview() {
+                    if (!this.invoicePreviewUrl) return;
+                    this.openDocPreview({
+                        title: 'Bukti Invoice Resmi ' + (this.invoiceNumber || ''),
+                        subtitle: 'Format PDF Resmi • Siap Cetak / Arsip',
+                        url: this.invoicePreviewUrl,
+                        downloadUrl: this.invoiceUrl || this.invoicePreviewUrl,
+                        note: ''
+                    });
+                },
+
+                closeDocPreview() {
+                    this.previewModalOpen = false;
+                },
+
+                waStatusBadgeText() {
+                    if (this.waDispatchStatus === 'sent') {
+                        return 'Terkirim Lengkap: Ringkasan + ' + this.totalPdfs + ' PDF + Invoice';
+                    }
+                    if (this.waDispatchStatus === 'sandbox') {
+                        return 'Mode Sandbox (Tercatat di Simulator)';
+                    }
+                    if (this.waDispatchStatus === 'queued') {
+                        return 'Sedang Mengirim / Queued';
+                    }
+                    if (this.waDispatchStatus === 'partial') {
+                        return 'Sebagian Terkirim — Klik Kirim Ulang';
+                    }
+                    if (this.waDispatchStatus === 'failed') {
+                        return 'Gagal — Klik Kirim Ulang';
+                    }
+                    return 'Siap Dikirim ke WA Toko';
+                },
+
+                waStatusBadgeClass() {
+                    if (this.waDispatchStatus === 'sent') {
+                        return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                    }
+                    if (this.waDispatchStatus === 'queued') {
+                        return 'bg-blue-100 text-blue-800 border-blue-200';
+                    }
+                    if (this.waDispatchStatus === 'failed' || this.waDispatchStatus === 'partial') {
+                        return 'bg-red-100 text-red-800 border-red-200';
+                    }
+                    return 'bg-amber-100 text-amber-900 border-amber-200';
+                },
 
                 copyToClipboard(text, label) {
                     navigator.clipboard.writeText(text).then(() => {
@@ -48,6 +152,7 @@
 
                     fetch(cfg.simulateUrl, {
                         method: 'POST',
+                        credentials: 'same-origin',
                         headers: {
                             'Content-Type': 'application/json',
                             'Accept': 'application/json',
@@ -64,7 +169,13 @@
                             this.invoiceNumber = data.invoice_number || this.invoiceNumber;
                             this.pickupCode = data.pickup_code || this.pickupCode;
                             this.invoiceUrl = data.invoice_url || this.invoiceUrl;
+                            this.invoicePreviewUrl = data.invoice_preview_url || this.invoicePreviewUrl;
+                            this.zipDownloadUrl = data.zip_download_url || this.zipDownloadUrl;
                             this.waDispatchStatus = data.wa_dispatch_status || 'queued';
+                            if (data.wa_driver) this.waDriver = data.wa_driver;
+                            if (data.wa_driver_label) this.waDriverLabel = data.wa_driver_label;
+                            if (typeof data.wa_healthy === 'boolean') this.waHealthy = data.wa_healthy;
+                            if (data.wa_manual_url) this.waManualUrl = data.wa_manual_url;
                         } else {
                             alert(data.message || 'Simulasi pembayaran gagal.');
                         }
@@ -74,6 +185,46 @@
                         console.error('Error simulating payment:', err);
                         alert('Gagal menghubungi endpoint simulasi.');
                         this.simulating = false;
+                    });
+                },
+
+                dispatchWhatsApp() {
+                    if (!this.isPaid || this.waSending) return;
+                    this.waSending = true;
+                    this.waFeedback = '';
+
+                    fetch(cfg.dispatchWaUrl, {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': cfg.csrfToken
+                        }
+                    })
+                    .then(async res => {
+                        const data = await res.json().catch(() => ({}));
+                        if (!res.ok) {
+                            throw new Error(data.message || 'Gagal memicu pengiriman WhatsApp.');
+                        }
+                        if (data.wa_dispatch_status) this.waDispatchStatus = data.wa_dispatch_status;
+                        if (data.driver) this.waDriver = data.driver;
+                        if (data.driver_label) this.waDriverLabel = data.driver_label;
+                        if (typeof data.healthy === 'boolean') this.waHealthy = data.healthy;
+                        if (data.wa_manual_url) this.waManualUrl = data.wa_manual_url;
+                        if (typeof data.total_pdfs === 'number') this.totalPdfs = data.total_pdfs;
+
+                        this.waFeedback = data.message || 'Proses pengiriman WhatsApp selesai.';
+                        this.waFeedbackType = (data.wa_dispatch_status === 'sent')
+                            ? 'success'
+                            : (data.wa_dispatch_status === 'sandbox' ? 'info' : 'warning');
+                    })
+                    .catch(err => {
+                        this.waFeedback = err.message || 'Terjadi gangguan saat mengirim bukti & file ke WhatsApp.';
+                        this.waFeedbackType = 'error';
+                    })
+                    .finally(() => {
+                        this.waSending = false;
                     });
                 }
             };
@@ -489,21 +640,68 @@
                         </div>
                     </div>
 
-                    <!-- Uploaded Multi-PDF Summary -->
-                    @if($order->files && $order->files->isNotEmpty())
+                    <!-- Uploaded Multi-PDF Summary with Preview PDF & Signed Download -->
+                    @if(!empty($resolvedFiles))
                         <div class="space-y-2 pt-1">
-                            <span class="text-[11px] font-bold text-gray-700 block">Dokumen PDF Diunggah ({{ $order->files->count() }} File):</span>
-                            <div class="space-y-2 max-h-52 overflow-y-auto pr-1">
-                                @foreach($order->files as $file)
-                                    <div class="p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-200/80 text-xs space-y-1">
-                                        <div class="flex items-center justify-between gap-2">
-                                            <span class="font-bold text-gray-900 truncate">{{ $file->original_name }}</span>
-                                            <span class="font-extrabold text-[#10A760] shrink-0">Rp {{ number_format($file->subtotal_estimated, 0, ',', '.') }}</span>
+                            <span class="text-[11px] font-bold text-gray-700 block">Dokumen PDF Diunggah ({{ count($resolvedFiles) }} File):</span>
+                            <div class="space-y-2.5 max-h-72 overflow-y-auto pr-1">
+                                @foreach($resolvedFiles as $idx => $fData)
+                                    @php
+                                        $docPreviewPayload = [
+                                            'title' => $fData['original_name'],
+                                            'subtitle' => $fData['page_count'] . ' hal × ' . $fData['copies'] . ' rangkap • ' . $fData['spec'],
+                                            'url' => $fData['preview_url'],
+                                            'downloadUrl' => $fData['download_url'],
+                                            'note' => $fData['note'] ?? '',
+                                        ];
+                                    @endphp
+                                    <div class="p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-200/80 text-xs space-y-1.5">
+                                        <div class="flex items-start justify-between gap-2">
+                                            <div class="min-w-0">
+                                                <div class="flex items-center gap-1.5">
+                                                    <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-600 text-white shrink-0">PDF #{{ $idx + 1 }}</span>
+                                                    <span class="font-bold text-gray-900 truncate">{{ $fData['original_name'] }}</span>
+                                                </div>
+                                                <div class="text-[10px] text-gray-600 mt-0.5">
+                                                    {{ $fData['page_count'] }} hal &times; {{ $fData['copies'] }} rangkap &bull; {{ $fData['spec'] }} &bull; {{ $fData['formatted_size'] }}
+                                                </div>
+                                            </div>
+                                            <span class="font-extrabold text-[#10A760] shrink-0">Rp {{ number_format($fData['subtotal_estimated'], 0, ',', '.') }}</span>
                                         </div>
-                                        <div class="text-[10px] text-gray-600">{{ $file->getDisplaySpecSummary() }}</div>
-                                        @if($file->note)
+
+                                        @if(!empty($fData['note']))
                                             <div class="text-[10px] text-amber-900 bg-amber-50 px-2 py-1 rounded-md border border-amber-200 italic">
-                                                Note: {{ $file->note }}
+                                                <span class="font-extrabold not-italic">Note:</span> {{ $fData['note'] }}
+                                            </div>
+                                        @endif
+
+                                        @if(!empty($fData['available']))
+                                            <div class="flex flex-wrap items-center gap-1.5 pt-0.5">
+                                                <button
+                                                    type="button"
+                                                    @click="openDocPreview({{ \Illuminate\Support\Js::from($docPreviewPayload) }})"
+                                                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white hover:bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold transition cursor-pointer"
+                                                >
+                                                    <i class="fa-regular fa-eye"></i>
+                                                    <span>Preview PDF</span>
+                                                </button>
+                                                <a
+                                                    href="{{ $fData['preview_url'] }}"
+                                                    target="_blank"
+                                                    rel="noopener"
+                                                    class="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-700 border border-gray-200 text-[10px] font-semibold transition"
+                                                    title="Buka PDF di tab baru"
+                                                >
+                                                    <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                                                    <span>Tab Baru</span>
+                                                </a>
+                                                <a
+                                                    href="{{ $fData['download_url'] }}"
+                                                    class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold transition"
+                                                >
+                                                    <i class="fa-solid fa-download text-[9px]"></i>
+                                                    <span>Unduh</span>
+                                                </a>
                                             </div>
                                         @endif
                                     </div>
@@ -555,43 +753,92 @@
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
-                    <div class="pt-2 space-y-2">
-                        @php
-                            $waNumber = preg_replace('/[^\d]/', '', $place->whatsapp ?: $place->phone ?: '6285769737410');
-                            if (str_starts_with($waNumber, '08')) {
-                                $waNumber = '62' . substr($waNumber, 1);
-                            } elseif (str_starts_with($waNumber, '0')) {
-                                $waNumber = '62' . substr($waNumber, 1);
-                            }
+                    <!-- Action Buttons: Invoice Preview/Download & 2-Layer WhatsApp Delivery -->
+                    <div class="pt-2 space-y-2.5">
+                        <!-- Invoice Buttons (Paid) -->
+                        <div x-show="isPaid && invoiceUrl" x-cloak class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            <button
+                                type="button"
+                                @click="openInvoicePreview()"
+                                :disabled="!invoicePreviewUrl"
+                                class="w-full bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 py-2.5 px-3 rounded-xl text-xs font-extrabold transition shadow-2xs flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                            >
+                                <i class="fa-regular fa-eye"></i>
+                                <span>Preview Invoice</span>
+                            </button>
 
-                            $waMsg = "Halo {$place->name}, saya telah memesan melalui USUStarterMap:\n";
-                            $waMsg .= "Kode Pesanan: #{$order->order_code}\n";
-                            $waMsg .= "Nama: {$order->customer_name}\n";
-                            $waMsg .= "Total: {$order->getFormattedTotal()}\n";
-                            $waMsg .= "Metode: " . $order->getPaymentMethodLabel() . " (" . $order->getPaymentChannelLabel() . ")\n";
-                            $waMsg .= "Mohon dicek dan diproses cetakannya. Terima kasih!";
-                            $waLink = 'https://wa.me/' . $waNumber . '?text=' . urlencode($waMsg);
-                        @endphp
+                            <a
+                                :href="invoiceUrl"
+                                target="_blank"
+                                class="w-full bg-emerald-700 hover:bg-emerald-800 text-white py-2.5 px-3 rounded-xl text-xs font-extrabold transition shadow-sm flex items-center justify-center gap-1.5"
+                            >
+                                <i class="fa-solid fa-file-pdf text-sm"></i>
+                                <span>Download Bukti Invoice PDF (Resmi)</span>
+                            </a>
+                        </div>
 
+                        <!-- WhatsApp Dispatch Status Panel (Paid Orders) -->
+                        <div x-show="isPaid" x-cloak class="p-3 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                            <div class="flex items-center justify-between gap-2 text-[11px]">
+                                <span class="font-extrabold text-gray-800 flex items-center gap-1.5">
+                                    <i class="fa-brands fa-whatsapp text-[#25D366] text-sm"></i>
+                                    <span>Pengiriman WhatsApp Toko</span>
+                                </span>
+                                <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-white border border-gray-200 text-gray-600" x-text="'Driver: ' + waDriver"></span>
+                            </div>
+
+                            <div class="flex flex-wrap items-center justify-between gap-1.5">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold border" :class="waStatusBadgeClass()" x-text="waStatusBadgeText()"></span>
+                                <span class="text-[10px] text-gray-500" x-text="waDriverLabel"></span>
+                            </div>
+
+                            <button
+                                type="button"
+                                @click="dispatchWhatsApp()"
+                                :disabled="waSending"
+                                class="w-full bg-[#10A760] hover:bg-[#0D8A4E] text-white py-2.5 px-4 rounded-xl text-xs font-extrabold transition shadow-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                            >
+                                <i class="fa-solid fa-spinner fa-spin" x-show="waSending"></i>
+                                <i class="fa-solid fa-paper-plane" x-show="!waSending"></i>
+                                <span x-text="waSending ? 'Mengirim Bukti & File PDF...' : 'Kirim Bukti & File PDF ke WA Toko'"></span>
+                            </button>
+
+                            <div
+                                x-show="waFeedback"
+                                x-cloak
+                                :class="{
+                                    'bg-emerald-50 border-emerald-200 text-emerald-800': waFeedbackType === 'success',
+                                    'bg-red-50 border-red-200 text-red-800': waFeedbackType === 'error',
+                                    'bg-amber-50 border-amber-200 text-amber-900': waFeedbackType === 'info' || waFeedbackType === 'warning'
+                                }"
+                                class="p-2 rounded-lg border text-[11px] font-medium leading-snug"
+                                x-text="waFeedback"
+                            ></div>
+
+                            <p x-show="waDriver === 'sandbox'" x-cloak class="text-[10px] text-slate-600 leading-snug">
+                                <strong>Catatan Sandbox:</strong> Saat ini sistem memakai <code class="font-mono bg-white px-1 rounded">WHATSAPP_DRIVER=sandbox</code>. Untuk mengirim lampiran file <code class="font-mono bg-white px-1 rounded">.pdf</code> otomatis langsung masuk ke chat WA toko, aktifkan <code class="font-mono bg-white px-1 rounded">WHATSAPP_DRIVER=waha</code> via Docker.
+                            </p>
+                        </div>
+
+                        <!-- Layer 2 Smart Fallback: Buka Chat WA Manual (Rich URL) & Unduh Paket ZIP -->
                         <a
-                            x-show="isPaid && invoiceUrl"
-                            x-cloak
-                            :href="invoiceUrl"
+                            :href="waManualUrl"
                             target="_blank"
-                            class="w-full bg-emerald-700 hover:bg-emerald-800 text-white py-2.5 px-4 rounded-xl text-xs font-extrabold transition shadow-sm flex items-center justify-center gap-2"
+                            rel="noopener"
+                            class="w-full bg-white hover:bg-emerald-50 text-[#0D8A4E] border border-[#10A760] py-2.5 px-4 rounded-xl text-xs font-bold transition shadow-2xs flex items-center justify-center gap-2"
                         >
-                            <i class="fa-solid fa-file-pdf text-sm"></i>
-                            <span>Download Bukti Invoice PDF (Resmi)</span>
+                            <i class="fa-brands fa-whatsapp text-sm text-[#25D366]"></i>
+                            <span>Buka Chat WA Manual</span>
                         </a>
 
                         <a
-                            href="{{ \App\Support\WhatsAppPhoneNormalizer::toWaMeUrl($place->whatsapp ?: $place->phone, $waMsg) }}"
-                            target="_blank"
-                            class="w-full bg-[#10A760] hover:bg-[#0D8A4E] text-white py-2.5 px-4 rounded-xl text-xs font-bold transition shadow-sm flex items-center justify-center gap-2"
+                            x-show="zipDownloadUrl"
+                            x-cloak
+                            :href="zipDownloadUrl"
+                            class="w-full bg-slate-800 hover:bg-slate-900 text-white py-2.5 px-4 rounded-xl text-xs font-bold transition shadow-xs flex items-center justify-center gap-2"
                         >
-                            <i class="fa-brands fa-whatsapp text-sm"></i>
-                            <span>Kirim Bukti / Hubungi Toko</span>
+                            <i class="fa-solid fa-file-zipper"></i>
+                            <span>Unduh Semua PDF + Invoice (.zip)</span>
                         </a>
 
                         <div class="flex items-center gap-2">
@@ -618,6 +865,69 @@
 
             </div>
 
+        </div>
+
+        <!-- IN-PAGE PDF & INVOICE PREVIEW MODAL (PAYMENT PAGE) -->
+        <div
+            x-show="previewModalOpen"
+            x-cloak
+            class="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6"
+            @keydown.escape.window="closeDocPreview()"
+        >
+            <div
+                @click.away="closeDocPreview()"
+                class="bg-white rounded-2xl shadow-2xl border border-gray-100 max-w-4xl w-full overflow-hidden flex flex-col max-h-[90vh]"
+            >
+                <div class="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between gap-3 shrink-0">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-red-500 text-white text-[10px] font-black uppercase shrink-0">PDF</span>
+                            <h3 class="text-xs sm:text-sm font-black truncate" x-text="previewDoc.title"></h3>
+                        </div>
+                        <p class="text-[11px] text-slate-300 mt-0.5" x-text="previewDoc.subtitle"></p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <a
+                            :href="previewDoc.url"
+                            target="_blank"
+                            rel="noopener"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition"
+                        >
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <span>Buka di Tab Baru</span>
+                        </a>
+                        <a
+                            x-show="previewDoc.downloadUrl"
+                            :href="previewDoc.downloadUrl"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition"
+                        >
+                            <i class="fa-solid fa-download"></i>
+                            <span>Unduh</span>
+                        </a>
+                        <button
+                            type="button"
+                            @click="closeDocPreview()"
+                            class="text-slate-300 hover:text-white px-2.5 py-1 text-lg font-bold cursor-pointer"
+                            aria-label="Tutup Preview"
+                        >&times;</button>
+                    </div>
+                </div>
+
+                <div x-show="previewDoc.note && previewDoc.note.trim()" class="px-5 py-2 bg-amber-50 border-b border-amber-200 text-xs text-amber-900 shrink-0">
+                    <span class="font-extrabold">Catatan Khusus File:</span>
+                    <span class="italic" x-text="previewDoc.note"></span>
+                </div>
+
+                <div class="flex-1 bg-slate-800 min-h-[65vh]">
+                    <template x-if="previewModalOpen && previewDoc.url">
+                        <iframe
+                            :src="previewDoc.url"
+                            class="w-full h-[70vh] border-0 bg-white"
+                            title="Pratinjau Dokumen PDF & Invoice"
+                        ></iframe>
+                    </template>
+                </div>
+            </div>
         </div>
 
     </div>

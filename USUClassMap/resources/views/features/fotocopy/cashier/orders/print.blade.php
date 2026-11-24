@@ -285,7 +285,7 @@
             <div>
                 <h1 class="brand-title">USUStarterMap Copy Center</h1>
                 <p class="store-info">{{ $order->store->name ?? 'Gerai Fotocopy USU' }}</p>
-                <p class="store-info">📍 {{ $order->store->location_name ?? 'Kampus USU' }} &bull; WA: {{ $order->store->whatsapp ?? '-' }}</p>
+                <p class="store-info">📍 {{ $order->store->location_name ?? 'Kampus USU' }} &bull; WA: {{ \App\Support\WhatsAppPhoneNormalizer::formatDisplay($order->store->whatsapp ?? null) }}</p>
             </div>
             <div style="text-align: right;">
                 <span class="spk-badge">Lembar Kerja Cetak</span>

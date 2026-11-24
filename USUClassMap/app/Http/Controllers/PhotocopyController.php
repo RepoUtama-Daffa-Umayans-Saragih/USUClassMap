@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\DispatchOrderToWhatsAppJob;
 use App\Models\FotocopyOrder;
 use App\Models\FotocopyOrderFile;
 use App\Models\FotocopyOrderItem;
@@ -9,10 +10,14 @@ use App\Models\FotocopyService;
 use App\Models\FotocopyStore;
 use App\Models\PhotocopyPlace;
 use App\Models\PhotocopyItem;
+use App\Models\WhatsappDispatchLog;
+use App\Services\Fotocopy\OrderArchiveService;
 use App\Services\Fotocopy\OrderPaymentFulfillmentService;
 use App\Services\Invoice\OrderInvoiceService;
 use App\Services\Payment\PaymentManager;
 use App\Services\Pdf\PdfMetadataInspectorService;
+use App\Services\WhatsApp\WhatsAppManager;
+use App\Services\WhatsApp\WhatsAppPayloadFormatter;
 use App\Support\CatalogBehaviorClassifier;
 use App\Support\WhatsAppPhoneNormalizer;
 use Illuminate\Http\Request;
@@ -236,6 +241,7 @@ class PhotocopyController extends Controller
             'pdf_configs.*.finishing_option' => 'nullable|string|max:120',
             'pdf_configs.*.is_encrypted' => 'nullable|boolean',
             'pdf_configs.*.note' => 'nullable|string|max:500',
+            'expected_pdf_count' => 'nullable|integer|min:0|max:' . PdfMetadataInspectorService::MAX_FILES_PER_ORDER,
         ]);
 
         $uploadedFiles = $request->file('pdf_files', []);
@@ -243,6 +249,21 @@ class PhotocopyController extends Controller
             $uploadedFiles = $uploadedFiles ? [$uploadedFiles] : [];
         }
         $cartItems = $validated['items'] ?? [];
+        $pdfConfigs = $validated['pdf_configs'] ?? [];
+
+        if (isset($validated['expected_pdf_count']) && count($uploadedFiles) !== (int) $validated['expected_pdf_count']) {
+            return $this->orderValidationError(
+                $request,
+                'Jumlah file PDF yang diunggah (' . count($uploadedFiles) . ') tidak sesuai dengan total kuota menu cetak (' . (int) $validated['expected_pdf_count'] . ' file). Lengkapi semua slot PDF sebelum melanjutkan.'
+            );
+        }
+
+        if (!empty($pdfConfigs) && count($uploadedFiles) !== count($pdfConfigs)) {
+            return $this->orderValidationError(
+                $request,
+                'Jumlah file PDF (' . count($uploadedFiles) . ') harus sama persis dengan jumlah konfigurasi slot cetak (' . count($pdfConfigs) . '). Lengkapi seluruh slot file PDF Anda.'
+            );
+        }
 
         if (empty($uploadedFiles) && empty($cartItems)) {
             return $this->orderValidationError(
@@ -497,39 +518,9 @@ class PhotocopyController extends Controller
             'payment_channel' => $validated['payment_channel'] ?? null,
         ]);
 
-        // Build manual fallback wa.me URL
-        $order->load(['items', 'files']);
-        $waText = "Halo {$place->name}, saya telah membuat pesanan di USUStarterMap:\n";
-        $waText .= "Kode Pesanan: #{$order->order_code}\n";
-        $waText .= "Kode Ambil: {$order->pickup_code}\n";
-        $waText .= "Nama Pemesan: {$order->customer_name}\n";
-        if ($order->customer_whatsapp || $order->customer_phone) {
-            $waText .= 'No. WA: ' . WhatsAppPhoneNormalizer::formatDisplay($order->customer_whatsapp ?: $order->customer_phone) . "\n";
-        }
-        if ($order->files->isNotEmpty()) {
-            $waText .= "\nDokumen PDF ({$order->files->count()} File):\n";
-            foreach ($order->files as $f) {
-                $finishTag = $f->finishing_option ? " + Bundel {$f->finishing_option}" : '';
-                $waText .= "- {$f->original_name} ({$f->page_count} hal x {$f->copies} rangkap, {$f->print_mode}{$finishTag})"
-                    . ($f->note ? " [Note: {$f->note}]" : '') . "\n";
-            }
-        }
-        $nonPdfItems = $order->items->whereNotIn('id', $order->files->pluck('fotocopy_order_item_id')->filter()->all());
-        $offlineItems = $nonPdfItems->filter(fn ($i) => str_contains((string) $i->category, 'Offline Fisik'));
-        if ($offlineItems->isNotEmpty()) {
-            $waText .= "\nLayanan Berkas Fisik (Offline di Toko):\n";
-            foreach ($offlineItems as $oi) {
-                $waText .= "- {$oi->service_name} (x{$oi->quantity}) [Wajib Bawa Berkas Fisik]\n";
-            }
-        }
-        $waText .= "\nTotal: Rp " . number_format($totalPrice, 0, ',', '.') . "\n";
-        $waText .= 'Metode Bayar: ' . $order->getPaymentMethodLabel();
-        if ($order->payment_channel) {
-            $waText .= ' (' . $order->getPaymentChannelLabel() . ')';
-        }
-        $waText .= "\nStatus Pembayaran: Menunggu Pembayaran\n";
-
-        $whatsappUrl = WhatsAppPhoneNormalizer::toWaMeUrl($place->whatsapp ?: $place->phone, $waText);
+        // Build manual fallback wa.me URL (rich summary + PDF links + notes)
+        $order->load(['items', 'files', 'store']);
+        $whatsappUrl = app(WhatsAppPayloadFormatter::class)->buildRichCustomerWaMeUrl($order, 1440);
         $paymentUrl = route('fotocopy.orders.payment', $order->order_code);
 
         if ($request->wantsJson() || $request->ajax()) {
@@ -634,6 +625,7 @@ class PhotocopyController extends Controller
         if ($order->isPaid() && (empty($order->invoice_pdf_path) || !Storage::disk('local')->exists($order->invoice_pdf_path))) {
             app(OrderInvoiceService::class)->generateForOrder($order);
             $order->refresh();
+            $order->load(['store', 'photocopyPlace', 'items', 'files']);
         }
 
         $place = $order->photocopy_place_resolved ?? new PhotocopyPlace([
@@ -642,9 +634,39 @@ class PhotocopyController extends Controller
             'whatsapp' => $order->store?->whatsapp ?? '6285769737410',
         ]);
 
-        $invoiceDownloadUrl = $order->isPaid() ? $order->invoiceUrl(60) : null;
+        $invoiceDownloadUrl = $order->isPaid() ? $order->invoiceUrl(1440) : null;
+        $invoicePreviewUrl = $order->isPaid() ? $order->invoicePreviewUrl(1440) : null;
+        $zipDownloadUrl = $order->signedZipUrl(1440);
+        $waStatus = app(WhatsAppManager::class)->statusSummary();
+        $waManualUrl = app(WhatsAppPayloadFormatter::class)->buildRichCustomerWaMeUrl($order, 1440);
 
-        return view('features.fotocopy.public.payment', compact('order', 'place', 'invoiceDownloadUrl'));
+        $orderFilesPayload = $order->files->map(function (FotocopyOrderFile $f): array {
+            return [
+                'id' => $f->id,
+                'original_name' => $f->original_name,
+                'formatted_size' => $f->formatted_size,
+                'page_count' => $f->page_count,
+                'copies' => $f->copies,
+                'spec' => $f->getDisplaySpecSummary(),
+                'note' => $f->note,
+                'finishing_option' => $f->finishing_option,
+                'subtotal_estimated' => $f->subtotal_estimated,
+                'available' => $f->isPhysicallyAvailable(),
+                'preview_url' => $f->signedPreviewUrl(1440),
+                'download_url' => $f->signedDownloadUrl(1440),
+            ];
+        })->values()->all();
+
+        return view('features.fotocopy.public.payment', compact(
+            'order',
+            'place',
+            'invoiceDownloadUrl',
+            'invoicePreviewUrl',
+            'zipDownloadUrl',
+            'waStatus',
+            'waManualUrl',
+            'orderFilesPayload'
+        ));
     }
 
     /**
@@ -662,6 +684,10 @@ class PhotocopyController extends Controller
             $order->refresh();
         }
 
+        $order->load(['store', 'items', 'files']);
+        $waStatus = app(WhatsAppManager::class)->statusSummary();
+        $waManualUrl = app(WhatsAppPayloadFormatter::class)->buildRichCustomerWaMeUrl($order, 1440);
+
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
                 'success' => $success,
@@ -671,14 +697,85 @@ class PhotocopyController extends Controller
                 'order_status' => $order->order_status,
                 'invoice_number' => $order->invoice_number,
                 'pickup_code' => $order->pickup_code,
-                'invoice_url' => $order->invoiceUrl(60),
+                'invoice_url' => $order->invoiceUrl(1440),
+                'invoice_preview_url' => $order->invoicePreviewUrl(1440),
+                'zip_download_url' => $order->signedZipUrl(1440),
                 'wa_dispatch_status' => $order->wa_dispatch_status,
+                'wa_driver' => $waStatus['driver'],
+                'wa_driver_label' => $waStatus['label'],
+                'wa_healthy' => $waStatus['healthy'],
+                'wa_manual_url' => $waManualUrl,
                 'paid_at' => $order->paid_at?->format('d M Y, H:i') ?? now()->format('d M Y, H:i'),
             ]);
         }
 
         return redirect()->route('fotocopy.orders.payment', $order->order_code)
             ->with('success', 'Status pembayaran berhasil diperbarui menjadi Lunas!');
+    }
+
+    /**
+     * Dispatch (or resend) order summary + all PDF files + notes + Invoice PDF to Store WhatsApp.
+     */
+    public function dispatchWhatsapp(
+        Request $request,
+        $orderCode,
+        WhatsAppManager $waManager,
+        OrderInvoiceService $invoiceService,
+        WhatsAppPayloadFormatter $formatter
+    ) {
+        $order = FotocopyOrder::where('order_code', $orderCode)
+            ->with(['store', 'items', 'files'])
+            ->firstOrFail();
+
+        if (!$order->isPaid()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Pesanan belum lunas. Selesaikan pembayaran terlebih dahulu sebelum mengirim bukti & file PDF ke WhatsApp toko.',
+            ], 422);
+        }
+
+        if (empty($order->invoice_pdf_path) || !Storage::disk('local')->exists($order->invoice_pdf_path)) {
+            $invoiceService->generateForOrder($order);
+            $order->refresh();
+        }
+
+        DispatchOrderToWhatsAppJob::dispatchSync($order->id, true);
+        $order->refresh();
+        $order->load(['store', 'items', 'files']);
+
+        $waStatus = $waManager->statusSummary();
+        $storeLogs = WhatsappDispatchLog::where('fotocopy_order_id', $order->id)
+            ->where('recipient_role', 'store')
+            ->get();
+
+        $sentSummary = $storeLogs->where('message_type', 'summary')->where('status', 'sent')->count() > 0;
+        $sentPdfs = $storeLogs->where('message_type', 'pdf_attachment')->where('status', 'sent')->count();
+        $totalPdfs = $order->files->count();
+        $sentInvoice = $storeLogs->where('message_type', 'invoice')->where('status', 'sent')->count() > 0;
+
+        $isLiveGateway = in_array($waStatus['driver'], ['waha', 'fonnte'], true);
+        $deliveryOk = in_array((string) $order->wa_dispatch_status, ['sent', 'sandbox'], true);
+
+        $msg = match (true) {
+            $waStatus['driver'] === 'sandbox' => "Mode Sandbox Simulator aktif: Ringkasan, {$totalPdfs} file PDF + Note, dan Invoice tercatat di log simulator lokal. Aktifkan WHATSAPP_DRIVER=waha di .env untuk mengirim lampiran PDF langsung ke chat WhatsApp toko.",
+            $deliveryOk => "Berhasil! Ringkasan pesanan, {$sentPdfs}/{$totalPdfs} file PDF beserta note, dan Bukti Invoice PDF resmi telah dikirim otomatis ke WhatsApp toko.",
+            $order->wa_dispatch_status === 'partial' => "Sebagian pesan terkirim ({$sentPdfs}/{$totalPdfs} PDF). Anda tetap dapat mengirim ulang atau membuka Chat WA Manual.",
+            default => 'Gateway WhatsApp (' . strtoupper($waStatus['driver']) . ') belum merespons. Gunakan tombol Buka Chat WA Manual di bawah atau unduh paket ZIP.',
+        };
+
+        return response()->json([
+            'success' => $deliveryOk || !$isLiveGateway,
+            'wa_dispatch_status' => $order->wa_dispatch_status,
+            'driver' => $waStatus['driver'],
+            'driver_label' => $waStatus['label'],
+            'healthy' => $waStatus['healthy'],
+            'sent_summary' => $sentSummary,
+            'sent_pdfs' => $sentPdfs,
+            'total_pdfs' => $totalPdfs,
+            'sent_invoice' => $sentInvoice,
+            'wa_manual_url' => $formatter->buildRichCustomerWaMeUrl($order, 1440),
+            'message' => $msg,
+        ]);
     }
 
     /**
@@ -698,13 +795,78 @@ class PhotocopyController extends Controller
             $order->refresh();
         }
 
-        $downloadName = ($order->invoice_number ?: $order->order_code) . '.pdf';
+        $safeName = str_replace(['"', "\r", "\n", '\\'], '', ($order->invoice_number ?: $order->order_code) . '.pdf');
 
         return Storage::disk('local')->download(
             $order->invoice_pdf_path,
-            $downloadName,
+            $safeName,
             ['Content-Type' => 'application/pdf']
         );
+    }
+
+    /**
+     * Pratinjau inline Bukti Invoice PDF Resmi (Content-Disposition: inline).
+     */
+    public function previewInvoice(Request $request, $orderCode)
+    {
+        $order = FotocopyOrder::where('order_code', $orderCode)->firstOrFail();
+        $this->authorizePrivateOrderAccess($request, $order);
+
+        if (!$order->isPaid()) {
+            abort(403, 'Bukti Invoice PDF resmi hanya tersedia setelah pembayaran Lunas.');
+        }
+
+        if (empty($order->invoice_pdf_path) || !Storage::disk('local')->exists($order->invoice_pdf_path)) {
+            app(OrderInvoiceService::class)->generateForOrder($order);
+            $order->refresh();
+        }
+
+        $safeName = str_replace(['"', "\r", "\n", '\\'], '', ($order->invoice_number ?: $order->order_code) . '.pdf');
+
+        return response()->file(Storage::disk('local')->path($order->invoice_pdf_path), [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $safeName . '"',
+        ]);
+    }
+
+    /**
+     * Unduh arsip .zip berisi seluruh PDF, Note SPK, dan Invoice via Signed URL.
+     */
+    public function downloadOrderZip(Request $request, $orderCode, OrderArchiveService $archiveService)
+    {
+        $order = FotocopyOrder::where('order_code', $orderCode)->firstOrFail();
+        $this->authorizePrivateOrderAccess($request, $order);
+
+        $zipPath = $archiveService->buildOrderZip($order);
+
+        return response()
+            ->download($zipPath, "Order_{$order->order_code}_Berkas.zip", ['Content-Type' => 'application/zip'])
+            ->deleteFileAfterSend(true);
+    }
+
+    /**
+     * Pratinjau inline file dokumen privat pesanan via Signed URL (Content-Disposition: inline).
+     */
+    public function previewOrderFile(Request $request, $orderCode, FotocopyOrderFile $file)
+    {
+        $order = FotocopyOrder::where('order_code', $orderCode)->firstOrFail();
+        if ((int) $file->fotocopy_order_id !== (int) $order->id) {
+            abort(404);
+        }
+
+        $this->authorizePrivateOrderAccess($request, $order);
+
+        if (!$file->isPhysicallyAvailable()) {
+            abort(404, 'File dokumen sudah tidak tersedia atau telah dibersihkan oleh kebijakan retensi.');
+        }
+
+        $disk = $file->storage_disk ?: 'local';
+        $safeName = str_replace(['"', "\r", "\n", '\\'], '', $file->original_name ?: 'dokumen.pdf');
+
+        return response()->file(Storage::disk($disk)->path($file->stored_path), [
+            'Content-Type' => $file->mime_type ?: 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $safeName . '"',
+        ]);
     }
 
     /**
@@ -724,10 +886,11 @@ class PhotocopyController extends Controller
         }
 
         $disk = $file->storage_disk ?: 'local';
+        $safeName = str_replace(['"', "\r", "\n", '\\'], '', $file->original_name ?: 'dokumen.pdf');
 
         return Storage::disk($disk)->download(
             $file->stored_path,
-            $file->original_name,
+            $safeName,
             ['Content-Type' => $file->mime_type ?: 'application/pdf']
         );
     }

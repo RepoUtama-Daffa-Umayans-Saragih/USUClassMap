@@ -9,6 +9,10 @@ return [
 
     'default' => env('WHATSAPP_DRIVER', 'sandbox'),
 
+    'sender_phone' => env('WHATSAPP_SENDER_PHONE', '6281283575656'),
+
+    'sync_dispatch' => filter_var(env('WHATSAPP_SYNC_DISPATCH', true), FILTER_VALIDATE_BOOLEAN),
+
     'fallback_on_failure' => filter_var(env('WHATSAPP_FALLBACK_ON_FAILURE', true), FILTER_VALIDATE_BOOLEAN),
 
     'retention_days' => (int) env('FOTOCOPY_FILE_RETENTION_DAYS', 14),

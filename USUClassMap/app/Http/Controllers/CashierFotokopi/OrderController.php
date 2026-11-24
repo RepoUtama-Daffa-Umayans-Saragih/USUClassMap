@@ -10,6 +10,7 @@ use App\Models\FotocopyOrderFile;
 use App\Models\FotocopyOrderItem;
 use App\Models\FotocopyService;
 use App\Models\FotocopyStore;
+use App\Services\Fotocopy\OrderArchiveService;
 use App\Services\Fotocopy\OrderPaymentFulfillmentService;
 use App\Services\Invoice\OrderInvoiceService;
 use App\Services\Pdf\PdfMetadataInspectorService;
@@ -17,7 +18,6 @@ use App\Support\WhatsAppPhoneNormalizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use ZipArchive;
 
 class OrderController extends Controller
 {
@@ -111,7 +111,11 @@ class OrderController extends Controller
         }
 
         if ($oldStatus !== 'Selesai' && $order->order_status === 'Selesai' && class_exists(SendCustomerReadyNotificationJob::class)) {
-            SendCustomerReadyNotificationJob::dispatch($order->id);
+            if (config('whatsapp.sync_dispatch', true)) {
+                SendCustomerReadyNotificationJob::dispatchSync($order->id);
+            } else {
+                SendCustomerReadyNotificationJob::dispatch($order->id);
+            }
         }
 
         return redirect()->back()->with('success', "Status pesanan #{$order->order_code} berhasil diperbarui menjadi '{$validated['order_status']}'!");
@@ -335,22 +339,24 @@ class OrderController extends Controller
         }
 
         $disk = $file->storage_disk ?: 'local';
+        $safeName = str_replace(['"', "\r", "\n", '\\'], '', $file->original_name ?: 'dokumen.pdf');
+
         if ($request->boolean('inline')) {
             return response()->file(Storage::disk($disk)->path($file->stored_path), [
                 'Content-Type' => $file->mime_type ?: 'application/pdf',
-                'Content-Disposition' => 'inline; filename="' . $file->original_name . '"',
+                'Content-Disposition' => 'inline; filename="' . $safeName . '"',
             ]);
         }
 
-        return Storage::disk($disk)->download($file->stored_path, $file->original_name, [
+        return Storage::disk($disk)->download($file->stored_path, $safeName, [
             'Content-Type' => $file->mime_type ?: 'application/pdf',
         ]);
     }
 
     /**
-     * Unduh Bukti Invoice PDF Resmi dari panel kasir.
+     * Unduh atau pratinjau inline Bukti Invoice PDF Resmi dari panel kasir.
      */
-    public function downloadInvoice(FotocopyOrder $order, OrderInvoiceService $invoiceService)
+    public function downloadInvoice(Request $request, FotocopyOrder $order, OrderInvoiceService $invoiceService)
     {
         $this->authorizeStoreAccess($order);
 
@@ -363,9 +369,18 @@ class OrderController extends Controller
             $order->refresh();
         }
 
+        $safeName = str_replace(['"', "\r", "\n", '\\'], '', ($order->invoice_number ?: $order->order_code) . '.pdf');
+
+        if ($request->boolean('inline')) {
+            return response()->file(Storage::disk('local')->path($order->invoice_pdf_path), [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="' . $safeName . '"',
+            ]);
+        }
+
         return Storage::disk('local')->download(
             $order->invoice_pdf_path,
-            ($order->invoice_number ?: $order->order_code) . '.pdf',
+            $safeName,
             ['Content-Type' => 'application/pdf']
         );
     }
@@ -373,92 +388,14 @@ class OrderController extends Controller
     /**
      * Kemas seluruh PDF pesanan + file CATATAN_CETAK.txt (+ Invoice jika ada) menjadi 1 arsip .zip.
      */
-    public function downloadAllZip(FotocopyOrder $order)
+    public function downloadAllZip(FotocopyOrder $order, OrderArchiveService $archiveService)
     {
         $this->authorizeStoreAccess($order);
-        $order->load(['items', 'files', 'store']);
 
-        if (!class_exists(ZipArchive::class)) {
-            return redirect()->back()->with('error', 'Ekstensi PHP ZipArchive tidak aktif di server.');
-        }
-
-        $tempDir = storage_path('app/private/temp');
-        if (!is_dir($tempDir)) {
-            mkdir($tempDir, 0755, true);
-        }
-
-        $zipPath = $tempDir . DIRECTORY_SEPARATOR . 'order-' . $order->order_code . '-' . Str::lower(Str::random(6)) . '.zip';
-        $zip = new ZipArchive();
-        if ($zip->open($zipPath, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-            return redirect()->back()->with('error', 'Gagal membuat arsip ZIP dokumen.');
-        }
-
-        $txtLines = [
-            "=== SURAT PERINTAH KERJA (SPK) CETAK - USUSTARTERMAP ===",
-            "Kode Order    : #{$order->order_code}",
-            'No. Invoice   : ' . ($order->invoice_number ?: '-'),
-            'Kode Ambil    : ' . ($order->pickup_code ?: '-'),
-            "Nama Pemesan  : {$order->customer_name}",
-            'No. WA / HP   : ' . WhatsAppPhoneNormalizer::formatDisplay($order->customer_whatsapp ?: $order->customer_phone),
-            "Status Bayar  : {$order->payment_status} ({$order->getPaymentMethodLabel()})",
-            "Total Tagihan : {$order->getFormattedTotal()}",
-            'Catatan Umum  : ' . ($order->notes ?: '-'),
-            '',
-            '--- DAFTAR FILE DOKUMEN ---',
-        ];
-
-        $attachedCount = 0;
-        if ($order->files->isNotEmpty()) {
-            foreach ($order->files as $idx => $file) {
-                $num = $idx + 1;
-                $txtLines[] = sprintf(
-                    "%d. %s | %d hal x %d rangkap | %s (%s)%s",
-                    $num,
-                    $file->original_name,
-                    $file->page_count,
-                    $file->copies,
-                    $file->print_mode,
-                    $file->paper_size,
-                    $file->finishing_option ? " + {$file->finishing_option}" : ''
-                );
-                $txtLines[] = '   CATATAN KHUSUS: ' . ($file->note ?: '-');
-
-                $disk = $file->storage_disk ?: 'local';
-                if (!empty($file->stored_path) && Storage::disk($disk)->exists($file->stored_path)) {
-                    $safeEntryName = sprintf('%02d_%s', $num, basename($file->original_name));
-                    $zip->addFromString($safeEntryName, (string) Storage::disk($disk)->get($file->stored_path));
-                    $attachedCount++;
-                }
-            }
-        } elseif ($order->file_path) {
-            foreach (['local', 'public'] as $disk) {
-                if (Storage::disk($disk)->exists($order->file_path)) {
-                    $zip->addFromString('01_' . ($order->file_name ?: 'dokumen.pdf'), (string) Storage::disk($disk)->get($order->file_path));
-                    $attachedCount++;
-                    break;
-                }
-            }
-        }
-
-        if (!empty($order->invoice_pdf_path) && Storage::disk('local')->exists($order->invoice_pdf_path)) {
-            $zip->addFromString(
-                ($order->invoice_number ?: 'INVOICE') . '.pdf',
-                (string) Storage::disk('local')->get($order->invoice_pdf_path)
-            );
-        }
-
-        $txtLines[] = '';
-        $txtLines[] = '--- RINCIAN ITEM ORDER ---';
-        foreach ($order->items as $it) {
-            $txtLines[] = "- {$it->service_name} (x{$it->quantity}) = Rp " . number_format($it->subtotal ?? ($it->price * $it->quantity), 0, ',', '.');
-        }
-
-        $zip->addFromString('CATATAN_CETAK.txt', implode(PHP_EOL, $txtLines) . PHP_EOL);
-        $zip->close();
-
-        if ($attachedCount === 0 && !$order->invoice_pdf_path) {
-            @unlink($zipPath);
-            return redirect()->back()->with('error', 'Belum ada file PDF fisik yang tersedia untuk diunduh.');
+        try {
+            $zipPath = $archiveService->buildOrderZip($order);
+        } catch (\RuntimeException $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
 
         return response()
@@ -478,6 +415,25 @@ class OrderController extends Controller
         }
 
         $order->update(['wa_dispatch_status' => 'queued']);
+
+        if (config('whatsapp.sync_dispatch', true)) {
+            DispatchOrderToWhatsAppJob::dispatchSync($order->id, true);
+            $order->refresh();
+
+            $waStatus = (string) $order->wa_dispatch_status;
+            if ($waStatus === 'sent') {
+                return redirect()->back()->with('success', "Berhasil mengirim ulang paket dokumen & invoice order #{$order->order_code} ke WhatsApp toko!");
+            }
+            if ($waStatus === 'sandbox') {
+                return redirect()->back()->with('success', "Pengiriman ulang paket dokumen & invoice order #{$order->order_code} tercatat via Sandbox Simulator.");
+            }
+            if ($waStatus === 'partial') {
+                return redirect()->back()->with('error', "Sebagian pesan/file order #{$order->order_code} gagal dikirim ke WhatsApp toko. Cek Log WA atau gunakan unduhan ZIP / Chat WA Manual.");
+            }
+
+            return redirect()->back()->with('error', "Pengiriman ulang order #{$order->order_code} ke WhatsApp toko gagal (status: {$waStatus}). Pastikan sesi WAHA aktif di Dashboard WAHA atau gunakan Arsip ZIP.");
+        }
+
         DispatchOrderToWhatsAppJob::dispatch($order->id, true);
 
         return redirect()->back()->with('success', "Pengiriman ulang paket dokumen & invoice order #{$order->order_code} ke WhatsApp toko telah dijalankan.");

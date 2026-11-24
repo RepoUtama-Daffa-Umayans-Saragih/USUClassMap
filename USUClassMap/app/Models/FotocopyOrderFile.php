@@ -114,12 +114,26 @@ class FotocopyOrderFile extends Model
     /**
      * Generate temporary signed download URL for protected private access.
      */
-    public function signedDownloadUrl(int $minutes = 30): string
+    public function signedDownloadUrl(int $minutes = 1440): string
     {
         $orderCode = $this->order?->order_code ?? $this->fotocopy_order_id;
 
         return URL::temporarySignedRoute(
             'fotocopy.orders.files.download',
+            now()->addMinutes($minutes),
+            ['orderCode' => $orderCode, 'file' => $this->id]
+        );
+    }
+
+    /**
+     * Generate temporary signed inline preview URL for protected private PDF viewing.
+     */
+    public function signedPreviewUrl(int $minutes = 1440): string
+    {
+        $orderCode = $this->order?->order_code ?? $this->fotocopy_order_id;
+
+        return URL::temporarySignedRoute(
+            'fotocopy.orders.files.preview',
             now()->addMinutes($minutes),
             ['orderCode' => $orderCode, 'file' => $this->id]
         );

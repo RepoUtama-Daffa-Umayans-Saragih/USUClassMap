@@ -18,20 +18,19 @@
 
         window.usuFotocopyOrderPage = function () {
             const cfg = window.usuFotocopyOrderConfig || {};
+            const MAX_PDF_SLOTS = 10;
+            const MAX_FILE_BYTES = 25 * 1024 * 1024;
+            const MAX_TOTAL_BYTES = 80 * 1024 * 1024;
 
             return {
                 ...window.usuCatalogFilter(window.usuFotocopyCatalog),
                 printServices: Array.isArray(window.usuPrintServices) ? window.usuPrintServices : [],
                 finishingServices: Array.isArray(window.usuFinishingServices) ? window.usuFinishingServices : [],
 
-                // Contextual Multi-PDF state (HIDDEN by default until user picks Print / Hybrid Print+Finishing)
-                pdfPanelVisible: false,
-                activePrintServiceId: '',
-                activeLockedFinishingId: '',
-                activePaperSize: 'A4',
-                activeContextLabel: '',
-                pdfFiles: [],
-                pdfDragOver: false,
+                // Group 1 (Cart-Bound Online Print & Hybrid Bundle with 1:1 file quota slots)
+                printCartItems: [],
+                highlightedCartKey: '',
+                highlightTimer: null,
                 pdfGlobalError: '',
 
                 // Hybrid Choice Modal state
@@ -41,7 +40,7 @@
                 // Physical-Only Offline Reminder Banner
                 physicalNoticeText: '',
 
-                // Separate Shopping Carts: Offline Physical Services vs Standard ATK Goods
+                // Group 2 & Group 3 Shopping Carts
                 offlineCart: {},
                 cart: {},
 
@@ -55,8 +54,19 @@
                 placeName: cfg.placeName || '',
                 placeWa: cfg.placeWa || '',
 
+                // In-page PDF preview modal state
+                previewModalOpen: false,
+                previewFile: {
+                    name: '',
+                    sizeLabel: '',
+                    pageCount: 1,
+                    url: '',
+                    note: '',
+                    isEncrypted: false
+                },
+
                 init() {
-                    this.activePrintServiceId = this.defaultPrintServiceId();
+                    window.addEventListener('beforeunload', () => this.revokeAllPreviewUrls());
                 },
 
                 defaultPrintServiceId() {
@@ -88,25 +98,143 @@
                     return 'A4';
                 },
 
-                scrollToPdfSection() {
+                createEmptySlot(paperSize = 'A4') {
+                    return {
+                        slotUid: 'slot-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
+                        file: null,
+                        previewUrl: '',
+                        name: '',
+                        sizeBytes: 0,
+                        sizeLabel: '',
+                        dragOver: false,
+                        inspecting: false,
+                        valid: false,
+                        error: null,
+                        warning: null,
+                        pageCount: 1,
+                        isEncrypted: false,
+                        paperSize: paperSize || 'A4',
+                        copies: 1,
+                        note: ''
+                    };
+                },
+
+                revokeSlotPreviewUrl(slot) {
+                    if (slot && slot.previewUrl) {
+                        try {
+                            URL.revokeObjectURL(slot.previewUrl);
+                        } catch (e) {}
+                        slot.previewUrl = '';
+                    }
+                },
+
+                revokeAllPreviewUrls() {
+                    for (const menu of this.printCartItems) {
+                        for (const slot of menu.slots) {
+                            this.revokeSlotPreviewUrl(slot);
+                        }
+                    }
+                },
+
+                openSlotPreview(slot) {
+                    if (!slot || !slot.previewUrl) return;
+                    this.previewFile = {
+                        name: slot.name || 'Dokumen.pdf',
+                        sizeLabel: slot.sizeLabel || '',
+                        pageCount: Number(slot.pageCount || 1),
+                        url: slot.previewUrl,
+                        note: slot.note || '',
+                        isEncrypted: Boolean(slot.isEncrypted)
+                    };
+                    this.previewModalOpen = true;
+                },
+
+                closePdfPreview() {
+                    this.previewModalOpen = false;
+                },
+
+                getTotalPdfSlotCount() {
+                    return this.printCartItems.reduce((sum, menu) => sum + Number(menu.quota || 0), 0);
+                },
+
+                getTotalPdfBytes(excludeSlotUid = null) {
+                    let total = 0;
+                    for (const menu of this.printCartItems) {
+                        for (const slot of menu.slots) {
+                            if (slot.slotUid === excludeSlotUid) continue;
+                            if (slot.file) {
+                                total += Number(slot.sizeBytes || 0);
+                            }
+                        }
+                    }
+                    return total;
+                },
+
+                scrollToCartPanel() {
+                    const el = document.getElementById('cart-panel');
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                },
+
+                highlightAndRevealCart(menuKey) {
+                    this.highlightedCartKey = menuKey;
+                    if (this.highlightTimer) {
+                        clearTimeout(this.highlightTimer);
+                    }
+                    this.highlightTimer = setTimeout(() => {
+                        this.highlightedCartKey = '';
+                    }, 1600);
+
                     this.$nextTick(() => {
-                        const el = document.getElementById('contextual-pdf-section');
-                        if (el) {
-                            el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        const card = document.getElementById('cart-card-' + menuKey) || document.getElementById('cart-panel');
+                        if (!card) return;
+                        const rect = card.getBoundingClientRect();
+                        if (rect.top < 72 || rect.bottom > window.innerHeight) {
+                            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                         }
                     });
+                },
+
+                addOrIncrementPrintMenu(item) {
+                    this.pdfGlobalError = '';
+                    if (this.getTotalPdfSlotCount() >= MAX_PDF_SLOTS) {
+                        this.pdfGlobalError = 'Total kuota dokumen cetak maksimal ' + MAX_PDF_SLOTS + ' file PDF dalam satu transaksi.';
+                        this.scrollToCartPanel();
+                        return;
+                    }
+
+                    const key = 'print_' + item.id;
+                    const existing = this.printCartItems.find(m => m.key === key);
+                    if (existing) {
+                        existing.warning = '';
+                        existing.quota += 1;
+                        existing.slots.push(this.createEmptySlot(existing.defaultPaperSize));
+                        this.highlightAndRevealCart(key);
+                        return;
+                    }
+
+                    const paperSize = this.detectPaperSize(item.name);
+                    this.printCartItems.push({
+                        key,
+                        kind: 'digital_print',
+                        title: item.name,
+                        printServiceId: String(item.id),
+                        finishingServiceId: '',
+                        finishingName: '',
+                        defaultPaperSize: paperSize,
+                        quota: 1,
+                        warning: '',
+                        slots: [this.createEmptySlot(paperSize)]
+                    });
+                    this.highlightAndRevealCart(key);
                 },
 
                 handleCatalogItemClick(item) {
                     const behavior = item.order_behavior || (item.item_type === 'barang' ? 'physical_goods' : 'digital_print');
 
                     if (behavior === 'digital_print') {
-                        this.activePrintServiceId = String(item.id);
-                        this.activeLockedFinishingId = '';
-                        this.activePaperSize = this.detectPaperSize(item.name);
-                        this.activeContextLabel = 'Mode Cetak Online: ' + item.name;
-                        this.pdfPanelVisible = true;
-                        this.scrollToPdfSection();
+                        this.addOrIncrementPrintMenu(item);
                         return;
                     }
 
@@ -137,14 +265,236 @@
                 selectHybridBundlePdf() {
                     if (!this.selectedHybridItem) return;
                     const item = this.selectedHybridItem;
-                    this.activeLockedFinishingId = String(item.id);
-                    this.activePrintServiceId = this.smartPrintForFinishing(item);
-                    this.activePaperSize = this.detectPaperSize(item.name);
-                    this.activeContextLabel = 'Bundel Aktif: Print PDF + ' + item.name;
-                    this.pdfPanelVisible = true;
+                    this.pdfGlobalError = '';
+
+                    if (this.getTotalPdfSlotCount() >= MAX_PDF_SLOTS) {
+                        this.pdfGlobalError = 'Total kuota dokumen cetak maksimal ' + MAX_PDF_SLOTS + ' file PDF dalam satu transaksi.';
+                        this.hybridModalOpen = false;
+                        this.selectedHybridItem = null;
+                        this.scrollToCartPanel();
+                        return;
+                    }
+
+                    const key = 'bundle_' + item.id;
+                    const existing = this.printCartItems.find(m => m.key === key);
+                    if (existing) {
+                        existing.warning = '';
+                        existing.quota += 1;
+                        existing.slots.push(this.createEmptySlot(existing.defaultPaperSize));
+                    } else {
+                        const paperSize = this.detectPaperSize(item.name);
+                        this.printCartItems.push({
+                            key,
+                            kind: 'hybrid_bundle',
+                            title: 'Bundel Print + ' + item.name,
+                            printServiceId: this.smartPrintForFinishing(item),
+                            finishingServiceId: String(item.id),
+                            finishingName: item.name,
+                            defaultPaperSize: paperSize,
+                            quota: 1,
+                            warning: '',
+                            slots: [this.createEmptySlot(paperSize)]
+                        });
+                    }
+
                     this.hybridModalOpen = false;
                     this.selectedHybridItem = null;
-                    this.scrollToPdfSection();
+                    this.highlightAndRevealCart(key);
+                },
+
+                incrementPrintMenuQuota(key) {
+                    this.pdfGlobalError = '';
+                    const menu = this.printCartItems.find(m => m.key === key);
+                    if (!menu) return;
+
+                    if (this.getTotalPdfSlotCount() >= MAX_PDF_SLOTS) {
+                        this.pdfGlobalError = 'Total maksimal ' + MAX_PDF_SLOTS + ' slot/file PDF dalam satu pesanan.';
+                        return;
+                    }
+
+                    menu.warning = '';
+                    menu.quota += 1;
+                    menu.slots.push(this.createEmptySlot(menu.defaultPaperSize));
+                },
+
+                decrementPrintMenuQuota(key) {
+                    this.pdfGlobalError = '';
+                    const idx = this.printCartItems.findIndex(m => m.key === key);
+                    if (idx === -1) return;
+                    const menu = this.printCartItems[idx];
+
+                    if (menu.quota <= 1) {
+                        this.printCartItems.splice(idx, 1);
+                        return;
+                    }
+
+                    // Prioritize deleting the last empty slot first before removing a filled slot
+                    let removeSlotIdx = -1;
+                    for (let i = menu.slots.length - 1; i >= 0; i--) {
+                        if (!menu.slots[i].file) {
+                            removeSlotIdx = i;
+                            break;
+                        }
+                    }
+                    if (removeSlotIdx === -1) {
+                        removeSlotIdx = menu.slots.length - 1;
+                    }
+
+                    this.revokeSlotPreviewUrl(menu.slots[removeSlotIdx]);
+                    menu.slots.splice(removeSlotIdx, 1);
+                    menu.quota = menu.slots.length;
+                    menu.warning = '';
+                },
+
+                removePrintMenu(key) {
+                    const target = this.printCartItems.find(m => m.key === key);
+                    if (target) {
+                        for (const slot of target.slots) {
+                            this.revokeSlotPreviewUrl(slot);
+                        }
+                    }
+                    this.printCartItems = this.printCartItems.filter(m => m.key !== key);
+                    this.pdfGlobalError = '';
+                },
+
+                triggerSlotInput(slotUid) {
+                    const input = document.getElementById('slot-file-' + slotUid);
+                    if (input) {
+                        input.click();
+                    }
+                },
+
+                handleSlotFileChange(menuKey, slotIdx, event) {
+                    const files = Array.from(event.target.files || []);
+                    // Always reset value immediately so re-uploading the same filename triggers change
+                    event.target.value = '';
+                    if (files.length > 0) {
+                        this.assignFilesToMenuSlots(menuKey, slotIdx, files);
+                    }
+                },
+
+                handleSlotDrop(menuKey, slotIdx, event) {
+                    const menu = this.printCartItems.find(m => m.key === menuKey);
+                    if (menu && menu.slots[slotIdx]) {
+                        menu.slots[slotIdx].dragOver = false;
+                    }
+                    const files = Array.from(event.dataTransfer?.files || []);
+                    if (files.length > 0) {
+                        this.assignFilesToMenuSlots(menuKey, slotIdx, files);
+                    }
+                },
+
+                async waitForPdfInspector(maxWaitMs = 2500) {
+                    const start = Date.now();
+                    while (typeof window.usuInspectPdfFile !== 'function' && (Date.now() - start) < maxWaitMs) {
+                        await new Promise(r => setTimeout(r, 80));
+                    }
+                    return typeof window.usuInspectPdfFile === 'function' ? window.usuInspectPdfFile : null;
+                },
+
+                async assignFilesToMenuSlots(menuKey, startSlotIdx, files) {
+                    const menu = this.printCartItems.find(m => m.key === menuKey);
+                    if (!menu || !menu.slots[startSlotIdx]) return;
+
+                    this.pdfGlobalError = '';
+                    menu.warning = '';
+
+                    // Target slot startSlotIdx first (supports fill & replace), then remaining empty slots sequentially
+                    const targetIndices = [startSlotIdx];
+                    for (let i = startSlotIdx + 1; i < menu.slots.length; i++) {
+                        if (!menu.slots[i].file) targetIndices.push(i);
+                    }
+                    for (let i = 0; i < startSlotIdx; i++) {
+                        if (!menu.slots[i].file) targetIndices.push(i);
+                    }
+
+                    if (files.length > targetIndices.length) {
+                        const skipped = files.length - targetIndices.length;
+                        menu.warning = skipped + ' file tambahan dilewati karena kuota menu ini ' + menu.quota + ' file. Klik tombol + di header menu untuk menambah kuota.';
+                    }
+
+                    const inspector = await this.waitForPdfInspector();
+                    const countToAssign = Math.min(files.length, targetIndices.length);
+
+                    for (let k = 0; k < countToAssign; k++) {
+                        const file = files[k];
+                        const slot = menu.slots[targetIndices[k]];
+                        if (!slot) continue;
+
+                        // Revoke any previous preview blob before assigning new file; keep note/copies/paperSize intact
+                        this.revokeSlotPreviewUrl(slot);
+                        slot.file = file;
+                        slot.name = file.name;
+                        slot.sizeBytes = Number(file.size || 0);
+                        slot.sizeLabel = this.formatFileSize(slot.sizeBytes);
+                        slot.error = null;
+                        slot.warning = null;
+
+                        if (slot.sizeBytes <= 0) {
+                            slot.inspecting = false;
+                            slot.valid = false;
+                            slot.error = 'File PDF berukuran 0 byte / kosong.';
+                            continue;
+                        }
+
+                        if (slot.sizeBytes > MAX_FILE_BYTES) {
+                            slot.inspecting = false;
+                            slot.valid = false;
+                            slot.error = 'Ukuran file melebihi batas maksimal 25 MB per file.';
+                            continue;
+                        }
+
+                        if (this.getTotalPdfBytes(slot.slotUid) + slot.sizeBytes > MAX_TOTAL_BYTES) {
+                            slot.inspecting = false;
+                            slot.valid = false;
+                            slot.error = 'Total ukuran seluruh file PDF melebihi batas maksimal 80 MB.';
+                            this.pdfGlobalError = 'Total ukuran seluruh file PDF melebihi batas maksimal 80 MB.';
+                            continue;
+                        }
+
+                        slot.inspecting = true;
+                        slot.valid = false;
+
+                        let result;
+                        if (inspector) {
+                            result = await inspector(file);
+                        } else {
+                            const isPdfExt = file.name.toLowerCase().endsWith('.pdf');
+                            result = isPdfExt
+                                ? { valid: true, pageCount: 1, isEncrypted: false, warning: 'Detektor PDF sedang dimuat; mohon cek jumlah halaman manual.' }
+                                : { valid: false, error: 'Hanya file .pdf yang diperbolehkan.' };
+                        }
+
+                        slot.inspecting = false;
+                        slot.valid = Boolean(result.valid);
+                        slot.error = result.error || null;
+                        slot.warning = result.warning || null;
+                        slot.pageCount = Number(result.pageCount || 1);
+                        slot.isEncrypted = Boolean(result.isEncrypted);
+                        if (slot.valid && !slot.error && typeof URL.createObjectURL === 'function') {
+                            slot.previewUrl = URL.createObjectURL(file);
+                        }
+                    }
+                },
+
+                clearSlot(menuKey, slotIdx) {
+                    const menu = this.printCartItems.find(m => m.key === menuKey);
+                    if (!menu || !menu.slots[slotIdx]) return;
+                    const slot = menu.slots[slotIdx];
+                    this.revokeSlotPreviewUrl(slot);
+                    slot.file = null;
+                    slot.name = '';
+                    slot.sizeBytes = 0;
+                    slot.sizeLabel = '';
+                    slot.dragOver = false;
+                    slot.inspecting = false;
+                    slot.valid = false;
+                    slot.error = null;
+                    slot.warning = null;
+                    slot.pageCount = 1;
+                    slot.isEncrypted = false;
+                    menu.warning = '';
+                    this.pdfGlobalError = '';
                 },
 
                 addOfflinePhysicalItem(item) {
@@ -202,97 +552,6 @@
                     return Math.max(1, Math.round(bytes / 1024)) + ' KB';
                 },
 
-                async waitForPdfInspector(maxWaitMs = 2500) {
-                    const start = Date.now();
-                    while (typeof window.usuInspectPdfFile !== 'function' && (Date.now() - start) < maxWaitMs) {
-                        await new Promise(r => setTimeout(r, 80));
-                    }
-                    return typeof window.usuInspectPdfFile === 'function' ? window.usuInspectPdfFile : null;
-                },
-
-                handlePdfInputChange(event) {
-                    const files = Array.from(event.target.files || []);
-                    if (files.length > 0) {
-                        this.enqueuePdfFiles(files);
-                    }
-                    event.target.value = '';
-                },
-
-                handlePdfDrop(event) {
-                    this.pdfDragOver = false;
-                    const files = Array.from(event.dataTransfer?.files || []);
-                    if (files.length > 0) {
-                        this.enqueuePdfFiles(files);
-                    }
-                },
-
-                async enqueuePdfFiles(files) {
-                    this.pdfGlobalError = '';
-                    this.pdfPanelVisible = true;
-                    const inspector = await this.waitForPdfInspector();
-
-                    for (const file of files) {
-                        if (this.pdfFiles.length >= 10) {
-                            this.pdfGlobalError = 'Maksimal 10 file PDF dalam satu pesanan.';
-                            break;
-                        }
-
-                        const currentTotalBytes = this.pdfFiles.reduce((acc, f) => acc + (f.sizeBytes || 0), 0);
-                        if (currentTotalBytes + file.size > 80 * 1024 * 1024) {
-                            this.pdfGlobalError = 'Total ukuran seluruh file PDF melebihi batas maksimal 80 MB.';
-                            break;
-                        }
-
-                        const uid = 'pdf-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
-                        const entry = {
-                            uid,
-                            file,
-                            name: file.name,
-                            sizeBytes: file.size,
-                            sizeLabel: this.formatFileSize(file.size),
-                            inspecting: true,
-                            valid: false,
-                            error: null,
-                            warning: null,
-                            pageCount: 1,
-                            isEncrypted: false,
-                            printServiceId: this.activePrintServiceId || this.defaultPrintServiceId(),
-                            paperSize: this.activePaperSize || 'A4',
-                            finishingServiceId: this.activeLockedFinishingId || '',
-                            isBundledFinishing: Boolean(this.activeLockedFinishingId),
-                            copies: 1,
-                            note: ''
-                        };
-
-                        this.pdfFiles.push(entry);
-                        const reactiveIdx = this.pdfFiles.findIndex(item => item.uid === uid);
-
-                        let result;
-                        if (inspector) {
-                            result = await inspector(file);
-                        } else {
-                            const isPdfExt = file.name.toLowerCase().endsWith('.pdf');
-                            result = isPdfExt
-                                ? { valid: true, pageCount: 1, isEncrypted: false, warning: 'Detektor PDF sedang dimuat; mohon cek jumlah halaman manual.' }
-                                : { valid: false, error: 'Hanya file .pdf yang diperbolehkan.' };
-                        }
-
-                        if (reactiveIdx !== -1 && this.pdfFiles[reactiveIdx]) {
-                            this.pdfFiles[reactiveIdx].inspecting = false;
-                            this.pdfFiles[reactiveIdx].valid = Boolean(result.valid);
-                            this.pdfFiles[reactiveIdx].error = result.error || null;
-                            this.pdfFiles[reactiveIdx].warning = result.warning || null;
-                            this.pdfFiles[reactiveIdx].pageCount = Number(result.pageCount || 1);
-                            this.pdfFiles[reactiveIdx].isEncrypted = Boolean(result.isEncrypted);
-                        }
-                    }
-                },
-
-                removePdfFile(uid) {
-                    this.pdfFiles = this.pdfFiles.filter(f => f.uid !== uid);
-                    this.pdfGlobalError = '';
-                },
-
                 getPrintService(serviceId) {
                     return this.printServices.find(s => String(s.id) === String(serviceId)) || null;
                 },
@@ -312,14 +571,14 @@
                     return title.includes('laminat') && ['lembar', 'pcs', 'lbr', ''].includes(u);
                 },
 
-                getPdfFileBreakdown(pdf) {
-                    if (!pdf.valid || pdf.error) {
+                getSlotBreakdown(menu, slot) {
+                    if (!slot || !slot.file || !slot.valid || slot.error) {
                         return { printQty: 0, printUnit: 0, printSubtotal: 0, finishQty: 0, finishUnit: 0, finishSubtotal: 0, finishName: '', totalSubtotal: 0 };
                     }
-                    const printSvc = this.getPrintService(pdf.printServiceId);
-                    const finishSvc = this.getFinishingService(pdf.finishingServiceId);
-                    const pages = Math.max(1, Number(pdf.pageCount || 1));
-                    const copies = Math.max(1, Number(pdf.copies || 1));
+                    const printSvc = this.getPrintService(menu.printServiceId);
+                    const finishSvc = this.getFinishingService(menu.finishingServiceId);
+                    const pages = Math.max(1, Number(slot.pageCount || 1));
+                    const copies = Math.max(1, Number(slot.copies || 1));
                     const printQty = pages * copies;
                     const printUnit = Number(printSvc?.price || 0);
                     const printSubtotal = printQty * printUnit;
@@ -339,16 +598,45 @@
                     };
                 },
 
-                getPdfFileSubtotal(pdf) {
-                    return this.getPdfFileBreakdown(pdf).totalSubtotal;
+                getSlotSubtotal(menu, slot) {
+                    return this.getSlotBreakdown(menu, slot).totalSubtotal;
                 },
 
-                validPdfFiles() {
-                    return this.pdfFiles.filter(f => f.valid && !f.error);
+                getMenuSubtotal(menu) {
+                    return menu.slots.reduce((sum, slot) => sum + this.getSlotSubtotal(menu, slot), 0);
+                },
+
+                getMenuFilledCount(menu) {
+                    return menu.slots.filter(s => s.file && s.valid && !s.error && !s.inspecting).length;
+                },
+
+                getIncompletePdfMenus() {
+                    const list = [];
+                    for (const menu of this.printCartItems) {
+                        const filled = this.getMenuFilledCount(menu);
+                        const hasInspecting = menu.slots.some(s => s.inspecting);
+                        const hasError = menu.slots.some(s => Boolean(s.error));
+                        if (filled !== menu.quota || hasInspecting || hasError) {
+                            list.push({
+                                key: menu.key,
+                                title: menu.title,
+                                filled,
+                                quota: menu.quota,
+                                missing: Math.max(0, menu.quota - filled),
+                                hasInspecting,
+                                hasError,
+                            });
+                        }
+                    }
+                    return list;
+                },
+
+                getTotalMissingPdfCount() {
+                    return this.getIncompletePdfMenus().reduce((sum, m) => sum + m.missing, 0);
                 },
 
                 getPdfSubtotal() {
-                    return this.validPdfFiles().reduce((sum, pdf) => sum + this.getPdfFileSubtotal(pdf), 0);
+                    return this.printCartItems.reduce((sum, menu) => sum + this.getMenuSubtotal(menu), 0);
                 },
 
                 addItem(item) {
@@ -385,7 +673,7 @@
                 },
 
                 getItemCount() {
-                    return this.validPdfFiles().length + this.getOfflineItemCount() + this.getCartItemCount();
+                    return this.getTotalPdfSlotCount() + this.getOfflineItemCount() + this.getCartItemCount();
                 },
 
                 getOfflineSubtotal() {
@@ -400,22 +688,36 @@
                     return this.getPdfSubtotal() + this.getOfflineSubtotal() + this.getCartSubtotal();
                 },
 
+                isCartEmpty() {
+                    return this.printCartItems.length === 0
+                        && Object.keys(this.offlineCart).length === 0
+                        && Object.keys(this.cart).length === 0;
+                },
+
+                isCheckoutDisabled() {
+                    return this.submitting || this.isCartEmpty() || this.getIncompletePdfMenus().length > 0;
+                },
+
                 formatRupiah(number) {
                     return 'Rp ' + new Intl.NumberFormat('id-ID').format(Number(number || 0));
                 },
 
                 submitOrder() {
                     this.submitError = '';
-                    const readyPdfs = this.validPdfFiles();
-                    const hasInvalidPdfs = this.pdfFiles.some(f => f.error || f.inspecting);
 
-                    if (hasInvalidPdfs) {
-                        this.submitError = 'Masih ada file PDF yang sedang diproses atau bermasalah. Hapus file yang gagal sebelum melanjutkan.';
+                    if (this.isCartEmpty()) {
+                        this.submitError = 'Keranjang pesanan masih kosong! Pilih layanan cetak, layanan offline, atau barang ATK terlebih dahulu.';
                         return;
                     }
 
-                    if (readyPdfs.length === 0 && Object.keys(this.offlineCart).length === 0 && Object.keys(this.cart).length === 0) {
-                        this.submitError = 'Keranjang pesanan masih kosong! Pilih layanan cetak (dan unggah PDF), layanan offline, atau barang ATK di sebelah kiri terlebih dahulu.';
+                    const incomplete = this.getIncompletePdfMenus();
+                    if (incomplete.length > 0) {
+                        const names = incomplete.map(m => {
+                            if (m.hasInspecting) return m.title + ' (sedang memproses PDF)';
+                            if (m.hasError) return m.title + ' (ada file bermasalah)';
+                            return m.title + ' (kurang ' + m.missing + ' file PDF)';
+                        }).join('; ');
+                        this.submitError = 'Lengkapi semua slot PDF sebelum melanjutkan: ' + names;
                         return;
                     }
 
@@ -455,21 +757,28 @@
                         }))
                     ];
 
-                    const pdfConfigs = readyPdfs.map(pdf => {
-                        const printSvc = this.getPrintService(pdf.printServiceId);
-                        const finishSvc = this.getFinishingService(pdf.finishingServiceId);
-                        return {
-                            page_count: Math.max(1, Number(pdf.pageCount || 1)),
-                            copies: Math.max(1, Number(pdf.copies || 1)),
-                            print_service_id: pdf.printServiceId ? Number(pdf.printServiceId) : null,
-                            print_mode: printSvc ? printSvc.name : 'Print Hitam Putih A4',
-                            paper_size: pdf.paperSize || 'A4',
-                            finishing_service_id: pdf.finishingServiceId ? Number(pdf.finishingServiceId) : null,
-                            finishing_option: finishSvc ? finishSvc.name : null,
-                            is_encrypted: Boolean(pdf.isEncrypted),
-                            note: (pdf.note || '').trim()
-                        };
-                    });
+                    const flattenedFiles = [];
+                    const pdfConfigs = [];
+
+                    for (const menu of this.printCartItems) {
+                        const printSvc = this.getPrintService(menu.printServiceId);
+                        const finishSvc = this.getFinishingService(menu.finishingServiceId);
+
+                        for (const slot of menu.slots) {
+                            flattenedFiles.push({ file: slot.file, name: slot.name });
+                            pdfConfigs.push({
+                                page_count: Math.max(1, Number(slot.pageCount || 1)),
+                                copies: Math.max(1, Number(slot.copies || 1)),
+                                print_service_id: menu.printServiceId ? Number(menu.printServiceId) : null,
+                                print_mode: printSvc ? printSvc.name : 'Print Hitam Putih A4',
+                                paper_size: slot.paperSize || 'A4',
+                                finishing_service_id: menu.finishingServiceId ? Number(menu.finishingServiceId) : null,
+                                finishing_option: finishSvc ? finishSvc.name : null,
+                                is_encrypted: Boolean(slot.isEncrypted),
+                                note: (slot.note || '').trim()
+                            });
+                        }
+                    }
 
                     const formData = new FormData();
                     formData.append('customer_name', this.customerName.trim());
@@ -484,9 +793,10 @@
                     formData.append('payment_channel', paymentChannel);
                     formData.append('items', JSON.stringify(orderItems));
                     formData.append('pdf_configs', JSON.stringify(pdfConfigs));
+                    formData.append('expected_pdf_count', String(flattenedFiles.length));
 
-                    readyPdfs.forEach((pdf) => {
-                        formData.append('pdf_files[]', pdf.file, pdf.name);
+                    flattenedFiles.forEach((entry) => {
+                        formData.append('pdf_files[]', entry.file, entry.name);
                     });
 
                     fetch(cfg.submitUrl, {
@@ -519,7 +829,7 @@
     @endpush
 
     <div
-        class="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6"
+        class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 pb-24 lg:pb-8 space-y-6"
         x-data="usuFotocopyOrderPage()"
     >
         <!-- Breadcrumb -->
@@ -579,11 +889,11 @@
             </a>
         </div>
 
-        <!-- Main Layout: Catalog-First Left, Grouped Sticky Cart Right -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Main Layout: Catalog Left (7 cols), Cart-Bound Upload & Checkout Right (5 cols) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
-            <!-- LEFT 2 COLS -->
-            <div class="lg:col-span-2 space-y-6">
+            <!-- LEFT 7 COLS: PURE CATALOG -->
+            <div class="lg:col-span-7 space-y-6">
 
                 <!-- SECTION 1 (POSISI UTAMA): KATALOG LAYANAN CETAK, FINISHING & BARANG ATK -->
                 <div class="space-y-4">
@@ -593,7 +903,7 @@
                             <span>Pilih Layanan Cetak, Finishing &amp; Barang ATK</span>
                         </h2>
                         <p class="text-xs text-gray-500">
-                            Pilih layanan yang Anda butuhkan terlebih dahulu. Area unggah PDF akan terbuka otomatis hanya ketika Anda memilih layanan Print/Cetak atau opsi bundel Print + Laminating/Jilid.
+                            Klik layanan Print/Cetak atau pilih opsi bundel Print + Finishing untuk menambahkannya langsung ke Keranjang beserta slot unggah PDF per menu (1:1).
                         </p>
                     </div>
 
@@ -690,273 +1000,302 @@
                         </template>
                     </div>
                 </div>
-
-                <!-- SECTION 2 (KONTEKSTUAL — TERSEMBUNYI SECARA DEFAULT): UPLOAD MULTI-PDF + BUNDEL -->
-                <div
-                    id="contextual-pdf-section"
-                    x-show="pdfPanelVisible || pdfFiles.length > 0"
-                    x-transition
-                    x-cloak
-                    class="bg-white rounded-2xl border-2 border-emerald-300 shadow-sm p-4 sm:p-6 space-y-4"
-                >
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-emerald-100">
-                        <div>
-                            <div class="flex flex-wrap items-center gap-2">
-                                <h2 class="text-base sm:text-lg font-black text-gray-900 flex items-center gap-2">
-                                    <span class="w-1.5 h-5 bg-[#10A760] rounded-full"></span>
-                                    <span>Unggah Dokumen PDF untuk Dicetak (Multi-PDF)</span>
-                                </h2>
-                                <span x-show="activeContextLabel" class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200" x-text="activeContextLabel"></span>
-                            </div>
-                            <p class="text-xs text-gray-500 mt-1">
-                                Halaman tiap PDF terdeteksi otomatis via <span class="font-semibold">pdf.js</span>. Cantumkan catatan khusus per file agar langsung tampil di WhatsApp operator toko saat lunas.
-                            </p>
-                        </div>
-                        <button
-                            type="button"
-                            x-show="pdfFiles.length === 0"
-                            @click="pdfPanelVisible = false"
-                            class="text-xs font-bold text-gray-500 hover:text-gray-800 px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 self-start cursor-pointer"
-                        >
-                            Tutup Area PDF
-                        </button>
-                    </div>
-
-                    <input
-                        type="file"
-                        id="multiPdfInput"
-                        multiple
-                        accept=".pdf,application/pdf"
-                        @change="handlePdfInputChange($event)"
-                        class="hidden"
-                    >
-
-                    <div
-                        @click="document.getElementById('multiPdfInput').click()"
-                        @dragover.prevent="pdfDragOver = true"
-                        @dragleave.prevent="pdfDragOver = false"
-                        @drop.prevent="handlePdfDrop($event)"
-                        :class="pdfDragOver ? 'border-[#10A760] bg-emerald-50/70 ring-2 ring-[#10A760]/30' : 'border-emerald-300 hover:border-[#10A760] hover:bg-emerald-50/30'"
-                        class="border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-2.5 group"
-                    >
-                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-[#10A760] flex items-center justify-center text-xl group-hover:scale-105 transition-transform shadow-2xs">
-                            <i class="fa-solid fa-file-pdf"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs sm:text-sm font-extrabold text-gray-800 group-hover:text-[#0D8A4E]">
-                                Tarik &amp; lepas file PDF Anda di sini, atau klik untuk memilih file
-                            </p>
-                            <p class="text-[11px] text-gray-500 mt-0.5">
-                                Format wajib <strong>.pdf</strong> &bull; Maks 25 MB/file &bull; Maks 10 file (total 80 MB) &bull; Mendukung Auto Page Count &amp; Note per PDF
-                            </p>
-                        </div>
-                    </div>
-
-                    <div x-show="pdfGlobalError" x-cloak class="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 font-semibold flex items-center gap-2">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                        <span x-text="pdfGlobalError"></span>
-                    </div>
-
-                    <!-- Per-File PDF Configuration Cards -->
-                    <div class="space-y-3.5" x-show="pdfFiles.length > 0" x-cloak>
-                        <template x-for="(pdf, idx) in pdfFiles" :key="pdf.uid">
-                            <div
-                                class="rounded-2xl border p-4 space-y-3 transition-all"
-                                :class="pdf.error ? 'border-red-300 bg-red-50/40' : 'border-emerald-200 bg-slate-50/60'"
-                            >
-                                <div class="flex items-start justify-between gap-3">
-                                    <div class="flex items-start gap-3 min-w-0">
-                                        <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black text-xs text-white shrink-0 shadow-2xs"
-                                            :class="pdf.error ? 'bg-red-500' : 'bg-[#10A760]'">
-                                            <span x-text="'PDF #' + (idx + 1)"></span>
-                                        </div>
-                                        <div class="min-w-0">
-                                            <h4 class="font-extrabold text-gray-900 text-xs sm:text-sm truncate" x-text="pdf.name"></h4>
-                                            <div class="flex flex-wrap items-center gap-1.5 mt-1 text-[11px]">
-                                                <span class="px-2 py-0.5 rounded-full bg-white border border-gray-200 text-gray-600 font-semibold" x-text="pdf.sizeLabel"></span>
-
-                                                <template x-if="pdf.inspecting">
-                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-bold">
-                                                        <i class="fa-solid fa-spinner fa-spin"></i> Mendeteksi halaman...
-                                                    </span>
-                                                </template>
-
-                                                <template x-if="!pdf.inspecting && pdf.valid && !pdf.isEncrypted">
-                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold">
-                                                        <i class="fa-solid fa-wand-magic-sparkles text-[10px]"></i>
-                                                        <span x-text="pdf.pageCount + ' Halaman (Terdeteksi Otomatis pdf.js)'"></span>
-                                                    </span>
-                                                </template>
-
-                                                <template x-if="!pdf.inspecting && pdf.valid && pdf.isEncrypted">
-                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200 font-bold">
-                                                        <i class="fa-solid fa-lock text-[10px]"></i> PDF Terkunci Password
-                                                    </span>
-                                                </template>
-
-                                                <template x-if="pdf.finishingServiceId">
-                                                    <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 border border-indigo-200 font-bold">
-                                                        <i class="fa-solid fa-layer-group text-[10px]"></i> Bundel Print + Finishing
-                                                    </span>
-                                                </template>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <button
-                                        type="button"
-                                        @click="removePdfFile(pdf.uid)"
-                                        class="text-xs font-bold text-red-600 hover:bg-red-50 px-2.5 py-1 rounded-lg transition cursor-pointer shrink-0"
-                                    >
-                                        <i class="fa-solid fa-trash-can mr-1"></i>Hapus
-                                    </button>
-                                </div>
-
-                                <div x-show="pdf.error" class="p-2.5 rounded-xl bg-red-100/70 border border-red-200 text-xs text-red-800 font-semibold" x-text="pdf.error"></div>
-
-                                <div x-show="pdf.warning && !pdf.error" class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-800 flex items-start gap-2">
-                                    <i class="fa-solid fa-shield-halved text-amber-600 mt-0.5"></i>
-                                    <span x-text="pdf.warning"></span>
-                                </div>
-
-                                <div x-show="!pdf.inspecting && pdf.valid && !pdf.error" class="space-y-3 pt-1">
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                                        <div class="sm:col-span-2">
-                                            <label class="block text-[11px] font-bold text-gray-700 mb-1">Layanan Cetak *</label>
-                                            <select
-                                                x-model="pdf.printServiceId"
-                                                class="w-full text-xs rounded-xl border-gray-200 bg-white focus:border-[#10A760] focus:ring-[#10A760] py-2"
-                                            >
-                                                <template x-for="svc in printServices" :key="svc.id">
-                                                    <option :value="svc.id" x-text="svc.name + ' (' + formatRupiah(svc.price) + '/' + svc.unit + ')'"></option>
-                                                </template>
-                                            </select>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[11px] font-bold text-gray-700 mb-1">Ukuran Kertas</label>
-                                            <select
-                                                x-model="pdf.paperSize"
-                                                class="w-full text-xs rounded-xl border-gray-200 bg-white focus:border-[#10A760] focus:ring-[#10A760] py-2"
-                                            >
-                                                <option value="A4">A4 (21 x 29.7 cm)</option>
-                                                <option value="F4">F4 / Folio</option>
-                                                <option value="A3">A3 (Poster/Besar)</option>
-                                                <option value="Legal">Legal</option>
-                                            </select>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[11px] font-bold text-gray-700 mb-1">
-                                                Halaman <span x-show="pdf.isEncrypted" class="text-amber-600">(Manual*)</span>
-                                            </label>
-                                            <input
-                                                type="number"
-                                                min="1"
-                                                max="5000"
-                                                x-model.number="pdf.pageCount"
-                                                :readonly="!pdf.isEncrypted"
-                                                :class="pdf.isEncrypted ? 'bg-white border-amber-300' : 'bg-gray-100 border-gray-200 text-gray-700'"
-                                                class="w-full text-xs font-bold rounded-xl py-2 px-3 focus:border-[#10A760] focus:ring-[#10A760]"
-                                            >
-                                        </div>
-                                    </div>
-
-                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end">
-                                        <div>
-                                            <label class="block text-[11px] font-bold text-gray-700 mb-1">
-                                                Finishing / Laminating / Jilid
-                                                <span x-show="pdf.finishingServiceId" class="text-indigo-600">(Bundel)</span>
-                                            </label>
-                                            <select
-                                                x-model="pdf.finishingServiceId"
-                                                :class="pdf.finishingServiceId ? 'border-indigo-300 bg-indigo-50/40 font-semibold' : 'border-gray-200 bg-white'"
-                                                class="w-full text-xs rounded-xl focus:border-[#10A760] focus:ring-[#10A760] py-2"
-                                            >
-                                                <option value="">Tanpa Jilid / Laminating (Rp 0)</option>
-                                                <template x-for="fin in finishingServices" :key="fin.id">
-                                                    <option :value="fin.id" x-text="fin.name + ' (+' + formatRupiah(fin.price) + '/' + fin.unit + ')'"></option>
-                                                </template>
-                                            </select>
-                                        </div>
-
-                                        <div>
-                                            <label class="block text-[11px] font-bold text-gray-700 mb-1">Jumlah Rangkap</label>
-                                            <div class="inline-flex items-center bg-white border border-gray-200 rounded-xl overflow-hidden w-full">
-                                                <button type="button" @click="if (pdf.copies > 1) pdf.copies--" class="px-3 py-2 text-gray-700 font-bold hover:bg-gray-100 cursor-pointer">-</button>
-                                                <input type="number" min="1" max="500" x-model.number="pdf.copies" class="w-full text-center text-xs font-extrabold border-none focus:ring-0 py-2">
-                                                <button type="button" @click="pdf.copies++" class="px-3 py-2 text-white bg-[#10A760] font-bold hover:bg-[#0D8A4E] cursor-pointer">+</button>
-                                            </div>
-                                        </div>
-
-                                        <div class="bg-white rounded-xl border border-emerald-200 px-3 py-2 text-right space-y-0.5">
-                                            <div class="text-[10px] text-gray-500" x-text="getPdfFileBreakdown(pdf).printQty + 'x Print = ' + formatRupiah(getPdfFileBreakdown(pdf).printSubtotal)"></div>
-                                            <template x-if="getPdfFileBreakdown(pdf).finishQty > 0">
-                                                <div class="text-[10px] text-indigo-700 font-semibold" x-text="'+ ' + getPdfFileBreakdown(pdf).finishQty + 'x ' + getPdfFileBreakdown(pdf).finishName + ' = ' + formatRupiah(getPdfFileBreakdown(pdf).finishSubtotal)"></div>
-                                            </template>
-                                            <div class="text-sm font-black text-[#10A760]" x-text="formatRupiah(getPdfFileSubtotal(pdf))"></div>
-                                        </div>
-                                    </div>
-
-                                    <div>
-                                        <label class="block text-[11px] font-bold text-gray-800 mb-1">
-                                            <i class="fa-regular fa-note-sticky text-[#10A760] mr-1"></i>
-                                            Catatan Khusus File Ini (Dikirim ke WA Operator):
-                                        </label>
-                                        <textarea
-                                            x-model="pdf.note"
-                                            maxlength="500"
-                                            rows="2"
-                                            placeholder="Contoh: Halaman 1 & 5 cetak BERWARNA, sisanya hitam putih, langsung dilaminating / dijilid..."
-                                            class="w-full text-xs px-3 py-2 bg-white border border-gray-200 rounded-xl focus:ring-1 focus:ring-[#10A760] focus:border-[#10A760]"
-                                        ></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-                </div>
             </div>
 
-            <!-- RIGHT 1 COL: GROUPED STICKY CART & CHECKOUT -->
-            <div class="space-y-6">
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-5 sticky top-20 space-y-4">
+            <!-- RIGHT 5 COLS: GROUPED STICKY CART & CART-BOUND PDF UPLOAD -->
+            <div class="lg:col-span-5" id="cart-panel">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-5 lg:sticky lg:top-20 space-y-4">
                     <div class="flex items-center justify-between pb-3 border-b border-gray-100">
                         <div class="flex items-center gap-2">
                             <i class="fa-solid fa-cart-shopping text-[#10A760] text-lg"></i>
-                            <h3 class="font-extrabold text-gray-900 text-sm sm:text-base">Keranjang Pesanan</h3>
+                            <div>
+                                <h3 class="font-extrabold text-gray-900 text-sm sm:text-base leading-tight">Keranjang Pesanan</h3>
+                                <p class="text-[10px] text-gray-400" x-show="printCartItems.length > 0" x-cloak>
+                                    Unggah file PDF langsung di tiap kartu menu (maks 10 file / 80 MB)
+                                </p>
+                            </div>
                         </div>
-                        <span class="text-xs font-bold text-[#10A760] bg-green-50 px-2.5 py-0.5 rounded-full" x-text="getItemCount() + ' Item'"></span>
+                        <span class="text-xs font-bold text-[#10A760] bg-green-50 px-2.5 py-0.5 rounded-full shrink-0" x-text="getItemCount() + ' Item'"></span>
                     </div>
 
-                    <!-- Grouped Cart Summary -->
-                    <div class="space-y-3 max-h-80 overflow-y-auto pr-1">
-                        <template x-if="validPdfFiles().length === 0 && Object.keys(offlineCart).length === 0 && Object.keys(cart).length === 0">
-                            <div class="text-center py-6 text-gray-400 text-xs">
+                    <div x-show="pdfGlobalError" x-cloak class="p-2.5 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 font-semibold flex items-center gap-2">
+                        <i class="fa-solid fa-triangle-exclamation shrink-0"></i>
+                        <span x-text="pdfGlobalError"></span>
+                    </div>
+
+                    <!-- Grouped Cart Summary (Scrollable Comfortably) -->
+                    <div class="space-y-4 max-h-[58vh] lg:max-h-[56vh] overflow-y-auto pr-1">
+                        <template x-if="isCartEmpty()">
+                            <div class="text-center py-8 text-gray-400 text-xs border border-dashed border-gray-200 rounded-xl">
                                 <i class="fa-solid fa-cart-shopping text-2xl text-gray-300 mb-2 block"></i>
                                 Keranjang masih kosong.<br>Pilih layanan atau barang ATK di sebelah kiri.
                             </div>
                         </template>
 
-                        <!-- GROUP 1: DOKUMEN CETAK ONLINE (MULTI-PDF & BUNDEL) -->
-                        <div x-show="validPdfFiles().length > 0" x-cloak class="space-y-2">
-                            <div class="text-[10px] font-black uppercase tracking-wider text-emerald-800 flex items-center gap-1.5">
-                                <i class="fa-solid fa-file-pdf"></i>
-                                <span>Dokumen Cetak Online (Multi-PDF)</span>
+                        <!-- GROUP 1: DOKUMEN CETAK ONLINE & BUNDEL HYBRID (CART-BOUND 1:1 QUOTA SLOTS) -->
+                        <div x-show="printCartItems.length > 0" x-cloak class="space-y-3">
+                            <div class="text-[10px] font-black uppercase tracking-wider text-emerald-800 flex items-center justify-between gap-1.5">
+                                <span class="flex items-center gap-1.5">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                    <span>Dokumen Cetak Online (Upload per Menu)</span>
+                                </span>
+                                <span class="text-[10px] font-bold text-gray-500" x-text="getTotalPdfSlotCount() + '/10 Slot'"></span>
                             </div>
-                            <template x-for="pdf in validPdfFiles()" :key="pdf.uid">
-                                <div class="bg-emerald-50/70 p-2.5 rounded-xl border border-emerald-200/80 text-xs space-y-1">
+
+                            <template x-for="menu in printCartItems" :key="menu.key">
+                                <div
+                                    :id="'cart-card-' + menu.key"
+                                    :class="highlightedCartKey === menu.key
+                                        ? 'ring-2 ring-[#10A760] border-[#10A760] bg-emerald-50/40 shadow-md'
+                                        : (menu.kind === 'hybrid_bundle' ? 'border-indigo-200 bg-indigo-50/20' : 'border-emerald-200 bg-emerald-50/25')"
+                                    class="rounded-2xl border p-3 sm:p-3.5 space-y-3 transition-all duration-300"
+                                >
+                                    <!-- Card Header: Title, Kuota File [-] N [+], Remove Card -->
                                     <div class="flex items-start justify-between gap-2">
-                                        <span class="font-bold text-gray-900 truncate" x-text="pdf.name"></span>
-                                        <span class="font-black text-[#10A760] shrink-0" x-text="formatRupiah(getPdfFileSubtotal(pdf))"></span>
+                                        <div class="min-w-0 flex-1">
+                                            <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                                                <span
+                                                    :class="menu.kind === 'hybrid_bundle' ? 'bg-indigo-100 text-indigo-800 border-indigo-200' : 'bg-emerald-100 text-emerald-800 border-emerald-200'"
+                                                    class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full border"
+                                                    x-text="menu.kind === 'hybrid_bundle' ? 'Bundel Print + Finishing' : 'Cetak PDF'"
+                                                ></span>
+
+                                                <template x-if="getMenuFilledCount(menu) === menu.quota && !menu.slots.some(s => s.inspecting || s.error)">
+                                                    <span class="inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-600 text-white shadow-2xs">
+                                                        <i class="fa-solid fa-check text-[9px]"></i>
+                                                        <span x-text="menu.quota + '/' + menu.quota + ' File Lengkap'"></span>
+                                                    </span>
+                                                </template>
+
+                                                <template x-if="getMenuFilledCount(menu) !== menu.quota || menu.slots.some(s => s.inspecting || s.error)">
+                                                    <span class="inline-flex items-center gap-1 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">
+                                                        <i class="fa-solid fa-triangle-exclamation text-[9px]"></i>
+                                                        <span x-text="'Terisi ' + getMenuFilledCount(menu) + '/' + menu.quota + ' File — Kurang ' + Math.max(0, menu.quota - getMenuFilledCount(menu)) + ' PDF lagi'"></span>
+                                                    </span>
+                                                </template>
+                                            </div>
+                                            <h4 class="font-extrabold text-gray-900 text-xs sm:text-sm leading-snug" x-text="menu.title"></h4>
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            @click="removePrintMenu(menu.key)"
+                                            class="text-gray-400 hover:text-red-600 p-1 rounded-lg hover:bg-red-50 transition cursor-pointer shrink-0"
+                                            title="Hapus menu dari keranjang"
+                                        >
+                                            <i class="fa-solid fa-xmark text-sm"></i>
+                                        </button>
                                     </div>
-                                    <div class="text-[11px] text-gray-600" x-text="getPdfFileBreakdown(pdf).printQty + 'x Print (' + formatRupiah(getPdfFileBreakdown(pdf).printSubtotal) + ')'"></div>
-                                    <template x-if="getPdfFileBreakdown(pdf).finishQty > 0">
-                                        <div class="text-[11px] text-indigo-700 font-bold" x-text="'+ ' + getPdfFileBreakdown(pdf).finishQty + 'x ' + getPdfFileBreakdown(pdf).finishName + ' (' + formatRupiah(getPdfFileBreakdown(pdf).finishSubtotal) + ')'"></div>
-                                    </template>
-                                    <template x-if="pdf.note && pdf.note.trim()">
-                                        <div class="text-[10px] text-amber-800 bg-amber-50 px-2 py-1 rounded-lg border border-amber-200 italic truncate" x-text="'Note: ' + pdf.note"></div>
-                                    </template>
+
+                                    <!-- Kuota File Control & Menu Subtotal -->
+                                    <div class="flex items-center justify-between gap-2 bg-white px-2.5 py-2 rounded-xl border border-gray-200/80">
+                                        <div>
+                                            <span class="text-[11px] font-bold text-gray-700 block">Kuota File PDF</span>
+                                            <span class="text-[10px] text-gray-400" x-text="'Wajib isi ' + menu.quota + ' file berbeda'"></span>
+                                        </div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="inline-flex items-center border border-gray-200 rounded-lg overflow-hidden bg-gray-50">
+                                                <button
+                                                    type="button"
+                                                    @click="decrementPrintMenuQuota(menu.key)"
+                                                    class="w-7 h-7 flex items-center justify-center font-bold text-gray-700 hover:bg-gray-200 cursor-pointer"
+                                                    title="Kurangi kuota file"
+                                                >-</button>
+                                                <span class="w-8 text-center text-xs font-black text-gray-900" x-text="menu.quota"></span>
+                                                <button
+                                                    type="button"
+                                                    @click="incrementPrintMenuQuota(menu.key)"
+                                                    :disabled="getTotalPdfSlotCount() >= 10"
+                                                    class="w-7 h-7 flex items-center justify-center font-bold text-white bg-[#10A760] hover:bg-[#0D8A4E] cursor-pointer disabled:opacity-40"
+                                                    title="Tambah kuota file"
+                                                >+</button>
+                                            </div>
+                                            <span class="text-xs font-black text-[#10A760] min-w-[4.5rem] text-right" x-text="formatRupiah(getMenuSubtotal(menu))"></span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Compact Print Service Selector (Always editable for Hybrid Bundle) -->
+                                    <div x-show="menu.kind === 'hybrid_bundle'" class="bg-white p-2.5 rounded-xl border border-indigo-200/80 space-y-1">
+                                        <label class="block text-[10px] font-extrabold uppercase tracking-wider text-indigo-800">
+                                            Jenis Print Pasangan Bundel:
+                                        </label>
+                                        <select
+                                            x-model="menu.printServiceId"
+                                            class="w-full text-xs rounded-lg border-indigo-200 bg-indigo-50/30 focus:border-indigo-500 focus:ring-indigo-500 py-1.5"
+                                        >
+                                            <template x-for="svc in printServices" :key="svc.id">
+                                                <option :value="String(svc.id)" x-text="svc.name + ' (' + formatRupiah(svc.price) + '/' + svc.unit + ')'"></option>
+                                            </template>
+                                        </select>
+                                    </div>
+
+                                    <div x-show="menu.warning" x-cloak class="p-2 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-800 font-semibold flex items-start gap-1.5">
+                                        <i class="fa-solid fa-circle-info text-amber-600 mt-0.5 shrink-0"></i>
+                                        <span x-text="menu.warning"></span>
+                                    </div>
+
+                                    <!-- 1:1 Slot Upload Containers Inside Card -->
+                                    <div class="space-y-2.5">
+                                        <template x-for="(slot, slotIdx) in menu.slots" :key="slot.slotUid">
+                                            <div class="rounded-xl border bg-white p-2.5 space-y-2 transition-all"
+                                                :class="slot.error ? 'border-red-300 bg-red-50/30' : (slot.file ? 'border-emerald-200' : 'border-dashed border-emerald-300')">
+
+                                                <input
+                                                    type="file"
+                                                    :id="'slot-file-' + slot.slotUid"
+                                                    multiple
+                                                    accept=".pdf,application/pdf"
+                                                    @change="handleSlotFileChange(menu.key, slotIdx, $event)"
+                                                    class="hidden"
+                                                >
+
+                                                <!-- SLOT EMPTY STATE -->
+                                                <template x-if="!slot.file">
+                                                    <div
+                                                        @click="triggerSlotInput(slot.slotUid)"
+                                                        @dragover.prevent="slot.dragOver = true"
+                                                        @dragleave.prevent="slot.dragOver = false"
+                                                        @drop.prevent="handleSlotDrop(menu.key, slotIdx, $event)"
+                                                        :class="slot.dragOver ? 'bg-emerald-50 border-[#10A760] ring-2 ring-[#10A760]/30' : 'hover:bg-emerald-50/40'"
+                                                        class="rounded-lg p-3 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-1"
+                                                    >
+                                                        <div class="inline-flex items-center gap-1.5 text-xs font-extrabold text-[#0D8A4E]">
+                                                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                                                            <span x-text="'+ Unggah File PDF (Slot ' + (slotIdx + 1) + '/' + menu.quota + ')'"></span>
+                                                        </div>
+                                                        <span class="text-[10px] text-gray-500">
+                                                            Klik atau tarik &amp; lepas .pdf (maks 25 MB). Bisa pilih banyak PDF untuk mengisi slot kosong otomatis.
+                                                        </span>
+                                                    </div>
+                                                </template>
+
+                                                <!-- SLOT FILLED / INSPECTING STATE -->
+                                                <template x-if="slot.file">
+                                                    <div class="space-y-2.5">
+                                                        <div class="flex items-start justify-between gap-2">
+                                                            <div class="min-w-0 flex-1">
+                                                                <div class="flex items-center gap-1.5 mb-0.5">
+                                                                    <span class="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-emerald-600 text-white shrink-0" x-text="'File ' + (slotIdx + 1) + '/' + menu.quota"></span>
+                                                                    <span class="font-bold text-gray-900 text-xs truncate" x-text="slot.name"></span>
+                                                                </div>
+                                                                <div class="flex flex-wrap items-center gap-1 text-[10px]">
+                                                                    <span class="px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-semibold" x-text="slot.sizeLabel"></span>
+                                                                    <template x-if="slot.inspecting">
+                                                                        <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-blue-50 text-blue-700 font-bold">
+                                                                            <i class="fa-solid fa-spinner fa-spin"></i> Hitung hal...
+                                                                        </span>
+                                                                    </template>
+                                                                    <template x-if="!slot.inspecting && slot.valid && !slot.isEncrypted">
+                                                                        <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold">
+                                                                            <i class="fa-solid fa-wand-magic-sparkles text-[9px]"></i>
+                                                                            <span x-text="slot.pageCount + ' hal (pdf.js)'"></span>
+                                                                        </span>
+                                                                    </template>
+                                                                    <template x-if="!slot.inspecting && slot.valid && slot.isEncrypted">
+                                                                        <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold">
+                                                                            <i class="fa-solid fa-lock text-[9px]"></i> Terkunci (isi halaman)
+                                                                        </span>
+                                                                    </template>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="flex items-center gap-1 shrink-0">
+                                                                <button
+                                                                    type="button"
+                                                                    x-show="slot.previewUrl && !slot.inspecting && slot.valid && !slot.error"
+                                                                    @click="openSlotPreview(slot)"
+                                                                    class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-1 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 cursor-pointer"
+                                                                    title="Pratinjau isi halaman PDF sebelum bayar"
+                                                                >
+                                                                    <i class="fa-regular fa-eye"></i>
+                                                                    <span>Preview</span>
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    @click="triggerSlotInput(slot.slotUid)"
+                                                                    class="text-[10px] font-bold px-2 py-1 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer"
+                                                                    title="Ganti file PDF (catatan & rangkap tetap tersimpan)"
+                                                                >
+                                                                    Ganti
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    @click="clearSlot(menu.key, slotIdx)"
+                                                                    class="text-[10px] font-bold px-2 py-1 rounded-md bg-red-50 hover:bg-red-100 text-red-600 cursor-pointer"
+                                                                    title="Kosongkan slot ini"
+                                                                >
+                                                                    Kosongkan
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div x-show="slot.error" class="p-2 rounded-lg bg-red-100/80 border border-red-200 text-[11px] text-red-800 font-semibold" x-text="slot.error"></div>
+                                                        <div x-show="slot.warning && !slot.error" class="p-2 rounded-lg bg-amber-50 border border-amber-200 text-[10px] text-amber-800" x-text="slot.warning"></div>
+
+                                                        <!-- Configuration inside filled valid slot -->
+                                                        <div x-show="!slot.inspecting && slot.valid && !slot.error" class="space-y-2 pt-1 border-t border-gray-100">
+                                                            <div class="grid grid-cols-3 gap-2">
+                                                                <div>
+                                                                    <label class="block text-[10px] font-bold text-gray-600 mb-0.5">Kertas</label>
+                                                                    <select x-model="slot.paperSize" class="w-full text-[11px] rounded-lg border-gray-200 py-1.5 px-2 focus:border-[#10A760] focus:ring-[#10A760]">
+                                                                        <option value="A4">A4</option>
+                                                                        <option value="F4">F4</option>
+                                                                        <option value="A3">A3</option>
+                                                                        <option value="Legal">Legal</option>
+                                                                    </select>
+                                                                </div>
+
+                                                                <div>
+                                                                    <label class="block text-[10px] font-bold text-gray-600 mb-0.5">Halaman</label>
+                                                                    <input
+                                                                        type="number"
+                                                                        min="1"
+                                                                        max="5000"
+                                                                        x-model.number="slot.pageCount"
+                                                                        :readonly="!slot.isEncrypted"
+                                                                        :class="slot.isEncrypted ? 'bg-white border-amber-300' : 'bg-gray-100 border-gray-200 text-gray-700'"
+                                                                        class="w-full text-[11px] font-bold rounded-lg py-1.5 px-2"
+                                                                    >
+                                                                </div>
+
+                                                                <div>
+                                                                    <label class="block text-[10px] font-bold text-gray-600 mb-0.5">Rangkap (Cop.)</label>
+                                                                    <div class="inline-flex items-center border border-gray-200 rounded-lg overflow-hidden w-full bg-white">
+                                                                        <button type="button" @click="if (slot.copies > 1) slot.copies--" class="px-2 py-1.5 text-gray-700 font-bold text-xs hover:bg-gray-100 cursor-pointer">-</button>
+                                                                        <input type="number" min="1" max="500" x-model.number="slot.copies" class="w-full text-center text-[11px] font-extrabold border-none focus:ring-0 py-1.5 px-0">
+                                                                        <button type="button" @click="slot.copies++" class="px-2 py-1.5 text-white bg-[#10A760] font-bold text-xs hover:bg-[#0D8A4E] cursor-pointer">+</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div>
+                                                                <label class="block text-[10px] font-bold text-gray-700 mb-0.5">
+                                                                    <i class="fa-regular fa-note-sticky text-[#10A760] mr-1"></i>Note Khusus File Ini (Dikirim ke WA Toko):
+                                                                </label>
+                                                                <textarea
+                                                                    x-model="slot.note"
+                                                                    maxlength="500"
+                                                                    rows="2"
+                                                                    placeholder="Misal: Hal. 1-2 warna, sisanya hitam putih..."
+                                                                    class="w-full text-[11px] px-2.5 py-1.5 bg-slate-50 border border-gray-200 rounded-lg focus:bg-white focus:ring-1 focus:ring-[#10A760] focus:border-[#10A760]"
+                                                                ></textarea>
+                                                            </div>
+
+                                                            <div class="bg-emerald-50/70 rounded-lg border border-emerald-200/80 px-2.5 py-1.5 flex items-center justify-between gap-2 text-[11px]">
+                                                                <div class="text-gray-600 leading-tight">
+                                                                    <span x-text="getSlotBreakdown(menu, slot).printQty + 'x Print (' + formatRupiah(getSlotBreakdown(menu, slot).printSubtotal) + ')'"></span>
+                                                                    <template x-if="getSlotBreakdown(menu, slot).finishQty > 0">
+                                                                        <span class="text-indigo-700 font-bold block" x-text="'+ ' + getSlotBreakdown(menu, slot).finishQty + 'x ' + getSlotBreakdown(menu, slot).finishName + ' (' + formatRupiah(getSlotBreakdown(menu, slot).finishSubtotal) + ')'"></span>
+                                                                    </template>
+                                                                </div>
+                                                                <span class="font-black text-[#10A760] shrink-0" x-text="formatRupiah(getSlotSubtotal(menu, slot))"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
                                 </div>
                             </template>
                         </div>
@@ -1102,6 +1441,30 @@
                         </div>
                     </div>
 
+                    <!-- Validation Lock Banner (Zero Mismatch Guard) -->
+                    <div x-show="getIncompletePdfMenus().length > 0" x-cloak class="p-3 rounded-xl bg-amber-50 border border-amber-300 text-[11px] text-amber-900 space-y-1">
+                        <div class="font-extrabold flex items-center gap-1.5">
+                            <i class="fa-solid fa-lock text-amber-600"></i>
+                            <span>Lengkapi file PDF sesuai kuota menu sebelum membayar:</span>
+                        </div>
+                        <ul class="list-disc pl-4 space-y-0.5 font-medium">
+                            <template x-for="inc in getIncompletePdfMenus()" :key="inc.key">
+                                <li>
+                                    <span class="font-bold" x-text="inc.title"></span>:
+                                    <template x-if="inc.hasInspecting">
+                                        <span>sedang memproses file PDF...</span>
+                                    </template>
+                                    <template x-if="!inc.hasInspecting && inc.hasError">
+                                        <span>perbaiki/ganti file PDF yang bermasalah.</span>
+                                    </template>
+                                    <template x-if="!inc.hasInspecting && !inc.hasError && inc.missing > 0">
+                                        <span x-text="'terisi ' + inc.filled + '/' + inc.quota + ' file (kurang ' + inc.missing + ' PDF lagi)'"></span>
+                                    </template>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+
                     <div x-show="submitError" x-cloak class="p-2.5 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700 font-semibold" x-text="submitError"></div>
 
                     <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
@@ -1113,12 +1476,12 @@
                         <button
                             type="button"
                             @click="submitOrder()"
-                            :disabled="submitting"
-                            class="flex-1 bg-[#10A760] hover:bg-[#0D8A4E] text-white py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                            :disabled="isCheckoutDisabled()"
+                            class="flex-1 bg-[#10A760] hover:bg-[#0D8A4E] text-white py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             <i class="fa-solid fa-spinner fa-spin" x-show="submitting"></i>
                             <i class="fa-solid fa-credit-card" x-show="!submitting"></i>
-                            <span x-text="submitting ? 'Memproses Pesanan...' : 'Lanjut ke Pembayaran'"></span>
+                            <span x-text="submitting ? 'Memproses Pesanan...' : (getIncompletePdfMenus().length > 0 ? 'Lengkapi PDF Dahulu' : 'Lanjut ke Pembayaran')"></span>
                         </button>
 
                         <a
@@ -1136,6 +1499,33 @@
                         File PDF Anda disimpan aman secara privat dan otomatis dikirim ke WhatsApp operator saat terbayar.
                     </p>
                 </div>
+            </div>
+        </div>
+
+        <!-- MOBILE STICKY FLOATING CART BAR (< lg) -->
+        <div
+            x-show="!isCartEmpty()"
+            x-cloak
+            class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur border-t border-gray-200 shadow-2xl px-4 py-3"
+        >
+            <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                        <span class="text-xs font-extrabold text-gray-900" x-text="'Keranjang: ' + getItemCount() + ' Item'"></span>
+                        <template x-if="getTotalMissingPdfCount() > 0">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300" x-text="'Kurang ' + getTotalMissingPdfCount() + ' PDF'"></span>
+                        </template>
+                    </div>
+                    <div class="text-sm font-black text-[#10A760]" x-text="formatRupiah(getSubtotal())"></div>
+                </div>
+                <button
+                    type="button"
+                    @click="scrollToCartPanel()"
+                    class="px-4 py-2.5 rounded-xl bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs font-extrabold shadow-sm cursor-pointer shrink-0 flex items-center gap-1.5"
+                >
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>Lihat Keranjang</span>
+                </button>
             </div>
         </div>
 
@@ -1208,6 +1598,65 @@
                     <button type="button" @click="hybridModalOpen = false" class="px-4 py-1.5 text-xs font-semibold text-gray-600 hover:text-gray-900 bg-white border border-gray-200 rounded-xl cursor-pointer">
                         Batal
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- IN-PAGE LIVE PDF PREVIEW MODAL -->
+        <div
+            x-show="previewModalOpen"
+            x-cloak
+            class="fixed inset-0 z-50 overflow-y-auto bg-black/70 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6"
+            @keydown.escape.window="closePdfPreview()"
+        >
+            <div
+                @click.away="closePdfPreview()"
+                class="bg-white rounded-2xl shadow-2xl border border-gray-100 max-w-4xl w-full overflow-hidden flex flex-col max-h-[90vh]"
+            >
+                <div class="px-5 py-3.5 bg-slate-900 text-white flex items-center justify-between gap-3 shrink-0">
+                    <div class="min-w-0">
+                        <div class="flex items-center gap-2">
+                            <span class="px-2 py-0.5 rounded bg-red-500 text-white text-[10px] font-black uppercase shrink-0">PDF</span>
+                            <h3 class="text-xs sm:text-sm font-black truncate" x-text="previewFile.name"></h3>
+                        </div>
+                        <p class="text-[11px] text-slate-300 mt-0.5 flex flex-wrap items-center gap-2">
+                            <span x-text="previewFile.sizeLabel"></span>
+                            <span>&bull;</span>
+                            <span x-text="previewFile.isEncrypted ? (previewFile.pageCount + ' halaman (Input Manual — Terkunci)') : (previewFile.pageCount + ' halaman')"></span>
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0">
+                        <a
+                            :href="previewFile.url"
+                            target="_blank"
+                            rel="noopener"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition"
+                        >
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            <span>Buka di Tab Baru</span>
+                        </a>
+                        <button
+                            type="button"
+                            @click="closePdfPreview()"
+                            class="text-slate-300 hover:text-white px-2.5 py-1 text-lg font-bold cursor-pointer"
+                            aria-label="Tutup Preview"
+                        >&times;</button>
+                    </div>
+                </div>
+
+                <div x-show="previewFile.note && previewFile.note.trim()" class="px-5 py-2 bg-amber-50 border-b border-amber-200 text-xs text-amber-900 shrink-0">
+                    <span class="font-extrabold">Catatan Khusus File:</span>
+                    <span class="italic" x-text="previewFile.note"></span>
+                </div>
+
+                <div class="flex-1 bg-slate-800 min-h-[65vh]">
+                    <template x-if="previewModalOpen && previewFile.url">
+                        <iframe
+                            :src="previewFile.url"
+                            class="w-full h-[70vh] border-0 bg-white"
+                            title="Pratinjau Dokumen PDF"
+                        ></iframe>
+                    </template>
                 </div>
             </div>
         </div>

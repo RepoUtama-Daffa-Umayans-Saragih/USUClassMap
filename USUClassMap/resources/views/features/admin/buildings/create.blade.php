@@ -151,18 +151,18 @@
                                 title="Tampilkan / Sembunyikan Pin Referensi Gedung Kampus yang Sudah Ada"
                             >
                                 <i class="fa-solid fa-building-columns text-amber-600"></i>
-                                <span>Gedung (<span id="bmap-ref-buildings-count">48</span>)</span>
+                                <span>Gedung (<span id="bmap-ref-buildings-count">77</span>)</span>
                             </button>
 
-                            <!-- Toggle Reference Layer: 31 Photocopy Partners -->
+                            <!-- Toggle Reference Layer: Photocopy Partners -->
                             <button 
                                 type="button" 
                                 id="bmap-ref-photocopy-btn"
                                 class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-emerald-700 shadow-md border border-gray-200 hover:border-emerald-500 flex items-center gap-1.5 transition-all cursor-pointer"
-                                title="Tampilkan / Sembunyikan 31 Lokasi Mitra Fotokopi & Percetakan USU"
+                                title="Tampilkan / Sembunyikan Lokasi Mitra Fotokopi & Percetakan USU"
                             >
                                 <i class="fa-solid fa-print text-emerald-600"></i>
-                                <span>Fotokopi (<span id="bmap-ref-photocopy-count">31</span>)</span>
+                                <span>Fotokopi (<span id="bmap-ref-photocopy-count">32</span>)</span>
                             </button>
                         </div>
 

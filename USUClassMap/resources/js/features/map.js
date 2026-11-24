@@ -16,7 +16,9 @@
 import mapboxgl from 'mapbox-gl';
 
 // Bersihkan konteks WebGL saat berpindah atau me-refresh halaman agar tidak exhaust WebGL
+window.__usuMapDestroyed = false;
 window.addEventListener('beforeunload', () => {
+    window.__usuMapDestroyed = true;
     if (window.__usuMapInstance) {
         try {
             window.__usuMapInstance.remove();
@@ -146,6 +148,7 @@ function initMapEngine() {
         }
 
         try {
+            window.__usuMapDestroyed = false;
             map = new mb.Map({
                 container: 'map',
                 style: DEFAULT_MAP_STYLE,
@@ -585,12 +588,18 @@ function initMapEngine() {
             const response = await fetch('/api/buildings');
             const result = await response.json();
 
+            if (window.__usuMapDestroyed || !map || typeof map.getCanvasContainer !== 'function' || !map.getCanvasContainer()) {
+                return;
+            }
+
             if (result.status === 'success' && Array.isArray(result.data)) {
                 allBuildings = result.data;
                 renderBuildingMarkers(allBuildings);
             }
         } catch (error) {
-            console.error('Error fetching buildings:', error);
+            if (!window.__usuMapDestroyed) {
+                console.error('Error fetching buildings:', error);
+            }
         }
     }
 
@@ -603,9 +612,13 @@ function initMapEngine() {
                 }
             });
 
-            if (!response.ok) return;
+            if (!response.ok || window.__usuMapDestroyed) return;
 
             const result = await response.json();
+
+            if (window.__usuMapDestroyed || !map || typeof map.getCanvasContainer !== 'function' || !map.getCanvasContainer()) {
+                return;
+            }
 
             if (result.status === 'success' && Array.isArray(result.data) && result.data.length > 0) {
                 userSchedules = result.data;
@@ -639,7 +652,7 @@ function initMapEngine() {
     }
 
     function renderBuildingMarkers(buildings, highlightedBuildingIds = new Set()) {
-        if (!map) return;
+        if (window.__usuMapDestroyed || !map || typeof map.getCanvasContainer !== 'function' || !map.getCanvasContainer()) return;
         clearBuildingMarkers();
 
         const bounds = new mb.LngLatBounds();
@@ -1477,7 +1490,7 @@ function initMapEngine() {
     }
 
     function renderPhotocopyMarkers(places) {
-        if (!map) return;
+        if (window.__usuMapDestroyed || !map || typeof map.getCanvasContainer !== 'function' || !map.getCanvasContainer()) return;
         
         // Hapus marker fotokopi lama jika ada
         if (Array.isArray(photocopyMarkers)) {
