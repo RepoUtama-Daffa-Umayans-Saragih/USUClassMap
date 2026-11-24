@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ImportController;
 use App\Http\Controllers\Admin\LecturerController;
+use App\Http\Controllers\Admin\Photo360pInspectorController;
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\AdminMapController;
@@ -132,6 +133,11 @@ Route::prefix('admin')
         Route::post('/import', [ImportController::class, 'store'])->name('import.store');
         Route::get('/import/template', [ImportController::class, 'downloadTemplate'])->name('import.template');
         Route::get('/import/download-template', [ImportController::class, 'downloadTemplate'])->name('import.download');
+
+        // Deep Scan 360P Proof Inspector (Terisolasi penuh dari /admin/cek-foto lama)
+        Route::get('/cek-foto/360p', [Photo360pInspectorController::class, 'index'])->name('cek-foto.360p.index');
+        Route::post('/cek-foto/360p/{id}/verify', [Photo360pInspectorController::class, 'verify'])->whereNumber('id')->name('cek-foto.360p.verify');
+        Route::get('/cek-foto/360p/export/{format}', [Photo360pInspectorController::class, 'export'])->whereIn('format', ['md', 'csv', 'json'])->name('cek-foto.360p.export');
     });
 
 /*
