@@ -410,6 +410,213 @@
     <usu:fakultas>FIB</usu:fakultas>
   </usu:Gedung>
 
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/53">
+    <usu:namaGedung>FIB A</usu:namaGedung>
+    <usu:kodeGedung>FIB-A</usu:kodeGedung>
+    <usu:latitude>3.55960920</usu:latitude>
+    <usu:longitude>98.65964570</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/54">
+    <usu:namaGedung>FIB P</usu:namaGedung>
+    <usu:kodeGedung>FIB-P</usu:kodeGedung>
+    <usu:latitude>3.55941820</usu:latitude>
+    <usu:longitude>98.65917520</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/55">
+    <usu:namaGedung>FIB M</usu:namaGedung>
+    <usu:kodeGedung>FIB-M</usu:kodeGedung>
+    <usu:latitude>3.55979290</usu:latitude>
+    <usu:longitude>98.65867590</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/56">
+    <usu:namaGedung>FIB K</usu:namaGedung>
+    <usu:kodeGedung>FIB-K</usu:kodeGedung>
+    <usu:latitude>3.55996830</usu:latitude>
+    <usu:longitude>98.65905080</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/57">
+    <usu:namaGedung>FIB F</usu:namaGedung>
+    <usu:kodeGedung>FIB-F</usu:kodeGedung>
+    <usu:latitude>3.55979460</usu:latitude>
+    <usu:longitude>98.65930210</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/58">
+    <usu:namaGedung>FIB N</usu:namaGedung>
+    <usu:kodeGedung>FIB-N</usu:kodeGedung>
+    <usu:latitude>3.56034010</usu:latitude>
+    <usu:longitude>98.65905250</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/59">
+    <usu:namaGedung>FIB H</usu:namaGedung>
+    <usu:kodeGedung>FIB-H</usu:kodeGedung>
+    <usu:latitude>3.56048960</usu:latitude>
+    <usu:longitude>98.65949430</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/60">
+    <usu:namaGedung>FIB D</usu:namaGedung>
+    <usu:kodeGedung>FIB-D</usu:kodeGedung>
+    <usu:latitude>3.56029380</usu:latitude>
+    <usu:longitude>98.65982250</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/61">
+    <usu:namaGedung>FIB B</usu:namaGedung>
+    <usu:kodeGedung>FIB-B</usu:kodeGedung>
+    <usu:latitude>3.55999060</usu:latitude>
+    <usu:longitude>98.65980910</usu:longitude>
+    <usu:fakultas>FIB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/62">
+    <usu:namaGedung>Aula Lt.2</usu:namaGedung>
+    <usu:kodeGedung>FF-Lt.2</usu:kodeGedung>
+    <usu:latitude>3.56034770</usu:latitude>
+    <usu:longitude>98.65352190</usu:longitude>
+    <usu:fakultas>FF</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/63">
+    <usu:namaGedung>FH GB</usu:namaGedung>
+    <usu:kodeGedung>FH-GB</usu:kodeGedung>
+    <usu:latitude>3.55788470</usu:latitude>
+    <usu:longitude>98.65927830</usu:longitude>
+    <usu:fakultas>FH</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/64">
+    <usu:namaGedung>Gedung Pancasila</usu:namaGedung>
+    <usu:kodeGedung>GDP</usu:kodeGedung>
+    <usu:latitude>3.56139280</usu:latitude>
+    <usu:longitude>98.65966350</usu:longitude>
+    <usu:fakultas>-</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/66">
+    <usu:namaGedung>FEB GL</usu:namaGedung>
+    <usu:kodeGedung>FEB-GL</usu:kodeGedung>
+    <usu:latitude>3.55807250</usu:latitude>
+    <usu:longitude>98.65719020</usu:longitude>
+    <usu:fakultas>FEB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/67">
+    <usu:namaGedung>FISIP MKWU</usu:namaGedung>
+    <usu:kodeGedung>FISIP-MKWU</usu:kodeGedung>
+    <usu:latitude>3.55670030</usu:latitude>
+    <usu:longitude>98.65737170</usu:longitude>
+    <usu:fakultas>FISIP</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/68">
+    <usu:namaGedung>FEB GB</usu:namaGedung>
+    <usu:kodeGedung>FEB-GB</usu:kodeGedung>
+    <usu:latitude>3.55795280</usu:latitude>
+    <usu:longitude>98.65644640</usu:longitude>
+    <usu:fakultas>FEB</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/69">
+    <usu:namaGedung>FP KOMPOS</usu:namaGedung>
+    <usu:kodeGedung>FP-KOMPOS</usu:kodeGedung>
+    <usu:latitude>3.55886770</usu:latitude>
+    <usu:longitude>98.65524140</usu:longitude>
+    <usu:fakultas>FP</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/70">
+    <usu:namaGedung>FP AGRO MKWU</usu:namaGedung>
+    <usu:kodeGedung>FP-MKWU</usu:kodeGedung>
+    <usu:latitude>3.55823140</usu:latitude>
+    <usu:longitude>98.65447380</usu:longitude>
+    <usu:fakultas>FP</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/71">
+    <usu:namaGedung>FMIPA U.4</usu:namaGedung>
+    <usu:kodeGedung>FMIPA-U4</usu:kodeGedung>
+    <usu:latitude>3.56080270</usu:latitude>
+    <usu:longitude>98.65571910</usu:longitude>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/72">
+    <usu:namaGedung>FMIPA U.5</usu:namaGedung>
+    <usu:kodeGedung>FMIPA-U5</usu:kodeGedung>
+    <usu:latitude>3.56130010</usu:latitude>
+    <usu:longitude>98.65567660</usu:longitude>
+    <usu:fakultas>FMIPA</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/73">
+    <usu:namaGedung>Gedung Teknik Elektro</usu:namaGedung>
+    <usu:kodeGedung>FT-Elektro_K</usu:kodeGedung>
+    <usu:latitude>3.56149700</usu:latitude>
+    <usu:longitude>98.65669010</usu:longitude>
+    <usu:fakultas>FT</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/74">
+    <usu:namaGedung>Gedung Teknik Industri J</usu:namaGedung>
+    <usu:kodeGedung>FT-Industri_J</usu:kodeGedung>
+    <usu:latitude>3.56170400</usu:latitude>
+    <usu:longitude>98.65555660</usu:longitude>
+    <usu:fakultas>FT</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/75">
+    <usu:namaGedung>Gedung Teknik Sipil Smartroom</usu:namaGedung>
+    <usu:kodeGedung>FT-SIPIL_SC</usu:kodeGedung>
+    <usu:latitude>3.56088820</usu:latitude>
+    <usu:longitude>98.65754150</usu:longitude>
+    <usu:fakultas>FT</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/76">
+    <usu:namaGedung>FKEP Aula</usu:namaGedung>
+    <usu:kodeGedung>FKEP</usu:kodeGedung>
+    <usu:latitude>3.56443150</usu:latitude>
+    <usu:longitude>98.65889580</usu:longitude>
+    <usu:fakultas>FKEP</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/77">
+    <usu:namaGedung>FKM B</usu:namaGedung>
+    <usu:kodeGedung>FKM-B</usu:kodeGedung>
+    <usu:latitude>3.56541310</usu:latitude>
+    <usu:longitude>98.65896060</usu:longitude>
+    <usu:fakultas>FKM</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/78">
+    <usu:namaGedung>FKM E</usu:namaGedung>
+    <usu:kodeGedung>FKM-E</usu:kodeGedung>
+    <usu:latitude>3.56559070</usu:latitude>
+    <usu:longitude>98.65921790</usu:longitude>
+    <usu:fakultas>FKM</usu:fakultas>
+  </usu:Gedung>
+
+  <usu:Gedung rdf:about="http://usuclassmap.usu.ac.id/resource/gedung/79">
+    <usu:namaGedung>FPSI C</usu:namaGedung>
+    <usu:kodeGedung>FPSI-C</usu:kodeGedung>
+    <usu:latitude>3.56616550</usu:latitude>
+    <usu:longitude>98.65808450</usu:longitude>
+    <usu:fakultas>FPSI</usu:fakultas>
+  </usu:Gedung>
+
   <usu:Ruangan rdf:about="http://usuclassmap.usu.ac.id/resource/ruangan/1">
     <usu:namaRuangan>Auditorium Utama</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>

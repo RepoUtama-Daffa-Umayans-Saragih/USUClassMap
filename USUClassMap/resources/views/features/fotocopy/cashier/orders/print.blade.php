@@ -302,20 +302,56 @@
             </div>
             <div class="info-item">
                 <label>Nomor WhatsApp</label>
-                <span>{{ $order->customer_phone ?? '-' }}</span>
+                <span>{{ \App\Support\WhatsAppPhoneNormalizer::formatDisplay($order->customer_whatsapp ?: $order->customer_phone) }}</span>
             </div>
             <div class="info-item">
-                <label>Metode Pembayaran</label>
-                <span>{{ $order->payment_method }} ({{ strtoupper($order->payment_status) }})</span>
+                <label>No. Invoice &amp; Kode Ambil</label>
+                <span>{{ $order->invoice_number ?: '-' }} &bull; <strong>{{ $order->pickup_code ?: '-' }}</strong></span>
             </div>
             <div class="info-item">
-                <label>Status Pesanan</label>
-                <span>{{ $order->order_status }}</span>
+                <label>Metode Pembayaran &amp; Status</label>
+                <span>{{ $order->payment_method }} ({{ strtoupper($order->payment_status) }}) &bull; {{ $order->order_status }}</span>
             </div>
         </div>
 
-        <!-- Detail Lampiran File Dokumen -->
-        @if($order->hasFile())
+        <!-- Detail Lampiran File Dokumen (Multi-PDF / Legacy) -->
+        @if($order->files && $order->files->isNotEmpty())
+            <div class="section-title">Rincian Multi-Dokumen &amp; Catatan Spesifik per File ({{ $order->files->count() }} File):</div>
+            <table class="items-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nama File &amp; Note Khusus Operator</th>
+                        <th>Spesifikasi Cetak</th>
+                        <th class="subtotal">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($order->files as $idx => $file)
+                    <tr>
+                        <td><strong>{{ $idx + 1 }}</strong></td>
+                        <td>
+                            <strong>{{ $file->original_name }}</strong>
+                            <span style="font-size: 10px; color: #6b7280; display: block;">{{ $file->formatted_size }}{{ $file->is_encrypted ? ' • Terkunci Password' : '' }}</span>
+                            @if($file->note)
+                                <div style="margin-top: 4px; background: #fffbeb; border-left: 3px solid #f59e0b; padding: 4px 6px; font-size: 11px; color: #92400e;">
+                                    <strong>Note File #{{ $idx + 1 }}:</strong> "{{ $file->note }}"
+                                </div>
+                            @endif
+                        </td>
+                        <td>
+                            <strong>{{ $file->page_count }} hal &times; {{ $file->copies }}x</strong>
+                            <span style="font-size: 10px; color: #4b5563; display: block;">{{ $file->print_mode }} ({{ $file->paper_size }})</span>
+                            @if($file->finishing_option)
+                                <span style="font-size: 10px; color: #047857; display: block;">+ {{ $file->finishing_option }}</span>
+                            @endif
+                        </td>
+                        <td class="subtotal">Rp {{ number_format($file->subtotal_estimated, 0, ',', '.') }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @elseif($order->hasFile())
         <div class="section-title">Dokumen yang Dicetak:</div>
         <div class="file-banner">
             <div class="file-icon">

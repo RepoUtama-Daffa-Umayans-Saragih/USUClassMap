@@ -1,14 +1,56 @@
 <x-layouts.admin-fotokopi>
+<div x-data="{
+    sandboxOpen: false,
+    sandboxLoading: false,
+    sandboxLogs: [],
+    openSandboxViewer() {
+        this.sandboxOpen = true;
+        this.sandboxLoading = true;
+        fetch('{{ route('admin-fotokopi.stores.whatsapp-sandbox') }}', { headers: { 'Accept': 'application/json' } })
+            .then(r => r.json())
+            .then(data => {
+                this.sandboxLogs = Array.isArray(data.logs) ? data.logs : [];
+                this.sandboxLoading = false;
+            })
+            .catch(() => { this.sandboxLoading = false; });
+    }
+}">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
         <div>
             <h1 class="text-2xl font-black text-gray-900">Manajemen Mitra Toko Fotocopy</h1>
             <p class="text-sm text-gray-500 mt-1">Kelola data seluruh gerai mitra percetakan resmi di lingkungan Universitas Sumatera Utara.</p>
         </div>
-        <a href="{{ route('admin-fotokopi.stores.create') }}" class="inline-flex items-center gap-2 bg-[#10B981] hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-xs font-bold text-sm transition-colors cursor-pointer">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-            Tambah Mitra Toko
-        </a>
+        <div class="flex flex-wrap items-center gap-2">
+            <button
+                type="button"
+                @click="openSandboxViewer()"
+                class="inline-flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2.5 rounded-xl shadow-xs font-bold text-xs transition-colors cursor-pointer"
+            >
+                <span>Simulasi Chat WA (Sandbox Viewer)</span>
+            </button>
+            <a href="{{ route('admin-fotokopi.stores.create') }}" class="inline-flex items-center gap-2 bg-[#10B981] hover:bg-emerald-600 text-white px-4 py-2.5 rounded-xl shadow-xs font-bold text-sm transition-colors cursor-pointer">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                Tambah Mitra Toko
+            </a>
+        </div>
     </div>
+
+    <!-- WhatsApp Gateway Health Banner -->
+    @if(isset($waStatus))
+    <div class="mb-6 p-4 rounded-2xl border {{ $waStatus['healthy'] ? 'bg-emerald-50/70 border-emerald-200' : 'bg-amber-50/80 border-amber-200' }} flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+            <span class="w-3 h-3 rounded-full {{ $waStatus['healthy'] ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500' }}"></span>
+            <div>
+                <div class="text-xs font-extrabold text-gray-900">
+                    Status WA Gateway: <span class="uppercase">{{ $waStatus['driver'] }}</span> &bull; {{ $waStatus['label'] }}
+                </div>
+                <div class="text-[11px] text-gray-600">
+                    Endpoint WAHA: <span class="font-mono">{{ $waStatus['waha_url'] }}</span> &bull; Kirim paket Multi-PDF + Note + Invoice otomatis saat order Lunas.
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <!-- Search Form -->
     <div class="bg-white p-4 rounded-2xl shadow-xs border border-gray-100 mb-6">
@@ -94,6 +136,13 @@
                         </td>
                         <td class="p-4 text-right">
                             <div class="inline-flex items-center gap-2">
+                                <form method="POST" action="{{ route('admin-fotokopi.stores.test-whatsapp', $store) }}" class="inline">
+                                    @csrf
+                                    <button type="submit" class="px-2 py-1 text-[11px] font-bold bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-lg transition-colors cursor-pointer" title="Tes Kirim WA ke Toko">
+                                        Tes WA
+                                    </button>
+                                </form>
+
                                 <a href="{{ route('admin-fotokopi.stores.edit', $store) }}" class="p-1.5 text-emerald-600 hover:text-emerald-800 hover:bg-emerald-50 rounded-lg transition-colors" title="Edit Toko">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                 </a>
@@ -135,4 +184,40 @@
     <div class="mt-4">
         {{ $stores->links() }}
     </div>
+
+    <!-- Modal Simulasi Chat WA (Sandbox Viewer) -->
+    <div x-show="sandboxOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" @keydown.escape.window="sandboxOpen = false">
+        <div @click.away="sandboxOpen = false" class="bg-white rounded-2xl shadow-2xl border border-gray-200 max-w-3xl w-full overflow-hidden">
+            <div class="px-5 py-4 bg-[#075E54] text-white flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-black">Simulasi Chat WhatsApp Toko &amp; Mahasiswa (Sandbox Viewer)</h3>
+                    <p class="text-[11px] text-emerald-100">Menampilkan 40 log pengiriman terakhir dari tabel whatsapp_dispatch_logs</p>
+                </div>
+                <button type="button" @click="sandboxOpen = false" class="text-white/80 hover:text-white text-lg font-bold px-2 cursor-pointer">&times;</button>
+            </div>
+
+            <div class="p-5 bg-[#EFEAE2] max-h-[30rem] overflow-y-auto space-y-3">
+                <template x-if="sandboxLoading">
+                    <div class="text-center py-8 text-xs text-gray-600 font-semibold">Memuat riwayat simulasi WhatsApp...</div>
+                </template>
+                <template x-if="!sandboxLoading && sandboxLogs.length === 0">
+                    <div class="text-center py-8 text-xs text-gray-600">Belum ada log pengiriman WhatsApp tercatat.</div>
+                </template>
+                <template x-for="log in sandboxLogs" :key="log.id">
+                    <div class="bg-[#DCF8C6] border border-emerald-200 rounded-2xl rounded-tr-xs p-3.5 shadow-2xs text-xs space-y-1.5 ml-auto max-w-xl">
+                        <div class="flex items-center justify-between gap-2 text-[10px] text-emerald-900 font-bold border-b border-emerald-300/60 pb-1">
+                            <span x-text="'[' + log.recipient_role.toUpperCase() + '] ' + log.recipient_phone + ' • Order #' + log.order_code"></span>
+                            <span class="uppercase px-1.5 py-0.5 rounded bg-white/80" x-text="log.status + ' (' + log.driver + ')'"></span>
+                        </div>
+                        <template x-if="log.file_name">
+                            <div class="bg-white/90 rounded-lg px-2.5 py-1.5 border border-emerald-300 font-bold text-red-700 text-[11px]" x-text="'Dokumen PDF: ' + log.file_name"></div>
+                        </template>
+                        <pre class="whitespace-pre-wrap font-sans text-[11px] text-gray-900 leading-relaxed" x-text="log.text"></pre>
+                        <div class="text-right text-[10px] text-emerald-800/80" x-text="log.message_type + ' • ' + (log.sent_at || '-')"></div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</div>
 </x-layouts.admin-fotokopi>

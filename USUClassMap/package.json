@@ -21,6 +21,7 @@
         "@tailwindcss/vite": "^4.3.3",
         "alpinejs": "^3.16.2",
         "mapbox-gl": "^3.35.2",
+        "pdfjs-dist": "^6.5.438",
         "tailwindcss": "^4.3.3"
     }
 }

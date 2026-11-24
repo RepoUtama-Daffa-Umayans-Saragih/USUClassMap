@@ -15,12 +15,16 @@ class CashPaymentStrategy implements PaymentStrategyInterface
     {
         $instructions = $this->getInstructions($order);
 
+        $place = $order->photocopy_place_resolved;
+        $storeName = $place?->name ?? $order->store?->name ?? 'Kasir Fotokopi USU';
+        $storeLocation = $place?->location_name ?? $order->store?->location_name ?? 'Sekitar Kampus USU';
+
         $payload = [
             'method' => 'cash',
             'channel' => 'CASHIER',
-            'store_id' => $order->photocopy_place_id,
-            'store_name' => $order->photocopyPlace?->name ?? 'Kasir Fotokopi USU',
-            'store_address' => $order->photocopyPlace?->address ?? 'Sekitar Kampus USU',
+            'store_id' => $order->store_id,
+            'store_name' => $storeName,
+            'store_address' => $storeLocation,
             'order_code' => $order->order_code,
             'total_amount' => (int) $order->total_price,
             'instructions' => $instructions,

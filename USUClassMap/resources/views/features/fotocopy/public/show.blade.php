@@ -165,7 +165,7 @@
                                     </div>
                                     <div>
                                         <div class="text-xs font-bold text-gray-900 group-hover:text-[#128C7E]">Nomor WhatsApp</div>
-                                        <div class="text-[11px] text-gray-500">+{{ $place->whatsapp }}</div>
+                                        <div class="text-[11px] text-gray-500">{{ \App\Support\WhatsAppPhoneNormalizer::formatDisplay($place->whatsapp ?: $place->phone) }}</div>
                                     </div>
                                 </div>
                                 <span class="text-[11px] font-bold text-[#128C7E] bg-green-100 px-2.5 py-1 rounded-lg flex items-center gap-1">

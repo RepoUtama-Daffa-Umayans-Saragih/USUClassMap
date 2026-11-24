@@ -3,6 +3,7 @@
 namespace App\Services\Payment;
 
 use App\Models\FotocopyOrder;
+use App\Services\Fotocopy\OrderPaymentFulfillmentService;
 use App\Services\Payment\Contracts\PaymentStrategyInterface;
 use App\Services\Payment\DTO\PaymentResult;
 use App\Services\Payment\Strategies\BankTransferPaymentStrategy;
@@ -51,12 +52,18 @@ class PaymentManager
     }
 
     /**
-     * Simulate success for an order based on its payment method.
+     * Simulate success for an order based on its payment method, then fulfill invoice & WhatsApp dispatch.
      */
     public function simulateSuccess(FotocopyOrder $order): bool
     {
         $strategy = $this->getStrategy($order->payment_method);
-        return $strategy->simulateSuccess($order);
+        $ok = $strategy->simulateSuccess($order);
+
+        if ($ok && $order->fresh()?->isPaid()) {
+            app(OrderPaymentFulfillmentService::class)->handlePaidOrder($order->fresh(), true);
+        }
+
+        return $ok;
     }
 
     /**

@@ -91,15 +91,29 @@
                     <tr class="hover:bg-gray-50/60 transition-colors {{ $order->order_status === 'Menunggu' ? 'bg-amber-50/30' : '' }}">
                         <td class="p-4">
                             <span class="font-mono font-bold text-xs text-gray-900 block">{{ $order->order_code }}</span>
+                            @if($order->pickup_code || $order->invoice_number)
+                                <div class="flex flex-wrap items-center gap-1 mt-1">
+                                    @if($order->pickup_code)
+                                        <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 font-mono text-[10px] font-black">{{ $order->pickup_code }}</span>
+                                    @endif
+                                    @if($order->invoice_number)
+                                        <span class="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 font-mono text-[10px] font-bold">{{ $order->invoice_number }}</span>
+                                    @endif
+                                </div>
+                            @endif
                             <span class="text-[11px] text-gray-400 block mt-0.5">{{ $order->created_at->format('H:i • d M Y') }}</span>
                             <span class="text-[10px] text-emerald-600 font-semibold">{{ $order->created_at->diffForHumans() }}</span>
                         </td>
                         <td class="p-4">
                             <div class="font-bold text-gray-900 text-xs">{{ $order->customer_name }}</div>
-                            @if($order->customer_phone)
-                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $order->customer_phone) }}" target="_blank" class="inline-flex items-center gap-1.5 text-[11px] text-emerald-600 font-mono mt-0.5 hover:underline">
+                            @if($order->customer_whatsapp || $order->customer_phone)
+                                @php
+                                    $custWaRaw = $order->customer_whatsapp ?: $order->customer_phone;
+                                    $custWaUrl = \App\Support\WhatsAppPhoneNormalizer::toWaMeUrl($custWaRaw);
+                                @endphp
+                                <a href="{{ $custWaUrl }}" target="_blank" class="inline-flex items-center gap-1.5 text-[11px] text-emerald-600 font-mono mt-0.5 hover:underline">
                                     <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                                    <span>{{ $order->customer_phone }}</span>
+                                    <span>{{ \App\Support\WhatsAppPhoneNormalizer::formatDisplay($custWaRaw) }}</span>
                                 </a>
                             @endif
                         </td>
@@ -114,8 +128,66 @@
                                 @endforeach
                             </div>
 
-                            <!-- Lampiran File Dokumen & Direct Action (Preview & Print) -->
-                            @if($order->hasFile())
+                            <!-- Lampiran Multi-PDF Dokumen & Note Khusus Per File -->
+                            @if($order->files && $order->files->isNotEmpty())
+                                <div class="mt-2.5 space-y-2 max-w-xl">
+                                    @foreach($order->files as $fIdx => $oFile)
+                                        @php
+                                            $previewUrl = route('cashier-fotokopi.orders.files.download', ['order' => $order, 'file' => $oFile, 'inline' => 1]);
+                                            $downloadUrl = route('cashier-fotokopi.orders.files.download', ['order' => $order, 'file' => $oFile]);
+                                        @endphp
+                                        <div class="p-2.5 rounded-xl bg-blue-50/70 border border-blue-200/80 space-y-1.5">
+                                            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                                                <div class="flex items-center gap-2.5 min-w-0">
+                                                    <div class="w-8 h-8 rounded-lg bg-red-500 text-white flex items-center justify-center font-black text-[10px] uppercase shrink-0 shadow-2xs">
+                                                        PDF#{{ $fIdx + 1 }}
+                                                    </div>
+                                                    <div class="min-w-0">
+                                                        <span class="text-xs font-bold text-gray-900 truncate block">{{ $oFile->original_name }}</span>
+                                                        <span class="text-[10px] text-blue-800 font-semibold block">
+                                                            {{ $oFile->page_count }} hal &times; {{ $oFile->copies }}x &bull; {{ $oFile->print_mode }} ({{ $oFile->paper_size }})
+                                                            @if($oFile->finishing_option) &bull; + {{ $oFile->finishing_option }} @endif
+                                                        </span>
+                                                        <span class="text-[10px] text-gray-500">{{ $oFile->formatted_size }}{{ $oFile->is_encrypted ? ' • PDF Terkunci Password' : '' }}</span>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-center gap-1.5 shrink-0">
+                                                    <button
+                                                        type="button"
+                                                        @click="openPreview({{ \Illuminate\Support\Js::from($order->order_code) }}, {{ \Illuminate\Support\Js::from($order->customer_name) }}, {{ \Illuminate\Support\Js::from($oFile->original_name) }}, {{ \Illuminate\Support\Js::from($oFile->formatted_size) }}, 'PDF', {{ \Illuminate\Support\Js::from($previewUrl) }}, {{ \Illuminate\Support\Js::from(route('cashier-fotokopi.orders.print', $order)) }}, {{ \Illuminate\Support\Js::from($oFile->note ?? '') }})"
+                                                        class="inline-flex items-center gap-1 px-2 py-1 bg-white hover:bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-[11px] font-bold transition cursor-pointer"
+                                                    >
+                                                        <span>Preview</span>
+                                                    </button>
+                                                    <a href="{{ $downloadUrl }}" class="inline-flex items-center gap-1 px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-[11px] font-bold transition">
+                                                        <span>Unduh</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            @if($oFile->note)
+                                                <div class="p-2 rounded-lg bg-amber-100/80 border border-amber-300 text-[11px] text-amber-950 font-semibold">
+                                                    <span class="uppercase text-[9px] font-black text-amber-800 tracking-wider mr-1">Note File #{{ $fIdx + 1 }}:</span>
+                                                    <span class="italic">"{{ $oFile->note }}"</span>
+                                                </div>
+                                            @endif
+                                        </div>
+                                    @endforeach
+
+                                    <div class="flex flex-wrap items-center gap-1.5 pt-1">
+                                        <a href="{{ route('cashier-fotokopi.orders.download-zip', $order) }}" class="inline-flex items-center gap-1 px-2.5 py-1 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-[11px] font-bold transition shadow-2xs">
+                                            <span>Unduh Semua PDF (.zip)</span>
+                                        </a>
+                                        <a href="{{ route('cashier-fotokopi.orders.print', $order) }}" target="_blank" class="inline-flex items-center gap-1 px-2.5 py-1 bg-[#10B981] hover:bg-emerald-600 text-white rounded-lg text-[11px] font-bold transition shadow-2xs">
+                                            <span>Print Now</span>
+                                        </a>
+                                        @if($order->isPaid())
+                                            <a href="{{ route('cashier-fotokopi.orders.invoice', $order) }}" target="_blank" class="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg text-[11px] font-bold transition">
+                                                <span>Invoice PDF</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                </div>
+                            @elseif($order->hasFile())
                                 <div class="mt-2.5 p-2.5 rounded-xl bg-blue-50/70 border border-blue-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 max-w-lg">
                                     <div class="flex items-center gap-2.5 min-w-0">
                                         <div class="w-8 h-8 rounded-lg {{ $order->fileIconType() === 'pdf' ? 'bg-red-500' : ($order->fileIconType() === 'doc' ? 'bg-blue-600' : 'bg-emerald-600') }} text-white flex items-center justify-center font-black text-[10px] uppercase shrink-0 shadow-2xs">
@@ -127,9 +199,8 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center gap-1.5 shrink-0">
-                                        <!-- Tombol Pratinjau File -->
-                                        <button 
-                                            type="button" 
+                                        <button
+                                            type="button"
                                             @click="openPreview('{{ $order->order_code }}', '{{ addslashes($order->customer_name) }}', '{{ addslashes($order->file_name) }}', '{{ $order->file_size }}', '{{ $order->file_type }}', '{{ $order->fileUrl() }}', '{{ route('cashier-fotokopi.orders.print', $order) }}', '{{ addslashes($order->notes ?? '') }}')"
                                             class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-white hover:bg-blue-50 text-blue-700 border border-blue-200 rounded-lg text-xs font-bold transition-all shadow-2xs cursor-pointer"
                                             title="Pratinjau Dokumen"
@@ -137,9 +208,8 @@
                                             <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                             <span>Preview</span>
                                         </button>
-                                        <!-- Tombol Cetak Dokumen Langsung (Print Now) -->
-                                        <a 
-                                            href="{{ route('cashier-fotokopi.orders.print', $order) }}" 
+                                        <a
+                                            href="{{ route('cashier-fotokopi.orders.print', $order) }}"
                                             target="_blank"
                                             class="inline-flex items-center gap-1 px-2.5 py-1.5 bg-[#10B981] hover:bg-emerald-600 text-white rounded-lg text-xs font-bold transition-all shadow-xs"
                                             title="Cetak Dokumen Sekarang (Print Now)"
@@ -153,10 +223,10 @@
                                 <div class="mt-2.5 p-2 rounded-xl bg-gray-50 border border-gray-200/70 flex items-center justify-between gap-2 max-w-lg">
                                     <div class="flex items-center gap-1.5 text-[11px] text-gray-500 min-w-0">
                                         <svg class="w-3.5 h-3.5 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
-                                        <span class="truncate">File via WhatsApp / Flashdisk</span>
+                                        <span class="truncate">File via WhatsApp / Flashdisk / Pembelian ATK</span>
                                     </div>
-                                    <a 
-                                        href="{{ route('cashier-fotokopi.orders.print', $order) }}" 
+                                    <a
+                                        href="{{ route('cashier-fotokopi.orders.print', $order) }}"
                                         target="_blank"
                                         class="inline-flex items-center gap-1 px-2.5 py-1 bg-white hover:bg-gray-100 text-gray-700 border border-gray-200 rounded-lg text-xs font-semibold transition-all shadow-2xs shrink-0"
                                         title="Cetak SPK Kerja & Nota"
@@ -199,6 +269,45 @@
                                     </span>
                                 @endif
                             </div>
+
+                            <!-- WA Dispatch Status Badge & Modal Trigger -->
+                            @php
+                                $waSt = $order->wa_dispatch_status ?: 'not_ready';
+                                $waBadgeMap = [
+                                    'sent' => ['Terkirim WA', 'bg-emerald-100 text-emerald-800 border-emerald-200'],
+                                    'sandbox' => ['Sandbox WA', 'bg-sky-100 text-sky-800 border-sky-200'],
+                                    'queued' => ['Queued WA', 'bg-blue-100 text-blue-800 border-blue-200'],
+                                    'partial' => ['Sebagian WA', 'bg-amber-100 text-amber-800 border-amber-200'],
+                                    'failed' => ['Gagal WA', 'bg-red-100 text-red-700 border-red-200'],
+                                    'not_ready' => ['Belum Lunas WA', 'bg-gray-100 text-gray-500 border-gray-200'],
+                                ];
+                                [$waLabel, $waClass] = $waBadgeMap[$waSt] ?? ['Status WA', 'bg-gray-100 text-gray-600 border-gray-200'];
+                                $waLogsPayload = $order->whatsappLogs->map(fn ($l) => [
+                                    'role' => $l->recipient_role,
+                                    'phone' => $l->recipient_phone,
+                                    'type' => $l->message_type,
+                                    'status' => $l->status,
+                                    'driver' => $l->driver,
+                                    'file' => $l->payload_json['file_name'] ?? null,
+                                    'text' => $l->payload_json['text'] ?? $l->payload_json['caption'] ?? '',
+                                    'error' => $l->error_message,
+                                    'sent_at' => ($l->sent_at ?? $l->created_at)?->timezone('Asia/Jakarta')->format('d M H:i:s'),
+                                ])->values()->all();
+                            @endphp
+                            <div class="mt-1.5 flex flex-col items-center gap-1">
+                                <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold border {{ $waClass }}">
+                                    {{ $waLabel }}
+                                </span>
+                                @if($order->whatsappLogs->isNotEmpty())
+                                    <button
+                                        type="button"
+                                        @click="openWaLogs({{ \Illuminate\Support\Js::from($order->order_code) }}, {{ \Illuminate\Support\Js::from($waLogsPayload) }})"
+                                        class="text-[10px] font-bold text-blue-600 hover:underline cursor-pointer"
+                                    >
+                                        Log WA ({{ $order->whatsappLogs->count() }})
+                                    </button>
+                                @endif
+                            </div>
                         </td>
                         <td class="p-4 text-center">
                             @if($order->order_status === 'Menunggu')
@@ -232,6 +341,15 @@
                                     <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H7v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
                                     <span>Cetak Dokumen</span>
                                 </a>
+
+                                @if($order->isPaid())
+                                    <form method="POST" action="{{ route('cashier-fotokopi.orders.resend-wa', $order) }}">
+                                        @csrf
+                                        <button type="submit" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 rounded-lg text-xs font-bold transition-colors cursor-pointer">
+                                            <span>Kirim Ulang ke WA</span>
+                                        </button>
+                                    </form>
+                                @endif
 
                                 @if($order->order_status === 'Menunggu')
                                     <form method="POST" action="{{ route('cashier-fotokopi.orders.status', $order) }}">
@@ -403,7 +521,7 @@
                         </a>
                     </template>
 
-                    <a 
+                    <a
                         :href="previewData.printUrl" 
                         target="_blank"
                         class="inline-flex items-center gap-1.5 px-5 py-2 bg-[#10B981] hover:bg-emerald-600 text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
@@ -412,6 +530,41 @@
                         <span>Cetak Dokumen Sekarang (Print Now)</span>
                     </a>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Log Pengiriman WhatsApp -->
+    <div x-show="waModalOpen" x-cloak class="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4" @keydown.escape.window="closeWaLogs()">
+        <div @click.away="closeWaLogs()" class="bg-white rounded-2xl shadow-2xl border border-gray-100 max-w-2xl w-full overflow-hidden">
+            <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between">
+                <div>
+                    <h3 class="text-sm font-black">Riwayat Pengiriman WhatsApp Otomatis</h3>
+                    <p class="text-[11px] text-slate-300 font-mono" x-text="'Order #' + waModalOrderCode"></p>
+                </div>
+                <button type="button" @click="closeWaLogs()" class="text-slate-300 hover:text-white px-2 py-1 text-sm font-bold cursor-pointer">&times;</button>
+            </div>
+            <div class="p-5 max-h-[28rem] overflow-y-auto space-y-3 bg-[#EFEAE2]">
+                <template x-for="(log, i) in waModalLogs" :key="i">
+                    <div class="bg-white rounded-xl p-3 border border-gray-200 shadow-2xs space-y-1.5 text-xs">
+                        <div class="flex items-center justify-between gap-2">
+                            <div class="flex items-center gap-1.5">
+                                <span class="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase"
+                                    :class="log.status === 'sent' ? 'bg-emerald-100 text-emerald-800' : 'bg-red-100 text-red-700'"
+                                    x-text="log.status + ' (' + log.driver + ')'"></span>
+                                <span class="font-bold text-gray-800" x-text="log.role === 'customer' ? 'Ke Mahasiswa: ' + log.phone : 'Ke Toko: ' + log.phone"></span>
+                            </div>
+                            <span class="text-[10px] text-gray-400 font-mono" x-text="log.type + ' • ' + (log.sent_at || '-')"></span>
+                        </div>
+                        <template x-if="log.file">
+                            <div class="px-2 py-1 rounded bg-blue-50 border border-blue-200 text-[11px] font-bold text-blue-800" x-text="'Lampiran: ' + log.file"></div>
+                        </template>
+                        <pre class="whitespace-pre-wrap font-sans text-[11px] text-gray-700 bg-gray-50 p-2 rounded-lg border border-gray-100" x-text="log.text"></pre>
+                        <template x-if="log.error">
+                            <div class="text-[11px] text-red-600 font-semibold" x-text="'Error: ' + log.error"></div>
+                        </template>
+                    </div>
+                </template>
             </div>
         </div>
     </div>
@@ -431,6 +584,9 @@
                 printUrl: '',
                 notes: ''
             },
+            waModalOpen: false,
+            waModalOrderCode: '',
+            waModalLogs: [],
             openPreview(orderCode, customerName, fileName, fileSize, fileType, fileUrl, printUrl, notes) {
                 this.previewData = {
                     orderCode: orderCode,
@@ -446,6 +602,14 @@
             },
             closePreview() {
                 this.previewModalOpen = false;
+            },
+            openWaLogs(orderCode, logs) {
+                this.waModalOrderCode = orderCode;
+                this.waModalLogs = Array.isArray(logs) ? logs : [];
+                this.waModalOpen = true;
+            },
+            closeWaLogs() {
+                this.waModalOpen = false;
             }
         };
     }

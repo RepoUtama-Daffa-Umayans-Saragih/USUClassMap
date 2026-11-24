@@ -1,56 +1,88 @@
 <x-layouts.app>
     <x-slot name="title">Instruksi Pembayaran - #{{ $order->order_code }}</x-slot>
 
+    @php
+        $usuPaymentConfig = [
+            'isPaid' => $order->isPaid(),
+            'paymentStatus' => $order->payment_status,
+            'orderStatus' => $order->order_status,
+            'paidAt' => $order->paid_at ? $order->paid_at->format('d M Y, H:i') : '',
+            'invoiceNumber' => $order->invoice_number ?? '',
+            'pickupCode' => $order->pickup_code ?? '',
+            'invoiceUrl' => $invoiceDownloadUrl ?? '',
+            'waDispatchStatus' => $order->wa_dispatch_status ?? 'not_ready',
+            'simulateUrl' => route('fotocopy.orders.simulate-payment', $order->order_code),
+            'csrfToken' => csrf_token(),
+        ];
+    @endphp
+    <script>
+        window.usuFotocopyPaymentConfig = @json($usuPaymentConfig);
+
+        window.usuFotocopyPaymentPage = function () {
+            const cfg = window.usuFotocopyPaymentConfig || {};
+
+            return {
+                isPaid: Boolean(cfg.isPaid),
+                paymentStatus: cfg.paymentStatus || 'pending',
+                orderStatus: cfg.orderStatus || 'Menunggu',
+                paidAt: cfg.paidAt || '',
+                invoiceNumber: cfg.invoiceNumber || '',
+                pickupCode: cfg.pickupCode || '',
+                invoiceUrl: cfg.invoiceUrl || '',
+                waDispatchStatus: cfg.waDispatchStatus || 'not_ready',
+                simulating: false,
+                copied: false,
+                copiedText: '',
+
+                copyToClipboard(text, label) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        this.copied = true;
+                        this.copiedText = label;
+                        setTimeout(() => { this.copied = false; }, 2500);
+                    });
+                },
+
+                simulatePayment() {
+                    if (this.isPaid || this.simulating) return;
+                    this.simulating = true;
+
+                    fetch(cfg.simulateUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-CSRF-TOKEN': cfg.csrfToken
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            this.isPaid = true;
+                            this.paymentStatus = data.payment_status || 'paid';
+                            this.orderStatus = data.order_status || 'Diproses';
+                            this.paidAt = data.paid_at || new Date().toLocaleString('id-ID');
+                            this.invoiceNumber = data.invoice_number || this.invoiceNumber;
+                            this.pickupCode = data.pickup_code || this.pickupCode;
+                            this.invoiceUrl = data.invoice_url || this.invoiceUrl;
+                            this.waDispatchStatus = data.wa_dispatch_status || 'queued';
+                        } else {
+                            alert(data.message || 'Simulasi pembayaran gagal.');
+                        }
+                        this.simulating = false;
+                    })
+                    .catch(err => {
+                        console.error('Error simulating payment:', err);
+                        alert('Gagal menghubungi endpoint simulasi.');
+                        this.simulating = false;
+                    });
+                }
+            };
+        };
+    </script>
+
     <div
         class="max-w-6xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6"
-        x-data="{
-            isPaid: {{ $order->isPaid() ? 'true' : 'false' }},
-            paymentStatus: '{{ $order->payment_status }}',
-            orderStatus: '{{ $order->order_status }}',
-            paidAt: '{{ $order->paid_at ? $order->paid_at->format('d M Y, H:i') : '' }}',
-            simulating: false,
-            copied: false,
-            copiedText: '',
-
-            copyToClipboard(text, label) {
-                navigator.clipboard.writeText(text).then(() => {
-                    this.copied = true;
-                    this.copiedText = label;
-                    setTimeout(() => { this.copied = false; }, 2500);
-                });
-            },
-
-            simulatePayment() {
-                if (this.isPaid || this.simulating) return;
-                this.simulating = true;
-
-                fetch('{{ route('fotocopy.orders.simulate-payment', $order->order_code) }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    }
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        this.isPaid = true;
-                        this.paymentStatus = data.payment_status || 'paid';
-                        this.orderStatus = data.order_status || 'Diproses';
-                        this.paidAt = data.paid_at || new Date().toLocaleString('id-ID');
-                    } else {
-                        alert(data.message || 'Simulasi pembayaran gagal.');
-                    }
-                    this.simulating = false;
-                })
-                .catch(err => {
-                    console.error('Error simulating payment:', err);
-                    alert('Gagal menghubungi endpoint simulasi.');
-                    this.simulating = false;
-                });
-            }
-        }"
+        x-data="usuFotocopyPaymentPage()"
     >
         <!-- Breadcrumb -->
         <nav class="flex items-center text-xs text-gray-500 gap-2 overflow-x-auto whitespace-nowrap pb-1">
@@ -328,7 +360,7 @@
                                 <div class="space-y-1">
                                     <span class="text-[11px] text-gray-500 block">Toko Tujuan Pembayaran:</span>
                                     <h3 class="text-sm sm:text-base font-extrabold text-gray-900">{{ $place->name }}</h3>
-                                    <p class="text-xs text-gray-600 leading-snug">{{ $place->address }}</p>
+                                    <p class="text-xs text-gray-600 leading-snug">{{ $place->location_name ?? ($order->store?->location_name ?? 'Area Kampus USU Medan') }}</p>
                                 </div>
 
                                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border border-amber-200">
@@ -423,10 +455,24 @@
                             <span class="text-gray-500">Nama Pemesan:</span>
                             <span class="font-bold text-gray-900">{{ $order->customer_name }}</span>
                         </div>
-                        @if($order->customer_phone)
+                        @if($order->customer_whatsapp || $order->customer_phone)
                             <div class="flex justify-between">
                                 <span class="text-gray-500">No. HP / WA:</span>
-                                <span class="font-bold text-gray-900">{{ $order->customer_phone }}</span>
+                                <span class="font-bold text-gray-900">{{ \App\Support\WhatsAppPhoneNormalizer::formatDisplay($order->customer_whatsapp ?: $order->customer_phone) }}</span>
+                            </div>
+                        @endif
+                        <div class="flex justify-between" x-show="pickupCode" x-cloak>
+                            <span class="text-gray-500">Kode Ambil Berkas:</span>
+                            <span class="font-mono font-black text-gray-900 bg-amber-100 px-2 py-0.5 rounded-md" x-text="pickupCode"></span>
+                        </div>
+                        <div class="flex justify-between" x-show="invoiceNumber" x-cloak>
+                            <span class="text-gray-500">No. Invoice Resmi:</span>
+                            <span class="font-mono font-bold text-[#10A760]" x-text="invoiceNumber"></span>
+                        </div>
+                        @if($order->pickup_estimate)
+                            <div class="flex justify-between">
+                                <span class="text-gray-500">Estimasi Selesai:</span>
+                                <span class="font-bold text-gray-900">{{ $order->pickup_estimate }}</span>
                             </div>
                         @endif
                         <div class="flex justify-between">
@@ -443,6 +489,29 @@
                         </div>
                     </div>
 
+                    <!-- Uploaded Multi-PDF Summary -->
+                    @if($order->files && $order->files->isNotEmpty())
+                        <div class="space-y-2 pt-1">
+                            <span class="text-[11px] font-bold text-gray-700 block">Dokumen PDF Diunggah ({{ $order->files->count() }} File):</span>
+                            <div class="space-y-2 max-h-52 overflow-y-auto pr-1">
+                                @foreach($order->files as $file)
+                                    <div class="p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-200/80 text-xs space-y-1">
+                                        <div class="flex items-center justify-between gap-2">
+                                            <span class="font-bold text-gray-900 truncate">{{ $file->original_name }}</span>
+                                            <span class="font-extrabold text-[#10A760] shrink-0">Rp {{ number_format($file->subtotal_estimated, 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="text-[10px] text-gray-600">{{ $file->getDisplaySpecSummary() }}</div>
+                                        @if($file->note)
+                                            <div class="text-[10px] text-amber-900 bg-amber-50 px-2 py-1 rounded-md border border-amber-200 italic">
+                                                Note: {{ $file->note }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
+
                     <!-- Ordered Items List -->
                     <div class="space-y-2 pt-1">
                         <span class="text-[11px] font-bold text-gray-700 block">Daftar Item & Layanan:</span>
@@ -451,6 +520,11 @@
                                 <div class="py-2 flex items-center justify-between text-xs">
                                     <div class="pr-2">
                                         <div class="font-bold text-gray-900">{{ $item->service_name }}</div>
+                                        @if(str_contains((string) $item->category, 'Offline Fisik'))
+                                            <span class="inline-block text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300 my-0.5">
+                                                Wajib Bawa Berkas Fisik (Offline)
+                                            </span>
+                                        @endif
                                         <div class="text-[10px] text-gray-500">
                                             Rp {{ number_format($item->price, 0, ',', '.') }} × {{ $item->quantity }}
                                         </div>
@@ -501,7 +575,18 @@
                         @endphp
 
                         <a
-                            href="{{ $waLink }}"
+                            x-show="isPaid && invoiceUrl"
+                            x-cloak
+                            :href="invoiceUrl"
+                            target="_blank"
+                            class="w-full bg-emerald-700 hover:bg-emerald-800 text-white py-2.5 px-4 rounded-xl text-xs font-extrabold transition shadow-sm flex items-center justify-center gap-2"
+                        >
+                            <i class="fa-solid fa-file-pdf text-sm"></i>
+                            <span>Download Bukti Invoice PDF (Resmi)</span>
+                        </a>
+
+                        <a
+                            href="{{ \App\Support\WhatsAppPhoneNormalizer::toWaMeUrl($place->whatsapp ?: $place->phone, $waMsg) }}"
                             target="_blank"
                             class="w-full bg-[#10A760] hover:bg-[#0D8A4E] text-white py-2.5 px-4 rounded-xl text-xs font-bold transition shadow-sm flex items-center justify-center gap-2"
                         >

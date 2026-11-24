@@ -39,6 +39,8 @@ Route::get('/fotocopy/{id}/order', [PhotocopyController::class, 'order'])->name(
 Route::post('/fotocopy/{id}/order', [PhotocopyController::class, 'storeOrder'])->name('fotocopy.order.store');
 Route::get('/fotocopy/orders/{orderCode}/payment', [PhotocopyController::class, 'paymentInstructions'])->name('fotocopy.orders.payment');
 Route::post('/fotocopy/orders/{orderCode}/simulate-payment', [PhotocopyController::class, 'simulatePayment'])->name('fotocopy.orders.simulate-payment');
+Route::get('/fotocopy/orders/{orderCode}/invoice', [PhotocopyController::class, 'downloadInvoice'])->name('fotocopy.orders.invoice');
+Route::get('/fotocopy/orders/{orderCode}/files/{file}', [PhotocopyController::class, 'downloadOrderFile'])->name('fotocopy.orders.files.download');
 
 // Rute alternatif direktori mitra fotocopy tim
 Route::get('/photocopy-directory', [PhotocopyController::class, 'index'])->name('photocopy.directory');
@@ -47,6 +49,8 @@ Route::get('/photocopy-directory/{id}/order', [PhotocopyController::class, 'orde
 Route::post('/photocopy-directory/{id}/order', [PhotocopyController::class, 'storeOrder'])->name('photocopy.directory.order.store');
 Route::get('/photocopy-directory/orders/{orderCode}/payment', [PhotocopyController::class, 'paymentInstructions'])->name('photocopy.directory.orders.payment');
 Route::post('/photocopy-directory/orders/{orderCode}/simulate-payment', [PhotocopyController::class, 'simulatePayment'])->name('photocopy.directory.orders.simulate-payment');
+Route::get('/photocopy-directory/orders/{orderCode}/invoice', [PhotocopyController::class, 'downloadInvoice'])->name('photocopy.directory.orders.invoice');
+Route::get('/photocopy-directory/orders/{orderCode}/files/{file}', [PhotocopyController::class, 'downloadOrderFile'])->name('photocopy.directory.orders.files.download');
 
 // 360 Photo Inspector & SPARQL Calibration (No Auth Required)
 Route::get('/admin/cek-foto', [PhotoInspectorController::class, 'index'])->name('admin.cek-foto');
@@ -134,6 +138,8 @@ Route::prefix('admin-fotokopi')
     ->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\AdminFotokopi\DashboardController::class, 'index'])->name('dashboard');
         Route::resource('stores', \App\Http\Controllers\AdminFotokopi\StoreController::class)->except(['show']);
+        Route::post('/stores/{store}/test-whatsapp', [\App\Http\Controllers\AdminFotokopi\StoreController::class, 'testWhatsApp'])->name('stores.test-whatsapp');
+        Route::get('/whatsapp-sandbox', [\App\Http\Controllers\AdminFotokopi\StoreController::class, 'whatsappSandboxLogs'])->name('stores.whatsapp-sandbox');
         Route::resource('services', \App\Http\Controllers\AdminFotokopi\ServiceController::class)->except(['show']);
         Route::get('/reports', [\App\Http\Controllers\AdminFotokopi\ReportController::class, 'index'])->name('reports.index');
     });
@@ -150,6 +156,10 @@ Route::prefix('cashier-fotokopi')
     ->group(function () {
         Route::get('/orders', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'index'])->name('orders.index');
         Route::patch('/orders/{order}/status', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'updateStatus'])->name('orders.status');
+        Route::post('/orders/{order}/resend-wa', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'resendWhatsApp'])->name('orders.resend-wa');
+        Route::get('/orders/{order}/download-zip', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'downloadAllZip'])->name('orders.download-zip');
+        Route::get('/orders/{order}/files/{file}', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'downloadOrderFile'])->name('orders.files.download');
+        Route::get('/orders/{order}/invoice', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'downloadInvoice'])->name('orders.invoice');
         Route::get('/orders/{order}/file', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'downloadFile'])->name('orders.file');
         Route::get('/orders/{order}/print', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'printJob'])->name('orders.print');
         Route::get('/pos', [\App\Http\Controllers\CashierFotokopi\OrderController::class, 'createPos'])->name('orders.pos');

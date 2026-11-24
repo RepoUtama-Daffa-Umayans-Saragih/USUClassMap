@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
+use App\Support\WhatsAppPhoneNormalizer;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
 class FotocopyOrder extends Model
@@ -17,10 +21,13 @@ class FotocopyOrder extends Model
 
     protected $fillable = [
         'order_code',
+        'invoice_number',
+        'pickup_code',
         'store_id',
         'user_id',
         'customer_name',
         'customer_phone',
+        'customer_whatsapp',
         'notes',
         'file_path',
         'file_name',
@@ -30,7 +37,11 @@ class FotocopyOrder extends Model
         'payment_channel',
         'payment_status',
         'payment_payload',
+        'invoice_pdf_path',
         'order_status',
+        'pickup_estimate',
+        'wa_dispatch_status',
+        'wa_dispatched_at',
         'total_price',
         'paid_at',
     ];
@@ -39,6 +50,7 @@ class FotocopyOrder extends Model
         'total_price' => 'integer',
         'payment_payload' => 'array',
         'paid_at' => 'datetime',
+        'wa_dispatched_at' => 'datetime',
     ];
 
     public function isPaid(): bool
@@ -99,13 +111,55 @@ class FotocopyOrder extends Model
 
     public function hasFile(): bool
     {
-        return !empty($this->file_path) || !empty($this->file_name);
+        return !empty($this->file_path) || !empty($this->file_name) || $this->hasMultiFiles();
+    }
+
+    public function hasMultiFiles(): bool
+    {
+        if ($this->relationLoaded('files')) {
+            return $this->files->isNotEmpty();
+        }
+
+        return $this->files()->exists();
+    }
+
+    public function totalPagesToPrint(): int
+    {
+        $files = $this->relationLoaded('files') ? $this->files : $this->files()->get();
+
+        return (int) $files->sum(fn (FotocopyOrderFile $f): int => max(1, (int) $f->page_count) * max(1, (int) $f->copies));
+    }
+
+    public function isWaDispatched(): bool
+    {
+        return in_array((string) $this->wa_dispatch_status, ['sent', 'sandbox'], true);
+    }
+
+    public function invoiceUrl(int $minutes = 30): ?string
+    {
+        if (empty($this->invoice_pdf_path) && !$this->isPaid()) {
+            return null;
+        }
+
+        if (!Route::has('fotocopy.orders.invoice')) {
+            return null;
+        }
+
+        return URL::temporarySignedRoute(
+            'fotocopy.orders.invoice',
+            now()->addMinutes($minutes),
+            ['orderCode' => $this->order_code]
+        );
     }
 
     public function fileUrl(): ?string
     {
         if (empty($this->file_path)) {
             return null;
+        }
+
+        if (Storage::disk('local')->exists($this->file_path) && Route::has('cashier-fotokopi.orders.file')) {
+            return route('cashier-fotokopi.orders.file', $this);
         }
 
         return asset('storage/' . $this->file_path);
@@ -134,6 +188,39 @@ class FotocopyOrder extends Model
         return 'other';
     }
 
+    /**
+     * Resolve customer WhatsApp digits for notifications and cashier direct links.
+     */
+    public function getNormalizedCustomerWhatsappAttribute(): ?string
+    {
+        return WhatsAppPhoneNormalizer::normalize($this->customer_whatsapp ?: $this->customer_phone);
+    }
+
+    /**
+     * Resolve paired PhotocopyPlace via FotocopyStore slug/name before raw store_id fallback.
+     */
+    public function getPhotocopyPlaceResolvedAttribute(): ?PhotocopyPlace
+    {
+        if ($this->relationLoaded('photocopyPlace') && $this->photocopyPlace) {
+            return $this->photocopyPlace;
+        }
+
+        $store = $this->relationLoaded('store') ? $this->store : $this->store()->first();
+        if ($store) {
+            $bySlug = !empty($store->slug) ? PhotocopyPlace::where('slug', $store->slug)->first() : null;
+            if ($bySlug) {
+                return $bySlug;
+            }
+
+            $byName = PhotocopyPlace::where('name', $store->name)->first();
+            if ($byName) {
+                return $byName;
+            }
+        }
+
+        return $this->store_id ? PhotocopyPlace::find($this->store_id) : null;
+    }
+
     protected static function boot()
     {
         parent::boot();
@@ -149,9 +236,16 @@ class FotocopyOrder extends Model
         return $this->belongsTo(FotocopyStore::class, 'store_id');
     }
 
-    public function photocopyPlace(): BelongsTo
+    public function photocopyPlace(): HasOneThrough
     {
-        return $this->belongsTo(PhotocopyPlace::class, 'store_id');
+        return $this->hasOneThrough(
+            PhotocopyPlace::class,
+            FotocopyStore::class,
+            'id',
+            'slug',
+            'store_id',
+            'slug'
+        );
     }
 
     public function user(): BelongsTo
@@ -162,5 +256,15 @@ class FotocopyOrder extends Model
     public function items(): HasMany
     {
         return $this->hasMany(FotocopyOrderItem::class, 'order_id');
+    }
+
+    public function files(): HasMany
+    {
+        return $this->hasMany(FotocopyOrderFile::class, 'fotocopy_order_id')->orderBy('sort_order');
+    }
+
+    public function whatsappLogs(): HasMany
+    {
+        return $this->hasMany(WhatsappDispatchLog::class, 'fotocopy_order_id')->latest();
     }
 }

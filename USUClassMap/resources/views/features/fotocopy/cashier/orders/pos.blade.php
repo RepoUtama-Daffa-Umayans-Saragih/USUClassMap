@@ -12,6 +12,10 @@
         window.usuPosCatalog = {!! json_encode($catalog ?? [], JSON_HEX_TAG|JSON_HEX_APOS|JSON_HEX_AMP|JSON_HEX_QUOT|JSON_UNESCAPED_UNICODE) !!};
     </script>
 
+    @push('scripts')
+        @vite(['resources/js/features/fotocopy-pdf-uploader.js'])
+    @endpush
+
     <div class="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-xs max-w-5xl" x-data="posApp()">
         <form method="POST" action="{{ route('cashier-fotokopi.orders.pos.store') }}" enctype="multipart/form-data" class="space-y-6">
             @csrf
@@ -149,36 +153,34 @@
                 </div>
             </div>
 
-            <!-- Area Upload / Drop Zone File Mahasiswa (Flashdisk / Direct File) -->
-            <div class="border border-gray-200 rounded-2xl p-4 bg-gray-50/50">
-                <div class="flex items-center justify-between mb-2">
+            <!-- Area Upload Multi-PDF / Dokumen Flashdisk -->
+            <div class="border border-gray-200 rounded-2xl p-4 bg-gray-50/50 space-y-3">
+                <div class="flex items-center justify-between">
                     <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">
-                        Unggah File Dokumen / Flashdisk (Opsional)
+                        Unggah Multi-File Dokumen / Flashdisk (Opsional)
                     </label>
                     <span class="text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
-                        Direct File Preview & Print
+                        Multi-PDF + Auto Page Count + Note per File
                     </span>
                 </div>
-                <p class="text-xs text-gray-500 mb-3 leading-relaxed">
-                    Unggah file cetak yang dibawa mahasiswa melalui flashdisk atau media penyimpanan untuk pratinjau dan cetak langsung di counter kasir.
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    Pilih satu atau beberapa file PDF/dokumen dari flashdisk pelanggan. File PDF otomatis dihitung jumlah halamannya dan dilengkapi kolom catatan khusus per file.
                 </p>
 
-                <!-- Input File Hidden -->
-                <input 
-                    type="file" 
-                    id="fileUploadInput" 
-                    name="file" 
-                    @change="handleFileChange($event)" 
-                    class="hidden" 
+                <input
+                    type="file"
+                    id="fileUploadInput"
+                    name="pos_files[]"
+                    multiple
+                    @change="handleFileChange($event)"
+                    class="hidden"
                     accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png"
                 >
 
-                <!-- Dropzone Area (Belum Ada File) -->
-                <div 
-                    x-show="!fileInfo" 
-                    @click="document.getElementById('fileUploadInput').click()" 
-                    @dragover.prevent="dragOver = true" 
-                    @dragleave.prevent="dragOver = false" 
+                <div
+                    @click="document.getElementById('fileUploadInput').click()"
+                    @dragover.prevent="dragOver = true"
+                    @dragleave.prevent="dragOver = false"
                     @drop.prevent="handleDrop($event)"
                     :class="dragOver ? 'border-[#10B981] bg-emerald-50/60 ring-2 ring-emerald-400' : 'border-gray-300 hover:border-emerald-500 hover:bg-emerald-50/20'"
                     class="border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-2 group"
@@ -190,32 +192,52 @@
                     </div>
                     <div>
                         <p class="text-xs font-bold text-gray-700 group-hover:text-emerald-700">
-                            Pilih file dari flashdisk atau tarik & lepas file ke sini
+                            Pilih banyak file dari flashdisk atau tarik & lepas ke sini
                         </p>
                         <p class="text-[11px] text-gray-400 mt-0.5">
-                            Mendukung PDF, Word (DOCX/DOC), PowerPoint, Gambar (Maks 25 MB)
+                            Mendukung Multi-PDF (auto halaman), Word, PowerPoint, Excel, Gambar (Maks 25 MB/file)
                         </p>
                     </div>
                 </div>
 
-                <!-- Preview File Terpilih -->
-                <div x-show="fileInfo" class="bg-white rounded-xl p-3 border border-emerald-200 shadow-xs flex items-center justify-between gap-3">
-                    <div class="flex items-center gap-3 min-w-0">
-                        <div class="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs uppercase text-white shrink-0" :class="fileBadgeColor()">
-                            <span x-text="fileInfo ? fileInfo.ext : 'FILE'"></span>
+                <!-- Daftar File Terpilih -->
+                <div class="space-y-2.5" x-show="uploadedFiles.length > 0" x-cloak>
+                    <template x-for="(f, idx) in uploadedFiles" :key="f.uid">
+                        <div class="bg-white rounded-xl p-3 border border-emerald-200 shadow-xs space-y-2">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-3 min-w-0">
+                                    <div class="w-9 h-9 rounded-lg flex items-center justify-center font-bold text-xs uppercase text-white shrink-0" :class="fileBadgeColor(f.ext)">
+                                        <span x-text="f.ext"></span>
+                                    </div>
+                                    <div class="min-w-0">
+                                        <p class="text-xs font-bold text-gray-900 truncate" x-text="f.name"></p>
+                                        <p class="text-[11px] text-gray-500">
+                                            <span x-text="f.size"></span> &bull;
+                                            <span class="text-emerald-600 font-semibold" x-text="f.pageCount + ' halaman'"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <button type="button" @click="removeFile(idx)" class="px-2.5 py-1 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
+                                    Hapus
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                <div>
+                                    <label class="text-[10px] font-bold text-gray-500 block mb-0.5">Halaman</label>
+                                    <input type="number" :name="'pos_file_pages[' + idx + ']'" x-model.number="f.pageCount" min="1" class="w-full text-xs rounded-lg border-gray-200 py-1.5 px-2.5">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-gray-500 block mb-0.5">Rangkap</label>
+                                    <input type="number" :name="'pos_file_copies[' + idx + ']'" x-model.number="f.copies" min="1" class="w-full text-xs rounded-lg border-gray-200 py-1.5 px-2.5">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] font-bold text-gray-500 block mb-0.5">Note Khusus File Ini</label>
+                                    <input type="text" :name="'pos_file_notes[' + idx + ']'" x-model="f.note" placeholder="Contoh: Jilid lakban mika biru" class="w-full text-xs rounded-lg border-gray-200 py-1.5 px-2.5">
+                                </div>
+                            </div>
                         </div>
-                        <div class="min-w-0">
-                            <p class="text-xs font-bold text-gray-900 truncate" x-text="fileInfo ? fileInfo.name : ''"></p>
-                            <p class="text-[11px] text-gray-500">
-                                Ukuran: <span class="font-medium" x-text="fileInfo ? fileInfo.size : ''"></span> &bull; Status: <span class="text-emerald-600 font-semibold">Siap Cetak & Simpan</span>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button type="button" @click="removeFile()" class="px-2.5 py-1 text-xs font-semibold text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer">
-                            Hapus File
-                        </button>
-                    </div>
+                    </template>
                 </div>
             </div>
 
@@ -238,7 +260,7 @@
             return {
                 ...usuCatalogFilter(window.usuPosCatalog),
                 items: [],
-                fileInfo: null,
+                uploadedFiles: [],
                 dragOver: false,
                 addItem(id, name, price, unit) {
                     const existing = this.items.find(i => i.service_id === id);
@@ -254,45 +276,64 @@
                 formatRupiah(num) {
                     return new Intl.NumberFormat('id-ID').format(num);
                 },
+                syncFileInput() {
+                    const input = document.getElementById('fileUploadInput');
+                    const dataTransfer = new DataTransfer();
+                    this.uploadedFiles.forEach(entry => {
+                        if (entry.file) {
+                            dataTransfer.items.add(entry.file);
+                        }
+                    });
+                    input.files = dataTransfer.files;
+                },
                 handleFileChange(event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                        this.processFile(file);
+                    const files = Array.from(event.target.files || []);
+                    if (files.length > 0) {
+                        this.enqueuePosFiles(files);
                     }
                 },
                 handleDrop(event) {
                     this.dragOver = false;
-                    const file = event.dataTransfer.files[0];
-                    if (file) {
-                        const input = document.getElementById('fileUploadInput');
-                        const dataTransfer = new DataTransfer();
-                        dataTransfer.items.add(file);
-                        input.files = dataTransfer.files;
-                        this.processFile(file);
+                    const files = Array.from(event.dataTransfer?.files || []);
+                    if (files.length > 0) {
+                        this.enqueuePosFiles(files);
                     }
                 },
-                processFile(file) {
-                    const ext = file.name.split('.').pop().toLowerCase();
-                    let sizeStr = '';
-                    if (file.size >= 1048576) {
-                        sizeStr = (file.size / 1048576).toFixed(1) + ' MB';
-                    } else {
-                        sizeStr = Math.round(file.size / 1024) + ' KB';
+                async enqueuePosFiles(files) {
+                    for (const file of files) {
+                        if (this.uploadedFiles.length >= 10) break;
+                        const ext = (file.name.split('.').pop() || '').toLowerCase();
+                        const sizeStr = file.size >= 1048576
+                            ? (file.size / 1048576).toFixed(1) + ' MB'
+                            : Math.max(1, Math.round(file.size / 1024)) + ' KB';
+
+                        const uid = 'pos-' + Date.now() + '-' + Math.random().toString(36).slice(2, 7);
+                        let pageCount = 1;
+                        if (ext === 'pdf' && typeof window.usuInspectPdfFile === 'function') {
+                            const info = await window.usuInspectPdfFile(file);
+                            if (info && info.valid && info.pageCount) {
+                                pageCount = info.pageCount;
+                            }
+                        }
+
+                        this.uploadedFiles.push({
+                            uid,
+                            file,
+                            name: file.name,
+                            size: sizeStr,
+                            ext,
+                            pageCount,
+                            copies: 1,
+                            note: ''
+                        });
                     }
-                    this.fileInfo = {
-                        name: file.name,
-                        size: sizeStr,
-                        ext: ext
-                    };
+                    this.syncFileInput();
                 },
-                removeFile() {
-                    const input = document.getElementById('fileUploadInput');
-                    input.value = '';
-                    this.fileInfo = null;
+                removeFile(idx) {
+                    this.uploadedFiles.splice(idx, 1);
+                    this.syncFileInput();
                 },
-                fileBadgeColor() {
-                    if (!this.fileInfo) return 'bg-gray-500';
-                    const ext = this.fileInfo.ext;
+                fileBadgeColor(ext) {
                     if (['pdf'].includes(ext)) return 'bg-red-500';
                     if (['doc', 'docx'].includes(ext)) return 'bg-blue-600';
                     if (['ppt', 'pptx'].includes(ext)) return 'bg-amber-500';

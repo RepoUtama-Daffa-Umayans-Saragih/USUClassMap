@@ -2,6 +2,8 @@
 
 namespace App\Models\Concerns;
 
+use App\Support\CatalogBehaviorClassifier;
+
 trait HasCatalogAttributes
 {
     /**
@@ -47,7 +49,7 @@ trait HasCatalogAttributes
      */
     public function toCatalogArray(): array
     {
-        return [
+        return array_merge([
             'id' => (int) $this->id,
             'name' => (string) $this->name,
             'category' => (string) $this->category,
@@ -65,6 +67,6 @@ trait HasCatalogAttributes
             'stock' => $this->stock !== null ? (int) $this->stock : null,
             'image_url' => $this->image_url,
             'is_available' => (bool) $this->is_available,
-        ];
+        ], CatalogBehaviorClassifier::metadataForItem($this));
     }
 }
