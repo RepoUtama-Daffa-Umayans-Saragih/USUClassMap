@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\AdminMapController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\FibVirtualWalkController;
 use App\Http\Controllers\PhotocopyController;
 use App\Http\Controllers\PhotoInspectorController;
 use App\Http\Controllers\ProfileController;
@@ -26,8 +27,14 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/map', function () {
-    return view('features.map.index');
+    $photocopyCount = \App\Models\PhotocopyPlace::where('is_active', true)->count();
+
+    return view('features.map.index', compact('photocopyCount'));
 })->name('map');
+
+// FIB 360° Virtual Walk (Street View Publik & Stream Panorama 4K)
+Route::get('/virtual-walk/fib', [FibVirtualWalkController::class, 'publicView'])->name('virtual-walk.fib');
+Route::get('/virtual-walk/fib/pano/{id}', [FibVirtualWalkController::class, 'servePanorama'])->whereNumber('id')->name('virtual-walk.fib.pano');
 
 Route::redirect('/bookmarks', '/#bookmarks')->name('bookmarks');
 
@@ -66,7 +73,7 @@ Route::get('/admin/cek-foto', [PhotoInspectorController::class, 'index'])->name(
 Route::post('/admin/cek-foto/kalibrasi', [PhotoInspectorController::class, 'saveCalibration'])->name('admin.cek-foto.saveCalibration');
 Route::get('/admin/cek-foto-p', [PhotoInspectorController::class, 'indexCylinder'])->name('admin.cek-foto-p');
 
-// Rexa Copilot AI Chatbot (Phase 2 & 3)
+// Tanya Ucup AI Chatbot (Phase 2 & 3)
 Route::post('/copilot/chat', [\App\Http\Controllers\AiCopilotController::class, 'chat'])
     ->middleware('throttle:20,1')
     ->name('copilot.chat');
@@ -138,6 +145,12 @@ Route::prefix('admin')
         Route::get('/cek-foto/360p', [Photo360pInspectorController::class, 'index'])->name('cek-foto.360p.index');
         Route::post('/cek-foto/360p/{id}/verify', [Photo360pInspectorController::class, 'verify'])->whereNumber('id')->name('cek-foto.360p.verify');
         Route::get('/cek-foto/360p/export/{format}', [Photo360pInspectorController::class, 'export'])->whereIn('format', ['md', 'csv', 'json'])->name('cek-foto.360p.export');
+
+        // FIB 360° Virtual Walk Editor & 1-Click Calibration
+        Route::get('/cek-foto/fib-walk', [FibVirtualWalkController::class, 'adminView'])->name('cek-foto.fib-walk');
+        Route::post('/cek-foto/fib-walk/scene/{id}', [FibVirtualWalkController::class, 'updateScene'])->whereNumber('id')->name('cek-foto.fib-walk.scene.update');
+        Route::post('/cek-foto/fib-walk/link', [FibVirtualWalkController::class, 'addLink'])->name('cek-foto.fib-walk.link.store');
+        Route::delete('/cek-foto/fib-walk/link', [FibVirtualWalkController::class, 'removeLink'])->name('cek-foto.fib-walk.link.destroy');
     });
 
 /*

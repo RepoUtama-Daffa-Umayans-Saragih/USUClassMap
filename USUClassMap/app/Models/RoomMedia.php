@@ -35,15 +35,7 @@ class RoomMedia extends Model
 
     public function getFileUrlAttribute(): string
     {
-        if (empty($this->file_path)) {
-            return '';
-        }
-
-        if (str_starts_with($this->file_path, 'http://') || str_starts_with($this->file_path, 'https://')) {
-            return $this->file_path;
-        }
-
-        return asset('storage/' . ltrim($this->file_path, '/'));
+        return \App\Support\CampusMediaUrl::resolve($this->file_path) ?? '';
     }
 
     public function room(): BelongsTo

@@ -7,7 +7,7 @@
         <meta property="og:description" content="Rating ⭐{{ number_format($place->rating, 1) }} ({{ $place->user_rating_count }} ulasan) • {{ $place->current_schedule_status }} • {{ $place->location_name }}">
         <meta property="og:url" content="{{ route('fotocopy.show', $place->id) }}">
         <meta property="og:type" content="business.business">
-        <meta property="og:image" content="{{ $place->image_url ?: 'https://images.unsplash.com/photo-1568667256549-094345857637?w=800&auto=format&fit=crop&q=80' }}">
+        <meta property="og:image" content="{{ $place->image_url ?: asset('images/stores/preset-modern-copy.webp') }}">
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="{{ $place->name }} - Layanan Fotocopy USU">
         <meta name="twitter:description" content="{{ $place->current_schedule_status }} • {{ $place->location_name }}">
@@ -58,19 +58,59 @@
                             <span class="text-white/80 font-normal">({{ $place->user_rating_count }} ulasan Google)</span>
                         </span>
                     </div>
+
+                    <!-- Real-Time GPS & WIB Badges -->
+                    <div class="mt-2.5 flex flex-wrap items-center justify-center gap-2">
+                        <span id="store-live-gps-badge" class="inline-flex items-center gap-1.5 bg-white/15 backdrop-blur-sm text-white font-semibold text-[11px] px-3 py-1 rounded-full border border-white/25">
+                            <i class="fa-solid fa-location-crosshairs text-emerald-300 animate-pulse"></i>
+                            <span>Mendeteksi jarak GPS Anda...</span>
+                        </span>
+                        <span id="store-live-wib-badge" class="inline-flex items-center gap-1.5 bg-black/35 backdrop-blur-sm text-white/95 font-bold text-[11px] px-2.5 py-1 rounded-full">
+                            <i class="fa-regular fa-clock text-emerald-300"></i>
+                            <span>WIB <span id="store-live-wib-clock">{{ $wibClock ?? now('Asia/Jakarta')->format('H:i') }}</span></span>
+                        </span>
+                    </div>
                 </div>
 
-                <!-- Status Badge Real-Time Google Maps Style -->
+                <!-- Status Badge Real-Time WIB -->
+                @php
+                    $opOpen = (bool) ($operationalStatus['is_open_now'] ?? $place->is_open_now);
+                    $opStatusLabel = $operationalStatus['status_label'] ?? ($opOpen ? 'Buka' : 'Tutup');
+                    $opDetailText = $operationalStatus['detail_text'] ?? $place->current_schedule_status;
+                    $opHeroText = $opOpen
+                        ? $opDetailText
+                        : (str_starts_with($opDetailText, 'Tutup') ? $opDetailText : 'Tutup • ' . $opDetailText);
+                @endphp
                 <div class="absolute top-3 right-3 sm:top-4 sm:right-4 z-10">
-                    <span class="{{ $place->is_open_now ? 'bg-[#10A760]' : 'bg-gray-800' }} text-white text-[11px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-md flex items-center gap-1.5">
-                        <span class="w-2 h-2 {{ $place->is_open_now ? 'bg-white animate-pulse' : 'bg-gray-400' }} rounded-full"></span>
-                        <span>{{ $place->current_schedule_status }}</span>
+                    <span
+                        id="hero-status-badge"
+                        data-open-status="{{ $opOpen ? 'open' : 'closed' }}"
+                        class="{{ $opOpen ? 'bg-[#10A760]' : 'bg-[#DC2626]' }} text-white text-[11px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-md flex items-center gap-1.5"
+                    >
+                        <span id="hero-status-dot" class="w-2 h-2 {{ $opOpen ? 'bg-white animate-pulse' : 'bg-red-200' }} rounded-full"></span>
+                        <span id="hero-status-text">{{ $opHeroText }}</span>
                     </span>
                 </div>
             </div>
 
             <!-- Detail Information Body -->
             <div class="p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8">
+
+                <!-- Banner GPS Retry (Hanya muncul bila GPS diblokir/gagal) -->
+                <div id="show-gps-denied-banner" class="hidden rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs text-amber-900 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2.5">
+                    <div class="flex items-start gap-2">
+                        <i class="fa-solid fa-location-crosshairs text-amber-600 mt-0.5 shrink-0"></i>
+                        <span id="show-gps-denied-text">Izin lokasi browser tidak aktif sehingga jarak real-time belum terhitung.</span>
+                    </div>
+                    <button
+                        type="button"
+                        onclick="window.retryShowGps && window.retryShowGps()"
+                        class="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-[11px] shrink-0 cursor-pointer"
+                    >
+                        <i class="fa-solid fa-rotate"></i>
+                        <span>Aktifkan GPS Sekarang</span>
+                    </button>
+                </div>
 
                 <!-- Quick Action Bar: Pesan, Pergi ke Maps, dan Bagikan (Share) -->
                 <div class="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-[#E8F5EE] rounded-2xl border border-[#10A760]/20">
@@ -121,15 +161,19 @@
                         </div>
 
                         <div class="space-y-2 text-xs">
-                            <div class="flex items-center justify-between py-1.5 border-b border-gray-200">
+                            <div class="flex items-center justify-between py-1.5 border-b border-gray-200 gap-2">
                                 <span class="text-gray-500">Status Saat Ini:</span>
-                                <span class="font-bold {{ $place->is_open_now ? 'text-[#10A760]' : 'text-red-500' }}">
-                                    {{ $place->current_schedule_status }}
+                                <span id="detail-status-text" class="font-bold text-right {{ $opOpen ? 'text-[#10A760]' : 'text-[#DC2626]' }}">
+                                    {{ $opHeroText }}
                                 </span>
                             </div>
                             <div class="flex items-center justify-between py-1.5 border-b border-gray-200">
                                 <span class="text-gray-500">Jam Operasional:</span>
-                                <span class="font-bold text-gray-800 text-sm">{{ $place->open_time }} - {{ $place->close_time }} WIB</span>
+                                <span class="font-bold text-gray-800 text-sm">{{ $operationalStatus['hours_label'] ?? ($place->open_time . ' - ' . $place->close_time . ' WIB') }}</span>
+                            </div>
+                            <div class="flex items-center justify-between py-1.5 border-b border-gray-200 gap-2">
+                                <span class="text-gray-500">Jarak GPS Real-Time:</span>
+                                <span id="detail-gps-distance" class="font-bold text-right text-emerald-700">Mendeteksi lokasi Anda...</span>
                             </div>
                             <div class="flex items-center justify-between py-1.5 border-b border-gray-200">
                                 <span class="text-gray-500">Hari Beroperasi:</span>
@@ -377,8 +421,25 @@
 
     </div>
 
-    <!-- Web Share API Script & Toast Notification -->
+    @php
+        $showRealtimeConfig = [
+            'storeId' => (int) $place->id,
+            'storeName' => $place->name,
+            'lat' => $place->latitude !== null ? (float) $place->latitude : null,
+            'lng' => $place->longitude !== null ? (float) $place->longitude : null,
+            'openTime' => (string) ($operationalStatus['open_time'] ?? ($place->open_time ?: '08:00')),
+            'closeTime' => (string) ($operationalStatus['close_time'] ?? ($place->close_time ?: '21:00')),
+            'operatingDays' => (string) ($operationalStatus['operating_days'] ?? ($place->operating_days ?: 'Senin - Sabtu')),
+            'isActive' => (bool) ($place->is_active ?? true),
+            'isManualOpen' => (bool) ($place->is_open ?? true),
+            'businessStatus' => strtoupper((string) ($place->business_status ?? '')),
+        ];
+    @endphp
+
+    <!-- Web Share API Script, Toast, Real-Time Auto-GPS & 30s WIB Ticker -->
     <script>
+        window.usuShowRealtimeConfig = @json($showRealtimeConfig);
+
         function sharePlace(title, text, url) {
             if (navigator.share) {
                 navigator.share({
@@ -389,7 +450,6 @@
                     console.log('Error sharing:', err);
                 });
             } else {
-                // Fallback: Copy to clipboard
                 navigator.clipboard.writeText(url).then(() => {
                     showToast('Tautan telah disalin ke clipboard!');
                 }).catch(() => {
@@ -399,7 +459,7 @@
         }
 
         function showToast(message) {
-            let toast = document.createElement('div');
+            const toast = document.createElement('div');
             toast.className = 'fixed bottom-5 right-5 bg-gray-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-lg z-50 transition-opacity duration-300 flex items-center gap-2';
             toast.innerHTML = '<i class="fa-solid fa-check text-green-400"></i><span>' + message + '</span>';
             document.body.appendChild(toast);
@@ -408,5 +468,292 @@
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
+
+        (function initShowRealtimeGpsAndWib() {
+            const cfg = window.usuShowRealtimeConfig || {};
+            const GPS_TTL_MS = 5 * 60 * 1000;
+            const DAY_NAMES = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const WEEKDAY_MAP = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+
+            let currentGps = null;
+            let watchId = null;
+
+            function haversineMeters(lat1, lng1, lat2, lng2) {
+                const R = 6371000;
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLng = (lng2 - lng1) * Math.PI / 180;
+                const a = Math.sin(dLat / 2) ** 2 +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            }
+
+            function formatDistance(meters) {
+                if (!Number.isFinite(meters)) return 'Tidak tersedia';
+                if (meters < 1000) return Math.max(1, Math.round(meters)) + ' m';
+                return (meters / 1000).toFixed(2) + ' km';
+            }
+
+            function readCachedGps() {
+                try {
+                    const raw = sessionStorage.getItem('usu_last_gps_fix') || sessionStorage.getItem('usu_last_gps');
+                    if (!raw) return null;
+                    const parsed = JSON.parse(raw);
+                    const lat = Number(parsed?.lat);
+                    const lng = Number(parsed?.lng);
+                    const ts = Number(parsed?.timestamp || 0);
+                    if (!Number.isFinite(lat) || !Number.isFinite(lng) || (Date.now() - ts) >= GPS_TTL_MS) return null;
+                    return { lat, lng, accuracy: Number(parsed?.accuracy || 35), timestamp: ts };
+                } catch (e) {
+                    return null;
+                }
+            }
+
+            function writeCachedGps(fix) {
+                try {
+                    const payload = JSON.stringify({
+                        lat: fix.lat,
+                        lng: fix.lng,
+                        accuracy: fix.accuracy,
+                        timestamp: fix.timestamp || Date.now()
+                    });
+                    sessionStorage.setItem('usu_last_gps_fix', payload);
+                    sessionStorage.setItem('usu_last_gps', payload);
+                } catch (e) {}
+            }
+
+            function renderGpsDistance(fix) {
+                if (!fix) return;
+                currentGps = fix;
+                const storeLat = Number(cfg.lat);
+                const storeLng = Number(cfg.lng);
+                const heroBadge = document.getElementById('store-live-gps-badge');
+                const detailDist = document.getElementById('detail-gps-distance');
+                const deniedBanner = document.getElementById('show-gps-denied-banner');
+                if (deniedBanner) deniedBanner.classList.add('hidden');
+
+                if (!Number.isFinite(storeLat) || !Number.isFinite(storeLng)) {
+                    if (heroBadge) heroBadge.innerHTML = '<i class="fa-solid fa-location-dot text-emerald-300"></i><span>GPS aktif</span>';
+                    if (detailDist) detailDist.textContent = 'Koordinat toko belum diatur';
+                    return;
+                }
+
+                const meters = haversineMeters(fix.lat, fix.lng, storeLat, storeLng);
+                const distLabel = formatDistance(meters);
+                const walkMins = Math.max(1, Math.round(meters / 75));
+                if (heroBadge) {
+                    heroBadge.innerHTML = '<i class="fa-solid fa-person-walking text-emerald-300"></i><span>' + distLabel + ' (~' + walkMins + ' mnt jalan kaki dari GPS Anda)</span>';
+                }
+                if (detailDist) {
+                    detailDist.textContent = distLabel + ' (~' + walkMins + ' menit jalan kaki dari posisi Anda)';
+                    detailDist.className = 'font-bold text-right text-[#10A760]';
+                }
+            }
+
+            function showGpsErrorState(err) {
+                if (currentGps) return;
+                const code = Number(err?.code || 0);
+                const msg = code === 1
+                    ? 'Izin GPS ditolak oleh browser. Aktifkan izin lokasi untuk melihat jarak real-time.'
+                    : 'Sinyal GPS perangkat belum merespons. Coba aktifkan ulang lokasi Anda.';
+                const heroBadge = document.getElementById('store-live-gps-badge');
+                const detailDist = document.getElementById('detail-gps-distance');
+                const deniedBanner = document.getElementById('show-gps-denied-banner');
+                const deniedText = document.getElementById('show-gps-denied-text');
+                if (heroBadge) {
+                    heroBadge.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-amber-300"></i><span>GPS belum aktif</span>';
+                }
+                if (detailDist) {
+                    detailDist.textContent = 'GPS belum aktif';
+                    detailDist.className = 'font-bold text-right text-amber-600';
+                }
+                if (deniedText) deniedText.textContent = msg;
+                if (deniedBanner) deniedBanner.classList.remove('hidden');
+            }
+
+            function handlePositionSuccess(pos) {
+                const lat = Number(pos?.coords?.latitude);
+                const lng = Number(pos?.coords?.longitude);
+                const acc = Number(pos?.coords?.accuracy || 35);
+                if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+                if (currentGps && (Date.now() - (currentGps.timestamp || 0)) >= 2000) {
+                    const delta = haversineMeters(currentGps.lat, currentGps.lng, lat, lng);
+                    if (delta < 15 && acc >= (currentGps.accuracy || 999)) return;
+                }
+
+                const fix = { lat, lng, accuracy: acc, timestamp: Date.now() };
+                writeCachedGps(fix);
+                renderGpsDistance(fix);
+            }
+
+            function startWatchPosition() {
+                if (!navigator.geolocation || watchId !== null) return;
+                try {
+                    watchId = navigator.geolocation.watchPosition(
+                        handlePositionSuccess,
+                        () => {},
+                        { enableHighAccuracy: false, maximumAge: 30000, timeout: 15000 }
+                    );
+                } catch (e) {}
+            }
+
+            function detectGpsTwoStage() {
+                if (!navigator.geolocation) {
+                    showGpsErrorState({ code: 2 });
+                    return;
+                }
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        handlePositionSuccess(pos);
+                        startWatchPosition();
+                    },
+                    () => {
+                        navigator.geolocation.getCurrentPosition(
+                            (pos2) => {
+                                handlePositionSuccess(pos2);
+                                startWatchPosition();
+                            },
+                            (err2) => {
+                                showGpsErrorState(err2);
+                            },
+                            { enableHighAccuracy: false, timeout: 8000, maximumAge: 180000 }
+                        );
+                    },
+                    { enableHighAccuracy: true, timeout: 6000, maximumAge: 60000 }
+                );
+            }
+
+            function getWibNow() {
+                const parts = new Intl.DateTimeFormat('en-GB', {
+                    timeZone: 'Asia/Jakarta',
+                    weekday: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false
+                }).formatToParts(new Date());
+                const map = {};
+                parts.forEach((p) => { map[p.type] = p.value; });
+                const hour = Number(map.hour || 0) % 24;
+                const minute = Number(map.minute || 0);
+                const dow = Object.prototype.hasOwnProperty.call(WEEKDAY_MAP, map.weekday) ? WEEKDAY_MAP[map.weekday] : new Date().getDay();
+                return {
+                    hour,
+                    minute,
+                    dow,
+                    minutesNow: (hour * 60) + minute,
+                    clock: String(hour).padStart(2, '0') + ':' + String(minute).padStart(2, '0')
+                };
+            }
+
+            function parseMinutes(hhmm, fallbackMin) {
+                const m = String(hhmm || '').replace('.', ':').match(/(\d{1,2}):(\d{2})/);
+                if (!m) return fallbackMin;
+                return (Math.min(23, Number(m[1])) * 60) + Math.min(59, Number(m[2]));
+            }
+
+            function isOperatingDay(operatingDays, dow) {
+                const lower = String(operatingDays || '').toLowerCase().trim();
+                if (!lower || lower.includes('setiap hari') || lower.includes('senin - minggu') || lower.includes('senin-minggu') || lower.includes('24 jam')) {
+                    return true;
+                }
+                if (lower.includes('senin - jumat') || lower.includes('senin-jumat')) {
+                    return dow >= 1 && dow <= 5;
+                }
+                return dow !== 0;
+            }
+
+            function nextOperatingDayLabel(operatingDays, dow) {
+                for (let offset = 1; offset <= 7; offset++) {
+                    const cand = (dow + offset) % 7;
+                    if (isOperatingDay(operatingDays, cand)) {
+                        return offset === 1 ? 'besok' : DAY_NAMES[cand];
+                    }
+                }
+                return 'Senin';
+            }
+
+            function refreshWibStatus() {
+                const wib = getWibNow();
+                const clockEl = document.getElementById('store-live-wib-clock');
+                if (clockEl) clockEl.textContent = wib.clock;
+
+                const bStatus = String(cfg.businessStatus || '').toUpperCase();
+                let isOpen = false;
+                let detailText = '';
+
+                if (bStatus === 'CLOSED_PERMANENTLY') {
+                    detailText = 'Tutup permanen';
+                } else if (bStatus === 'CLOSED_TEMPORARILY' || !cfg.isActive || !cfg.isManualOpen) {
+                    detailText = 'Tutup sementara';
+                } else {
+                    const opDays = String(cfg.operatingDays || 'Senin - Sabtu');
+                    const openTime = String(cfg.openTime || '08:00');
+                    const closeTime = String(cfg.closeTime || '21:00');
+                    const openMin = parseMinutes(openTime, 480);
+                    const closeMin = parseMinutes(closeTime, 1260);
+                    const isOpDay = isOperatingDay(opDays, wib.dow);
+
+                    if (isOpDay) {
+                        isOpen = closeMin < openMin
+                            ? (wib.minutesNow >= openMin || wib.minutesNow < closeMin)
+                            : (wib.minutesNow >= openMin && wib.minutesNow < closeMin);
+                    }
+
+                    if (isOpen) {
+                        detailText = 'Buka sampai ' + closeTime + ' WIB';
+                    } else if (!isOpDay) {
+                        detailText = 'Tutup hari ini • Buka ' + nextOperatingDayLabel(opDays, wib.dow) + ' pukul ' + openTime + ' WIB';
+                    } else if (wib.minutesNow < openMin) {
+                        detailText = 'Belum buka • Buka pukul ' + openTime + ' WIB';
+                    } else {
+                        const nextLbl = isOperatingDay(opDays, (wib.dow + 1) % 7) ? 'besok' : nextOperatingDayLabel(opDays, wib.dow);
+                        detailText = 'Sudah tutup • Buka ' + nextLbl + ' pukul ' + openTime + ' WIB';
+                    }
+                }
+
+                const heroText = isOpen
+                    ? detailText
+                    : (detailText.startsWith('Tutup') ? detailText : 'Tutup • ' + detailText);
+
+                const badge = document.getElementById('hero-status-badge');
+                const dot = document.getElementById('hero-status-dot');
+                const textEl = document.getElementById('hero-status-text');
+                const detailEl = document.getElementById('detail-status-text');
+
+                if (badge) {
+                    badge.setAttribute('data-open-status', isOpen ? 'open' : 'closed');
+                    badge.className = (isOpen ? 'bg-[#10A760]' : 'bg-[#DC2626]') + ' text-white text-[11px] sm:text-xs font-bold px-3 py-1 rounded-full shadow-md flex items-center gap-1.5';
+                }
+                if (dot) {
+                    dot.className = 'w-2 h-2 ' + (isOpen ? 'bg-white animate-pulse' : 'bg-red-200') + ' rounded-full';
+                }
+                if (textEl) textEl.textContent = heroText;
+                if (detailEl) {
+                    detailEl.textContent = heroText;
+                    detailEl.className = 'font-bold text-right ' + (isOpen ? 'text-[#10A760]' : 'text-[#DC2626]');
+                }
+            }
+
+            window.retryShowGps = function () {
+                const heroBadge = document.getElementById('store-live-gps-badge');
+                if (heroBadge) {
+                    heroBadge.innerHTML = '<i class="fa-solid fa-location-crosshairs text-emerald-300 animate-spin"></i><span>Mengambil lokasi GPS...</span>';
+                }
+                detectGpsTwoStage();
+            };
+
+            const cached = readCachedGps();
+            if (cached) {
+                renderGpsDistance(cached);
+            }
+            refreshWibStatus();
+            detectGpsTwoStage();
+            setInterval(refreshWibStatus, 30000);
+            window.addEventListener('beforeunload', () => {
+                if (watchId !== null && navigator.geolocation) {
+                    try { navigator.geolocation.clearWatch(watchId); } catch (e) {}
+                }
+            });
+        })();
     </script>
 </x-layouts.app>

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Services\OperationalStatusService;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -136,96 +137,12 @@ class PhotocopyPlace extends Model
     }
 
     /**
-     * Calculate whether the shop is open right now based on Google Places JSON opening_hours or fallback.
+     * Calculate whether the shop is open right now via OperationalStatusService (WIB).
      */
     public function getIsOpenNowAttribute(): bool
     {
-        if (!$this->is_active) {
-            return false;
-        }
-
-        if (in_array(strtoupper((string)$this->business_status), ['CLOSED_TEMPORARILY', 'CLOSED_PERMANENTLY'])) {
-            return false;
-        }
-
-        $now = Carbon::now('Asia/Jakarta');
-
-        // 1. Try parsing SerpApi operating_hours structure (day keys e.g. 'senin', 'selasa', etc.)
-        if (!empty($this->opening_hours) && is_array($this->opening_hours) && !isset($this->opening_hours['periods'])) {
-            $todayStr = $this->getDayScheduleFromSerpApi($this->opening_hours, $now->dayOfWeek);
-            $parsed = $this->parseTimeString($todayStr);
-            if ($parsed) {
-                if (!empty($parsed['is_24h'])) {
-                    return true;
-                }
-                if (!empty($parsed['is_closed'])) {
-                    return false;
-                }
-                if (isset($parsed['open_hour']) && isset($parsed['close_hour'])) {
-                    $currentTimeStr = $now->format('Hi');
-                    if ($parsed['close_hour'] < $parsed['open_hour']) {
-                        return ($currentTimeStr >= $parsed['open_hour'] || $currentTimeStr <= $parsed['close_hour']);
-                    }
-                    return ($currentTimeStr >= $parsed['open_hour'] && $currentTimeStr <= $parsed['close_hour']);
-                }
-            }
-        }
-
-        // 2. Try parsing Google Places regularOpeningHours JSON structure
-        if (!empty($this->opening_hours['periods']) && is_array($this->opening_hours['periods'])) {
-            $periods = $this->opening_hours['periods'];
-
-            // If Google says open 24/7 (1 period with day 0 and open hour 0, no close)
-            if (count($periods) === 1 && isset($periods[0]['open']) && !isset($periods[0]['close'])) {
-                return true;
-            }
-
-            $currentDay = $now->dayOfWeek; // 0 = Sunday, 1 = Monday, ... 6 = Saturday
-            $currentTimeStr = $now->format('Hi'); // e.g. "0930"
-
-            foreach ($periods as $period) {
-                $openDay = $period['open']['day'] ?? null;
-                $openHour = sprintf('%02d%02d', $period['open']['hour'] ?? 0, $period['open']['minute'] ?? 0);
-
-                if ($openDay === $currentDay) {
-                    if (!isset($period['close'])) {
-                        return true; // open 24 hours on this day
-                    }
-
-                    $closeHour = sprintf('%02d%02d', $period['close']['hour'] ?? 23, $period['close']['minute'] ?? 59);
-
-                    // If close time passes midnight
-                    if ($closeHour < $openHour) {
-                        if ($currentTimeStr >= $openHour || $currentTimeStr <= $closeHour) {
-                            return true;
-                        }
-                    } else {
-                        if ($currentTimeStr >= $openHour && $currentTimeStr <= $closeHour) {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        // 2. Fallback to classic columns (open_time, close_time, operating_days)
-        $currentTime = $now->format('H:i');
-        $dayOfWeek = $now->isoFormat('dddd'); // e.g. Senin, Selasa, Minggu
-
-        $days = strtolower((string)$this->operating_days);
-        if (str_contains($days, 'senin - jumat') && in_array($dayOfWeek, ['Sabtu', 'Minggu'])) {
-            return false;
-        }
-        if (str_contains($days, 'senin - sabtu') && $dayOfWeek === 'Minggu') {
-            return false;
-        }
-
-        $open = $this->open_time ?: '08:00';
-        $close = $this->close_time ?: '21:00';
-
-        return $currentTime >= $open && $currentTime <= $close;
+        $status = app(OperationalStatusService::class)->evaluatePhotocopyStatus($this);
+        return (bool) ($status['is_open_now'] ?? false);
     }
 
     /**
@@ -237,78 +154,14 @@ class PhotocopyPlace extends Model
     }
 
     /**
-     * Generate human-readable Google Maps styled schedule status (e.g. "Buka ⋅ Tutup pukul 21.00").
+     * Generate human-readable schedule status via OperationalStatusService (WIB).
      */
     public function getCurrentScheduleStatusAttribute(): string
     {
-        if (strtoupper((string)$this->business_status) === 'CLOSED_TEMPORARILY') {
-            return 'Tutup sementara';
-        }
-        if (strtoupper((string)$this->business_status) === 'CLOSED_PERMANENTLY') {
-            return 'Tutup permanen';
-        }
-
-        $isOpen = $this->getIsOpenNowAttribute();
-        $now = Carbon::now('Asia/Jakarta');
-
-        // Check SerpApi operating_hours format (e.g. ['senin' => '07.30–23.00', ...])
-        if (!empty($this->opening_hours) && is_array($this->opening_hours) && !isset($this->opening_hours['periods'])) {
-            $todayStr = $this->getDayScheduleFromSerpApi($this->opening_hours, $now->dayOfWeek);
-            $parsed = $this->parseTimeString($todayStr);
-            if ($parsed) {
-                if (!empty($parsed['is_24h'])) {
-                    return 'Buka 24 Jam';
-                }
-                if (!empty($parsed['is_closed'])) {
-                    $tomorrowDay = ($now->dayOfWeek + 1) % 7;
-                    $tomParsed = $this->parseTimeString($this->getDayScheduleFromSerpApi($this->opening_hours, $tomorrowDay));
-                    if ($tomParsed && isset($tomParsed['open_formatted'])) {
-                        return "Tutup ⋅ Buka besok pukul {$tomParsed['open_formatted']}";
-                    }
-                    return 'Tutup';
-                }
-                if (isset($parsed['open_hour']) && isset($parsed['close_hour'])) {
-                    $currentTimeStr = $now->format('Hi');
-                    if ($isOpen) {
-                        return "Buka ⋅ Tutup pukul {$parsed['close_formatted']}";
-                    } elseif ($currentTimeStr < $parsed['open_hour']) {
-                        return "Tutup ⋅ Buka pukul {$parsed['open_formatted']}";
-                    } else {
-                        $tomorrowDay = ($now->dayOfWeek + 1) % 7;
-                        $tomParsed = $this->parseTimeString($this->getDayScheduleFromSerpApi($this->opening_hours, $tomorrowDay));
-                        if ($tomParsed && isset($tomParsed['open_formatted'])) {
-                            return "Tutup ⋅ Buka besok pukul {$tomParsed['open_formatted']}";
-                        }
-                        return 'Tutup';
-                    }
-                }
-            }
-        }
-
-        // Check if periods provide exact close time (Google Places format)
-        if (!empty($this->opening_hours['periods']) && is_array($this->opening_hours['periods'])) {
-            $currentDay = $now->dayOfWeek;
-            foreach ($this->opening_hours['periods'] as $p) {
-                if (($p['open']['day'] ?? null) === $currentDay) {
-                    if (!isset($p['close'])) {
-                        return 'Buka 24 Jam';
-                    }
-                    $closeTimeFormatted = sprintf('%02d.%02d', $p['close']['hour'] ?? 21, $p['close']['minute'] ?? 0);
-                    $openTimeFormatted = sprintf('%02d.%02d', $p['open']['hour'] ?? 8, $p['open']['minute'] ?? 0);
-
-                    return $isOpen 
-                        ? "Buka ⋅ Tutup pukul {$closeTimeFormatted}" 
-                        : "Tutup ⋅ Buka pukul {$openTimeFormatted}";
-                }
-            }
-        }
-
-        $closeTimeFormatted = str_replace(':', '.', substr((string)($this->close_time ?: '21:00'), 0, 5));
-        $openTimeFormatted = str_replace(':', '.', substr((string)($this->open_time ?: '08:00'), 0, 5));
-
-        return $isOpen
-            ? "Buka ⋅ Tutup pukul {$closeTimeFormatted}"
-            : "Tutup ⋅ Buka pukul {$openTimeFormatted}";
+        $status = app(OperationalStatusService::class)->evaluatePhotocopyStatus($this);
+        return ($status['is_open_now'] ?? false)
+            ? "Buka ⋅ {$status['detail_text']}"
+            : "Tutup ⋅ {$status['detail_text']}";
     }
 
     /**

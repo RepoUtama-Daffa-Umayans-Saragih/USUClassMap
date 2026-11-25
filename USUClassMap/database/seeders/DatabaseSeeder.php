@@ -21,6 +21,12 @@ class DatabaseSeeder extends Seeder
 
             if (is_file(database_path('seeders/snapshots/manifest.json'))) {
                 app(GitSnapshotSyncService::class)->importAll(true);
+                $this->call([
+                    FacultyMediaAndDoorsSeeder::class,
+                    UsuPressFotocopySeeder::class,
+                    RichFotocopyCatalogExpansionSeeder::class,
+                    RichFotocopyOrdersDummySeeder::class,
+                ]);
 
                 return;
             }
@@ -32,8 +38,13 @@ class DatabaseSeeder extends Seeder
                 CourseSeeder::class,
                 ScheduleSeeder::class,
                 FibDummySeeder::class,
+                FacultyMediaAndDoorsSeeder::class,
                 FotocopySeeder::class,
                 PhotocopySeeder::class,
+                TrialAdminFotocopySeeder::class,
+                UsuPressFotocopySeeder::class,
+                RichFotocopyCatalogExpansionSeeder::class,
+                RichFotocopyOrdersDummySeeder::class,
                 MkwuFasilkomSeeder::class,
                 MkwuCsvSeeder::class,
             ]);

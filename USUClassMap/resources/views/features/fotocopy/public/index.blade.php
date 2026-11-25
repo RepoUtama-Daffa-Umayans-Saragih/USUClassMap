@@ -1,7 +1,6 @@
 <x-layouts.app>
     <x-slot name="title">Layanan Fotocopy & Percetakan Kampus</x-slot>
 
-    <!-- Custom Style for horizontal scrolling and card effects -->
     <style>
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -12,8 +11,7 @@
             0%, 100% { box-shadow: 0 0 0 0 rgba(16,167,96,0.4); }
             50% { box-shadow: 0 0 0 6px rgba(16,167,96,0); }
         }
-        .scroll-snap { scroll-snap-type: x mandatory; }
-        .snap-card { scroll-snap-align: start; }
+        [x-cloak] { display: none !important; }
     </style>
 
     <!-- Hero Section -->
@@ -23,7 +21,7 @@
         </div>
         <div class="absolute -top-10 -right-10 w-72 h-72 bg-[#D4A017] rounded-full opacity-15 blur-3xl pointer-events-none"></div>
 
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-14">
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-7 sm:py-9 md:py-10">
             <div class="text-center">
                 <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3.5 py-1 rounded-full mb-3 shadow-xs">
                     <i class="fa-solid fa-print text-[#D4A017] text-xs"></i>
@@ -32,217 +30,278 @@
                 <h1 class="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight mb-2">
                     Layanan Fotocopy & Percetakan <span class="text-[#D4A017]">Kampus USU</span>
                 </h1>
-                <p class="text-white/80 text-xs sm:text-sm max-w-2xl mx-auto mb-6 px-2">
+                <p class="text-white/80 text-xs sm:text-sm max-w-2xl mx-auto px-2">
                     Temukan tempat fotocopy terdekat dari ruang kelasmu, bandingkan harga cetak, pesan langsung via online, atau hubungi pemilik toko dengan pesan otomatis.
                 </p>
-
-                <!-- Search Form -->
-                <form action="{{ route('fotocopy.index') }}" method="GET" class="max-w-2xl mx-auto px-1 sm:px-0">
-                    <div class="relative flex items-center bg-white rounded-2xl shadow-xl shadow-black/10 overflow-hidden p-1 sm:p-1.5">
-                        <div class="pl-3.5 pr-2 text-gray-400">
-                            <i class="fa-solid fa-magnifying-glass text-sm"></i>
-                        </div>
-                        <input
-                            type="text"
-                            name="q"
-                            value="{{ $search }}"
-                            placeholder="Cari fotocopy, fakultas terdekat, jilid skripsi..."
-                            class="flex-1 py-2 sm:py-2.5 px-2 text-xs sm:text-sm text-gray-800 placeholder-gray-400 border-0 focus:ring-0 focus:outline-hidden"
-                        />
-                        @if($search)
-                            <a href="{{ route('fotocopy.index') }}" class="px-2 text-xs text-gray-400 hover:text-gray-600">
-                                <i class="fa-solid fa-xmark"></i>
-                            </a>
-                        @endif
-                        <button type="submit" class="bg-[#10A760] hover:bg-[#0D8A4E] text-white px-4 sm:px-6 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all shadow-xs flex items-center gap-1.5">
-                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
-                            <span class="hidden sm:inline">Cari</span>
-                        </button>
-                    </div>
-
-                    <!-- Quick filters -->
-                    <div class="flex flex-wrap justify-center gap-1.5 sm:gap-2 mt-3 text-xs">
-                        <a href="{{ route('fotocopy.index', ['status' => 'open']) }}" class="px-3 py-1 rounded-full {{ request('status') === 'open' ? 'bg-[#D4A017] text-white font-bold' : 'bg-white/20 text-white hover:bg-white/30' }} transition-colors flex items-center gap-1.5">
-                            <i class="fa-solid fa-circle text-[9px] text-[#10A760]"></i>
-                            <span>Buka Sekarang</span>
-                        </a>
-                        <a href="{{ route('fotocopy.index', ['q' => 'Teknik']) }}" class="bg-white/15 text-white hover:bg-white/25 px-3 py-1 rounded-full transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-location-dot text-[10px] text-amber-300"></i>
-                            <span>Dekat FT</span>
-                        </a>
-                        <a href="{{ route('fotocopy.index', ['q' => 'FISIP']) }}" class="bg-white/15 text-white hover:bg-white/25 px-3 py-1 rounded-full transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-location-dot text-[10px] text-amber-300"></i>
-                            <span>Dekat FISIP</span>
-                        </a>
-                        <a href="{{ route('fotocopy.index', ['q' => 'Kedokteran']) }}" class="bg-white/15 text-white hover:bg-white/25 px-3 py-1 rounded-full transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-location-dot text-[10px] text-amber-300"></i>
-                            <span>Dekat FK</span>
-                        </a>
-                        <a href="{{ route('fotocopy.index', ['q' => 'Perpustakaan']) }}" class="bg-white/15 text-white hover:bg-white/25 px-3 py-1 rounded-full transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-location-dot text-[10px] text-amber-300"></i>
-                            <span>Dekat Perpus</span>
-                        </a>
-                        <a href="{{ route('fotocopy.index', ['q' => 'Skripsi']) }}" class="bg-white/15 text-white hover:bg-white/25 px-3 py-1 rounded-full transition-colors flex items-center gap-1">
-                            <i class="fa-solid fa-graduation-cap text-[10px] text-amber-300"></i>
-                            <span>Jilid Skripsi</span>
-                        </a>
-                    </div>
-                </form>
             </div>
         </div>
     </div>
 
-    <!-- Status Bar -->
-    <div class="bg-white border-b border-gray-100 shadow-xs">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm">
-                <div class="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-between sm:justify-start">
-                    <div class="flex items-center gap-2">
-                        <div class="w-2.5 h-2.5 bg-[#10A760] rounded-full status-pulse"></div>
-                        <span class="font-medium text-gray-700">
-                            <span class="text-[#10A760] font-bold">{{ $openCount }}</span> tempat buka sekarang
+    <div id="fotocopy-unified-root" x-data="fotocopyUnifiedSearch()">
+        <!-- Status Bar -->
+        <div class="bg-white border-b border-gray-100 shadow-xs">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm">
+                    <div class="flex flex-wrap items-center gap-3 sm:gap-4 w-full sm:w-auto justify-between sm:justify-start">
+                        <div class="flex items-center gap-2">
+                            <div class="w-2.5 h-2.5 bg-[#10A760] rounded-full status-pulse"></div>
+                            <span class="font-medium text-gray-700">
+                                <span id="live-open-count" class="text-[#10A760] font-bold" x-text="campusOpenCount">{{ $openCount }}</span> tempat buka sekarang
+                            </span>
+                        </div>
+                        <span class="text-gray-300 hidden sm:inline">|</span>
+                        <span class="text-gray-500 font-medium">
+                            Total: {{ $totalActiveCount ?? $totalCount }} Mitra Fotocopy USU
+                            <span
+                                id="live-filter-count"
+                                x-show="isFilterActive"
+                                x-text="'(' + activeFilterCountLabel() + ' hasil filter)'"
+                                class="text-xs text-[#10A760] font-semibold {{ ($search || $filter === 'open' || $initialMaxPrice) ? '' : 'hidden' }}"
+                            >({{ $totalCount }} hasil filter)</span>
+                        </span>
+                        <span class="text-gray-300 hidden sm:inline">|</span>
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-700 text-xs font-semibold">
+                            <i class="fa-regular fa-clock text-[#10A760]"></i>
+                            <span>WIB <span id="live-wib-clock" class="font-mono font-bold text-gray-900">{{ $wibClock ?? now('Asia/Jakarta')->format('H:i') }}</span></span>
                         </span>
                     </div>
-                    <span class="text-gray-300">|</span>
-                    <span class="text-gray-500 font-medium">Total: {{ $totalCount }} Mitra Fotocopy USU</span>
-                </div>
 
-                <div class="flex items-center gap-2 self-end sm:self-center">
-                    <a href="{{ route('fotocopy.index') }}" class="px-3 py-1 rounded-lg text-xs font-semibold {{ !request('status') ? 'bg-[#10A760] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
-                        Semua
-                    </a>
-                    <a href="{{ route('fotocopy.index', ['status' => 'open']) }}" class="px-3 py-1 rounded-lg text-xs font-semibold {{ request('status') === 'open' ? 'bg-[#10A760] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
-                        Buka Saja
-                    </a>
+                    <div class="flex items-center gap-2 self-end sm:self-center">
+                        <a
+                            href="{{ route('fotocopy.index') }}"
+                            @click.prevent="setStatusFilter(false)"
+                            :class="!openNow ? 'bg-[#10A760] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+                            class="px-3 py-1 rounded-lg text-xs font-semibold transition-colors {{ !request('status') ? 'bg-[#10A760] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}"
+                        >
+                            Semua
+                        </a>
+                        <a
+                            href="{{ route('fotocopy.index', ['status' => 'open']) }}"
+                            @click.prevent="setStatusFilter(true)"
+                            :class="openNow ? 'bg-[#10A760] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'"
+                            class="px-3 py-1 rounded-lg text-xs font-semibold transition-colors {{ request('status') === 'open' ? 'bg-[#10A760] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}"
+                        >
+                            Buka Saja
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Main Container -->
-    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 sm:space-y-10">
-
-        <!-- SECTION 0: Smart Product & Service Search (Cross 32 Stores & 2,689 Catalog Items) -->
-        <section
-            id="smart-fotocopy-section"
-            x-data="usuFotocopySmartSearch()"
-            class="bg-white rounded-3xl border border-emerald-200/80 shadow-sm p-4 sm:p-6 space-y-4"
-        >
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                <div>
-                    <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[#0D8A4E] text-[11px] font-bold mb-1">
-                        <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
-                        <span>Smart Search Lintas 32 Toko & 2.600+ Katalog ATK</span>
-                    </div>
-                    <h2 class="text-base sm:text-xl font-extrabold text-gray-900">Cari Produk ATK, Print, Jilid & Harga Terbaik</h2>
-                    <p class="text-xs text-gray-500">Ketik natural seperti <em>"cari pulpen pink murah terdekat"</em>, <em>"print warna di bawah 1000"</em>, atau <em>"jilid hardcover dekat FIB"</em>.</p>
-                </div>
-                <div class="flex items-center gap-2 shrink-0">
-                    <button
-                        type="button"
-                        @click="detectGps()"
-                        :disabled="gpsLoading"
-                        class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border text-xs font-bold transition-all cursor-pointer"
-                        :class="userLat !== null ? 'bg-emerald-50 border-[#10A760] text-[#0D8A4E]' : 'bg-gray-50 hover:bg-emerald-50 border-gray-300 text-gray-700 hover:border-[#10A760]'"
-                    >
-                        <i class="fa-solid fa-location-crosshairs" :class="gpsLoading ? 'animate-spin' : ''"></i>
-                        <span x-text="gpsLoading ? 'Mendeteksi GPS...' : (userLat !== null ? 'GPS Aktif (' + gpsAccuracyLabel + ')' : 'Gunakan Lokasi GPS Saya')"></span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- GPS Notice / Diagnostic -->
-            <template x-if="gpsNotice">
-                <div class="text-xs px-3 py-2 rounded-xl bg-amber-50 border border-amber-200 text-amber-800" x-text="gpsNotice"></div>
-            </template>
-
-            <!-- Smart Search Bar & Filter Controls -->
-            <form @submit.prevent="runSearch()" class="space-y-3">
-                <div class="flex flex-col sm:flex-row gap-2">
-                    <div class="relative flex-1">
-                        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
-                            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+        <!-- Single Unified Main Container -->
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8">
+            <section
+                id="smart-fotocopy-section"
+                class="bg-white rounded-3xl border border-emerald-200/80 shadow-sm p-4 sm:p-6 space-y-5"
+            >
+                <!-- Search Header & Auto-GPS -->
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                    <div>
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[#0D8A4E] text-[11px] font-bold mb-1">
+                            <i class="fa-solid fa-wand-magic-sparkles text-xs"></i>
+                            <span>Smart Search Lintas {{ $totalActiveCount ?? $totalCount }} Toko &amp; {{ number_format($totalCatalogCount ?? 2600, 0, ',', '.') }}+ Katalog ATK</span>
                         </div>
-                        <input
-                            id="smart-fotocopy-input"
-                            type="text"
-                            x-model="query"
-                            placeholder="Cari pulpen pink murah terdekat, print warna, jilid skripsi..."
-                            class="w-full pl-10 pr-9 py-2.5 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#10A760] focus:border-transparent"
-                        />
+                        <h2 class="text-base sm:text-xl font-extrabold text-gray-900">Cari Tempat Fotocopy, Produk ATK, Print & Jilid Terbaik</h2>
+                        <p class="text-xs text-gray-500">Ketik nama toko, lokasi fakultas, atau produk seperti <em>"fotocopy dekat FT"</em>, <em>"USU Press"</em>, <em>"pulpen pink murah terdekat"</em>, atau <em>"pulpen pink deket teknik"</em>.</p>
+                    </div>
+                    <div class="flex items-center gap-2 shrink-0 flex-wrap">
+                        <div
+                            id="fotocopy-gps-header-badge"
+                            class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-bold"
+                            :class="userLat !== null ? 'bg-emerald-50 border-[#10A760] text-[#0D8A4E]' : (gpsLoading ? 'bg-sky-50 border-sky-200 text-sky-800' : 'bg-amber-50 border-amber-200 text-amber-800')"
+                        >
+                            <span class="w-2 h-2 rounded-full" :class="userLat !== null ? 'bg-[#10A760] status-pulse' : (gpsLoading ? 'bg-sky-500 animate-ping' : 'bg-amber-500')"></span>
+                            <span x-text="userLat !== null ? ('Acuan jarak: Lokasi GPS Anda (' + gpsAccuracyLabel + ') • Real-Time') : (gpsLoading ? 'Mendeteksi GPS real-time...' : 'GPS belum aktif')"></span>
+                        </div>
                         <button
                             type="button"
-                            x-show="query.trim().length > 0"
-                            @click="clearSearch()"
-                            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
-                            aria-label="Hapus pencarian"
+                            id="fotocopy-refresh-gps-btn"
+                            @click="detectGps(true)"
+                            :disabled="gpsLoading"
+                            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer"
+                            :class="userLat !== null ? 'bg-white hover:bg-emerald-50 border-emerald-300 text-[#0D8A4E]' : 'bg-[#10A760] hover:bg-[#0D8A4E] border-[#10A760] text-white shadow-xs'"
                         >
-                            <i class="fa-solid fa-xmark"></i>
+                            <i class="fa-solid fa-location-crosshairs" :class="gpsLoading ? 'animate-spin' : ''"></i>
+                            <span x-text="userLat !== null ? 'Perbarui GPS Saya' : 'Gunakan Lokasi GPS Saya'">Gunakan Lokasi GPS Saya</span>
                         </button>
                     </div>
-                    <button
-                        type="submit"
-                        :disabled="isLoading"
-                        class="px-5 py-2.5 bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-all disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer shrink-0"
-                    >
-                        <i class="fa-solid fa-bolt"></i>
-                        <span x-text="isLoading ? 'Mencari...' : 'Cari Pintar'"></span>
-                    </button>
                 </div>
 
-                <!-- Sort & Filters Row -->
-                <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs">
-                    <div class="flex items-center gap-1.5">
-                        <label for="smart-sort-select" class="font-semibold text-gray-600">Urutkan:</label>
-                        <select
-                            id="smart-sort-select"
-                            x-model="sort"
-                            @change="if (query.trim() || hasSearched) runSearch()"
-                            class="px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-800 text-xs font-semibold focus:ring-[#10A760] focus:border-[#10A760]"
+                <!-- GPS Notice / Friendly Banner -->
+                <template x-if="gpsNotice">
+                    <div id="fotocopy-gps-denied-banner" class="text-xs px-3.5 py-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 flex flex-wrap items-center justify-between gap-2">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-location-dot text-amber-600"></i>
+                            <span x-text="gpsNotice"></span>
+                        </span>
+                        <button
+                            type="button"
+                            @click="detectGps(true)"
+                            class="px-3 py-1 rounded-lg bg-[#10A760] hover:bg-[#0D8A4E] text-white font-bold text-[11px] cursor-pointer shrink-0"
                         >
-                            <option value="recommended">Rekomendasi Pintar</option>
-                            <option value="cheapest">Harga Termurah</option>
-                            <option value="nearest">Jarak Terdekat</option>
-                            <option value="rating">Rating Tertinggi</option>
-                        </select>
+                            Aktifkan GPS Sekarang
+                        </button>
+                    </div>
+                </template>
+
+                <!-- Unified Search Form & Filters -->
+                <form @submit.prevent="runSearch()" class="space-y-3">
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <div class="relative flex-1">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
+                                <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                            </div>
+                            <input
+                                id="smart-fotocopy-input"
+                                type="text"
+                                x-model="query"
+                                placeholder="Cari tempat fotocopy, lokasi fakultas, pulpen pink, print warna, atau jilid..."
+                                class="w-full pl-10 pr-9 py-2.5 text-sm border border-gray-300 rounded-xl bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#10A760] focus:border-transparent"
+                            />
+                            <button
+                                type="button"
+                                x-show="query.trim().length > 0"
+                                x-cloak
+                                @click="clearSearch()"
+                                class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer"
+                                aria-label="Hapus pencarian"
+                            >
+                                <i class="fa-solid fa-xmark"></i>
+                            </button>
+                        </div>
+                        <button
+                            type="submit"
+                            :disabled="isLoading"
+                            class="px-5 py-2.5 bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-all disabled:opacity-60 flex items-center justify-center gap-2 cursor-pointer shrink-0"
+                        >
+                            <i class="fa-solid fa-bolt"></i>
+                            <span x-text="isLoading ? 'Mencari...' : 'Cari Pintar'"></span>
+                        </button>
                     </div>
 
-                    <label class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 cursor-pointer select-none font-semibold text-gray-700">
-                        <input type="checkbox" x-model="openNow" @change="if (query.trim() || hasSearched) runSearch()" class="rounded text-[#10A760] focus:ring-[#10A760]" />
-                        <span>Buka Sekarang Saja</span>
-                    </label>
+                    <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs">
+                        <div class="flex items-center gap-1.5">
+                            <label for="smart-sort-select" class="font-semibold text-gray-600">Urutkan:</label>
+                            <select
+                                id="smart-sort-select"
+                                x-model="sort"
+                                @change="runSearch()"
+                                class="px-2.5 py-1.5 rounded-lg border border-gray-300 bg-white text-gray-800 text-xs font-semibold focus:ring-[#10A760] focus:border-[#10A760]"
+                            >
+                                <option value="recommended">Rekomendasi Pintar</option>
+                                <option value="cheapest">Harga Termurah</option>
+                                <option value="nearest">Jarak Terdekat</option>
+                                <option value="rating">Rating Tertinggi</option>
+                            </select>
+                        </div>
 
-                    <div class="flex items-center gap-1.5">
-                        <label for="smart-max-price" class="font-semibold text-gray-600">Maks Rp:</label>
-                        <input
-                            id="smart-max-price"
-                            type="number"
-                            min="100"
-                            step="500"
-                            x-model="maxPrice"
-                            @change="if (query.trim() || hasSearched) runSearch()"
-                            placeholder="contoh 5000"
-                            class="w-28 px-2.5 py-1 rounded-lg border border-gray-300 text-xs focus:ring-[#10A760] focus:border-[#10A760]"
-                        />
+                        <label class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 bg-gray-50 cursor-pointer select-none font-semibold text-gray-700">
+                            <input type="checkbox" x-model="openNow" @change="runSearch()" class="rounded text-[#10A760] focus:ring-[#10A760]" />
+                            <span>Buka Sekarang Saja</span>
+                        </label>
+
+                        <div class="flex items-center gap-1.5">
+                            <label for="smart-max-price" class="font-semibold text-gray-600">Maks Rp:</label>
+                            <input
+                                id="smart-max-price"
+                                type="number"
+                                min="100"
+                                step="500"
+                                x-model="maxPrice"
+                                @change="runSearch()"
+                                @input.debounce.450ms="if (maxPrice !== '') runSearch()"
+                                placeholder="contoh 5000"
+                                class="w-28 px-2.5 py-1 rounded-lg border border-gray-300 text-xs focus:ring-[#10A760] focus:border-[#10A760]"
+                            />
+                        </div>
+                    </div>
+                </form>
+
+                <!-- Quick Prompt Chips -->
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                    <template x-for="(chip, idx) in quickChips" :key="idx">
+                        <button
+                            type="button"
+                            @click="applyChip(chip)"
+                            class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 hover:bg-[#10A760] text-[#0D8A4E] hover:text-white border border-emerald-200 transition-colors cursor-pointer"
+                            x-text="chip"
+                        ></button>
+                    </template>
+                </div>
+
+                <!-- 2.1 Smart Intent Bar + Segmented Tab Switcher -->
+                <div
+                    id="smart-intent-bar"
+                    class="bg-emerald-50/70 border border-emerald-100 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3"
+                >
+                    <div class="flex-1 min-w-0 space-y-1.5">
+                        <div class="flex items-center gap-2 text-sm font-bold text-slate-900">
+                            <span class="w-7 h-7 rounded-lg bg-[#10A760] text-white inline-flex items-center justify-center text-xs shrink-0">
+                                <i class="fa-solid" :class="modeIconClass()"></i>
+                            </span>
+                            <span id="smart-intent-headline" x-text="intentHeadline()" class="truncate sm:whitespace-normal"></span>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-1.5">
+                            <template x-for="(pill, pIdx) in intentSummary.pills || []" :key="'pill-' + pIdx">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold border"
+                                    :class="intentPillClass(pill.type)"
+                                    x-text="pill.label"
+                                ></span>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- Segmented Mode Tab Switcher -->
+                    <div
+                        id="adaptive-mode-tabs"
+                        role="tablist"
+                        class="inline-flex items-center bg-white border border-emerald-200 rounded-xl p-1 gap-1 shadow-2xs shrink-0 flex-wrap"
+                    >
+                        <template x-if="searchMode === 'mixed'">
+                            <button
+                                type="button"
+                                role="tab"
+                                data-mode-tab="mixed"
+                                :aria-selected="activeTab === 'mixed'"
+                                @click="setTab('mixed')"
+                                :class="activeTab === 'mixed' ? 'bg-[#10A760] text-white shadow-xs' : 'text-slate-600 hover:bg-emerald-50'"
+                                class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer"
+                            >
+                                <span>Terpadu</span>
+                                <span class="opacity-90" x-text="'(' + mixedGroups.length + ' Toko)'"></span>
+                            </button>
+                        </template>
+
+                        <button
+                            type="button"
+                            role="tab"
+                            data-mode-tab="store"
+                            :aria-selected="activeTab === 'store'"
+                            @click="setTab('store')"
+                            :class="activeTab === 'store' ? 'bg-[#10A760] text-white shadow-xs' : 'text-slate-600 hover:bg-emerald-50'"
+                            class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer"
+                        >
+                            <span x-text="searchMode === 'mixed' ? 'Semua Toko' : 'Tempat Fotokopi'"></span>
+                            <span class="opacity-90" x-text="'(' + stores.length + ')'"></span>
+                        </button>
+
+                        <button
+                            type="button"
+                            role="tab"
+                            data-mode-tab="product"
+                            :aria-selected="activeTab === 'product'"
+                            @click="setTab('product')"
+                            :class="activeTab === 'product' ? 'bg-[#10A760] text-white shadow-xs' : 'text-slate-600 hover:bg-emerald-50'"
+                            class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer"
+                        >
+                            <span x-text="searchMode === 'mixed' ? 'Produk' : 'Produk & Jasa'"></span>
+                            <span class="opacity-90" x-text="'(' + results.length + ')'"></span>
+                        </button>
                     </div>
                 </div>
-            </form>
 
-            <!-- Quick Prompt Chips -->
-            <div class="flex flex-wrap gap-1.5 pt-1">
-                <template x-for="(chip, idx) in quickChips" :key="idx">
-                    <button
-                        type="button"
-                        @click="applyChip(chip)"
-                        class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 hover:bg-[#10A760] text-[#0D8A4E] hover:text-white border border-emerald-200 transition-colors cursor-pointer"
-                        x-text="chip"
-                    ></button>
-                </template>
-            </div>
-
-            <!-- Smart Results Container -->
-            <div x-show="hasSearched" class="pt-3 border-t border-gray-100 space-y-4" style="display: none;">
-                <!-- Honest Relaxed-Attribute Advisory Banner -->
+                <!-- Honest Advisory Banner -->
                 <template x-if="advisoryNote">
                     <div id="smart-advisory-banner" class="p-3.5 rounded-2xl bg-amber-50 border border-amber-300 text-amber-900 text-xs sm:text-sm flex items-start gap-2.5">
                         <i class="fa-solid fa-circle-info text-amber-600 mt-0.5 shrink-0"></i>
@@ -253,588 +312,890 @@
                     </div>
                 </template>
 
-                <!-- Results Summary Header -->
-                <div class="flex flex-wrap items-center justify-between gap-2 text-xs">
-                    <div class="font-bold text-gray-700">
-                        Menampilkan <span class="text-[#10A760]" x-text="results.length"></span> rekomendasi produk/jasa terbaik
-                        <template x-if="anchorLabel">
-                            <span class="text-gray-500 font-normal" x-text="' • Acuan jarak: ' + anchorLabel"></span>
-                        </template>
+                <!-- 2.2 SINGLE ADAPTIVE RESULT STAGE (3 Distinct Card Designs) -->
+                <div id="adaptive-results-stage" class="pt-1">
+                    <!-- SSR Semantic Fallback for Non-JS Requests (Removed cleanly once Alpine initializes) -->
+                    <div data-ssr-fallback class="sr-only">
+                        @foreach($places as $place)
+                            <div data-ssr-store="{{ $place->id }}">
+                                <a href="{{ route('fotocopy.show', $place->id) }}">{{ $place->name }}</a>
+                                <span>{{ $place->location_name }}</span>
+                                <a href="{{ route('fotocopy.order', $place->id) }}">Pesan</a>
+                                <a href="{{ $place->getDirectionUrl() }}">Rute Peta</a>
+                            </div>
+                        @endforeach
                     </div>
-                    <template x-if="relaxedFallbackUsed">
-                        <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 font-bold text-[11px]">Alternatif Terdekat Tersedia</span>
-                    </template>
-                </div>
 
-                <!-- Product / Service Cards Grid -->
-                <template x-if="results.length > 0">
-                    <div id="smart-fotocopy-results" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        <template x-for="item in results" :key="item.item_id + '-' + item.store.id">
-                            <div class="bg-gray-50/70 hover:bg-white rounded-2xl border border-gray-200 hover:border-[#10A760] p-4 flex flex-col justify-between gap-3 transition-all shadow-2xs hover:shadow-md">
-                                <div class="space-y-2.5">
-                                    <div class="flex items-start gap-3">
-                                        <template x-if="item.image_url">
-                                            <img :src="item.image_url" :alt="item.name" class="w-16 h-16 rounded-xl object-cover border border-gray-200 bg-white shrink-0" />
-                                        </template>
-                                        <template x-if="!item.image_url">
-                                            <div class="w-16 h-16 rounded-xl bg-emerald-50 text-[#10A760] flex items-center justify-center shrink-0 border border-emerald-100">
-                                                <i class="fa-solid fa-print text-xl"></i>
-                                            </div>
-                                        </template>
-                                        <div class="flex-1 min-w-0">
-                                            <div class="flex items-center flex-wrap gap-1 mb-1">
-                                                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800" x-text="item.category"></span>
-                                                <span
-                                                    class="px-2 py-0.5 rounded-md text-[10px] font-bold"
-                                                    :class="item.exact_attribute_match ? 'bg-green-100 text-green-800' : 'bg-amber-100 text-amber-800'"
-                                                    x-text="item.exact_attribute_match ? 'Cocok' : 'Alternatif'"
-                                                ></span>
-                                            </div>
-                                            <h3 class="font-extrabold text-sm text-gray-900 leading-snug line-clamp-2" x-text="item.name"></h3>
+                    <!-- VIEW 1: Store Cards (Mode 'store' atau Tab 'Tempat Fotokopi') -->
+                    <div
+                        id="adaptive-store-grid"
+                        x-show="activeTab === 'store' && stores.length > 0"
+                        x-cloak
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+                    >
+                        <template x-for="store in stores" :key="'store-' + store.id">
+                            <article class="bg-white rounded-2xl border overflow-hidden card-hover shadow-xs flex flex-col justify-between" :class="store.is_open_now ? 'border-slate-200/80' : 'border-red-200/80'">
+                                <div>
+                                    <!-- Store Visual Header -->
+                                    <div class="relative h-40 w-full bg-slate-100 overflow-hidden rounded-t-2xl">
+                                        <img
+                                            :src="store.photo_url || fallbackStorePhoto(store.id)"
+                                            :alt="store.name"
+                                            x-on:error="onImgError($event, store.id)"
+                                            class="h-40 w-full object-cover"
+                                        />
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent pointer-events-none"></div>
+
+                                        <!-- Top-Left Status Badge -->
+                                        <div class="absolute top-3 left-3 z-10">
+                                            <span
+                                                class="text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 shadow-xs"
+                                                :class="store.is_open_now ? 'bg-[#10A760]' : 'bg-[#DC2626]'"
+                                            >
+                                                <span class="w-1.5 h-1.5 rounded-full bg-white" :class="store.is_open_now ? 'animate-pulse' : ''"></span>
+                                                <span x-text="store.is_open_now ? 'Buka Sekarang' : 'Tutup'"></span>
+                                            </span>
+                                        </div>
+
+                                        <!-- Top-Right Rating & Quick Distance Badge -->
+                                        <div class="absolute top-3 right-3 z-10 flex items-center gap-1.5">
+                                            <span class="bg-white/95 backdrop-blur-xs text-slate-800 text-[11px] font-bold px-2 py-0.5 rounded-full shadow-xs" x-text="'~' + store.distance_m + ' m'"></span>
+                                            <span class="bg-white/95 backdrop-blur-xs text-[#D4A017] text-[11px] font-black px-2 py-0.5 rounded-full shadow-xs inline-flex items-center gap-1">
+                                                <i class="fa-solid fa-star text-[10px]"></i>
+                                                <span x-text="Number(store.rating || 4.5).toFixed(1)"></span>
+                                            </span>
                                         </div>
                                     </div>
 
-                                    <div class="flex items-baseline justify-between gap-2 pt-1">
+                                    <!-- Store Body -->
+                                    <div class="p-4 space-y-2.5">
                                         <div>
-                                            <span class="text-base font-black text-[#10A760]" x-text="item.formatted_price"></span>
-                                            <span class="text-xs text-gray-500" x-text="'/' + item.unit"></span>
+                                            <h3 class="text-lg font-bold text-slate-900 leading-snug">
+                                                <a :href="store.detail_url" class="hover:text-[#10A760] transition-colors" x-html="highlightText(store.name)"></a>
+                                            </h3>
+                                            <p class="text-sm font-medium text-emerald-700 mt-1 flex items-center gap-1.5">
+                                                <i class="fa-solid fa-person-walking text-[#10A760] shrink-0"></i>
+                                                <span x-text="formatStoreDistanceLine(store)"></span>
+                                            </p>
                                         </div>
-                                        <span
-                                            class="px-2 py-0.5 rounded-full text-[10px] font-bold"
-                                            :class="item.store.is_open_now ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-700'"
-                                            x-text="item.store.is_open_now ? 'Buka Sekarang' : 'Tutup'"
-                                        ></span>
-                                    </div>
 
-                                    <div class="text-xs bg-white rounded-xl p-2.5 border border-gray-100 space-y-1">
-                                        <div class="font-bold text-gray-800 flex items-center justify-between gap-2">
-                                            <span class="truncate" x-text="item.store.name"></span>
-                                            <span class="text-amber-500 font-black shrink-0"><i class="fa-solid fa-star text-[10px]"></i> <span x-text="Number(item.store.rating || 4.5).toFixed(1)"></span></span>
+                                        <div class="text-xs text-slate-500 space-y-1">
+                                            <p class="flex items-start gap-1.5">
+                                                <i class="fa-solid fa-location-dot text-[#10A760] mt-0.5 shrink-0"></i>
+                                                <span class="line-clamp-1" x-text="store.address"></span>
+                                            </p>
+                                            <p class="flex items-center gap-1.5">
+                                                <i class="fa-regular fa-clock text-[#10A760] shrink-0"></i>
+                                                <span x-text="store.hours_label + ' (' + store.operating_days + ')'"></span>
+                                            </p>
                                         </div>
-                                        <div class="text-[11px] text-gray-500 flex items-center gap-1.5">
-                                            <i class="fa-solid fa-person-walking text-[#10A760]"></i>
-                                            <span x-text="'~' + item.store.distance_meters + ' m (' + item.store.walk_minutes + ' mnt jalan)'"></span>
+
+                                        <div class="pt-1 flex items-center justify-between gap-2 flex-wrap">
+                                            <div class="flex flex-wrap gap-1">
+                                                <template x-for="(tag, tIdx) in (store.service_tags || []).slice(0, 4)" :key="'tag-' + store.id + '-' + tIdx">
+                                                    <span class="bg-emerald-50 text-[#0D8A4E] border border-emerald-200/70 text-[10px] font-semibold px-2 py-0.5 rounded-md" x-text="tag"></span>
+                                                </template>
+                                            </div>
+                                            <div class="text-right shrink-0">
+                                                <span class="text-[10px] text-slate-400">Mulai </span>
+                                                <span class="text-xs font-extrabold text-[#10A760]" x-text="store.formatted_starting_price"></span>
+                                            </div>
                                         </div>
-                                        <div class="text-[10px] text-gray-400 line-clamp-1" x-text="item.ranking_reason"></div>
                                     </div>
                                 </div>
 
-                                <div class="flex items-center gap-2 pt-1">
+                                <!-- Store Card Footer (2 Proportional Buttons) -->
+                                <div class="p-4 pt-0">
+                                    <div class="flex items-center gap-2">
+                                        <a
+                                            :href="store.order_url"
+                                            class="flex-1 bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs font-bold py-2.5 px-3 rounded-xl text-center transition-colors shadow-xs inline-flex items-center justify-center gap-1.5"
+                                        >
+                                            <i class="fa-solid fa-store"></i>
+                                            <span>Buka Toko & Pesan</span>
+                                        </a>
+                                        <a
+                                            :href="store.map_route_url"
+                                            class="py-2.5 px-3.5 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 text-xs font-bold rounded-xl transition-colors inline-flex items-center justify-center gap-1.5 shrink-0"
+                                            title="Arahkan Rute di Peta Kampus"
+                                        >
+                                            <i class="fa-solid fa-route"></i>
+                                            <span>Rute Peta</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </article>
+                        </template>
+                    </div>
+
+                    <!-- VIEW 2: Product-First Cards (Mode 'product' atau Tab 'Produk & Jasa') -->
+                    <div
+                        id="adaptive-product-grid"
+                        x-show="activeTab === 'product' && results.length > 0"
+                        x-cloak
+                        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+                    >
+                        <template x-for="item in results" :key="'prod-' + item.item_id + '-' + item.store.id">
+                            <article class="bg-white rounded-2xl border border-slate-200/80 hover:border-[#10A760] p-4 flex flex-col justify-between gap-3.5 card-hover shadow-xs">
+                                <div class="space-y-3">
+                                    <!-- Product Header (Image + Badges + Highlighted Title) -->
+                                    <div class="flex items-start gap-3">
+                                        <img
+                                            :src="item.image_url || fallbackStorePhoto(item.store.id)"
+                                            :alt="item.name"
+                                            x-on:error="onImgError($event, item.store.id)"
+                                            class="w-20 h-20 rounded-xl object-cover border border-slate-200 bg-white shrink-0"
+                                        />
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center flex-wrap gap-1.5 mb-1.5">
+                                                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800" x-text="item.category"></span>
+                                                <template x-if="item.highlight_badge">
+                                                    <span
+                                                        class="px-2 py-0.5 rounded-md text-[10px] font-bold"
+                                                        :class="productBadgeClass(item.highlight_badge)"
+                                                        x-text="item.highlight_badge"
+                                                    ></span>
+                                                </template>
+                                            </div>
+                                            <h3 class="font-bold text-base text-slate-900 leading-snug line-clamp-2" x-html="highlightText(item.name)"></h3>
+                                        </div>
+                                    </div>
+
+                                    <!-- Prominent Price Row -->
+                                    <div class="flex items-baseline gap-1.5 pt-0.5">
+                                        <span class="text-2xl font-extrabold text-emerald-700" x-text="item.formatted_price"></span>
+                                        <span class="text-xs font-medium text-slate-500" x-text="'/' + item.unit"></span>
+                                    </div>
+
+                                    <!-- Compact Seller Strip -->
+                                    <div class="bg-slate-50 rounded-xl p-2.5 border border-slate-100 space-y-1 text-xs">
+                                        <div class="font-bold text-slate-800 flex items-center justify-between gap-2">
+                                            <a :href="item.actions.detail_url" class="truncate hover:text-[#10A760] transition-colors" x-text="item.store.name"></a>
+                                            <span class="text-amber-500 font-black shrink-0 inline-flex items-center gap-1">
+                                                <i class="fa-solid fa-star text-[10px]"></i>
+                                                <span x-text="Number(item.store.rating || 4.5).toFixed(1)"></span>
+                                            </span>
+                                        </div>
+                                        <div class="flex items-center justify-between gap-2 text-[11px]">
+                                            <span
+                                                class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0"
+                                                :class="item.store.is_open_now ? 'bg-emerald-100 text-emerald-800' : 'bg-[#DC2626] text-white'"
+                                                x-text="item.store.is_open_now ? 'Buka' : 'Tutup'"
+                                            ></span>
+                                            <span class="font-semibold text-emerald-700 truncate flex items-center gap-1">
+                                                <i class="fa-solid fa-person-walking text-[#10A760]"></i>
+                                                <span x-text="formatCompactDistance(item.store.distance_meters, item.store.walk_minutes)"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Product Card Footer -->
+                                <div class="flex items-center gap-2">
                                     <a
                                         :href="item.actions.order_url"
-                                        class="flex-1 py-2 px-3 bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs font-bold rounded-xl text-center transition-colors flex items-center justify-center gap-1.5"
+                                        class="flex-1 py-2.5 px-3 bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs font-bold rounded-xl text-center transition-colors inline-flex items-center justify-center gap-1.5 shadow-xs"
                                     >
                                         <i class="fa-solid fa-cart-shopping"></i>
                                         <span>Pesan di Toko Ini</span>
                                     </a>
                                     <a
                                         :href="item.actions.route_url"
-                                        class="py-2 px-3 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 text-xs font-bold rounded-xl text-center transition-colors flex items-center justify-center gap-1"
-                                        title="Arahkan Rute In-App di Peta"
+                                        class="py-2.5 px-3.5 bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 text-xs font-bold rounded-xl text-center transition-colors inline-flex items-center justify-center gap-1.5 shrink-0"
+                                        title="Arahkan Rute di Peta Kampus"
                                     >
                                         <i class="fa-solid fa-route"></i>
-                                        <span>Rute di Peta</span>
+                                        <span>Rute Peta</span>
                                     </a>
                                 </div>
-                            </div>
+                            </article>
                         </template>
                     </div>
-                </template>
 
-                <template x-if="!isLoading && results.length === 0">
-                    <div class="p-6 rounded-2xl bg-gray-50 border border-dashed border-gray-300 text-center text-xs text-gray-600">
-                        Belum ditemukan produk/jasa yang cocok dengan kriteria Anda. Coba hapus filter harga maksimal atau gunakan kata kunci lain.
-                    </div>
-                </template>
-            </div>
-        </section>
-
-        <!-- SECTION 1: Tempat Fotocopy Buka (Card Kesamping / Horizontal Scrolling) -->
-        @if($openPlaces->isNotEmpty())
-        <div>
-            <div class="flex items-center justify-between mb-4">
-                <div>
-                    <h2 class="text-base sm:text-xl font-bold text-gray-900 flex items-center gap-2">
-                        <span class="w-1.5 h-5 sm:h-6 bg-[#10A760] rounded-full"></span>
-                        Tempat Fotocopy Buka Sekarang
-                    </h2>
-                    <p class="text-xs sm:text-sm text-gray-500 ml-3.5">Geser ke samping untuk melihat tempat yang aktif saat ini</p>
-                </div>
-                <div class="hidden sm:flex gap-2">
-                    <button onclick="document.getElementById('openScrollContainer').scrollBy({ left: -320, behavior: 'smooth' })" class="w-8 h-8 rounded-full bg-white border border-gray-200 flex items-center justify-center hover:bg-gray-100 transition shadow-xs text-gray-600" title="Geser ke Kiri">
-                        <i class="fa-solid fa-chevron-left text-xs"></i>
-                    </button>
-                    <button onclick="document.getElementById('openScrollContainer').scrollBy({ left: 320, behavior: 'smooth' })" class="w-8 h-8 rounded-full bg-[#10A760] text-white flex items-center justify-center hover:bg-[#0D8A4E] transition shadow-xs" title="Geser ke Kanan">
-                        <i class="fa-solid fa-chevron-right text-xs"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Sideways Scrollable Cards -->
-            <div id="openScrollContainer" class="flex gap-4 overflow-x-auto hide-scrollbar scroll-snap pb-3 -mx-3 px-3 sm:mx-0 sm:px-0">
-                @foreach($openPlaces as $place)
-                <div class="min-w-[85vw] max-w-[85vw] sm:min-w-[320px] sm:max-w-[320px] bg-white rounded-2xl border border-gray-100 overflow-hidden card-hover snap-card shadow-xs flex flex-col justify-between">
-                    <div>
-                        <!-- Card Header Image/Thumbnail -->
-                        <div class="relative h-36 sm:h-40 bg-gray-100 flex items-center justify-center overflow-hidden">
-                            @if($place->image_url)
-                                <img src="{{ $place->image_url }}" alt="{{ $place->name }}" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                            @else
-                                <div class="text-center">
-                                    <div class="w-12 sm:w-14 h-12 sm:h-14 bg-[#10A760]/15 rounded-2xl flex items-center justify-center mx-auto mb-1.5 text-[#10A760]">
-                                        <i class="fa-solid fa-print text-xl sm:text-2xl"></i>
-                                    </div>
-                                    <span class="text-[10px] sm:text-[11px] font-bold text-[#0D8A4E] tracking-wider uppercase">Mitra Fotocopy USU</span>
-                                </div>
-                            @endif
-                            <!-- Status Badge -->
-                            <div class="absolute top-3 left-3 z-10">
-                                <span class="bg-[#10A760] text-white text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1.5 shadow-xs">
-                                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span>
-                                    Buka
-                                </span>
-                            </div>
-                            <!-- Rating -->
-                            <div class="absolute top-3 right-3 z-10">
-                                <span class="bg-white/95 backdrop-blur-xs text-[#D4A017] text-xs font-black px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
-                                    <i class="fa-solid fa-star text-[10px]"></i> {{ number_format($place->rating, 1) }}
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Card Content -->
-                        <div class="p-3.5 sm:p-4">
-                            <div class="flex items-start justify-between gap-1 mb-1">
-                                <h3 class="font-extrabold text-gray-900 text-sm sm:text-base leading-snug line-clamp-1 hover:text-[#10A760] transition-colors">
-                                    <a href="{{ route('fotocopy.show', $place->id) }}">{{ $place->name }}</a>
-                                </h3>
-                            </div>
-
-                            <p class="text-xs text-gray-500 flex items-center gap-1.5 mb-2.5">
-                                <i class="fa-solid fa-location-dot text-[#10A760] shrink-0 text-xs"></i>
-                                <span class="line-clamp-1">{{ $place->location_name }}</span>
-                            </p>
-
-                            <!-- Operating Hours -->
-                            <div class="bg-gray-50 rounded-xl p-2.5 mb-3 flex items-center justify-between text-xs text-gray-600">
-                                <div class="flex items-center gap-2">
-                                    <i class="fa-regular fa-clock text-[#10A760] text-sm"></i>
-                                    <div>
-                                        <div class="font-bold text-gray-800 text-xs">{{ $place->open_time }} - {{ $place->close_time }}</div>
-                                        <div class="text-[10px] text-gray-400">{{ $place->operating_days }}</div>
-                                    </div>
-                                </div>
-                                <div class="text-right">
-                                    <span class="text-[10px] text-gray-400 block">Mulai</span>
-                                    <span class="font-black text-[#10A760] text-xs">Rp 200/lbr</span>
-                                </div>
-                            </div>
-
-                            <!-- Services Tags -->
-                            <div class="flex flex-wrap gap-1 mb-3">
-                                @foreach($place->items->take(3) as $item)
-                                    <span class="bg-[#E8F5EE] text-[#0D8A4E] text-[10px] font-semibold px-2 py-0.5 rounded-md">
-                                        {{ $item->name }}
-                                    </span>
-                                @endforeach
-                            </div>
-
-                            <!-- Social Contact Direct Buttons (ICON ONLY, NO TEXT as per request) -->
-                            <div class="border-t border-gray-100 pt-2.5 mb-2 flex items-center justify-between">
-                                <span class="text-[11px] font-bold text-gray-400">Kontak Person:</span>
-                                <div class="flex items-center gap-2">
-                                    <!-- WhatsApp (Icon Only) -->
-                                    <a
-                                        href="{{ $place->getWhatsappUrl() }}"
-                                        target="_blank"
-                                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#25D366]/10 text-[#128C7E] hover:bg-[#25D366] hover:text-white flex items-center justify-center transition-all shadow-2xs"
-                                        title="Hubungi via WhatsApp"
-                                    >
-                                        <i class="fa-brands fa-whatsapp text-sm sm:text-base"></i>
-                                    </a>
-
-                                    @if($place->instagram)
-                                    <!-- Instagram (Icon Only) -->
-                                    <a
-                                        href="{{ $place->getInstagramUrl() }}"
-                                        target="_blank"
-                                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-pink-50 text-pink-600 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 hover:text-white flex items-center justify-center transition-all shadow-2xs"
-                                        title="Buka Instagram"
-                                    >
-                                        <i class="fa-brands fa-instagram text-xs sm:text-sm"></i>
-                                    </a>
-                                    @endif
-
-                                    @if($place->facebook)
-                                    <!-- Facebook (Icon Only) -->
-                                    <a
-                                        href="{{ $place->getFacebookUrl() }}"
-                                        target="_blank"
-                                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white flex items-center justify-center transition-all shadow-2xs"
-                                        title="Buka Facebook"
-                                    >
-                                        <i class="fa-brands fa-facebook-f text-xs sm:text-sm"></i>
-                                    </a>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Action Buttons: Detail & Pesan -->
-                    <div class="p-3.5 sm:p-4 pt-0">
-                        <div class="flex items-center gap-2">
-                            <!-- Button Detail (Laman Baru) -->
-                            <a
-                                href="{{ route('fotocopy.show', $place->id) }}"
-                                class="flex-1 bg-white border border-[#10A760] text-[#10A760] hover:bg-green-50 text-xs font-bold py-2 rounded-xl text-center transition-all shadow-2xs flex items-center justify-center gap-1.5"
-                            >
-                                <i class="fa-regular fa-eye text-xs"></i>
-                                <span>Detail</span>
-                            </a>
-
-                            <!-- Button Pesan (Laman Baru) -->
-                            <a
-                                href="{{ route('fotocopy.order', $place->id) }}"
-                                class="flex-1 bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs font-bold py-2 rounded-xl text-center transition-all shadow-xs flex items-center justify-center gap-1.5"
-                            >
-                                <i class="fa-solid fa-cart-shopping text-xs"></i>
-                                <span>Pesan</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-        @endif
-
-        <!-- SECTION 2: Semua Tempat Fotocopy (Lengkap Grid) -->
-        <div>
-            <div class="flex items-center justify-between mb-4">
-                <div>
-                    <h2 class="text-base sm:text-xl font-bold text-gray-900 flex items-center gap-2">
-                        <span class="w-1.5 h-5 sm:h-6 bg-[#D4A017] rounded-full"></span>
-                        Semua Tempat Fotocopy Kampus USU
-                    </h2>
-                    <p class="text-xs sm:text-sm text-gray-500 ml-3.5">
-                        @if($search)
-                            Menampilkan hasil pencarian untuk "<span class="text-[#10A760] font-bold">{{ $search }}</span>"
-                        @else
-                            Daftar lengkap mitra jasa fotocopy & percetakan di lingkungan USU
-                        @endif
-                    </p>
-                </div>
-            </div>
-
-            @if($places->isEmpty())
-                <div class="bg-white rounded-2xl border border-gray-200 p-8 text-center my-6">
-                    <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3 text-gray-400 text-xl">
-                        <i class="fa-solid fa-store-slash"></i>
-                    </div>
-                    <h3 class="text-base font-bold text-gray-800 mb-1">Tidak Ditemukan Tempat Fotocopy</h3>
-                    <p class="text-xs text-gray-500 mb-4">Coba cari dengan kata kunci lain atau tampilkan semua tempat.</p>
-                    <a href="{{ route('fotocopy.index') }}" class="inline-block bg-[#10A760] text-white text-xs font-bold px-4 py-2 rounded-xl">
-                        Lihat Semua Tempat
-                    </a>
-                </div>
-            @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
-                    @foreach($places as $place)
-                    @php $isOpen = $place->isOpenNow(); @endphp
-                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden card-hover shadow-xs flex flex-col justify-between h-full">
-                        <div>
-                            <!-- Google Maps Photo Thumbnail -->
-                            <div class="relative h-36 bg-gray-100 overflow-hidden">
-                                @if($place->image_url)
-                                    <img src="{{ $place->image_url }}" alt="{{ $place->name }}" class="w-full h-full object-cover">
-                                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                                @else
-                                    <div class="w-full h-full bg-gradient-to-br from-[#E8F5EE] to-[#D1F0DF] flex items-center justify-center text-[#10A760]">
-                                        <i class="fa-solid fa-print text-2xl"></i>
-                                    </div>
-                                @endif
-                                <!-- Status Badge -->
-                                <div class="absolute top-2.5 left-2.5 z-10">
-                                    <span class="{{ $isOpen ? 'bg-[#10A760]' : 'bg-gray-800' }} text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-xs">
-                                        {{ $isOpen ? 'Buka' : 'Tutup' }}
-                                    </span>
-                                </div>
-                                <!-- Rating -->
-                                <div class="absolute top-2.5 right-2.5 z-10">
-                                    <span class="bg-white/95 backdrop-blur-xs text-[#D4A017] text-[11px] font-black px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
-                                        <i class="fa-solid fa-star text-[10px]"></i> {{ number_format($place->rating, 1) }}
-                                        <span class="text-gray-400 font-normal text-[9px]">({{ $place->user_rating_count }})</span>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="p-4 sm:p-4.5">
-                                <!-- Header: Title and Location -->
-                                <div class="mb-2">
-                                    <h3 class="font-extrabold text-gray-900 text-sm sm:text-base leading-snug hover:text-[#10A760]">
-                                        <a href="{{ route('fotocopy.show', $place->id) }}">{{ $place->name }}</a>
-                                    </h3>
-                                    <p class="text-xs text-gray-500 flex items-center gap-1.5 mt-0.5">
-                                        <i class="fa-solid fa-location-dot text-[#10A760] text-xs"></i>
-                                        <span>{{ $place->location_name }}</span>
-                                    </p>
-                                </div>
-
-                                <p class="text-xs text-gray-600 line-clamp-2 mb-3">
-                                    {{ $place->description }}
-                                </p>
-
-                                <!-- Operational Schedule & Quick Prices -->
-                                <div class="bg-gray-50 rounded-xl p-2.5 mb-3 text-xs flex items-center justify-between">
-                                    <div class="flex items-center gap-2">
-                                        <i class="fa-regular fa-clock text-[#10A760] text-sm"></i>
-                                        <div>
-                                            <div class="text-[10px] text-gray-400">Jadwal Operasional:</div>
-                                            <div class="font-bold text-gray-800">{{ $place->open_time }} - {{ $place->close_time }} WIB</div>
-                                            <div class="text-[10px] text-gray-500">{{ $place->operating_days }}</div>
+                    <!-- VIEW 3: Store-Grouped Combo Cards (Mode 'mixed' / Tab 'Terpadu') -->
+                    <div
+                        id="adaptive-mixed-grid"
+                        x-show="activeTab === 'mixed' && mixedGroups.length > 0"
+                        x-cloak
+                        class="grid grid-cols-1 lg:grid-cols-2 gap-5"
+                    >
+                        <template x-for="grp in mixedGroups" :key="'mix-' + grp.store.id">
+                            <article class="bg-white rounded-2xl border border-slate-200/80 hover:border-[#10A760] overflow-hidden card-hover shadow-xs flex flex-col justify-between">
+                                <!-- Top Layer: Store & Location Header -->
+                                <div class="p-4 bg-emerald-50/40 border-b border-emerald-100/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                                    <div class="flex items-start gap-3 min-w-0">
+                                        <img
+                                            :src="grp.store.photo_url || fallbackStorePhoto(grp.store.id)"
+                                            :alt="grp.store.name"
+                                            x-on:error="onImgError($event, grp.store.id)"
+                                            class="w-14 h-14 rounded-xl object-cover border border-slate-200 bg-white shrink-0"
+                                        />
+                                        <div class="min-w-0">
+                                            <div class="flex items-center flex-wrap gap-1.5">
+                                                <h3 class="text-base font-bold text-slate-900 leading-snug" x-html="highlightText(grp.store.name)"></h3>
+                                                <span class="text-amber-500 text-xs font-black inline-flex items-center gap-0.5 shrink-0">
+                                                    <i class="fa-solid fa-star text-[10px]"></i>
+                                                    <span x-text="Number(grp.store.rating || 4.5).toFixed(1)"></span>
+                                                </span>
+                                                <span
+                                                    class="px-2 py-0.5 rounded-full text-[10px] font-bold shrink-0"
+                                                    :class="grp.store.is_open_now ? 'bg-[#10A760] text-white' : 'bg-[#DC2626] text-white'"
+                                                    x-text="grp.store.is_open_now ? 'Buka' : 'Tutup'"
+                                                ></span>
+                                            </div>
+                                            <p class="text-xs font-semibold text-emerald-700 mt-1 flex items-center gap-1.5 flex-wrap">
+                                                <i class="fa-solid fa-location-dot text-[#10A760] shrink-0"></i>
+                                                <span x-text="'~' + grp.store.distance_m + ' m dari ' + grp.store.anchor_label + ' • Mulai ' + grp.formatted_lowest_price"></span>
+                                            </p>
                                         </div>
                                     </div>
-                                    <div class="text-right">
-                                        <div class="text-[10px] text-gray-400">Rating:</div>
-                                        <div class="font-black text-[#D4A017] flex items-center gap-1 justify-end">
-                                            <i class="fa-solid fa-star text-[10px]"></i>
-                                            <span>{{ number_format($place->rating, 1) }}</span>
+
+                                    <div class="flex items-center gap-1.5 shrink-0">
+                                        <a
+                                            :href="grp.store.map_route_url"
+                                            class="px-2.5 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 text-[11px] font-bold inline-flex items-center gap-1 transition-colors"
+                                        >
+                                            <i class="fa-solid fa-route"></i>
+                                            <span>Rute Peta</span>
+                                        </a>
+                                        <a
+                                            :href="grp.store.detail_url"
+                                            class="px-2.5 py-1.5 rounded-xl bg-white hover:bg-emerald-50 border border-emerald-300 text-[#0D8A4E] text-[11px] font-bold inline-flex items-center gap-1 transition-colors"
+                                        >
+                                            <span>Lihat Toko</span>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Bottom Layer: Up to 3 Matched Products/Services -->
+                                <div class="p-4 pt-2 pb-3 flex-1 flex flex-col justify-between">
+                                    <div class="divide-y divide-slate-100">
+                                        <template x-for="mItem in grp.matched_items.slice(0, 3)" :key="'mix-item-' + grp.store.id + '-' + mItem.item_id">
+                                            <div class="py-2.5 flex items-center justify-between gap-3">
+                                                <div class="flex items-center gap-2.5 min-w-0">
+                                                    <img
+                                                        :src="mItem.image_url || fallbackStorePhoto(grp.store.id)"
+                                                        :alt="mItem.name"
+                                                        x-on:error="onImgError($event, grp.store.id)"
+                                                        class="w-11 h-11 rounded-lg object-cover border border-slate-200 bg-white shrink-0"
+                                                    />
+                                                    <div class="min-w-0">
+                                                        <div class="text-xs sm:text-sm font-bold text-slate-900 leading-snug line-clamp-1" x-html="highlightText(mItem.name)"></div>
+                                                        <div class="flex items-center gap-1.5 mt-0.5">
+                                                            <span class="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px] font-semibold" x-text="mItem.category"></span>
+                                                            <span class="text-xs font-extrabold text-emerald-700" x-text="mItem.formatted_price + '/' + mItem.unit"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <a
+                                                    :href="grp.store.order_url"
+                                                    class="px-3 py-1.5 rounded-lg bg-[#10A760] hover:bg-[#0D8A4E] text-white text-[11px] font-bold transition-colors shrink-0 inline-flex items-center gap-1"
+                                                >
+                                                    <span>Pesan</span>
+                                                    <span aria-hidden="true">→</span>
+                                                </a>
+                                            </div>
+                                        </template>
+                                    </div>
+
+                                    <template x-if="grp.total_matched_items > 3">
+                                        <div class="pt-2 border-t border-slate-100 text-right">
+                                            <a
+                                                :href="grp.store.detail_url"
+                                                class="text-xs font-bold text-[#0D8A4E] hover:underline"
+                                                x-text="'+ ' + (grp.total_matched_items - 3) + ' item cocok lainnya di toko ini →'"
+                                            ></a>
                                         </div>
-                                    </div>
+                                    </template>
                                 </div>
-
-                                <!-- Social Direct Contact Row (ICON ONLY, NO TEXT as per request) -->
-                                <div class="flex items-center justify-between text-xs mb-3.5 pb-2.5 border-b border-gray-100">
-                                    <span class="text-[11px] font-semibold text-gray-400">Kontak Person:</span>
-                                    <div class="flex items-center gap-2">
-                                        <!-- WhatsApp -->
-                                        <a
-                                            href="{{ $place->getWhatsappUrl() }}"
-                                            target="_blank"
-                                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#25D366]/10 hover:bg-[#25D366] hover:text-white text-[#128C7E] flex items-center justify-center transition-all shadow-2xs"
-                                            title="WhatsApp Otomatis"
-                                        >
-                                            <i class="fa-brands fa-whatsapp text-sm sm:text-base"></i>
-                                        </a>
-                                        @if($place->instagram)
-                                        <!-- Instagram -->
-                                        <a
-                                            href="{{ $place->getInstagramUrl() }}"
-                                            target="_blank"
-                                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-pink-50 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 hover:text-white text-pink-600 flex items-center justify-center transition-all shadow-2xs"
-                                            title="Instagram"
-                                        >
-                                            <i class="fa-brands fa-instagram text-xs sm:text-sm"></i>
-                                        </a>
-                                        @endif
-                                        @if($place->facebook)
-                                        <!-- Facebook -->
-                                        <a
-                                            href="{{ $place->getFacebookUrl() }}"
-                                            target="_blank"
-                                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-blue-50 hover:bg-blue-600 hover:text-white text-blue-600 flex items-center justify-center transition-all shadow-2xs"
-                                            title="Facebook"
-                                        >
-                                            <i class="fa-brands fa-facebook-f text-xs sm:text-sm"></i>
-                                        </a>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                            <!-- Action Buttons: Detail, Rute & Pesan -->
-                            <div class="p-4 sm:p-4.5 pt-0">
-                                <div class="flex items-center gap-2">
-                                    <!-- Button Detail (Laman Baru) -->
-                                    <a
-                                        href="{{ route('fotocopy.show', $place->id) }}"
-                                        class="flex-1 bg-white border border-[#10A760] text-[#10A760] hover:bg-green-50 text-xs font-bold py-2 rounded-xl text-center transition shadow-2xs flex items-center justify-center gap-1.5"
-                                    >
-                                        <i class="fa-regular fa-eye text-xs"></i>
-                                        <span>Detail</span>
-                                    </a>
-
-                                    <a
-                                        href="{{ $place->getDirectionUrl() }}"
-                                        class="px-3 py-2 bg-amber-50 border border-amber-300 text-amber-800 hover:bg-amber-100 text-xs font-bold rounded-xl transition shadow-2xs flex items-center justify-center gap-1"
-                                        title="Rute In-App di Peta Kampus"
-                                    >
-                                        <i class="fa-solid fa-route text-xs"></i>
-                                        <span>Rute</span>
-                                    </a>
-
-                                    <!-- Button Pesan (Laman Baru) -->
-                                    <a
-                                        href="{{ route('fotocopy.order', $place->id) }}"
-                                        class="flex-1 bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs font-bold py-2 rounded-xl text-center transition shadow-xs flex items-center justify-center gap-1.5"
-                                    >
-                                        <i class="fa-solid fa-cart-shopping text-xs"></i>
-                                        <span>Pesan</span>
-                                    </a>
-                                </div>
-                            </div>
+                            </article>
+                        </template>
                     </div>
-                    @endforeach
-                </div>
-            @endif
-        </div>
 
+                    <!-- Unified Empty State -->
+                    <div
+                        id="adaptive-empty-state"
+                        x-show="!isLoading && activeTabCount() === 0"
+                        x-cloak
+                        class="bg-slate-50 rounded-2xl border border-dashed border-slate-300 p-8 text-center my-2"
+                    >
+                        <div class="w-14 h-14 bg-white rounded-full border border-slate-200 flex items-center justify-center mx-auto mb-3 text-slate-400 text-xl">
+                            <i class="fa-solid fa-store-slash"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-slate-800 mb-1">Tidak Ditemukan Hasil yang Cocok</h3>
+                        <p class="text-xs text-slate-500 mb-4">Coba ubah kata kunci, matikan filter Buka Sekarang, atau hapus batas harga maksimal.</p>
+                        <button
+                            type="button"
+                            @click="resetAllFilters()"
+                            class="inline-block bg-[#10A760] hover:bg-[#0D8A4E] text-white text-xs font-bold px-4 py-2 rounded-xl cursor-pointer transition-colors"
+                        >
+                            Reset Filter & Lihat Semua Toko
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 
-    <script id="usu-fotocopy-smart-boot" type="application/json">@json(['initialQuery' => $search ?? '', 'initialSmartResult' => $smartInitialResult ?? null])</script>
+    @php
+        $smartBootPayload = [
+            'initialQuery' => $search ?? '',
+            'initialStatus' => $filter ?? '',
+            'initialSort' => $initialSort ?? 'recommended',
+            'initialMaxPrice' => $initialMaxPrice,
+            'campusOpenCount' => $openCount ?? 0,
+            'totalActiveCount' => $totalActiveCount ?? $totalCount,
+            'initialSmartResult' => $smartInitialResult ?? null,
+        ];
+    @endphp
+    <script id="usu-fotocopy-smart-boot" type="application/json">@json($smartBootPayload)</script>
     <script>
-        window.usuFotocopySmartSearch = function () {
-            let boot = { initialQuery: '', initialSmartResult: null };
-            try {
-                const rawBoot = document.getElementById('usu-fotocopy-smart-boot')?.textContent;
-                if (rawBoot) boot = JSON.parse(rawBoot);
-            } catch (e) {}
+        (function () {
+            const USU_CENTER = { lat: 3.5612, lng: 98.6565 };
+            const MAX_GPS_AGE_MS = 300000;
+            const STORE_FALLBACKS = [
+                '/images/stores/preset-modern-copy.webp',
+                '/images/stores/preset-campus-press.webp',
+                '/images/stores/preset-atk-stationery.webp',
+            ];
 
-            return {
-                query: boot.initialQuery || '',
-                sort: 'recommended',
-                openNow: false,
-                maxPrice: '',
-                userLat: null,
-                userLng: null,
-                gpsAccuracyLabel: '',
-                gpsLoading: false,
-                gpsNotice: '',
-                isLoading: false,
-                hasSearched: false,
-                results: [],
-                advisoryNote: null,
-                relaxedFallbackUsed: false,
-                anchorLabel: '',
-                quickChips: [
-                    'cari pulpen pink murah terdekat',
-                    'print warna murah',
-                    'jilid hardcover skripsi',
-                    'kertas hvs a4',
-                    'fotocopy buka sekarang'
-                ],
+            function escapeHtml(str) {
+                return String(str ?? '')
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/'/g, '&#39;');
+            }
 
-                init() {
-                    try {
-                        const savedGps = sessionStorage.getItem('usu_last_gps_fix');
-                        if (savedGps) {
-                            const parsed = JSON.parse(savedGps);
-                            if (parsed && Number.isFinite(Number(parsed.lat)) && Number.isFinite(Number(parsed.lng))) {
-                                this.userLat = Number(parsed.lat);
-                                this.userLng = Number(parsed.lng);
-                                this.gpsAccuracyLabel = parsed.accuracy ? ('±' + Math.round(Number(parsed.accuracy)) + ' m') : 'Tersimpan';
+            function buildHighlightedHtml(rawText, terms) {
+                const text = String(rawText ?? '');
+                if (!text || !Array.isArray(terms) || terms.length === 0) {
+                    return escapeHtml(text);
+                }
+                const cleanTerms = terms
+                    .map((t) => String(t ?? '').trim())
+                    .filter((t) => t.length >= 2)
+                    .sort((a, b) => b.length - a.length);
+                if (cleanTerms.length === 0) {
+                    return escapeHtml(text);
+                }
+
+                const escapedPatterns = cleanTerms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+                const regex = new RegExp('(' + escapedPatterns.join('|') + ')', 'gi');
+                let out = '';
+                let lastIdx = 0;
+                let m;
+                while ((m = regex.exec(text)) !== null) {
+                    if (m.index > lastIdx) {
+                        out += escapeHtml(text.slice(lastIdx, m.index));
+                    }
+                    out += '<mark class="bg-amber-100 text-amber-950 px-1 rounded">' + escapeHtml(m[0]) + '</mark>';
+                    lastIdx = m.index + m[0].length;
+                    if (m[0].length === 0) {
+                        regex.lastIndex++;
+                    }
+                }
+                if (lastIdx < text.length) {
+                    out += escapeHtml(text.slice(lastIdx));
+                }
+                return out;
+            }
+
+            function haversineMeters(lat1, lng1, lat2, lng2) {
+                const R = 6371000;
+                const toRad = (deg) => (deg * Math.PI) / 180;
+                const dLat = toRad(lat2 - lat1);
+                const dLng = toRad(lng2 - lng1);
+                const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
+                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(Math.max(0, 1 - a)));
+            }
+
+            function readCachedGps() {
+                try {
+                    for (const key of ['usu_last_gps', 'usu_last_gps_fix']) {
+                        const raw = sessionStorage.getItem(key);
+                        if (!raw) continue;
+                        const parsed = JSON.parse(raw);
+                        if (parsed && Number.isFinite(Number(parsed.lat)) && Number.isFinite(Number(parsed.lng))) {
+                            const age = Date.now() - Number(parsed.timestamp || 0);
+                            if (age < MAX_GPS_AGE_MS) {
+                                return {
+                                    lat: Number(parsed.lat),
+                                    lng: Number(parsed.lng),
+                                    accuracy: Number(parsed.accuracy || 30),
+                                    timestamp: Number(parsed.timestamp || Date.now()),
+                                };
                             }
                         }
-                    } catch (e) {}
-
-                    if (boot.initialSmartResult && boot.initialSmartResult.results) {
-                        this.applyApiResponse(boot.initialSmartResult);
-                    } else if (this.query.trim().length > 0) {
-                        this.runSearch();
                     }
-                },
+                } catch (e) {}
+                return null;
+            }
 
-                applyApiResponse(data) {
-                    this.hasSearched = true;
-                    this.results = Array.isArray(data.results) ? data.results : [];
-                    this.advisoryNote = data.advisory_note || null;
-                    this.relaxedFallbackUsed = !!data.relaxed_fallback_used;
-                    this.anchorLabel = data.anchor?.label || 'Pusat Kampus USU';
-                },
+            function saveCachedGps(fix) {
+                try {
+                    const serialized = JSON.stringify({
+                        lat: Number(fix.lat),
+                        lng: Number(fix.lng),
+                        accuracy: Math.round(Number(fix.accuracy || 30)),
+                        timestamp: Number(fix.timestamp || Date.now()),
+                    });
+                    sessionStorage.setItem('usu_last_gps', serialized);
+                    sessionStorage.setItem('usu_last_gps_fix', serialized);
+                } catch (e) {}
+            }
 
-                applyChip(text) {
-                    this.query = text;
-                    this.runSearch();
-                },
+            function getWibNowParts() {
+                const dtf = new Intl.DateTimeFormat('en-GB', {
+                    timeZone: 'Asia/Jakarta',
+                    weekday: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false,
+                });
+                const parts = {};
+                dtf.formatToParts(new Date()).forEach((p) => { parts[p.type] = p.value; });
+                const wdMap = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+                const hour = Number(parts.hour || 0) % 24;
+                const minute = Number(parts.minute || 0);
+                return {
+                    dayIndex: wdMap[parts.weekday] ?? 1,
+                    hour,
+                    minute,
+                    minutesNow: (hour * 60) + minute,
+                    hhmm: String(hour).padStart(2, '0') + ':' + String(minute).padStart(2, '0'),
+                };
+            }
 
-                clearSearch() {
-                    this.query = '';
-                    this.results = [];
-                    this.advisoryNote = null;
-                    this.relaxedFallbackUsed = false;
-                    this.hasSearched = false;
-                },
+            function toMin(hhmm) {
+                const p = String(hhmm || '08:00').replace('.', ':').split(':');
+                return ((Number(p[0] || 8)) * 60) + Number(p[1] || 0);
+            }
 
-                async runSearch() {
-                    const q = this.query.trim();
-                    if (!q) {
-                        this.clearSearch();
-                        return;
-                    }
-                    this.isLoading = true;
-                    this.hasSearched = true;
-                    try {
-                        const params = new URLSearchParams({
-                            q: q,
-                            sort: this.sort,
-                            limit: '18'
-                        });
-                        if (this.openNow) params.set('open_now', '1');
-                        if (this.maxPrice && Number(this.maxPrice) > 0) params.set('max_price', String(this.maxPrice));
-                        if (this.userLat !== null && this.userLng !== null) {
-                            params.set('lat', String(this.userLat));
-                            params.set('lng', String(this.userLng));
+            function isOperatingDay(daysStr, dayIdx) {
+                const s = String(daysStr || 'Senin - Sabtu').toLowerCase().trim();
+                if (!s || s.includes('setiap hari') || s.includes('senin - minggu') || s.includes('senin-minggu') || s.includes('24 jam')) return true;
+                if (s.includes('senin - jumat') || s.includes('senin-jumat')) return dayIdx >= 1 && dayIdx <= 5;
+                if (s.includes('senin - sabtu') || s.includes('senin-sabtu')) return dayIdx !== 0;
+                return dayIdx !== 0;
+            }
+
+            function evaluateStoreWib(openTime, closeTime, operatingDays, isActive, wib) {
+                if (!isActive) {
+                    return { isOpen: false, label: 'Tutup' };
+                }
+                const dayOk = isOperatingDay(operatingDays, wib.dayIndex);
+                const openMin = toMin(openTime);
+                const closeMin = toMin(closeTime);
+                const isOpen = dayOk && (closeMin < openMin
+                    ? (wib.minutesNow >= openMin || wib.minutesNow < closeMin)
+                    : (wib.minutesNow >= openMin && wib.minutesNow < closeMin));
+                return {
+                    isOpen,
+                    label: isOpen ? 'Buka Sekarang' : 'Tutup',
+                };
+            }
+
+            window.fotocopyUnifiedSearch = function () {
+                let boot = {
+                    initialQuery: '',
+                    initialStatus: '',
+                    initialSort: 'recommended',
+                    initialMaxPrice: null,
+                    campusOpenCount: 0,
+                    totalActiveCount: 33,
+                    initialSmartResult: null,
+                };
+                try {
+                    const rawBoot = document.getElementById('usu-fotocopy-smart-boot')?.textContent;
+                    if (rawBoot) boot = Object.assign(boot, JSON.parse(rawBoot));
+                } catch (e) {}
+
+                let gpsWatchId = null;
+                let wibTickerId = null;
+
+                return {
+                    query: boot.initialQuery || '',
+                    sort: boot.initialSort || 'recommended',
+                    openNow: boot.initialStatus === 'open',
+                    maxPrice: boot.initialMaxPrice !== null && boot.initialMaxPrice !== undefined ? String(boot.initialMaxPrice) : '',
+                    userLat: null,
+                    userLng: null,
+                    gpsAccuracyLabel: '',
+                    gpsLoading: false,
+                    gpsNotice: '',
+                    isLoading: false,
+                    hasSearched: false,
+                    searchMode: 'store',
+                    activeTab: 'store',
+                    intentSummary: { mode: 'store', mode_label: 'Tempat Fotokopi', headline: '', pills: [], highlight_terms: [] },
+                    stores: [],
+                    results: [],
+                    mixedGroups: [],
+                    advisoryNote: null,
+                    relaxedFallbackUsed: false,
+                    anchorLabel: 'Pusat Kampus USU',
+                    anchorSource: 'campus_center',
+                    campusOpenCount: Number(boot.campusOpenCount || 0),
+                    totalActiveCount: Number(boot.totalActiveCount || 33),
+                    quickChips: [
+                        'fotocopy buka sekarang',
+                        'fotocopy dekat FT',
+                        'fotocopy dekat Perpus',
+                        'fotocopy dekat FISIP',
+                        'USU Press',
+                        'cari pulpen pink murah terdekat',
+                        'print warna murah',
+                        'jilid hardcover skripsi'
+                    ],
+
+                    get isFilterActive() {
+                        return this.query.trim().length > 0
+                            || this.openNow
+                            || (this.maxPrice !== '' && Number(this.maxPrice) > 0);
+                    },
+
+                    init() {
+                        document.querySelectorAll('[data-ssr-fallback]').forEach((el) => el.remove());
+
+                        const cached = readCachedGps();
+                        if (cached) {
+                            this.applyGpsCoordinates(cached, false);
                         }
 
-                        const resp = await fetch('/api/fotocopy/smart-search?' + params.toString(), {
-                            headers: { Accept: 'application/json' }
-                        });
-                        const data = await resp.json();
-                        this.applyApiResponse(data);
-                    } catch (err) {
-                        console.error('Smart fotocopy search failed:', err);
-                        this.advisoryNote = 'Gagal menghubungi layanan Smart Search. Silakan coba lagi.';
-                    } finally {
-                        this.isLoading = false;
-                    }
-                },
-
-                detectGps() {
-                    if (!window.isSecureContext || !navigator.geolocation) {
-                        this.gpsNotice = 'GPS browser tidak tersedia pada konteks ini; jarak tetap dihitung dari pusat Kampus USU atau nama gedung di query.';
-                        return;
-                    }
-                    this.gpsLoading = true;
-                    this.gpsNotice = '';
-
-                    const acceptFix = (pos) => {
-                        this.userLat = Number(pos.coords.latitude);
-                        this.userLng = Number(pos.coords.longitude);
-                        const acc = Math.round(Number(pos.coords.accuracy || 30));
-                        this.gpsAccuracyLabel = '±' + acc + ' m';
-                        this.gpsLoading = false;
-                        try {
-                            sessionStorage.setItem('usu_last_gps_fix', JSON.stringify({
-                                lat: this.userLat,
-                                lng: this.userLng,
-                                accuracy: acc,
-                                timestamp: Date.now()
-                            }));
-                        } catch (e) {}
-                        if (this.query.trim()) {
+                        if (boot.initialSmartResult) {
+                            this.applyApiResponse(boot.initialSmartResult, true);
+                            if (this.userLat !== null && boot.initialSmartResult.anchor?.source === 'campus_center') {
+                                this.runSearch();
+                            }
+                        } else {
                             this.runSearch();
                         }
-                    };
 
-                    navigator.geolocation.getCurrentPosition(
-                        acceptFix,
-                        () => {
-                            navigator.geolocation.getCurrentPosition(
-                                acceptFix,
-                                () => {
-                                    this.gpsLoading = false;
-                                    this.gpsNotice = 'Izin lokasi GPS ditolak atau belum tersedia; jarak menggunakan pusat Kampus USU.';
-                                },
-                                { enableHighAccuracy: false, timeout: 10000, maximumAge: 60000 }
+                        this.detectGps(false);
+                        this.refreshWibStatuses();
+                        if (wibTickerId) clearInterval(wibTickerId);
+                        wibTickerId = setInterval(() => this.refreshWibStatuses(), 30000);
+
+                        window.addEventListener('beforeunload', () => {
+                            if (gpsWatchId !== null && navigator.geolocation) {
+                                try { navigator.geolocation.clearWatch(gpsWatchId); } catch (e) {}
+                            }
+                            if (wibTickerId) clearInterval(wibTickerId);
+                        });
+                    },
+
+                    highlightText(text) {
+                        const terms = this.intentSummary?.highlight_terms || [];
+                        return buildHighlightedHtml(text, terms);
+                    },
+
+                    fallbackStorePhoto(storeId) {
+                        return STORE_FALLBACKS[Math.abs(Number(storeId || 0)) % STORE_FALLBACKS.length];
+                    },
+
+                    onImgError(evt, storeId) {
+                        const img = evt && evt.target;
+                        if (!img || img.dataset.fallbackApplied === '1') return;
+                        img.dataset.fallbackApplied = '1';
+                        img.src = this.fallbackStorePhoto(storeId);
+                    },
+
+                    modeIconClass() {
+                        if (this.activeTab === 'mixed') return 'fa-layer-group';
+                        if (this.activeTab === 'product') return 'fa-bag-shopping';
+                        return 'fa-store';
+                    },
+
+                    intentHeadline() {
+                        if (this.intentSummary && this.intentSummary.headline) {
+                            return this.intentSummary.headline;
+                        }
+                        return 'Daftar Mitra Fotocopy & Percetakan Kampus USU';
+                    },
+
+                    intentPillClass(type) {
+                        if (type === 'location') return 'bg-sky-100 text-sky-800 border-sky-200';
+                        if (type === 'product') return 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                        if (type === 'filter') return 'bg-amber-100 text-amber-800 border-amber-200';
+                        return 'bg-white text-slate-700 border-emerald-200';
+                    },
+
+                    productBadgeClass(badge) {
+                        if (badge === 'Termurah') return 'bg-emerald-600 text-white';
+                        if (badge === 'Terdekat') return 'bg-blue-600 text-white';
+                        if (badge === 'Paling Cocok') return 'bg-amber-500 text-white';
+                        return 'bg-slate-200 text-slate-700';
+                    },
+
+                    activeTabCount() {
+                        if (this.activeTab === 'mixed') return this.mixedGroups.length;
+                        if (this.activeTab === 'product') return this.results.length;
+                        return this.stores.length;
+                    },
+
+                    activeFilterCountLabel() {
+                        if (this.searchMode === 'mixed') return this.mixedGroups.length;
+                        if (this.searchMode === 'product') return this.results.length;
+                        return this.stores.length;
+                    },
+
+                    setTab(tab) {
+                        this.activeTab = tab;
+                    },
+
+                    setStatusFilter(onlyOpen) {
+                        this.openNow = Boolean(onlyOpen);
+                        this.runSearch();
+                    },
+
+                    formatStoreDistanceLine(store) {
+                        const m = Math.round(Number(store.distance_m ?? store.distance_meters ?? 0));
+                        const mins = Math.max(1, Number(store.walking_minutes ?? store.walk_minutes ?? Math.ceil(m / 75)));
+                        const distStr = m >= 1000 ? ((m / 1000).toFixed(2) + ' km') : (m + ' m');
+                        const label = store.anchor_label || this.anchorLabel || 'Pusat Kampus USU';
+                        return `~${distStr} (${mins} mnt jalan) dari ${label}`;
+                    },
+
+                    formatCompactDistance(meters, walkMins) {
+                        const m = Math.round(Number(meters || 0));
+                        const distStr = m >= 1000 ? ((m / 1000).toFixed(2) + ' km') : (m + ' m');
+                        return `~${distStr} • ${walkMins} mnt jalan`;
+                    },
+
+                    syncBrowserUrl() {
+                        try {
+                            const url = new URL(window.location.href);
+                            const q = this.query.trim();
+                            if (q) url.searchParams.set('q', q);
+                            else url.searchParams.delete('q');
+
+                            if (this.openNow) url.searchParams.set('status', 'open');
+                            else url.searchParams.delete('status');
+
+                            if (this.sort && this.sort !== 'recommended') url.searchParams.set('sort', this.sort);
+                            else url.searchParams.delete('sort');
+
+                            if (this.maxPrice && Number(this.maxPrice) > 0) url.searchParams.set('max_price', String(this.maxPrice));
+                            else url.searchParams.delete('max_price');
+
+                            const nextSearch = url.searchParams.toString();
+                            window.history.replaceState({}, '', url.pathname + (nextSearch ? ('?' + nextSearch) : '') + url.hash);
+                        } catch (e) {}
+                    },
+
+                    applyApiResponse(data, autoSwitchTab = true) {
+                        this.hasSearched = true;
+                        this.searchMode = data.search_mode || 'store';
+                        this.intentSummary = data.intent_summary || {
+                            mode: this.searchMode,
+                            mode_label: 'Tempat Fotokopi',
+                            headline: '',
+                            pills: [],
+                            highlight_terms: [],
+                        };
+                        this.stores = Array.isArray(data.stores) ? data.stores : [];
+                        this.results = Array.isArray(data.items) ? data.items : (Array.isArray(data.results) ? data.results : []);
+                        this.mixedGroups = Array.isArray(data.mixed_groups) ? data.mixed_groups : [];
+                        this.advisoryNote = data.advisory_note || null;
+                        this.relaxedFallbackUsed = !!data.relaxed_fallback_used;
+                        this.anchorLabel = data.anchor?.label || 'Pusat Kampus USU';
+                        this.anchorSource = data.anchor?.source || data.anchor_type || 'campus_center';
+
+                        if (autoSwitchTab) {
+                            this.activeTab = this.searchMode;
+                        }
+                        this.refreshWibStatuses();
+                    },
+
+                    applyChip(text) {
+                        this.query = text;
+                        this.runSearch();
+                    },
+
+                    clearSearch() {
+                        this.query = '';
+                        this.runSearch();
+                    },
+
+                    resetAllFilters() {
+                        this.query = '';
+                        this.openNow = false;
+                        this.maxPrice = '';
+                        this.sort = 'recommended';
+                        this.runSearch();
+                    },
+
+                    refreshClientGpsDistances() {
+                        if (this.userLat === null || this.userLng === null || this.anchorSource === 'landmark') {
+                            return;
+                        }
+                        this.anchorLabel = 'Lokasi GPS Anda';
+                        const updateStoreMetrics = (st) => {
+                            if (!st) return;
+                            const lat = parseFloat(st.latitude);
+                            const lng = parseFloat(st.longitude);
+                            if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+                            const dist = Math.round(haversineMeters(this.userLat, this.userLng, lat, lng));
+                            const mins = Math.max(1, Math.ceil(dist / 75));
+                            st.distance_m = dist;
+                            st.distance_meters = dist;
+                            st.walking_minutes = mins;
+                            st.walk_minutes = mins;
+                            st.anchor_label = 'Lokasi GPS Anda';
+                        };
+
+                        this.stores.forEach(updateStoreMetrics);
+                        this.results.forEach((it) => updateStoreMetrics(it.store));
+                        this.mixedGroups.forEach((g) => updateStoreMetrics(g.store));
+                    },
+
+                    refreshWibStatuses() {
+                        const wib = getWibNowParts();
+                        const clockEl = document.getElementById('live-wib-clock');
+                        if (clockEl) clockEl.textContent = wib.hhmm;
+
+                        const syncStoreStatus = (st) => {
+                            if (!st) return false;
+                            const ev = evaluateStoreWib(
+                                st.open_time || '08:00',
+                                st.close_time || '21:00',
+                                st.operating_days || 'Senin - Sabtu',
+                                st.is_active !== false,
+                                wib
                             );
-                        },
-                        { enableHighAccuracy: true, timeout: 7000, maximumAge: 30000 }
-                    );
-                }
+                            st.is_open_now = ev.isOpen;
+                            st.status_label = ev.label;
+                            return ev.isOpen;
+                        };
+
+                        let openInStores = 0;
+                        this.stores.forEach((st) => {
+                            if (syncStoreStatus(st)) openInStores++;
+                        });
+                        this.results.forEach((it) => syncStoreStatus(it.store));
+                        this.mixedGroups.forEach((g) => syncStoreStatus(g.store));
+
+                        if (!this.isFilterActive && this.stores.length >= this.totalActiveCount) {
+                            this.campusOpenCount = openInStores;
+                        }
+                    },
+
+                    applyGpsCoordinates(fix, triggerSearch = true) {
+                        const prevLat = this.userLat;
+                        const prevLng = this.userLng;
+                        this.userLat = Number(fix.lat);
+                        this.userLng = Number(fix.lng);
+                        const acc = Math.round(Number(fix.accuracy || 30));
+                        this.gpsAccuracyLabel = '±' + acc + ' m';
+                        this.gpsNotice = '';
+                        this.gpsLoading = false;
+
+                        saveCachedGps(fix);
+                        this.refreshClientGpsDistances();
+
+                        const movedEnough = prevLat === null || haversineMeters(prevLat, prevLng, this.userLat, this.userLng) >= 15;
+                        if (triggerSearch && this.anchorSource !== 'landmark' && (movedEnough || this.anchorSource !== 'gps')) {
+                            this.runSearch();
+                        }
+                    },
+
+                    async runSearch() {
+                        this.isLoading = true;
+                        try {
+                            const params = new URLSearchParams({
+                                q: this.query.trim(),
+                                sort: this.sort || 'recommended',
+                                limit: '18',
+                            });
+                            if (this.openNow) params.set('open_now', '1');
+                            if (this.maxPrice && Number(this.maxPrice) > 0) params.set('max_price', String(this.maxPrice));
+                            if (this.userLat !== null && this.userLng !== null) {
+                                params.set('lat', String(this.userLat));
+                                params.set('lng', String(this.userLng));
+                            }
+
+                            const resp = await fetch('/api/fotocopy/smart-search?' + params.toString(), {
+                                headers: { Accept: 'application/json' },
+                            });
+                            const data = await resp.json();
+                            this.applyApiResponse(data, true);
+                            this.syncBrowserUrl();
+                        } catch (err) {
+                            console.error('Adaptive fotocopy search failed:', err);
+                            this.advisoryNote = 'Gagal menghubungi layanan Smart Search. Silakan coba lagi.';
+                        } finally {
+                            this.isLoading = false;
+                        }
+                    },
+
+                    startLightWatchPosition() {
+                        if (gpsWatchId !== null || !navigator.geolocation || typeof navigator.geolocation.watchPosition !== 'function') {
+                            return;
+                        }
+                        gpsWatchId = navigator.geolocation.watchPosition(
+                            (pos) => {
+                                const lat = Number(pos.coords.latitude);
+                                const lng = Number(pos.coords.longitude);
+                                if (this.userLat !== null && haversineMeters(this.userLat, this.userLng, lat, lng) < 15) {
+                                    return;
+                                }
+                                this.applyGpsCoordinates({
+                                    lat,
+                                    lng,
+                                    accuracy: pos.coords.accuracy || 30,
+                                    timestamp: Date.now(),
+                                }, true);
+                            },
+                            () => {},
+                            { enableHighAccuracy: false, maximumAge: 30000, timeout: 10000 }
+                        );
+                    },
+
+                    detectGps(isManual = false) {
+                        if (!window.isSecureContext || !navigator.geolocation) {
+                            if (this.userLat === null) {
+                                this.gpsNotice = 'GPS browser tidak tersedia di konteks ini — jarak sementara mengacu ke Pusat Kampus USU.';
+                            }
+                            return;
+                        }
+                        this.gpsLoading = true;
+                        if (isManual) this.gpsNotice = '';
+
+                        const onSuccess = (pos) => {
+                            this.applyGpsCoordinates({
+                                lat: Number(pos.coords.latitude),
+                                lng: Number(pos.coords.longitude),
+                                accuracy: pos.coords.accuracy || 30,
+                                timestamp: Date.now(),
+                            }, true);
+                            this.startLightWatchPosition();
+                        };
+
+                        const onFail = () => {
+                            this.gpsLoading = false;
+                            if (this.userLat === null) {
+                                this.gpsNotice = 'Izin GPS belum aktif — jarak sementara mengacu ke Pusat Kampus USU. Aktifkan Lokasi untuk jarak real-time dari posisi Anda.';
+                            }
+                        };
+
+                        navigator.geolocation.getCurrentPosition(
+                            onSuccess,
+                            () => {
+                                navigator.geolocation.getCurrentPosition(
+                                    onSuccess,
+                                    onFail,
+                                    { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
+                                );
+                            },
+                            { enableHighAccuracy: true, timeout: 6000, maximumAge: 30000 }
+                        );
+                    },
+                };
             };
-        };
+
+            window.usuFotocopySmartSearch = window.fotocopyUnifiedSearch;
+        })();
     </script>
 </x-layouts.app>

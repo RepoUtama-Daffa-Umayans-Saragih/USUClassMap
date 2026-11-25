@@ -46,7 +46,7 @@
                 roomMedia: '{{ url("/admin-sementara-/map/rooms") }}',
                 updateMetadata: '{{ url("/admin-sementara-/map/media") }}',
                 deleteMedia: '{{ url("/admin-sementara-/map/media") }}',
-                copyShops: '{{ route("api.copy-shops.index") }}'
+                copyShops: '{{ route("api.copy-shops.index") }}?per_page=200'
             }
         };
     </script>
@@ -652,10 +652,10 @@
                     id="admin-floating-photocopy-btn"
                     onclick="window.USUAdminMap && window.USUAdminMap.togglePhotocopyLayer()"
                     class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-emerald-700 shadow-md border border-gray-200 hover:border-emerald-500 flex items-center gap-1.5 transition-all cursor-pointer"
-                    title="Tampilkan / Sembunyikan 31 Lokasi Mitra Fotokopi & Percetakan USU"
+                    title="Tampilkan / Sembunyikan Lokasi Mitra Fotokopi & Percetakan USU"
                 >
                     <i class="fa-solid fa-print text-emerald-600"></i>
-                    <span>Fotokopi (<span id="admin-floating-photocopy-count">31</span>)</span>
+                    <span>Fotokopi (<span id="admin-floating-photocopy-count">{{ \App\Models\PhotocopyPlace::where('is_active', true)->count() }}</span>)</span>
                 </button>
             </div>
 

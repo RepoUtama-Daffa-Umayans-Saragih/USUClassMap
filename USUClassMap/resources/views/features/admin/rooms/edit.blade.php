@@ -209,7 +209,7 @@
                     <div x-show="!previewUrl" class="p-3 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-between gap-4">
                         <div class="flex items-center gap-3">
                             <div class="relative w-16 h-12 rounded-lg overflow-hidden bg-gray-200 shrink-0 border border-gray-300">
-                                <img src="{{ Storage::url($room->photo_360_path) }}" alt="Foto 360 Saat Ini" class="w-full h-full object-cover">
+                                <img src="{{ $room->photo_360_url }}" alt="Foto 360 Saat Ini" class="w-full h-full object-cover">
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">

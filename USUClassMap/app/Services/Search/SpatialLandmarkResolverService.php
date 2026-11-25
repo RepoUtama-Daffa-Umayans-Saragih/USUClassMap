@@ -4,6 +4,8 @@ namespace App\Services\Search;
 
 use App\Models\Building;
 use App\Models\Schedule;
+use App\Services\OperationalStatusService;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 
 /**
@@ -229,6 +231,9 @@ class SpatialLandmarkResolverService
         $topSlice = array_slice($scored, 0, $limit);
         $topRaw = !empty($topSlice) ? max(0.01, $topSlice[0]['raw_score']) : 1.0;
 
+        $opService = app(OperationalStatusService::class);
+        $nowWib = Carbon::now(OperationalStatusService::TIMEZONE);
+
         $candidates = [];
         foreach ($topSlice as $rankIdx => $entry) {
             /** @var Building $b */
@@ -265,6 +270,7 @@ class SpatialLandmarkResolverService
                 'rooms_count'        => $entry['rooms_count'],
                 'has_360_tour'       => $entry['has_360_tour'],
                 'matched_schedules'  => $entry['matched_schedules'],
+                'operational_status' => $opService->evaluateBuildingStatus($b, $nowWib),
                 'actions'            => [
                     'focus_url' => url('/map?focus_building=' . $b->id),
                     'route_url' => url('/map?route_to=building:' . $b->id),

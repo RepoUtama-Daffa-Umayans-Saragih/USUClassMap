@@ -7,7 +7,7 @@
         <p class="text-xs text-gray-500 mt-1">Perbarui informasi toko, jam operasional, kontak gerai fotocopy, dan titik lokasi pada Peta 3D &amp; Satelit.</p>
     </div>
 
-    <form method="POST" action="{{ route('admin-fotokopi.stores.update', $store) }}">
+    <form method="POST" action="{{ route('admin-fotokopi.stores.update', $store) }}" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="flex flex-col xl:flex-row gap-6 items-start">
@@ -119,6 +119,52 @@
                     <textarea name="description" rows="3" class="w-full text-xs rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 p-2.5 border">{{ old('description', $store->description) }}</textarea>
                 </div>
 
+                {{-- Upload / Ganti / Hapus Foto Gerai + Live Preview --}}
+                <div class="p-4 rounded-2xl bg-gray-50 border border-gray-200/80 space-y-3">
+                    <div class="flex items-center justify-between gap-2">
+                        <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Foto Gerai / Toko (JPG/PNG/WEBP Maks 3MB)</label>
+                        <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Auto-Sync Popup /map</span>
+                    </div>
+                    <div class="flex flex-col sm:flex-row gap-4 items-start">
+                        <div class="w-full sm:w-36 h-24 rounded-xl bg-white border border-gray-200 overflow-hidden flex items-center justify-center shrink-0 relative">
+                            <img
+                                id="store-image-preview"
+                                src="{{ $store->image_url ?? '' }}"
+                                alt="Preview Foto {{ $store->name }}"
+                                class="{{ $store->image_url ? '' : 'hidden' }} w-full h-full object-cover"
+                            >
+                            <div id="store-image-placeholder" class="{{ $store->image_url ? 'hidden' : '' }} flex flex-col items-center justify-center text-gray-400 text-[11px] px-2 text-center">
+                                <i class="fa-solid fa-store text-lg text-emerald-500 mb-1"></i>
+                                <span>Belum ada foto</span>
+                            </div>
+                        </div>
+                        <div class="flex-1 w-full space-y-2.5">
+                            <input
+                                type="file"
+                                id="store-image-input"
+                                name="image"
+                                accept="image/jpeg,image/png,image/webp"
+                                class="w-full text-xs rounded-xl border border-gray-200 bg-white p-2 cursor-pointer"
+                            >
+                            <div>
+                                <label for="store-image-preset" class="block text-[11px] font-semibold text-gray-600 mb-1">Atau Gunakan Preset Banner Lokal:</label>
+                                <select id="store-image-preset" name="image_preset" class="w-full text-xs rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 p-2 border bg-white">
+                                    <option value="">-- Pertahankan / Tidak Ganti --</option>
+                                    @foreach($storePresets ?? \App\Http\Controllers\AdminFotokopi\StoreController::storePresetOptions() as $preset)
+                                        <option value="{{ $preset['value'] }}" {{ old('image_preset', $store->image_url) === $preset['value'] ? 'selected' : '' }}>{{ $preset['label'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <label class="inline-flex items-center gap-2 text-xs font-semibold text-red-600 cursor-pointer pt-0.5">
+                                <input type="checkbox" id="store-remove-image" name="remove_image" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                                <span>Hapus foto gerai saat ini</span>
+                            </label>
+                            @error('image')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
+                            @error('image_preset')<p class="text-[11px] text-red-500">{{ $message }}</p>@enderror
+                        </div>
+                    </div>
+                </div>
+
                 <div class="pt-4 border-t border-gray-100 flex justify-end gap-3">
                     <a href="{{ route('admin-fotokopi.stores.index') }}" class="px-5 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-semibold">Batal</a>
                     <button type="submit" class="px-5 py-2.5 bg-[#10B981] hover:bg-emerald-600 text-white rounded-xl text-xs font-bold shadow-xs cursor-pointer">Simpan Perubahan</button>
@@ -206,7 +252,7 @@
                                 title="Tampilkan / Sembunyikan Pin Mitra Fotokopi Lainnya"
                             >
                                 <i class="fa-solid fa-print text-emerald-600"></i>
-                                <span>Fotokopi (<span id="smap-ref-photocopy-count">31</span>)</span>
+                                <span>Fotokopi (<span id="smap-ref-photocopy-count">{{ max(0, \App\Models\PhotocopyPlace::where('is_active', true)->count() - 1) }}</span>)</span>
                             </button>
                         </div>
 
@@ -366,7 +412,7 @@
             async function fetchReferencePhotocopy() {
                 if (cachedPhotocopy.length > 0) return cachedPhotocopy;
                 try {
-                    const res = await fetch('/api/copy-shops?per_page=50');
+                    const res = await fetch('/api/copy-shops?per_page=200');
                     const json = await res.json();
                     cachedPhotocopy = (json.data || []).filter(p => (currentStoreSlug && p.slug ? p.slug !== currentStoreSlug : p.name !== currentStoreName));
                     if (refPhotocopyCount) refPhotocopyCount.textContent = cachedPhotocopy.length;
@@ -777,6 +823,74 @@
             }
 
             setTimeout(() => lMap.invalidateSize(), 300);
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Live preview ganti/hapus/preset foto toko
+            const storeImgInput = document.getElementById('store-image-input');
+            const storeImgPreset = document.getElementById('store-image-preset');
+            const storeImgRemove = document.getElementById('store-remove-image');
+            const storeImgPreview = document.getElementById('store-image-preview');
+            const storeImgPlaceholder = document.getElementById('store-image-placeholder');
+            const initialStoreImageUrl = @json($store->image_url ?? '');
+            let activeObjectUrl = null;
+
+            function setStorePreviewSrc(srcUrl) {
+                if (!storeImgPreview || !storeImgPlaceholder) return;
+                if (srcUrl) {
+                    storeImgPreview.src = srcUrl;
+                    storeImgPreview.classList.remove('hidden');
+                    storeImgPlaceholder.classList.add('hidden');
+                } else {
+                    storeImgPreview.removeAttribute('src');
+                    storeImgPreview.classList.add('hidden');
+                    storeImgPlaceholder.classList.remove('hidden');
+                }
+            }
+
+            if (storeImgInput) {
+                storeImgInput.addEventListener('change', () => {
+                    if (activeObjectUrl) {
+                        URL.revokeObjectURL(activeObjectUrl);
+                        activeObjectUrl = null;
+                    }
+                    const file = storeImgInput.files && storeImgInput.files[0];
+                    if (file) {
+                        if (storeImgRemove) storeImgRemove.checked = false;
+                        activeObjectUrl = URL.createObjectURL(file);
+                        setStorePreviewSrc(activeObjectUrl);
+                    } else if (storeImgRemove && storeImgRemove.checked) {
+                        setStorePreviewSrc('');
+                    } else {
+                        setStorePreviewSrc((storeImgPreset && storeImgPreset.value) ? storeImgPreset.value : initialStoreImageUrl);
+                    }
+                });
+            }
+
+            if (storeImgPreset) {
+                storeImgPreset.addEventListener('change', () => {
+                    if (storeImgPreset.value && storeImgRemove) {
+                        storeImgRemove.checked = false;
+                    }
+                    if (!storeImgInput || !storeImgInput.files || !storeImgInput.files[0]) {
+                        setStorePreviewSrc(storeImgPreset.value || initialStoreImageUrl);
+                    }
+                });
+            }
+
+            if (storeImgRemove) {
+                storeImgRemove.addEventListener('change', () => {
+                    if (storeImgRemove.checked) {
+                        if (storeImgInput) storeImgInput.value = '';
+                        if (storeImgPreset) storeImgPreset.value = '';
+                        setStorePreviewSrc('');
+                    } else {
+                        setStorePreviewSrc((storeImgPreset && storeImgPreset.value) ? storeImgPreset.value : initialStoreImageUrl);
+                    }
+                });
+            }
         });
     </script>
     @endpush

@@ -17,6 +17,8 @@ class Room extends Model
         'floor',
         'capacity',
         'photo_360_path',
+        'door_photo_path',
+        'photo_360_meta',
     ];
 
     protected function casts(): array
@@ -24,7 +26,18 @@ class Room extends Model
         return [
             'floor' => 'integer',
             'capacity' => 'integer',
+            'photo_360_meta' => 'array',
         ];
+    }
+
+    public function getPhoto360UrlAttribute(): ?string
+    {
+        return \App\Support\CampusMediaUrl::resolve($this->photo_360_path);
+    }
+
+    public function getDoorPhotoUrlAttribute(): ?string
+    {
+        return \App\Support\CampusMediaUrl::resolve($this->door_photo_path);
     }
 
     public function building(): BelongsTo

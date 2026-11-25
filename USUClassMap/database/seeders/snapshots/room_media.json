@@ -1,1 +1,2662 @@
-[]
+[
+    {
+        "id": 1,
+        "room_id": 1,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0020.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":56.7,\"yaw\":330,\"pitch\":0,\"hfov\":76.5,\"min_pitch\":-23.8,\"max_pitch\":23.8,\"width\":1600,\"height\":252,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 2,
+        "room_id": 1,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-001-auditorium-utama.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 3,
+        "room_id": 2,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261123-wa0010.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":63.45,\"yaw\":240,\"pitch\":0,\"hfov\":85.7,\"min_pitch\":-26.6,\"max_pitch\":26.6,\"width\":1600,\"height\":282,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 4,
+        "room_id": 2,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-002-ruang-sidang-pleno.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 5,
+        "room_id": 3,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261110-wa0067.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":58.65,\"yaw\":180,\"pitch\":0,\"hfov\":79.2,\"min_pitch\":-24.6,\"max_pitch\":24.6,\"width\":1596,\"height\":260,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 6,
+        "room_id": 3,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-003-lab-artificial-intelligence.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 7,
+        "room_id": 4,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261110-wa0072.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":61.88,\"yaw\":0,\"pitch\":0,\"hfov\":83.5,\"min_pitch\":-26,\"max_pitch\":26,\"width\":1600,\"height\":275,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 8,
+        "room_id": 4,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-004-ruang-seminar-ti-301.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 9,
+        "room_id": 5,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-462.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 10,
+        "room_id": 5,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-104.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 11,
+        "room_id": 6,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-438.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":-82.7,\"pitch\":-7.1,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 12,
+        "room_id": 6,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-a-101-koridor.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 13,
+        "room_id": 7,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-465.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 14,
+        "room_id": 7,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-208.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 15,
+        "room_id": 8,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-446.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 16,
+        "room_id": 8,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-008-f-201.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 17,
+        "room_id": 9,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-467.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 18,
+        "room_id": 9,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-206.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 19,
+        "room_id": 10,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-429.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":165.5,\"pitch\":8.7,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 20,
+        "room_id": 10,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-o-101.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 21,
+        "room_id": 11,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-492.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 22,
+        "room_id": 11,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-011-m-101.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 23,
+        "room_id": 12,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/img-20261123-wa0016.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":50.97,\"yaw\":300,\"pitch\":0,\"hfov\":68.8,\"min_pitch\":-21.4,\"max_pitch\":21.4,\"width\":1448,\"height\":205,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 24,
+        "room_id": 12,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-012-c-103.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 25,
+        "room_id": 13,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/img-20261123-wa0019.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":60.08,\"yaw\":120,\"pitch\":0,\"hfov\":81.1,\"min_pitch\":-25.2,\"max_pitch\":25.2,\"width\":1600,\"height\":267,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 26,
+        "room_id": 13,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-013-c-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 27,
+        "room_id": 14,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/img-20261123-wa0013.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":57.41,\"yaw\":90,\"pitch\":0,\"hfov\":77.5,\"min_pitch\":-24.1,\"max_pitch\":24.1,\"width\":1599,\"height\":255,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 28,
+        "room_id": 14,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-014-d-106.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 29,
+        "room_id": 15,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/img-20261123-wa0020.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":52.04,\"yaw\":240,\"pitch\":0,\"hfov\":70.3,\"min_pitch\":-21.9,\"max_pitch\":21.9,\"width\":1591,\"height\":230,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 30,
+        "room_id": 15,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-015-d-105.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 31,
+        "room_id": 16,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/img-20261123-wa0023.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":59.17,\"yaw\":0,\"pitch\":0,\"hfov\":79.9,\"min_pitch\":-24.9,\"max_pitch\":24.9,\"width\":1600,\"height\":263,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 32,
+        "room_id": 16,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-016-d-104.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 33,
+        "room_id": 17,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-480.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 34,
+        "room_id": 17,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-k-302.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 35,
+        "room_id": 18,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-481.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 36,
+        "room_id": 18,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-k-301.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 37,
+        "room_id": 19,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-462.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 38,
+        "room_id": 19,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-104.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 39,
+        "room_id": 20,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-429.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":165.5,\"pitch\":8.7,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 40,
+        "room_id": 20,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-o-103.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 41,
+        "room_id": 21,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-438.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":-82.7,\"pitch\":-7.1,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 42,
+        "room_id": 21,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-a-101-koridor.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 43,
+        "room_id": 22,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-465.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 44,
+        "room_id": 22,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-208.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 45,
+        "room_id": 23,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-462.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 46,
+        "room_id": 23,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-105.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 47,
+        "room_id": 24,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-462.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 48,
+        "room_id": 24,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-104.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 49,
+        "room_id": 25,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-458.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 50,
+        "room_id": 25,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-103.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 51,
+        "room_id": 26,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-458.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 52,
+        "room_id": 26,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 53,
+        "room_id": 27,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-446.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 54,
+        "room_id": 27,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-027-f-201-fib-usu.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 55,
+        "room_id": 28,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-467.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 56,
+        "room_id": 28,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-206.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 57,
+        "room_id": 29,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-458.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 58,
+        "room_id": 29,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 59,
+        "room_id": 30,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-428.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":157.6,\"pitch\":2.8,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 60,
+        "room_id": 30,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-o-104.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 61,
+        "room_id": 31,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-429.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":165.5,\"pitch\":8.7,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 62,
+        "room_id": 31,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-o-101.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 63,
+        "room_id": 32,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-492.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 64,
+        "room_id": 32,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-032-m-101.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 65,
+        "room_id": 33,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-493.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 66,
+        "room_id": 33,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-o-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 67,
+        "room_id": 34,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-474.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 68,
+        "room_id": 34,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-034-studio-3.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 69,
+        "room_id": 35,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-474.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 70,
+        "room_id": 35,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-035-studio-4.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 71,
+        "room_id": 36,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-474.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 72,
+        "room_id": 36,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-036-studio-6.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 73,
+        "room_id": 37,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-474.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 74,
+        "room_id": 37,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-037-studio-2.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 75,
+        "room_id": 38,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-493.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 76,
+        "room_id": 38,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-205-detail.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 77,
+        "room_id": 39,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-492.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 78,
+        "room_id": 39,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-039-m-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 79,
+        "room_id": 40,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-492.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 80,
+        "room_id": 40,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-040-m-101-fib-usu.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 81,
+        "room_id": 41,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-494.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 82,
+        "room_id": 41,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-041-m108.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 83,
+        "room_id": 42,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-469.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 84,
+        "room_id": 42,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-204.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 85,
+        "room_id": 43,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-447.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 86,
+        "room_id": 43,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-043-f-203.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 87,
+        "room_id": 44,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-466.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 88,
+        "room_id": 44,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-207.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 89,
+        "room_id": 45,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/img-20261123-wa0012.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":61.88,\"yaw\":150,\"pitch\":0,\"hfov\":83.5,\"min_pitch\":-26,\"max_pitch\":26,\"width\":1600,\"height\":275,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 90,
+        "room_id": 45,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-b-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 91,
+        "room_id": 46,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-462.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 92,
+        "room_id": 46,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-104.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 93,
+        "room_id": 47,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-465.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 94,
+        "room_id": 47,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-205.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 95,
+        "room_id": 48,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-487.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 96,
+        "room_id": 48,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-048-i-103.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 97,
+        "room_id": 49,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-494.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 98,
+        "room_id": 49,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-laboratorium-koridor.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 99,
+        "room_id": 50,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-486.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 100,
+        "room_id": 50,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-050-i-104-fib-usu.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 101,
+        "room_id": 51,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-429.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":165.5,\"pitch\":8.7,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 102,
+        "room_id": 51,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-o-103.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 103,
+        "room_id": 52,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-437.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 104,
+        "room_id": 52,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-a-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 105,
+        "room_id": 53,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-470.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 106,
+        "room_id": 53,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-203.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 107,
+        "room_id": 54,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-466.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 108,
+        "room_id": 54,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-207.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 109,
+        "room_id": 55,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-470.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 110,
+        "room_id": 55,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-203.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 111,
+        "room_id": 56,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-468.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 112,
+        "room_id": 56,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-202.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 113,
+        "room_id": 57,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/img-20261123-wa0017.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":56.77,\"yaw\":60,\"pitch\":0,\"hfov\":76.6,\"min_pitch\":-23.8,\"max_pitch\":23.8,\"width\":1598,\"height\":252,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 114,
+        "room_id": 57,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-b-101.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:32",
+        "updated_at": "2026-11-25 16:41:32"
+    },
+    {
+        "id": 115,
+        "room_id": 58,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-468.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 116,
+        "room_id": 58,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-201.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 117,
+        "room_id": 59,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-446.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 118,
+        "room_id": 59,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-059-f-201.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 119,
+        "room_id": 60,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261123-wa0056.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":61.42,\"yaw\":180,\"pitch\":0,\"hfov\":82.9,\"min_pitch\":-25.8,\"max_pitch\":25.8,\"width\":1600,\"height\":273,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 120,
+        "room_id": 60,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-060-c-103.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 121,
+        "room_id": 61,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20260908-wa0004.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":44.1,\"yaw\":330,\"pitch\":0,\"hfov\":62,\"min_pitch\":-18.5,\"max_pitch\":18.5,\"width\":1600,\"height\":196,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 122,
+        "room_id": 61,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-061-c-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 123,
+        "room_id": 62,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261123-wa0055.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":57.6,\"yaw\":0,\"pitch\":0,\"hfov\":77.8,\"min_pitch\":-24.2,\"max_pitch\":24.2,\"width\":1600,\"height\":256,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 124,
+        "room_id": 62,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-062-d-106.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 125,
+        "room_id": 63,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261110-wa0041.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":51.08,\"yaw\":0,\"pitch\":0,\"hfov\":69,\"min_pitch\":-21.5,\"max_pitch\":21.5,\"width\":1600,\"height\":227,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 126,
+        "room_id": 63,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-063-d-105.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 127,
+        "room_id": 64,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261110-wa0059.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":53.33,\"yaw\":210,\"pitch\":0,\"hfov\":72,\"min_pitch\":-22.4,\"max_pitch\":22.4,\"width\":1600,\"height\":237,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 128,
+        "room_id": 64,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-064-d-104.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 129,
+        "room_id": 65,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261110-wa0068.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":58.5,\"yaw\":240,\"pitch\":0,\"hfov\":79,\"min_pitch\":-24.6,\"max_pitch\":24.6,\"width\":1600,\"height\":260,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 130,
+        "room_id": 65,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-065-2-5.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 131,
+        "room_id": 66,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20260908-wa0003.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":60.52,\"yaw\":270,\"pitch\":0,\"hfov\":81.7,\"min_pitch\":-25.4,\"max_pitch\":25.4,\"width\":1600,\"height\":269,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 132,
+        "room_id": 66,
+        "type": "photo",
+        "file_path": "images/doors/real/gl-1.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 133,
+        "room_id": 67,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261110-wa0071.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":51.36,\"yaw\":30,\"pitch\":0,\"hfov\":69.3,\"min_pitch\":-21.6,\"max_pitch\":21.6,\"width\":1591,\"height\":227,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 134,
+        "room_id": 67,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-067-gl-2a.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 135,
+        "room_id": 68,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261123-wa0050.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":58.95,\"yaw\":270,\"pitch\":0,\"hfov\":79.6,\"min_pitch\":-24.8,\"max_pitch\":24.8,\"width\":1600,\"height\":262,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 136,
+        "room_id": 68,
+        "type": "photo",
+        "file_path": "images/doors/real/gl-2b.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 137,
+        "room_id": 69,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261110-wa0054.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":44.55,\"yaw\":0,\"pitch\":0,\"hfov\":62,\"min_pitch\":-18.7,\"max_pitch\":18.7,\"width\":1600,\"height\":198,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 138,
+        "room_id": 69,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-069-pizzi.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 139,
+        "room_id": 70,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261123-wa0051.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":61.2,\"yaw\":60,\"pitch\":0,\"hfov\":82.6,\"min_pitch\":-25.7,\"max_pitch\":25.7,\"width\":1600,\"height\":272,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 140,
+        "room_id": 70,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-070-1-5.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 141,
+        "room_id": 71,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261110-wa0066.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":63.28,\"yaw\":30,\"pitch\":0,\"hfov\":85.4,\"min_pitch\":-26.6,\"max_pitch\":26.6,\"width\":1593,\"height\":280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 142,
+        "room_id": 71,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-071-c-103.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 143,
+        "room_id": 72,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261123-wa0052.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":54.74,\"yaw\":210,\"pitch\":0,\"hfov\":73.9,\"min_pitch\":-23,\"max_pitch\":23,\"width\":1598,\"height\":243,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 144,
+        "room_id": 72,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-072-c-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 145,
+        "room_id": 73,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261110-wa0046.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":49.53,\"yaw\":180,\"pitch\":0,\"hfov\":66.9,\"min_pitch\":-20.8,\"max_pitch\":20.8,\"width\":1599,\"height\":220,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 146,
+        "room_id": 73,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-073-d-106.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 147,
+        "room_id": 74,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261123-wa0054.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":58.5,\"yaw\":330,\"pitch\":0,\"hfov\":79,\"min_pitch\":-24.6,\"max_pitch\":24.6,\"width\":1600,\"height\":260,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 148,
+        "room_id": 74,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-074-d-105.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 149,
+        "room_id": 75,
+        "type": "360",
+        "file_path": "images/foto-360p/fasilkom/img-20261123-wa0059.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":60.38,\"yaw\":0,\"pitch\":0,\"hfov\":81.5,\"min_pitch\":-25.4,\"max_pitch\":25.4,\"width\":1586,\"height\":266,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 150,
+        "room_id": 75,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-075-d-104.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 151,
+        "room_id": 76,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0055.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":53.1,\"yaw\":150,\"pitch\":0,\"hfov\":71.7,\"min_pitch\":-22.3,\"max_pitch\":22.3,\"width\":1600,\"height\":236,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 152,
+        "room_id": 76,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-076-gor-badminton-terminal-sport-cen.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 153,
+        "room_id": 77,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0030.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":59.17,\"yaw\":120,\"pitch\":0,\"hfov\":79.9,\"min_pitch\":-24.9,\"max_pitch\":24.9,\"width\":1600,\"height\":263,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 154,
+        "room_id": 77,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-b-101.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 155,
+        "room_id": 78,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0032.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":39.6,\"yaw\":210,\"pitch\":0,\"hfov\":62,\"min_pitch\":-16.6,\"max_pitch\":16.6,\"width\":1600,\"height\":176,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 156,
+        "room_id": 78,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-078-1-3.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 157,
+        "room_id": 79,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0054.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.5,\"yaw\":180,\"pitch\":0,\"hfov\":66.8,\"min_pitch\":-20.8,\"max_pitch\":20.8,\"width\":1600,\"height\":220,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 158,
+        "room_id": 79,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-079-lapangan-futsal-patologi-fk-usu.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 159,
+        "room_id": 80,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0021.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":58.73,\"yaw\":270,\"pitch\":0,\"hfov\":79.3,\"min_pitch\":-24.7,\"max_pitch\":24.7,\"width\":1600,\"height\":261,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 160,
+        "room_id": 80,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-080-perpustakaan-usu-rsp-kopi.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 161,
+        "room_id": 81,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0019.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.27,\"yaw\":30,\"pitch\":0,\"hfov\":66.5,\"min_pitch\":-20.7,\"max_pitch\":20.7,\"width\":1600,\"height\":219,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 162,
+        "room_id": 81,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-081-c-3-1.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 163,
+        "room_id": 82,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0029.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":47.02,\"yaw\":240,\"pitch\":0,\"hfov\":63.5,\"min_pitch\":-19.7,\"max_pitch\":19.7,\"width\":1600,\"height\":209,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 164,
+        "room_id": 82,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-082-sekretariat-pema-usu-lantai-2.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 165,
+        "room_id": 83,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261123-wa0007.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":62.77,\"yaw\":240,\"pitch\":0,\"hfov\":84.7,\"min_pitch\":-26.4,\"max_pitch\":26.4,\"width\":1600,\"height\":279,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 166,
+        "room_id": 83,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-083-lapangan-tennis-bni-pintu-iv-usu.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 167,
+        "room_id": 84,
+        "type": "360",
+        "file_path": "images/foto-360p/fmipa/img-20261113-wa0041.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fmipa\",\"haov\":360,\"vaov\":61.88,\"yaw\":180,\"pitch\":0,\"hfov\":83.5,\"min_pitch\":-26,\"max_pitch\":26,\"width\":1600,\"height\":275,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 168,
+        "room_id": 84,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-084-gedung-fakultas-matematika-dan-i.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 169,
+        "room_id": 85,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0028.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":47.25,\"yaw\":270,\"pitch\":0,\"hfov\":63.8,\"min_pitch\":-19.8,\"max_pitch\":19.8,\"width\":1600,\"height\":210,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 170,
+        "room_id": 85,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-085-lapangan-sepak-bola-kembar-usu.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 171,
+        "room_id": 86,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261123-wa0009.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":62.1,\"yaw\":180,\"pitch\":0,\"hfov\":83.8,\"min_pitch\":-26.1,\"max_pitch\":26.1,\"width\":1600,\"height\":276,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 172,
+        "room_id": 86,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-086-gedung-pancasila-usu.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 173,
+        "room_id": 87,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261123-wa0008.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":58.37,\"yaw\":330,\"pitch\":0,\"hfov\":78.8,\"min_pitch\":-24.5,\"max_pitch\":24.5,\"width\":1511,\"height\":245,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 174,
+        "room_id": 87,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-087-ruang-e304.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 175,
+        "room_id": 88,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0020.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":56.7,\"yaw\":210,\"pitch\":0,\"hfov\":76.5,\"min_pitch\":-23.8,\"max_pitch\":23.8,\"width\":1600,\"height\":252,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 176,
+        "room_id": 88,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-088-ruang-e303.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 177,
+        "room_id": 89,
+        "type": "360",
+        "file_path": "images/foto-360p/psikologi/img-20261113-wa0016.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"psikologi\",\"haov\":360,\"vaov\":63.71,\"yaw\":180,\"pitch\":0,\"hfov\":86,\"min_pitch\":-26.8,\"max_pitch\":26.8,\"width\":1599,\"height\":283,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 178,
+        "room_id": 89,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-089-lapangan-bola-voli-psikologi-usu.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 179,
+        "room_id": 90,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261123-wa0010.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":63.45,\"yaw\":90,\"pitch\":0,\"hfov\":85.7,\"min_pitch\":-26.6,\"max_pitch\":26.6,\"width\":1600,\"height\":282,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 180,
+        "room_id": 90,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-090-lapangan-basket-fakultas-kedokte.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 181,
+        "room_id": 91,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0055.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":53.1,\"yaw\":210,\"pitch\":0,\"hfov\":71.7,\"min_pitch\":-22.3,\"max_pitch\":22.3,\"width\":1600,\"height\":236,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 182,
+        "room_id": 91,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-091-gor-badminton-terminal-sport-cen.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 183,
+        "room_id": 92,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/img-20261123-wa0022.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":55.12,\"yaw\":210,\"pitch\":0,\"hfov\":74.4,\"min_pitch\":-23.2,\"max_pitch\":23.2,\"width\":1600,\"height\":245,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 184,
+        "room_id": 92,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-o-103.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 185,
+        "room_id": 93,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0030.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":59.17,\"yaw\":120,\"pitch\":0,\"hfov\":79.9,\"min_pitch\":-24.9,\"max_pitch\":24.9,\"width\":1600,\"height\":263,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 186,
+        "room_id": 93,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-093-kompos.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 187,
+        "room_id": 94,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0032.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":39.6,\"yaw\":90,\"pitch\":0,\"hfov\":62,\"min_pitch\":-16.6,\"max_pitch\":16.6,\"width\":1600,\"height\":176,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 188,
+        "room_id": 94,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-094-209.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 189,
+        "room_id": 95,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0054.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.5,\"yaw\":30,\"pitch\":0,\"hfov\":66.8,\"min_pitch\":-20.8,\"max_pitch\":20.8,\"width\":1600,\"height\":220,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 190,
+        "room_id": 95,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-095-classroom-ii.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 191,
+        "room_id": 96,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0021.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":58.73,\"yaw\":180,\"pitch\":0,\"hfov\":79.3,\"min_pitch\":-24.7,\"max_pitch\":24.7,\"width\":1600,\"height\":261,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 192,
+        "room_id": 96,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-096-2-5.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 193,
+        "room_id": 97,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-462.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 194,
+        "room_id": 97,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-105.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 195,
+        "room_id": 98,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-462.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 196,
+        "room_id": 98,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-104.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 197,
+        "room_id": 99,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-458.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 198,
+        "room_id": 99,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-103.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 199,
+        "room_id": 100,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-458.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 200,
+        "room_id": 100,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 201,
+        "room_id": 101,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-428.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":157.6,\"pitch\":2.8,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 202,
+        "room_id": 101,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-o-104.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 203,
+        "room_id": 102,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-492.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 204,
+        "room_id": 102,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-102-m-101.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 205,
+        "room_id": 103,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-493.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 206,
+        "room_id": 103,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-o-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 207,
+        "room_id": 104,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-474.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 208,
+        "room_id": 104,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-104-studio-3.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 209,
+        "room_id": 105,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-474.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 210,
+        "room_id": 105,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-105-studio-4.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 211,
+        "room_id": 106,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-474.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 212,
+        "room_id": 106,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-106-studio-6.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 213,
+        "room_id": 107,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-474.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 214,
+        "room_id": 107,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-107-studio-2.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 215,
+        "room_id": 108,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-493.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 216,
+        "room_id": 108,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-205-detail.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 217,
+        "room_id": 109,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-492.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 218,
+        "room_id": 109,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-109-m-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 219,
+        "room_id": 110,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0019.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.27,\"yaw\":180,\"pitch\":0,\"hfov\":66.5,\"min_pitch\":-20.7,\"max_pitch\":20.7,\"width\":1600,\"height\":219,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 220,
+        "room_id": 110,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-110-gl-4c.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 221,
+        "room_id": 111,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0029.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":47.02,\"yaw\":240,\"pitch\":0,\"hfov\":63.5,\"min_pitch\":-19.7,\"max_pitch\":19.7,\"width\":1600,\"height\":209,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 222,
+        "room_id": 111,
+        "type": "photo",
+        "file_path": "images/doors/real/gl-4b.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 223,
+        "room_id": 112,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261123-wa0007.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":62.77,\"yaw\":120,\"pitch\":0,\"hfov\":84.7,\"min_pitch\":-26.4,\"max_pitch\":26.4,\"width\":1600,\"height\":279,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 224,
+        "room_id": 112,
+        "type": "photo",
+        "file_path": "images/doors/real/gl-1.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 225,
+        "room_id": 113,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0028.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":47.25,\"yaw\":270,\"pitch\":0,\"hfov\":63.8,\"min_pitch\":-19.8,\"max_pitch\":19.8,\"width\":1600,\"height\":210,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 226,
+        "room_id": 113,
+        "type": "photo",
+        "file_path": "images/doors/real/gl-3.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 227,
+        "room_id": 114,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261123-wa0009.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":62.1,\"yaw\":180,\"pitch\":0,\"hfov\":83.8,\"min_pitch\":-26.1,\"max_pitch\":26.1,\"width\":1600,\"height\":276,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 228,
+        "room_id": 114,
+        "type": "photo",
+        "file_path": "images/doors/real/gl-4a.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 229,
+        "room_id": 115,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261123-wa0008.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":58.37,\"yaw\":330,\"pitch\":0,\"hfov\":78.8,\"min_pitch\":-24.5,\"max_pitch\":24.5,\"width\":1511,\"height\":245,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 230,
+        "room_id": 115,
+        "type": "photo",
+        "file_path": "images/doors/real/gl-2c.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 231,
+        "room_id": 116,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0020.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":56.7,\"yaw\":210,\"pitch\":0,\"hfov\":76.5,\"min_pitch\":-23.8,\"max_pitch\":23.8,\"width\":1600,\"height\":252,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 232,
+        "room_id": 116,
+        "type": "photo",
+        "file_path": "images/doors/real/gl-2b.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 233,
+        "room_id": 117,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261123-wa0010.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":63.45,\"yaw\":150,\"pitch\":0,\"hfov\":85.7,\"min_pitch\":-26.6,\"max_pitch\":26.6,\"width\":1600,\"height\":282,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 234,
+        "room_id": 117,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-117-gl-2a.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 235,
+        "room_id": 118,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-494.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 236,
+        "room_id": 118,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-118-m108.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 237,
+        "room_id": 119,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0055.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":53.1,\"yaw\":60,\"pitch\":0,\"hfov\":71.7,\"min_pitch\":-22.3,\"max_pitch\":22.3,\"width\":1600,\"height\":236,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 238,
+        "room_id": 119,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-119-3-1.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 239,
+        "room_id": 120,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0030.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":59.17,\"yaw\":300,\"pitch\":0,\"hfov\":79.9,\"min_pitch\":-24.9,\"max_pitch\":24.9,\"width\":1600,\"height\":263,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 240,
+        "room_id": 120,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-120-pizzi.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 241,
+        "room_id": 121,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0032.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":39.6,\"yaw\":270,\"pitch\":0,\"hfov\":62,\"min_pitch\":-16.6,\"max_pitch\":16.6,\"width\":1600,\"height\":176,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 242,
+        "room_id": 121,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-121-champion.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 243,
+        "room_id": 122,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0054.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.5,\"yaw\":330,\"pitch\":0,\"hfov\":66.8,\"min_pitch\":-20.8,\"max_pitch\":20.8,\"width\":1600,\"height\":220,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 244,
+        "room_id": 122,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-122-lark.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 245,
+        "room_id": 123,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0021.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":58.73,\"yaw\":30,\"pitch\":0,\"hfov\":79.3,\"min_pitch\":-24.7,\"max_pitch\":24.7,\"width\":1600,\"height\":261,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 246,
+        "room_id": 123,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-123-1-5.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 247,
+        "room_id": 124,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-469.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 248,
+        "room_id": 124,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-204.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 249,
+        "room_id": 125,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-447.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 250,
+        "room_id": 125,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-125-f-203.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 251,
+        "room_id": 126,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-462.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 252,
+        "room_id": 126,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-104.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 253,
+        "room_id": 127,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-487.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 254,
+        "room_id": 127,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-127-i-103.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 255,
+        "room_id": 128,
+        "type": "360",
+        "file_path": "images/foto-360p/campus-root/img-20261113-wa0019.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.27,\"yaw\":30,\"pitch\":0,\"hfov\":66.5,\"min_pitch\":-20.7,\"max_pitch\":20.7,\"width\":1600,\"height\":219,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 256,
+        "room_id": 128,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-laboratorium-koridor.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 257,
+        "room_id": 129,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-437.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 258,
+        "room_id": 129,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-a-102.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 259,
+        "room_id": 130,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-470.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 260,
+        "room_id": 130,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-203.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 261,
+        "room_id": 131,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-466.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 262,
+        "room_id": 131,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-207.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 263,
+        "room_id": 132,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-468.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 264,
+        "room_id": 132,
+        "type": "photo",
+        "file_path": "images/doors/real/fib-h-201.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"real\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 265,
+        "room_id": 133,
+        "type": "360",
+        "file_path": "images/foto-360p/fib/scene-446.webp",
+        "is_primary": 1,
+        "metadata": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    },
+    {
+        "id": 266,
+        "room_id": 133,
+        "type": "photo",
+        "file_path": "images/doors/from-360/room-133-f-201.webp",
+        "is_primary": 1,
+        "metadata": "{\"door_source\":\"rectilinear_360\"}",
+        "created_at": "2026-11-25 16:41:33",
+        "updated_at": "2026-11-25 16:41:33"
+    }
+]

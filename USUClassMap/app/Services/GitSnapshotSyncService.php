@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Observers\GitSnapshotObserver;
+use App\Services\VirtualWalk\FibVirtualWalkGraphService;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -72,6 +73,16 @@ class GitSnapshotSyncService
     public function getRoutingGraphRuntimePath(): string
     {
         return storage_path('app/routing/usu_campus_graph.json');
+    }
+
+    public function getFibWalkGraphSnapshotPath(): string
+    {
+        return $this->getSnapshotDir() . DIRECTORY_SEPARATOR . 'fib_walk_graph.json';
+    }
+
+    public function getFibWalkGraphRuntimePath(): string
+    {
+        return storage_path('app/virtual-walk/fib_walk_graph.json');
     }
 
     public function getLocalStatePath(): string
@@ -163,6 +174,11 @@ class GitSnapshotSyncService
             // Salin graf routing Kampus USU (jika sudah digenerate) ke snapshot Git
             if ($this->exportRoutingGraphSnapshot()) {
                 $files[] = 'campus_routing_graph.json';
+            }
+
+            // Salin graf Tur Virtual FIB 360° ke snapshot Git
+            if ($this->exportFibWalkGraphSnapshot()) {
+                $files[] = 'fib_walk_graph.json';
             }
 
             // Hitung hash deterministik atas seluruh berkas JSON snapshot
@@ -464,6 +480,7 @@ class GitSnapshotSyncService
                 }
 
                 $this->importRoutingGraphSnapshot();
+                $this->importFibWalkGraphSnapshot();
 
                 // FASE 4: Catat state lokal agar tidak ter-impor ulang pada request berikutnya
                 $this->writeLocalState($manifestHash, 'import');
@@ -606,6 +623,18 @@ SPARQL;
         }
 
         $calibrationsCount = is_array($manifest) ? (int) ($manifest['counts']['photo_360_calibrations'] ?? 0) : 0;
+        $fibSnapPath = $this->getFibWalkGraphSnapshotPath();
+        $fibSnapExists = is_file($fibSnapPath);
+        $fibScenesCount = 0;
+        if ($fibSnapExists) {
+            $fibDecoded = $this->readJsonFile($fibSnapPath);
+            if (is_array($fibDecoded) && !empty($fibDecoded['scenes'])) {
+                $fibScenesCount = count(array_filter(
+                    $fibDecoded['scenes'],
+                    fn ($s): bool => is_array($s) && empty($s['excluded'])
+                ));
+            }
+        }
 
         return [
             'snapshot_exists' => $snapshotExists,
@@ -618,6 +647,8 @@ SPARQL;
             'has_pending_import' => $this->hasPendingImport(),
             'rdf_snapshot_exists' => is_file($this->getRdfSnapshotPath()),
             'photo_360_calibrations_count' => $calibrationsCount,
+            'fib_walk_snapshot_exists' => $fibSnapExists,
+            'fib_walk_scenes_count' => $fibScenesCount,
             'tables' => $tables,
         ];
     }
@@ -708,6 +739,67 @@ SPARQL;
             }
         } catch (\Throwable $e) {
             Log::warning('GitSnapshotSync: Gagal mengimpor snapshot campus_routing_graph.json: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Pastikan fib_walk_graph.json tersedia di runtime dan salin ke snapshot Git.
+     */
+    protected function exportFibWalkGraphSnapshot(): bool
+    {
+        try {
+            $runtime = $this->getFibWalkGraphRuntimePath();
+            $snapshot = $this->getFibWalkGraphSnapshotPath();
+
+            if (!is_file($runtime) && !is_file($snapshot)) {
+                app(FibVirtualWalkGraphService::class)->getGraph(false);
+            }
+
+            if (is_file($runtime)) {
+                $content = file_get_contents($runtime);
+                if ($content !== false && $content !== '') {
+                    if (!is_file($snapshot) || file_get_contents($snapshot) !== $content) {
+                        file_put_contents($snapshot, $content, LOCK_EX);
+                    }
+                    return true;
+                }
+            }
+
+            return is_file($snapshot);
+        } catch (\Throwable $e) {
+            Log::warning('GitSnapshotSync: Gagal mengekspor snapshot fib_walk_graph.json: ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Pulihkan graf Tur Virtual FIB 360° dari snapshot Git ke runtime storage.
+     */
+    protected function importFibWalkGraphSnapshot(): void
+    {
+        try {
+            $snapshot = $this->getFibWalkGraphSnapshotPath();
+            $runtime = $this->getFibWalkGraphRuntimePath();
+
+            if (!is_file($snapshot)) {
+                return;
+            }
+
+            $content = file_get_contents($snapshot);
+            if ($content === false || $content === '') {
+                return;
+            }
+
+            $dir = dirname($runtime);
+            if (!is_dir($dir)) {
+                mkdir($dir, 0755, true);
+            }
+
+            if (!is_file($runtime) || file_get_contents($runtime) !== $content) {
+                file_put_contents($runtime, $content, LOCK_EX);
+            }
+        } catch (\Throwable $e) {
+            Log::warning('GitSnapshotSync: Gagal mengimpor snapshot fib_walk_graph.json: ' . $e->getMessage());
         }
     }
 

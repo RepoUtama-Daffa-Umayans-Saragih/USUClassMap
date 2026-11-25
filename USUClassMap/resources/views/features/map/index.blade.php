@@ -114,17 +114,22 @@
                         class="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-bold rounded-lg border border-emerald-300 text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition-all shadow-2xs cursor-pointer"
                     >
                         <i class="fa-solid fa-print text-emerald-600 text-xs"></i>
-                        <span>Mitra Fotokopi (<span id="fotocopy-count-badge">32</span>)</span>
+                        <span>Mitra Fotokopi (<span id="fotocopy-count-badge">{{ $photocopyCount ?? \App\Models\PhotocopyPlace::where('is_active', true)->count() }}</span>)</span>
                     </button>
                 </div>
             </div>
 
             <!-- Results Summary Bar -->
-            <div class="px-4 py-2 bg-gray-100 border-b border-gray-200 flex items-center justify-between text-xs">
-                <span id="results-count" class="font-bold text-gray-700">Memuat data gedung...</span>
-                <span id="source-badge" class="px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-100 text-emerald-800">
-                    Semua Gedung
-                </span>
+            <div class="px-4 py-2 bg-gray-100 border-b border-gray-200 flex items-center justify-between gap-2 text-xs">
+                <span id="results-count" class="font-bold text-gray-700 truncate">Memuat data gedung...</span>
+                <div class="flex items-center gap-1.5 shrink-0">
+                    <span id="map-wib-clock" class="px-2 py-0.5 text-[10px] font-bold rounded bg-white border border-gray-200 text-gray-700" title="Waktu Indonesia Barat (Asia/Jakarta)">
+                        WIB {{ now('Asia/Jakarta')->format('H:i') }}
+                    </span>
+                    <span id="source-badge" class="px-2 py-0.5 text-[10px] font-bold rounded bg-emerald-100 text-emerald-800">
+                        Semua Gedung
+                    </span>
+                </div>
             </div>
 
             <!-- Scrollable Search Results List -->
@@ -143,8 +148,16 @@
                 </button>
                 <div x-show="expanded" class="mt-2.5 pt-2 border-t border-gray-100 space-y-1.5 text-xs text-gray-600" style="display: none;">
                     <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-[#10A760] inline-block shadow-xs"></span>
-                        <span>Pin Hijau: Gedung Perkuliahan USU</span>
+                        <span class="w-3 h-3 rounded-full bg-[#10B981] inline-block shadow-xs border border-white ring-1 ring-emerald-200"></span>
+                        <span>Pin Hijau: Gedung Kelas Buka (07:00 – 16:00 WIB)</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-[#0D9488] inline-block shadow-xs border border-white ring-1 ring-teal-200"></span>
+                        <span>Pin Teal: Mitra Fotokopi Buka</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-[#DC2626] inline-block shadow-xs border border-white ring-1 ring-red-300"></span>
+                        <span>Pin Merah: Tempat / Kelas Tutup (Belum Buka)</span>
                     </div>
                     <div class="flex items-center gap-2">
                         <span class="w-3 h-3 rounded-full bg-[#EA580C] inline-block shadow-xs"></span>
@@ -211,7 +224,7 @@
                     title="Tampilkan / Sembunyikan Lokasi Mitra Fotokopi & Percetakan USU"
                 >
                     <i class="fa-solid fa-print text-emerald-600"></i>
-                    <span>Fotokopi (<span id="floating-photocopy-count">32</span>)</span>
+                    <span>Fotokopi (<span id="floating-photocopy-count">{{ $photocopyCount ?? \App\Models\PhotocopyPlace::where('is_active', true)->count() }}</span>)</span>
                 </button>
 
                 <!-- Floating Quick Toggle for In-App Campus Route Panel -->
@@ -608,7 +621,7 @@
                             :class="currentMode === 'photo' ? 'bg-[#10A760] text-white shadow-md shadow-green-900/20' : 'bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-800'"
                         >
                             <i class="fa-regular fa-image"></i>
-                            <span>Foto</span>
+                            <span>Foto Pintu</span>
                         </button>
                         <button 
                             type="button" 
@@ -617,10 +630,11 @@
                             :class="currentMode === '360' ? 'bg-[#10A760] text-white shadow-md shadow-green-900/20' : 'bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-800'"
                         >
                             <i class="fa-solid fa-rotate"></i>
-                            <span>360°</span>
+                            <span>Panorama 360°</span>
                         </button>
                         <button 
                             type="button" 
+                            x-show="Boolean(room.video_url)"
                             @click="switchMode('video')"
                             class="flex cursor-pointer items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-bold transition-all duration-200 sm:px-4"
                             :class="currentMode === 'video' ? 'bg-[#10A760] text-white shadow-md shadow-green-900/20' : 'bg-green-50 text-green-700 hover:bg-green-100 hover:text-green-800'"
@@ -649,12 +663,17 @@
                 <!-- 1. Media Canvas Area -->
                 <div class="relative h-56 w-full overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 shadow-lg sm:h-72 lg:h-80">
                     <!-- Photo Mode -->
-                    <div x-show="currentMode === 'photo'" class="w-full h-full">
+                    <div x-show="currentMode === 'photo'" class="relative w-full h-full bg-slate-900 flex items-center justify-center">
                         <img 
-                            :src="room.photo_url || 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&w=800&q=80'" 
+                            id="modal-door-photo-img"
+                            :src="room.photo_url || '/images/stores/preset-modern-copy.webp'" 
                             :alt="room.name" 
-                            class="h-full w-full rounded-2xl object-cover"
+                            class="h-full w-full rounded-2xl object-contain"
                         />
+                        <span
+                            class="pointer-events-none absolute top-3 left-3 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-black/65 px-3 py-1 text-[11px] font-bold text-white backdrop-blur-sm"
+                            x-text="room.door_source === 'real' ? 'Foto Pintu Asli' : 'Foto Pintu (Perspektif 360°)'"
+                        ></span>
                     </div>
 
                     <!-- 360 Mode (Clean Interactive Panorama Container) -->
@@ -778,13 +797,30 @@
                         }
                         container.innerHTML = '';
 
-                        const photoUrl = this.room?.photo_360_url || this.room?.photo_360 || 'https://images.unsplash.com/photo-1557971370-e7298ee473fb?auto=format&fit=crop&w=2000&q=80';
+                        const photoUrl = this.room?.photo_360_url || this.room?.photo_360 || '/images/stores/preset-modern-copy.webp';
+                        const meta = this.room?.photo_360_meta || {};
+                        const haov = Number(meta.haov) || 360;
+                        const vaov = Number(meta.vaov) || 180;
+                        const yaw = Number.isFinite(Number(meta.yaw)) ? Number(meta.yaw) : 0;
+                        const pitch = Number.isFinite(Number(meta.pitch)) ? Number(meta.pitch) : 0;
+                        const hfov = Number(meta.hfov) || (vaov >= 150 ? 95 : Math.min(90, Math.max(60, vaov * 1.35)));
+                        const minPitch = Number.isFinite(Number(meta.min_pitch)) ? Number(meta.min_pitch) : (vaov >= 150 ? -85 : -(vaov * 0.42));
+                        const maxPitch = Number.isFinite(Number(meta.max_pitch)) ? Number(meta.max_pitch) : (vaov >= 150 ? 85 : (vaov * 0.42));
 
                         if (typeof pannellum !== 'undefined') {
                             try {
                                 this.pannellumViewer = pannellum.viewer('modal-panorama-viewer', {
                                     type: 'equirectangular',
                                     panorama: photoUrl,
+                                    haov: haov,
+                                    vaov: vaov,
+                                    yaw: yaw,
+                                    pitch: pitch,
+                                    hfov: hfov,
+                                    minPitch: minPitch,
+                                    maxPitch: maxPitch,
+                                    minHfov: 40,
+                                    maxHfov: 115,
                                     autoLoad: true,
                                     autoRotate: -1.5,
                                     showControls: true,

@@ -14,7 +14,9 @@ use App\Models\WhatsappDispatchLog;
 use App\Services\Fotocopy\OrderArchiveService;
 use App\Services\Fotocopy\OrderPaymentFulfillmentService;
 use App\Services\Invoice\OrderInvoiceService;
+use App\Services\OperationalStatusService;
 use App\Services\Payment\PaymentManager;
+use Carbon\Carbon;
 use App\Services\Pdf\PdfMetadataInspectorService;
 use App\Services\Search\SmartPhotocopySearchService;
 use App\Services\WhatsApp\WhatsAppManager;
@@ -64,74 +66,93 @@ class PhotocopyController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->input('q');
+        $search = trim((string) $request->input('q', ''));
         $filter = $request->input('status'); // 'all', 'open'
-
-        $query = PhotocopyPlace::with('items')->where('is_active', true);
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('location_name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%")
-                  ->orWhereHas('items', function ($itemQ) use ($search) {
-                      $itemQ->where('name', 'like', "%{$search}%")
-                            ->orWhere('category', 'like', "%{$search}%");
-                  });
-            });
+        $initialSort = trim((string) $request->input('sort', 'recommended'));
+        if (!in_array($initialSort, ['recommended', 'cheapest', 'nearest', 'rating'], true)) {
+            $initialSort = 'recommended';
         }
+        $initialMaxPrice = $request->filled('max_price') && is_numeric($request->input('max_price'))
+            ? (int) $request->input('max_price')
+            : null;
 
-        $allPlaces = $query->orderBy('name')->get();
+        $opService = app(OperationalStatusService::class);
+        $nowWib = Carbon::now(OperationalStatusService::TIMEZONE);
 
-        $smartInitialResult = null;
-        if (!empty($search)) {
-            $smartInitialResult = app(SmartPhotocopySearchService::class)->search((string) $search, [
-                'open_now' => ($filter === 'open'),
-                'limit'    => 18,
-            ]);
+        $allActivePlaces = PhotocopyPlace::with('items')
+            ->where('is_active', true)
+            ->orderBy('name')
+            ->get();
 
-            if ($allPlaces->isEmpty() && !empty($smartInitialResult['stores'])) {
-                $matchedIds = array_values(array_unique(array_filter(array_map(
-                    fn (array $s) => $s['id'] ?? null,
-                    $smartInitialResult['stores']
-                ))));
-                if (!empty($matchedIds)) {
-                    $allPlaces = PhotocopyPlace::with('items')
-                        ->where('is_active', true)
-                        ->whereIn('id', $matchedIds)
-                        ->orderBy('name')
-                        ->get();
-                }
-            }
-        }
-
-        // Ensure default dummy items for any place without items
-        foreach ($allPlaces as $place) {
+        // Ensure default items exist before running Smart Search or rendering cards
+        foreach ($allActivePlaces as $place) {
             if ($place->items->isEmpty()) {
                 $place->seedDefaultItemsAndServices();
                 $place->load('items');
             }
         }
 
-        // Separate into currently open places for horizontal scrolling section
-        $openPlaces = $allPlaces->filter(function ($place) {
-            return $place->isOpenNow();
+        $totalActiveCount = $allActivePlaces->count();
+
+        // Evaluate real-time WIB status once per store
+        $operationalStatuses = [];
+        foreach ($allActivePlaces as $place) {
+            $operationalStatuses[$place->id] = $opService->evaluatePhotocopyStatus($place, $nowWib);
+        }
+
+        $campusOpenCount = $allActivePlaces->filter(function ($place) use ($operationalStatuses) {
+            return (bool) ($operationalStatuses[$place->id]['is_open_now'] ?? false);
+        })->count();
+
+        $smartInitialResult = app(SmartPhotocopySearchService::class)->search($search, [
+            'open_now'  => ($filter === 'open'),
+            'sort'      => $initialSort,
+            'max_price' => $initialMaxPrice,
+            'lat'       => $request->filled('lat') && is_numeric($request->input('lat')) ? (float) $request->input('lat') : null,
+            'lng'       => $request->filled('lng') && is_numeric($request->input('lng')) ? (float) $request->input('lng') : null,
+            'limit'     => 18,
+        ]);
+
+        if ($search !== '' || $initialMaxPrice !== null) {
+            $matchedIds = $smartInitialResult['matched_store_ids'] ?? array_values(array_unique(array_filter(array_map(
+                fn (array $s) => $s['id'] ?? null,
+                $smartInitialResult['stores'] ?? []
+            ))));
+
+            $placeById = $allActivePlaces->keyBy('id');
+            $filteredPlaces = collect();
+            foreach ($matchedIds as $pid) {
+                if ($placeById->has((int) $pid)) {
+                    $filteredPlaces->push($placeById->get((int) $pid));
+                }
+            }
+        } else {
+            $filteredPlaces = $allActivePlaces;
+        }
+
+        $openPlaces = $filteredPlaces->filter(function ($place) use ($operationalStatuses) {
+            return (bool) ($operationalStatuses[$place->id]['is_open_now'] ?? false);
         });
 
-        // If user specifically asked for only open places
-        $places = ($filter === 'open') ? $openPlaces : $allPlaces;
+        $places = ($filter === 'open') ? $openPlaces : $filteredPlaces;
 
-        $openCount = $openPlaces->count();
-        $totalCount = $allPlaces->count();
+        $totalCount = $places->count();
+        $totalCatalogCount = PhotocopyItem::where('is_available', true)->count();
 
         return view('features.fotocopy.public.index', [
-            'places'             => $places,
-            'openPlaces'         => $openPlaces,
-            'search'             => $search,
-            'filter'             => $filter,
-            'openCount'          => $openCount,
-            'totalCount'         => $totalCount,
-            'smartInitialResult' => $smartInitialResult,
+            'places'              => $places,
+            'openPlaces'          => $openPlaces,
+            'search'              => $search,
+            'filter'              => $filter,
+            'initialSort'         => $initialSort,
+            'initialMaxPrice'     => $initialMaxPrice,
+            'openCount'           => $campusOpenCount,
+            'totalCount'          => $totalCount,
+            'totalActiveCount'    => $totalActiveCount,
+            'totalCatalogCount'   => $totalCatalogCount,
+            'wibClock'            => $nowWib->format('H:i'),
+            'operationalStatuses' => $operationalStatuses,
+            'smartInitialResult'  => $smartInitialResult,
         ]);
     }
 
@@ -149,7 +170,9 @@ class PhotocopyController extends Controller
             $place->load(['items', 'services']);
         }
 
-        $isOpen = $place->isOpenNow();
+        $nowWib = Carbon::now(OperationalStatusService::TIMEZONE);
+        $operationalStatus = app(OperationalStatusService::class)->evaluatePhotocopyStatus($place, $nowWib);
+        $isOpen = (bool) ($operationalStatus['is_open_now'] ?? false);
         $itemsByCategory = $place->items->where('is_available', true)->groupBy('category');
         $catalogItems = $this->buildCatalogItems($place);
 
@@ -160,11 +183,13 @@ class PhotocopyController extends Controller
             ->get();
 
         return view('features.fotocopy.public.show', [
-            'place' => $place,
-            'isOpen' => $isOpen,
-            'itemsByCategory' => $itemsByCategory,
-            'catalogItems' => $catalogItems,
-            'nearbyPlaces' => $nearbyPlaces,
+            'place'             => $place,
+            'isOpen'            => $isOpen,
+            'operationalStatus' => $operationalStatus,
+            'wibClock'          => $nowWib->format('H:i'),
+            'itemsByCategory'   => $itemsByCategory,
+            'catalogItems'      => $catalogItems,
+            'nearbyPlaces'      => $nearbyPlaces,
         ]);
     }
 
@@ -182,7 +207,9 @@ class PhotocopyController extends Controller
             $place->load('items');
         }
 
-        $isOpen = $place->isOpenNow();
+        $nowWib = Carbon::now(OperationalStatusService::TIMEZONE);
+        $operationalStatus = app(OperationalStatusService::class)->evaluatePhotocopyStatus($place, $nowWib);
+        $isOpen = (bool) ($operationalStatus['is_open_now'] ?? false);
         $itemsByCategory = $place->items->where('is_available', true)->groupBy('category');
         $catalogItems = $this->buildCatalogItems($place);
 
@@ -204,11 +231,13 @@ class PhotocopyController extends Controller
             ->all();
 
         return view('features.fotocopy.public.order', [
-            'place' => $place,
-            'isOpen' => $isOpen,
-            'itemsByCategory' => $itemsByCategory,
-            'catalogItems' => $catalogItems,
-            'printServices' => $printServices,
+            'place'             => $place,
+            'isOpen'            => $isOpen,
+            'operationalStatus' => $operationalStatus,
+            'wibClock'          => $nowWib->format('H:i'),
+            'itemsByCategory'   => $itemsByCategory,
+            'catalogItems'      => $catalogItems,
+            'printServices'     => $printServices,
             'finishingServices' => $finishingServices,
         ]);
     }

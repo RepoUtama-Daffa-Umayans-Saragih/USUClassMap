@@ -184,7 +184,7 @@ class AiCopilotService
     }
 
     /**
-     * Eksekusi percakapan Rexa Copilot dengan arsitektur Local-First Grounded Engines
+     * Eksekusi percakapan Tanya Ucup dengan arsitektur Local-First Grounded Engines
      * + optional ClassAI Router enrichment (zero HTTP 500 bila offline/key kosong).
      *
      * @param string $userMessage Pesan baru dari pengguna
@@ -209,7 +209,7 @@ class AiCopilotService
         if (preg_match('/\b(hapus|delete|tambah|insert|buatkan\s+jadwal|update|ubah|ganti|drop|kprs|edit\s+jadwal)\b/i', $userMessage)
             && !preg_match('/\b(pulpen|fotocopy|print|jilid|kertas)\b/i', $userMessage)) {
             return [
-                'reply'           => "⚠️ **Mode Read-Only Aktif**\nMaaf, Rexa adalah asisten pencarian & navigasi kampus yang bersifat baca-saja. Perubahan atau penghapusan data jadwal tidak dapat dilakukan melalui asisten ini.",
+                'reply'           => "⚠️ **Mode Read-Only Aktif**\nMaaf, Ucup adalah pemandu & asisten pencarian kampus yang bersifat baca-saja. Perubahan atau penghapusan data jadwal tidak dapat dilakukan melalui asisten ini.",
                 'intent'          => 'guardrail_readonly',
                 'advisory_note'   => null,
                 'cards'           => [],
@@ -543,10 +543,11 @@ class AiCopilotService
             if ($advisory) {
                 $lines[] = "ℹ️ {$advisory}";
             }
-            $lines[] = "Berikut rekomendasi terbaik di sekitar **{$anchorLabel}** (berdasarkan harga hemat, jarak, dan status toko):";
+            $lines[] = "Berikut rekomendasi terbaik di sekitar **{$anchorLabel}** (berdasarkan harga hemat, jarak real-time, dan jam buka WIB sekarang):";
             foreach (array_slice($results, 0, 4) as $i => $it) {
                 $no = $i + 1;
-                $statusText = !empty($it['store']['is_open_now']) ? 'Buka' : 'Tutup';
+                $op = $it['store']['operational_status'] ?? null;
+                $statusText = $op ? ($op['status_label'] . ' • ' . $op['detail_text']) : (!empty($it['store']['is_open_now']) ? 'Buka' : 'Tutup');
                 $lines[] = "{$no}. **{$it['name']}** — **{$it['formatted_price']}/{$it['unit']}** di *{$it['store']['name']}* (~{$it['store']['distance_meters']} m / {$it['store']['walk_minutes']} mnt jalan • {$statusText})";
             }
             $lines[] = "\nKlik **Pesan di Toko** untuk langsung memesan atau **Rute GPS** untuk navigasi in-app menuju toko.";
@@ -557,7 +558,8 @@ class AiCopilotService
                 ['label' => 'Cari yang Buka Sekarang', 'query' => $userMessage . ' buka sekarang'],
             ];
         } else {
-            $reply = $advisory ?: "Maaf, Rexa belum menemukan produk atau jasa yang cocok di katalog 32 mitra fotokopi USU untuk \"{$userMessage}\". Coba gunakan kata kunci lebih singkat seperti **pulpen**, **print warna**, **jilid hardcover**, atau **kertas HVS**.";
+            $activeStoreCount = PhotocopyPlace::where('is_active', true)->count();
+            $reply = $advisory ?: "Maaf, Ucup belum menemukan produk atau jasa yang cocok di katalog {$activeStoreCount} mitra fotokopi USU untuk \"{$userMessage}\". Coba gunakan kata kunci lebih singkat seperti **pulpen**, **print warna**, **jilid hardcover**, atau **kertas HVS**.";
             $quickReplies = [
                 ['label' => 'Pulpen murah terdekat', 'query' => 'cari pulpen murah terdekat'],
                 ['label' => 'Print warna murah', 'query' => 'print warna murah terdekat'],
@@ -626,7 +628,9 @@ class AiCopilotService
             $lines[] = "Berdasarkan analisis posisi dan orientasi hadap gedung dari patokan yang kamu sebutkan, ini **Top " . count($candidates) . " kemungkinan gedung/kelasmu**:";
             foreach ($candidates as $i => $c) {
                 $no = $i + 1;
-                $lines[] = "{$no}. **{$c['name']} ({$c['code']})** — **{$c['confidence_percent']}% cocok**\n   {$c['spatial_reason']}";
+                $op = $c['operational_status'] ?? null;
+                $opLine = $op ? " • Status Kelas ({$op['hours_label']}): **{$op['status_label']}** ({$op['detail_text']})" : '';
+                $lines[] = "{$no}. **{$c['name']} ({$c['code']})** — **{$c['confidence_percent']}% cocok**{$opLine}\n   {$c['spatial_reason']}";
             }
             $lines[] = "\nPilih **Lihat di Peta** untuk memeriksa denah/ruangan gedung atau **Rute GPS ke Sini** untuk langsung dituntun in-app.";
             $reply = implode("\n", $lines);
@@ -638,7 +642,7 @@ class AiCopilotService
                 ];
             }
         } else {
-            $reply = $advisory ?: 'Maaf, Rexa membutuhkan minimal satu patokan gedung (seperti FIB, FMIPA, GKB, atau Perpustakaan USU) agar bisa menebak gedung kelasmu.';
+            $reply = $advisory ?: 'Maaf, Ucup membutuhkan minimal satu patokan gedung (seperti FIB, FMIPA, GKB, atau Perpustakaan USU) agar bisa menebak gedung kelasmu.';
         }
 
         return [
@@ -674,6 +678,7 @@ class AiCopilotService
             $b = $mentioned[0];
             $buildingModel = Building::with('rooms')->find($b['id']);
             $roomsCount = $buildingModel ? $buildingModel->rooms->count() : 0;
+            $opStatus = app(OperationalStatusService::class)->evaluateBuildingStatus($buildingModel);
 
             $card = [
                 'type' => 'spatial_building',
@@ -687,6 +692,7 @@ class AiCopilotService
                     'longitude'          => (float) $b['longitude'],
                     'confidence_percent' => 100,
                     'spatial_reason'     => "Siap menavigasikan rute in-app ke **{$b['name']} ({$b['code']})** menggunakan graf jalan & pejalan kaki USU.",
+                    'operational_status' => $opStatus,
                     'facing_compass'     => '-',
                     'distances'          => [],
                     'rooms_count'        => $roomsCount,
@@ -897,7 +903,7 @@ class AiCopilotService
 
         // 4. Fallback Ramah Terpandu (zero error)
         return [
-            'reply'           => "👋 Halo! Saya **Rexa Kampus**. Saya siap membantumu mencari:\n• **Jadwal kuliah, ruang kelas & dosen** (contoh: *\"Jadwal Pancasila hari Senin\"*)\n• **Tebak gedung dari patokan sekitar** (contoh: *\"kelas saya di depan FIB di samping FMIPA\"*)\n• **Cari ATK, print, jilid & toko fotokopi termurah/terdekat** (contoh: *\"cari pulpen pink murah terdekat\"*)",
+            'reply'           => "👋 Halo! Aku **Ucup**, pemandu kampus USU di USUClassMap. Aku siap membantumu mencari:\n• **Jadwal kuliah, ruang kelas & dosen** (contoh: *\"Jadwal Pancasila hari Senin\"*)\n• **Tebak gedung dari patokan sekitar** (contoh: *\"kelas saya di depan FIB di samping FMIPA\"*)\n• **Cari ATK, print, jilid & toko fotokopi termurah/terdekat** (contoh: *\"cari pulpen pink murah terdekat\"*)",
             'intent'          => $primaryIntent,
             'advisory_note'   => null,
             'cards'           => [],
@@ -917,8 +923,8 @@ class AiCopilotService
     }
 
     /**
-     * Membangun System Prompt terperinci dengan persona Rexa Kampus,
-     * aturan guardrail (100% Read-Only), format tag aksi peta Leaflet, dan konteks user aktif.
+     * Membangun System Prompt terperinci dengan persona Ucup (Pemandu Kampus USU),
+     * aturan guardrail (100% Read-Only), format tag aksi peta, dan konteks user aktif.
      *
      * @return string
      */
@@ -934,11 +940,11 @@ class AiCopilotService
             : "Status: Tamu (Belum Login)";
 
         return <<<PROMPT
-Anda adalah "Rexa Kampus", Asisten Cerdas Spasial dan Informasi Jadwal Kuliah resmi untuk platform USUClassMap (Universitas Sumatera Utara).
+Anda adalah "Ucup", pemandu kampus USU yang ramah, sigap, dan cerdas untuk platform USUClassMap (Universitas Sumatera Utara).
 
 IDENTITAS & KARAKTERISTIK:
-1. Anda ramah, solutif, ringkas, profesional, dan berbahasa Indonesia baku namun luwes.
-2. Anda ahli dalam denah kampus USU, lokasi gedung kuliah, jadwal mata kuliah, ruang kelas, dan dosen pengajar.
+1. Anda bersahabat seperti teman penjelajah kampus USU, ringkas, solutif, berbahasa Indonesia natural yang rapi dan sopan.
+2. Anda ahli dalam denah kampus USU, lokasi gedung kuliah, jadwal mata kuliah, ruang kelas, dosen pengajar, dan layanan mitra fotokopi sekitar kampus.
 3. Selalu prioritaskan data faktual dari pemanggilan alat (tools). Jangan pernah mengarang jadwal atau lokasi gedung yang tidak tercatat.
 
 {$buildingCatalog}
@@ -1141,7 +1147,7 @@ PROMPT;
                 'type' => 'function',
                 'function' => [
                     'name'        => 'cari_fotokopi_atk',
-                    'description' => 'Mencari produk ATK (pulpen, kertas, map, materai) dan layanan fotokopi/print/jilid lintas 32 mitra toko USU dengan peringkat harga, jarak, status buka, dan fallback jujur.',
+                    'description' => 'Mencari produk ATK (pulpen, kertas, map, materai) dan layanan fotokopi/print/jilid lintas seluruh mitra toko USU (termasuk USU Press) dengan peringkat harga, jarak, status buka, dan fallback jujur.',
                     'parameters'  => [
                         'type'       => 'object',
                         'properties' => [

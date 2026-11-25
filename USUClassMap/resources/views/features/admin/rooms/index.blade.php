@@ -73,7 +73,7 @@
                                     {{-- Badge Hijau "Ada Foto" Clickable untuk Preview Cepat --}}
                                     <button 
                                         type="button"
-                                        @click="openPreview('{{ Storage::url($room->photo_360_path) }}', '{{ $room->name }}', '{{ $room->building->name ?? '' }}')"
+                                        @click="openPreview('{{ $room->photo_360_url }}', '{{ $room->name }}', '{{ $room->building->name ?? '' }}')"
                                         class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 hover:border-emerald-300 shadow-2xs transition-all cursor-pointer group"
                                         title="Klik untuk melihat pratinjau foto 360"
                                     >

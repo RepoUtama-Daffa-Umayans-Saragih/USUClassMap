@@ -621,6 +621,7 @@
     <usu:namaRuangan>Auditorium Utama</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">500</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0020.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/2"/>
   </usu:Ruangan>
 
@@ -628,6 +629,7 @@
     <usu:namaRuangan>Ruang Sidang Pleno</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">120</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261123-wa0010.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/2"/>
   </usu:Ruangan>
 
@@ -635,6 +637,7 @@
     <usu:namaRuangan>Lab Artificial Intelligence</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">45</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261110-wa0067.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/13"/>
   </usu:Ruangan>
 
@@ -642,6 +645,7 @@
     <usu:namaRuangan>Ruang Seminar TI-301</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">80</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261110-wa0072.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/13"/>
   </usu:Ruangan>
 
@@ -649,6 +653,7 @@
     <usu:namaRuangan>H 104</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-462.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -656,6 +661,7 @@
     <usu:namaRuangan>A 101</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-438.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -663,6 +669,7 @@
     <usu:namaRuangan>H 208</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-465.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -670,6 +677,7 @@
     <usu:namaRuangan>F 201</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-446.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -677,6 +685,7 @@
     <usu:namaRuangan>H 206</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-467.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -684,6 +693,7 @@
     <usu:namaRuangan>O 101</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-429.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -691,6 +701,7 @@
     <usu:namaRuangan>M 101</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-492.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -698,6 +709,7 @@
     <usu:namaRuangan>C-103</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/img-20261123-wa0016.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -705,6 +717,7 @@
     <usu:namaRuangan>C-102</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/img-20261123-wa0019.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -712,6 +725,7 @@
     <usu:namaRuangan>D-106</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/img-20261123-wa0013.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -719,6 +733,7 @@
     <usu:namaRuangan>D-105</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/img-20261123-wa0020.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -726,6 +741,7 @@
     <usu:namaRuangan>D-104</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/img-20261123-wa0023.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -733,6 +749,7 @@
     <usu:namaRuangan>K.302</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-480.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -740,6 +757,7 @@
     <usu:namaRuangan>K.301</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">3</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-481.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -747,6 +765,7 @@
     <usu:namaRuangan>H 104 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-462.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -754,6 +773,7 @@
     <usu:namaRuangan>O.103</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-429.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -761,6 +781,7 @@
     <usu:namaRuangan>A 101 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-438.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -768,6 +789,7 @@
     <usu:namaRuangan>H 208 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-465.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -775,6 +797,7 @@
     <usu:namaRuangan>Gedung H 105 S1 Ilmu Sejarah</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-462.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -782,6 +805,7 @@
     <usu:namaRuangan>Gedung H 104 S1 Ilmu Sejarah</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-462.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -789,6 +813,7 @@
     <usu:namaRuangan>Gedung H 103 S1 Ilmu Sejarah</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-458.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -796,6 +821,7 @@
     <usu:namaRuangan>Gedung H 102 S1 Ilmu Sejarah</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-458.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -803,6 +829,7 @@
     <usu:namaRuangan>F 201 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-446.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -810,6 +837,7 @@
     <usu:namaRuangan>H 206 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-467.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -817,6 +845,7 @@
     <usu:namaRuangan>H 102 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-458.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -824,6 +853,7 @@
     <usu:namaRuangan>O.104</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-428.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -831,6 +861,7 @@
     <usu:namaRuangan>O 101 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-429.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -838,6 +869,7 @@
     <usu:namaRuangan>M.101</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-492.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -845,6 +877,7 @@
     <usu:namaRuangan>M RSM 1</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-493.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -852,6 +885,7 @@
     <usu:namaRuangan>Studio 3</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-474.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -859,6 +893,7 @@
     <usu:namaRuangan>Studio 4</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-474.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -866,6 +901,7 @@
     <usu:namaRuangan>Studio 6.</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-474.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -873,6 +909,7 @@
     <usu:namaRuangan>Studio 2</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-474.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -880,6 +917,7 @@
     <usu:namaRuangan>M RSM 2</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-493.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -887,6 +925,7 @@
     <usu:namaRuangan>M.102</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-492.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -894,6 +933,7 @@
     <usu:namaRuangan>M 101 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-492.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -901,6 +941,7 @@
     <usu:namaRuangan>M108</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-494.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -908,6 +949,7 @@
     <usu:namaRuangan>H.204</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-469.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -915,6 +957,7 @@
     <usu:namaRuangan>F.203</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-447.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -922,6 +965,7 @@
     <usu:namaRuangan>H 207 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-466.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -929,6 +973,7 @@
     <usu:namaRuangan>P 203 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/img-20261123-wa0012.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -936,6 +981,7 @@
     <usu:namaRuangan>H.104</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-462.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -943,6 +989,7 @@
     <usu:namaRuangan>H 205 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-465.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -950,6 +997,7 @@
     <usu:namaRuangan>I.103</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-487.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -957,6 +1005,7 @@
     <usu:namaRuangan>LABORATORIUM</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-494.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -964,6 +1013,7 @@
     <usu:namaRuangan>I 104 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-486.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -971,6 +1021,7 @@
     <usu:namaRuangan>O 103 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-429.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -978,6 +1029,7 @@
     <usu:namaRuangan>A.102</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-437.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -985,6 +1037,7 @@
     <usu:namaRuangan>H.203</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-470.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -992,6 +1045,7 @@
     <usu:namaRuangan>H.207</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-466.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -999,6 +1053,7 @@
     <usu:namaRuangan>H 203 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-470.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -1006,6 +1061,7 @@
     <usu:namaRuangan>H 202 FIB USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-468.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -1013,6 +1069,7 @@
     <usu:namaRuangan>104</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/img-20261123-wa0017.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -1020,6 +1077,7 @@
     <usu:namaRuangan>H.201</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-468.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -1027,6 +1085,7 @@
     <usu:namaRuangan>F.201</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">50</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-446.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/27"/>
   </usu:Ruangan>
 
@@ -1034,6 +1093,7 @@
     <usu:namaRuangan>C-103</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261123-wa0056.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/47"/>
   </usu:Ruangan>
 
@@ -1041,6 +1101,7 @@
     <usu:namaRuangan>C-102</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20260908-wa0004.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/47"/>
   </usu:Ruangan>
 
@@ -1048,6 +1109,7 @@
     <usu:namaRuangan>D-106</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261123-wa0055.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/47"/>
   </usu:Ruangan>
 
@@ -1055,6 +1117,7 @@
     <usu:namaRuangan>D-105</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261110-wa0041.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/47"/>
   </usu:Ruangan>
 
@@ -1062,6 +1125,7 @@
     <usu:namaRuangan>D-104</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261110-wa0059.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/47"/>
   </usu:Ruangan>
 
@@ -1069,6 +1133,7 @@
     <usu:namaRuangan>2.5</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261110-wa0068.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/47"/>
   </usu:Ruangan>
 
@@ -1076,6 +1141,7 @@
     <usu:namaRuangan>GL 1</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20260908-wa0003.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/47"/>
   </usu:Ruangan>
 
@@ -1083,6 +1149,7 @@
     <usu:namaRuangan>GL 2A</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261110-wa0071.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/47"/>
   </usu:Ruangan>
 
@@ -1090,6 +1157,7 @@
     <usu:namaRuangan>GL 2B</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261123-wa0050.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/47"/>
   </usu:Ruangan>
 
@@ -1097,6 +1165,7 @@
     <usu:namaRuangan>PIZZI</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261110-wa0054.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/47"/>
   </usu:Ruangan>
 
@@ -1104,6 +1173,7 @@
     <usu:namaRuangan>1.5</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261123-wa0051.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/47"/>
   </usu:Ruangan>
 
@@ -1111,6 +1181,7 @@
     <usu:namaRuangan>C-103</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261110-wa0066.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/12"/>
   </usu:Ruangan>
 
@@ -1118,6 +1189,7 @@
     <usu:namaRuangan>C-102</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261123-wa0052.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/12"/>
   </usu:Ruangan>
 
@@ -1125,6 +1197,7 @@
     <usu:namaRuangan>D-106</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261110-wa0046.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/12"/>
   </usu:Ruangan>
 
@@ -1132,6 +1205,7 @@
     <usu:namaRuangan>D-105</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261123-wa0054.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/12"/>
   </usu:Ruangan>
 
@@ -1139,6 +1213,7 @@
     <usu:namaRuangan>D-104</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fasilkom/img-20261123-wa0059.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/12"/>
   </usu:Ruangan>
 
@@ -1146,6 +1221,7 @@
     <usu:namaRuangan>Gor Badminton Terminal Sport Center (Jalan SMTK Medan No. 10, Dr. Mansyur)</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0055.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1153,6 +1229,7 @@
     <usu:namaRuangan>104</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0030.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1160,6 +1237,7 @@
     <usu:namaRuangan>1.3</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0032.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1167,6 +1245,7 @@
     <usu:namaRuangan>Lapangan Futsal Patologi FK USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0054.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/14"/>
   </usu:Ruangan>
 
@@ -1174,6 +1253,7 @@
     <usu:namaRuangan>Perpustakaan USU, RSP Kopi</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0021.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1181,6 +1261,7 @@
     <usu:namaRuangan>C.3.1</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0019.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1188,6 +1269,7 @@
     <usu:namaRuangan>Sekretariat PEMA USU lantai 2</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0029.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1195,6 +1277,7 @@
     <usu:namaRuangan>Lapangan Tennis BNI Pintu IV USU dan Lapangan Tennis Fakultas Kedokteran</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261123-wa0007.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/14"/>
   </usu:Ruangan>
 
@@ -1202,6 +1285,7 @@
     <usu:namaRuangan>Gedung Fakultas Matematika dan Ilmu Pengetahuan Alam</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fmipa/img-20261113-wa0041.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1209,6 +1293,7 @@
     <usu:namaRuangan>Lapangan sepak bola kembar USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0028.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1216,6 +1301,7 @@
     <usu:namaRuangan>Gedung Pancasila USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261123-wa0009.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1223,6 +1309,7 @@
     <usu:namaRuangan>RUANG E304</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261123-wa0008.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1230,6 +1317,7 @@
     <usu:namaRuangan>RUANG E303</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0020.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1237,6 +1325,7 @@
     <usu:namaRuangan>Lapangan bola voli Psikologi USU</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/psikologi/img-20261113-wa0016.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1244,6 +1333,7 @@
     <usu:namaRuangan>Lapangan Basket Fakultas Kedokteran</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261123-wa0010.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/14"/>
   </usu:Ruangan>
 
@@ -1251,6 +1341,7 @@
     <usu:namaRuangan>Gor Badminton Terminal Sport Center</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0055.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1258,6 +1349,7 @@
     <usu:namaRuangan>O.103</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/img-20261123-wa0022.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1265,6 +1357,7 @@
     <usu:namaRuangan>KOMPOS</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0030.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1272,6 +1365,7 @@
     <usu:namaRuangan>209</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0032.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1279,6 +1373,7 @@
     <usu:namaRuangan>Classroom II</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0054.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1286,6 +1381,7 @@
     <usu:namaRuangan>2.5</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0021.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1293,6 +1389,7 @@
     <usu:namaRuangan>Gedung H 105 S1 Ilmu Sejarah</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-462.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1300,6 +1397,7 @@
     <usu:namaRuangan>Gedung H 104 S1 Ilmu Sejarah</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-462.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1307,6 +1405,7 @@
     <usu:namaRuangan>Gedung H 103 S1 Ilmu Sejarah</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-458.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1314,6 +1413,7 @@
     <usu:namaRuangan>Gedung H 102 S1 Ilmu Sejarah</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-458.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1321,6 +1421,7 @@
     <usu:namaRuangan>O.104</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-428.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1328,6 +1429,7 @@
     <usu:namaRuangan>M.101</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-492.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1335,6 +1437,7 @@
     <usu:namaRuangan>M RSM 1</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-493.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1342,6 +1445,7 @@
     <usu:namaRuangan>Studio 3</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-474.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1349,6 +1453,7 @@
     <usu:namaRuangan>Studio 4</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-474.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1356,6 +1461,7 @@
     <usu:namaRuangan>Studio 6.</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-474.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1363,6 +1469,7 @@
     <usu:namaRuangan>Studio 2</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-474.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1370,6 +1477,7 @@
     <usu:namaRuangan>M RSM 2</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-493.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1377,6 +1485,7 @@
     <usu:namaRuangan>M.102</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-492.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1384,6 +1493,7 @@
     <usu:namaRuangan>GL 4C</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0019.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1391,6 +1501,7 @@
     <usu:namaRuangan>GL 4B</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0029.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1398,6 +1509,7 @@
     <usu:namaRuangan>GL 1</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261123-wa0007.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1405,6 +1517,7 @@
     <usu:namaRuangan>GL 3</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0028.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1412,6 +1525,7 @@
     <usu:namaRuangan>GL 4A</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261123-wa0009.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1419,6 +1533,7 @@
     <usu:namaRuangan>GL 2C</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261123-wa0008.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1426,6 +1541,7 @@
     <usu:namaRuangan>GL 2B</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0020.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1433,6 +1549,7 @@
     <usu:namaRuangan>GL 2A</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261123-wa0010.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1440,6 +1557,7 @@
     <usu:namaRuangan>M108</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-494.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1447,6 +1565,7 @@
     <usu:namaRuangan>3.1</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0055.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1454,6 +1573,7 @@
     <usu:namaRuangan>PIZZI</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0030.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1461,6 +1581,7 @@
     <usu:namaRuangan>CHAMPION</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0032.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1468,6 +1589,7 @@
     <usu:namaRuangan>LARK</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0054.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1475,6 +1597,7 @@
     <usu:namaRuangan>1.5</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0021.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1482,6 +1605,7 @@
     <usu:namaRuangan>H.204</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-469.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1489,6 +1613,7 @@
     <usu:namaRuangan>F.203</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-447.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1496,6 +1621,7 @@
     <usu:namaRuangan>H.104</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-462.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1503,6 +1629,7 @@
     <usu:namaRuangan>I.103</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-487.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1510,6 +1637,7 @@
     <usu:namaRuangan>LABORATORIUM</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/campus-root/img-20261113-wa0019.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1517,6 +1645,7 @@
     <usu:namaRuangan>A.102</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">1</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-437.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1524,6 +1653,7 @@
     <usu:namaRuangan>H.203</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-470.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1531,6 +1661,7 @@
     <usu:namaRuangan>H.207</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-466.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1538,6 +1669,7 @@
     <usu:namaRuangan>H.201</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-468.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 
@@ -1545,6 +1677,7 @@
     <usu:namaRuangan>F.201</usu:namaRuangan>
     <usu:lantaiRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">2</usu:lantaiRuangan>
     <usu:kapasitasRuangan rdf:datatype="http://www.w3.org/2001/XMLSchema#integer">40</usu:kapasitasRuangan>
+    <usu:pathFoto360>images/foto-360p/fib/scene-446.webp</usu:pathFoto360>
     <usu:beradaDiGedung rdf:resource="http://usuclassmap.usu.ac.id/resource/gedung/4"/>
   </usu:Ruangan>
 

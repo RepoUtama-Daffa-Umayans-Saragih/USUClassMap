@@ -566,7 +566,7 @@
     </div>
 
     <!-- ========================================================================= -->
-    <!-- REXA COPILOT AI CHATBOT WIDGET (PHASE 3)                                  -->
+    <!-- TANYA UCUP AI CHATBOT WIDGET (PHASE 3)                                 -->
     <!-- ========================================================================= -->
     @if(config('copilot.enabled', env('COPILOT_ENABLED', true)))
         @vite(['resources/js/copilot.js'])

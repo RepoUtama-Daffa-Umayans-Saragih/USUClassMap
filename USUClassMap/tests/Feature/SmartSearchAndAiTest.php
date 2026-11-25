@@ -7,11 +7,14 @@ use App\Models\PhotocopyPlace;
 use App\Observers\GitSnapshotObserver;
 use App\Services\GitSnapshotSyncService;
 use App\Services\Search\QueryIntentParserService;
+use Carbon\Carbon;
 use Database\Seeders\AdminUserSeeder;
 use Database\Seeders\BuildingSeeder;
 use Database\Seeders\PhotocopySeeder;
+use Database\Seeders\RichFotocopyCatalogExpansionSeeder;
 use Database\Seeders\ServiceMasterSeeder;
 use Database\Seeders\TrialAdminFotocopySeeder;
+use Database\Seeders\UsuPressFotocopySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -37,6 +40,8 @@ class SmartSearchAndAiTest extends TestCase
                 $this->seed(PhotocopySeeder::class);
                 $this->seed(TrialAdminFotocopySeeder::class);
             }
+            $this->seed(UsuPressFotocopySeeder::class);
+            $this->seed(RichFotocopyCatalogExpansionSeeder::class);
         });
     }
 
@@ -78,28 +83,44 @@ class SmartSearchAndAiTest extends TestCase
 
     public function test_smart_photocopy_search_handles_relaxed_attribute_fallback_honestly(): void
     {
-        $response = $this->getJson('/api/fotocopy/smart-search?' . http_build_query([
+        // 1. Pulpen pink kini tersedia sebagai kecocokan eksak di berbagai mitra
+        $exactResponse = $this->getJson('/api/fotocopy/smart-search?' . http_build_query([
             'q'   => 'cari pulpen pink murah terdekat',
             'lat' => 3.5612,
             'lng' => 98.6565,
         ]));
 
-        $response->assertStatus(200)
+        $exactResponse->assertStatus(200)
             ->assertJsonPath('status', 'success')
-            ->assertJsonPath('relaxed_fallback_used', true);
+            ->assertJsonPath('relaxed_fallback_used', false);
 
-        $data = $response->json();
-        $this->assertNotEmpty($data['results']);
-        $this->assertContains('pink', $data['missing_attributes'] ?? []);
-        $this->assertNotEmpty($data['advisory_note']);
+        $exactData = $exactResponse->json();
+        $this->assertGreaterThanOrEqual(1, (int) ($exactData['exact_match_count'] ?? 0));
+        $this->assertNotEmpty($exactData['results']);
 
-        // First result should be eceran pulpen (not 1 box grosir) with valid in-app actions & zero Google Maps URLs
-        $top = $data['results'][0];
+        $top = $exactData['results'][0];
         $this->assertStringContainsStringIgnoringCase('pulpen', $top['name']);
+        $this->assertTrue((bool) ($top['exact_attribute_match'] ?? false));
         $this->assertFalse((bool) ($top['is_bulk'] ?? false));
         $this->assertStringContainsString('/fotocopy/' . $top['store']['id'] . '/order', $top['actions']['order_url']);
         $this->assertStringContainsString('/map?route_to=fotocopy:' . $top['store']['id'], $top['actions']['route_url']);
-        $this->assertStringNotContainsString('google.com/maps', json_encode($data));
+        $this->assertStringNotContainsString('google.com/maps', json_encode($exactData));
+
+        // 2. Atribut yang benar-benar absen memicu fallback jujur (relaxed_fallback_used = true)
+        $relaxedResponse = $this->getJson('/api/fotocopy/smart-search?' . http_build_query([
+            'q'   => 'cari pulpen emas berlian murah terdekat',
+            'lat' => 3.5612,
+            'lng' => 98.6565,
+        ]));
+
+        $relaxedResponse->assertStatus(200)
+            ->assertJsonPath('status', 'success')
+            ->assertJsonPath('relaxed_fallback_used', true);
+
+        $relaxedData = $relaxedResponse->json();
+        $this->assertNotEmpty($relaxedData['results']);
+        $this->assertContains('emas', $relaxedData['missing_attributes'] ?? []);
+        $this->assertNotEmpty($relaxedData['advisory_note']);
     }
 
     public function test_smart_photocopy_search_filters_by_max_price_and_sorts_by_nearest(): void
@@ -195,9 +216,9 @@ class SmartSearchAndAiTest extends TestCase
 
         $fcData = $chatFc->json();
         $this->assertNotEmpty($fcData['reply']);
-        $this->assertNotEmpty($fcData['advisory_note']);
         $this->assertNotEmpty($fcData['cards']);
         $this->assertSame('fotocopy_item', $fcData['cards'][0]['type']);
+        $this->assertStringContainsStringIgnoringCase('pink', (string) ($fcData['cards'][0]['data']['name'] ?? ''));
         $this->assertNotEmpty($fcData['actions']);
 
         // 2. Spatial Landmark Query
@@ -222,7 +243,11 @@ class SmartSearchAndAiTest extends TestCase
     {
         $mapResp = $this->get('/map');
         $mapResp->assertStatus(200)
-            ->assertSee('map-search-input', false);
+            ->assertSee('map-search-input', false)
+            ->assertSee('Tanya Ucup', false)
+            ->assertSee('ucup-stand.webp', false)
+            ->assertSee('ucup-avatar.webp', false)
+            ->assertDontSee('Tanya Rexa', false);
 
         $firstBuildingId = Building::orderBy('id')->value('id');
         $mapFocusResp = $this->get('/map?focus_building=' . $firstBuildingId);
@@ -231,7 +256,11 @@ class SmartSearchAndAiTest extends TestCase
         $fcResp = $this->get('/fotocopy');
         $fcResp->assertStatus(200)
             ->assertSee('usuFotocopySmartSearch', false)
-            ->assertSee('Gunakan Lokasi GPS Saya', false);
+            ->assertSee('Gunakan Lokasi GPS Saya', false)
+            ->assertSee('Tanya Ucup', false)
+            ->assertSee('ucup-stand.webp', false)
+            ->assertSee('ucup-avatar.webp', false)
+            ->assertDontSee('Tanya Rexa', false);
 
         $fcQueryResp = $this->get('/fotocopy?' . http_build_query(['q' => 'cari pulpen pink murah terdekat']));
         $fcQueryResp->assertStatus(200);
@@ -239,5 +268,94 @@ class SmartSearchAndAiTest extends TestCase
         $this->assertStringContainsString('/map?route_to=fotocopy:', urldecode($fcHtml));
         $this->assertStringNotContainsString('https://maps.google.com', $fcHtml);
         $this->assertStringNotContainsString('google.com/maps/dir', $fcHtml);
+    }
+
+    public function test_unified_fotocopy_search_replaces_hero_search_and_syncs_stores_and_products(): void
+    {
+        Carbon::setTestNow(Carbon::create(2026, 11, 23, 10, 0, 0, 'Asia/Jakarta'));
+
+        try {
+            // 1. Halaman /fotocopy tidak lagi merender form pencarian & tombol pill di hero hijau
+            $page = $this->get('/fotocopy');
+            $page->assertStatus(200)
+                ->assertSee('Integrasi Layanan Mahasiswa USU')
+                ->assertSee('Layanan Fotocopy & Percetakan', false)
+                ->assertDontSee('Cari fotocopy, fakultas terdekat, jilid skripsi...', false)
+                ->assertDontSee('href="' . route('fotocopy.index', ['q' => 'Teknik']) . '"', false)
+                ->assertDontSee('href="' . route('fotocopy.index', ['q' => 'FISIP']) . '"', false)
+                ->assertDontSee('href="' . route('fotocopy.index', ['q' => 'Kedokteran']) . '"', false)
+                ->assertDontSee('href="' . route('fotocopy.index', ['q' => 'Perpustakaan']) . '"', false)
+                ->assertDontSee('href="' . route('fotocopy.index', ['q' => 'Skripsi']) . '"', false)
+                // 2. Judul terpadu & 8 chip cepat tampil
+                ->assertSee('Cari Tempat Fotocopy, Produk ATK, Print & Jilid Terbaik', false)
+                ->assertSee('fotocopy buka sekarang', false)
+                ->assertSee('fotocopy dekat FT', false)
+                ->assertSee('fotocopy dekat Perpus', false)
+                ->assertSee('fotocopy dekat FISIP', false)
+                ->assertSee('USU Press', false)
+                ->assertSee('cari pulpen pink murah terdekat', false)
+                ->assertSee('print warna murah', false)
+                ->assertSee('jilid hardcover skripsi', false);
+
+            // 3. API Smart Search mengembalikan results + matched_store_ids akurat untuk toko, fakultas, jasa, status & produk
+            $cases = [
+                ['q' => 'fotocopy dekat FT', 'anchor' => 'landmark', 'topStore' => 'Fotocopy Pak Budi FT', 'exactCount' => null],
+                ['q' => 'Dekat FT', 'anchor' => 'landmark', 'topStore' => 'Fotocopy Pak Budi FT', 'exactCount' => null],
+                ['q' => 'fotocopy dekat Perpus', 'anchor' => 'landmark', 'topStore' => 'Berkah Abadi Copy & ATK Perpustakaan', 'exactCount' => null],
+                ['q' => 'Dekat Perpus', 'anchor' => 'landmark', 'topStore' => 'Berkah Abadi Copy & ATK Perpustakaan', 'exactCount' => null],
+                ['q' => 'fotocopy dekat FISIP', 'anchor' => 'landmark', 'topStore' => 'Fotocopy & Print Jaya FISIP', 'exactCount' => null],
+                ['q' => 'Dekat FISIP', 'anchor' => 'landmark', 'topStore' => 'Fotocopy & Print Jaya FISIP', 'exactCount' => null],
+                ['q' => 'Dekat FK', 'anchor' => 'landmark', 'topStore' => 'Digital Print Center FK & FIB', 'exactCount' => null],
+                ['q' => 'Dekat FIB', 'anchor' => 'landmark', 'topStore' => 'Digital Print Center FK & FIB', 'exactCount' => null],
+                ['q' => 'Dekat Fasilkom', 'anchor' => 'landmark', 'topStore' => 'Fotocopy Trial Admin', 'exactCount' => null],
+                ['q' => 'USU Press', 'anchor' => null, 'topStore' => 'USU Press (USUpress Penerbit & Fotocopy)', 'exactCount' => 1],
+                ['q' => 'Fotocopy Pak Budi', 'anchor' => null, 'topStore' => 'Fotocopy Pak Budi FT', 'exactCount' => 1],
+                ['q' => 'Berkah Abadi', 'anchor' => null, 'topStore' => 'Berkah Abadi Copy & ATK Perpustakaan', 'exactCount' => 1],
+                ['q' => 'Jilid Skripsi', 'anchor' => null, 'topStore' => null, 'exactCount' => null],
+                ['q' => 'Print Warna', 'anchor' => null, 'topStore' => null, 'exactCount' => null],
+                ['q' => 'fotocopy buka sekarang', 'anchor' => null, 'topStore' => null, 'exactCount' => null],
+                ['q' => 'cari pulpen pink murah terdekat', 'anchor' => null, 'topStore' => null, 'exactCount' => null],
+            ];
+
+            foreach ($cases as $tc) {
+                $resp = $this->getJson('/api/fotocopy/smart-search?' . http_build_query([
+                    'q' => $tc['q'],
+                    'limit' => 18,
+                ]));
+                $resp->assertStatus(200)->assertJsonPath('status', 'success');
+                $json = $resp->json();
+
+                $this->assertNotEmpty($json['results'] ?? [], "Results empty for {$tc['q']}");
+                $this->assertNotEmpty($json['matched_store_ids'] ?? [], "matched_store_ids empty for {$tc['q']}");
+
+                if ($tc['anchor'] !== null) {
+                    $this->assertSame($tc['anchor'], $json['anchor']['source'] ?? null, "Unexpected anchor for {$tc['q']}");
+                }
+                if ($tc['topStore'] !== null) {
+                    $this->assertSame($tc['topStore'], $json['stores'][0]['name'] ?? null, "Unexpected top store for {$tc['q']}");
+                }
+                if ($tc['exactCount'] !== null) {
+                    $this->assertSame($tc['exactCount'], $json['matched_stores_count'] ?? null, "Unexpected matched_stores_count for {$tc['q']}");
+                }
+            }
+
+            $noneResp = $this->getJson('/api/fotocopy/smart-search?' . http_build_query(['q' => 'xyznotfound123']));
+            $noneResp->assertStatus(200)
+                ->assertJsonPath('matched_stores_count', 0);
+
+            // 4. SSR /fotocopy?q=... sinkron penuh dengan hasil Smart Search tanpa false-positive
+            $ssrUsuPress = $this->get('/fotocopy?' . http_build_query(['q' => 'USU Press']));
+            $ssrUsuPress->assertStatus(200)
+                ->assertSee('USU Press (USUpress Penerbit &amp; Fotocopy)', false)
+                ->assertSee('(1 hasil filter)', false)
+                ->assertDontSee('NEXT PERCETAKAN', false);
+
+            $ssrFt = $this->get('/fotocopy?' . http_build_query(['q' => 'fotocopy dekat FT']));
+            $ssrFt->assertStatus(200)
+                ->assertSee('Fotocopy Pak Budi FT', false)
+                ->assertSee('hasil filter', false);
+        } finally {
+            Carbon::setTestNow();
+        }
     }
 }

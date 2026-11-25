@@ -20,12 +20,43 @@ class CopyShopApiController extends Controller
         $query = PhotocopyPlace::with(['services', 'items', 'reviews'])
             ->where('is_active', true);
 
-        // Search by keyword in name, location, or description
+        // Search by keyword in name, location, or description (supports compact & multi-token store names)
         if ($search = $request->query('q')) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('location_name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+            $trimSearch = trim((string) $search);
+            $compactSearch = preg_replace('/[^a-z0-9]/i', '', mb_strtolower($trimSearch, 'UTF-8')) ?? '';
+            $tokens = array_values(array_filter(
+                preg_split('/[\s\-\(\)&\/.,]+/u', mb_strtolower($trimSearch, 'UTF-8')) ?: [],
+                fn (string $t): bool => mb_strlen($t, 'UTF-8') >= 2
+            ));
+
+            $query->where(function ($q) use ($trimSearch, $compactSearch, $tokens) {
+                $q->where('name', 'like', "%{$trimSearch}%")
+                    ->orWhere('location_name', 'like', "%{$trimSearch}%")
+                    ->orWhere('description', 'like', "%{$trimSearch}%")
+                    ->orWhere('slug', 'like', "%{$trimSearch}%");
+
+                if (strlen($compactSearch) >= 4) {
+                    $q->orWhereRaw(
+                        "LOWER(REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(name, ' ', ''), '-', ''), '(', ''), ')', ''), '&', '')) LIKE ?",
+                        ["%{$compactSearch}%"]
+                    )->orWhereRaw(
+                        "LOWER(REPLACE(slug, '-', '')) LIKE ?",
+                        ["%{$compactSearch}%"]
+                    );
+                }
+
+                if (count($tokens) >= 2) {
+                    $q->orWhere(function ($tokenGroup) use ($tokens) {
+                        foreach ($tokens as $token) {
+                            $tokenGroup->where(function ($sub) use ($token) {
+                                $sub->where('name', 'like', "%{$token}%")
+                                    ->orWhere('location_name', 'like', "%{$token}%")
+                                    ->orWhere('description', 'like', "%{$token}%")
+                                    ->orWhere('slug', 'like', "%{$token}%");
+                            });
+                        }
+                    });
+                }
             });
         }
 
@@ -46,7 +77,12 @@ class CopyShopApiController extends Controller
             $query->latest();
         }
 
-        $shops = $query->paginate((int)$request->query('per_page', 15));
+        if ($request->boolean('all')) {
+            return CopyShopResource::collection($query->get());
+        }
+
+        $perPage = min(500, max(1, (int) $request->query('per_page', 100)));
+        $shops = $query->paginate($perPage);
 
         return CopyShopResource::collection($shops);
     }

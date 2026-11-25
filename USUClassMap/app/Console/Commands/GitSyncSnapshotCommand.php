@@ -111,6 +111,7 @@ class GitSyncSnapshotCommand extends Command
             $this->line('Snapshot Tersedia  : ' . ($status['snapshot_exists'] ? 'Ya (database/seeders/snapshots/manifest.json)' : 'Belum ada'));
             $this->line('RDF Snapshot       : ' . ($status['rdf_snapshot_exists'] ? 'Ada (schedules.rdf)' : 'Belum ada'));
             $this->line('Kalibrasi Foto 360 : ' . $status['photo_360_calibrations_count'] . ' entri');
+            $this->line('Tur Virtual FIB 360: ' . ($status['fib_walk_snapshot_exists'] ? ($status['fib_walk_scenes_count'] . ' scene aktif (fib_walk_graph.json)') : 'Belum ada'));
             $this->line('Manifest Hash      : ' . ($status['manifest_hash'] ?? '-'));
             $this->line('Manifest Dibuat    : ' . ($status['manifest_generated_at'] ?? '-'));
             $this->line('State Lokal Hash   : ' . ($status['local_hash'] ?? '-'));

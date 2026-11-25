@@ -14,11 +14,17 @@ class CopyShopResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $opStatus = app(\App\Services\OperationalStatusService::class)->evaluatePhotocopyStatus($this->resource);
+        $scheduleText = ($opStatus['is_open_now'] ?? false)
+            ? "Buka ⋅ {$opStatus['detail_text']}"
+            : "Tutup ⋅ {$opStatus['detail_text']}";
+
         return [
             'id' => $this->id,
             'google_place_id' => $this->google_place_id,
             'name' => $this->name,
             'slug' => $this->slug,
+            'image_url' => $this->image_url,
             'description' => $this->description,
             'latitude' => $this->latitude !== null ? (float)$this->latitude : null,
             'longitude' => $this->longitude !== null ? (float)$this->longitude : null,
@@ -27,13 +33,20 @@ class CopyShopResource extends JsonResource
                 'latitude' => $this->latitude !== null ? (float)$this->latitude : null,
                 'longitude' => $this->longitude !== null ? (float)$this->longitude : null,
             ],
+            'operational_status' => $opStatus,
             'status' => [
                 'business_status' => $this->business_status,
-                'is_open_now' => $this->is_open_now,
-                'schedule_status_text' => $this->current_schedule_status,
-                'operating_days' => $this->operating_days,
-                'open_time' => $this->open_time,
-                'close_time' => $this->close_time,
+                'is_open_now' => (bool) ($opStatus['is_open_now'] ?? false),
+                'status_code' => $opStatus['status_code'],
+                'status_label' => $opStatus['status_label'],
+                'hours_label' => $opStatus['hours_label'],
+                'detail_text' => $opStatus['detail_text'],
+                'marker_color' => $opStatus['marker_color'],
+                'evaluated_at_wib' => $opStatus['evaluated_at_wib'],
+                'schedule_status_text' => $scheduleText,
+                'operating_days' => $opStatus['operating_days'],
+                'open_time' => $opStatus['open_time'],
+                'close_time' => $opStatus['close_time'],
                 'opening_hours_raw' => $this->opening_hours,
             ],
             'rating' => [

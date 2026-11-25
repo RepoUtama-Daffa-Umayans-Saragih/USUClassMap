@@ -205,7 +205,7 @@
                                 title="Tampilkan / Sembunyikan Pin Mitra Fotokopi Lainnya"
                             >
                                 <i class="fa-solid fa-print text-emerald-600"></i>
-                                <span>Fotokopi (<span id="smap-ref-photocopy-count">31</span>)</span>
+                                <span>Fotokopi (<span id="smap-ref-photocopy-count">{{ \App\Models\PhotocopyPlace::where('is_active', true)->count() }}</span>)</span>
                             </button>
                         </div>
 
@@ -360,7 +360,7 @@
             async function fetchReferencePhotocopy() {
                 if (cachedPhotocopy.length > 0) return cachedPhotocopy;
                 try {
-                    const res = await fetch('/api/copy-shops?per_page=50');
+                    const res = await fetch('/api/copy-shops?per_page=200');
                     const json = await res.json();
                     cachedPhotocopy = json.data || [];
                     if (refPhotocopyCount) refPhotocopyCount.textContent = cachedPhotocopy.length;

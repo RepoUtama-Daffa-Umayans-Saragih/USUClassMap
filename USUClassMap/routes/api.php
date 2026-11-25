@@ -47,6 +47,9 @@ Route::prefix('copy-shops')->group(function () {
 Route::match(['get', 'post'], '/route', [CampusRoutingController::class, 'route'])->name('api.routing.route');
 Route::get('/routing/destinations', [CampusRoutingController::class, 'destinations'])->name('api.routing.destinations');
 
+// FIB 360° Virtual Walk Graph API
+Route::get('/virtual-walk/fib/graph', [\App\Http\Controllers\FibVirtualWalkController::class, 'graph'])->name('api.virtual-walk.fib.graph');
+
 // Unified Smart Search & Smart Photocopy Search Engines
 Route::get('/smart-search', [SmartSearchApiController::class, 'search'])->name('api.smart-search');
 Route::get('/fotocopy/smart-search', [SmartSearchApiController::class, 'fotocopy'])->name('api.fotocopy.smart-search');

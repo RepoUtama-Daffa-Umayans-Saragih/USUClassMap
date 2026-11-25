@@ -765,12 +765,12 @@ function initAdminMapEngine() {
     });
 
     // =========================================================================
-    // 10. PHOTOCOPY LAYER (31 MITRA FOTOKOPI USU INTEGRATION)
+    // 10. PHOTOCOPY LAYER (MITRA FOTOKOPI USU INTEGRATION)
     // =========================================================================
     async function loadPhotocopyPlaces() {
         if (allPhotocopyPlaces.length > 0) return allPhotocopyPlaces;
         try {
-            const endpoint = config.endpoints?.copyShops || '/api/copy-shops?per_page=50';
+            const endpoint = config.endpoints?.copyShops || '/api/copy-shops?per_page=200';
             const resp = await fetch(endpoint);
             const json = await resp.json();
             allPhotocopyPlaces = json.data || [];

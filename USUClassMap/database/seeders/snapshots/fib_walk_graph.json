@@ -1,0 +1,2114 @@
+{
+    "version": 2,
+    "updated_at": "2026-11-25T06:37:14+07:00",
+    "start_scene_id": 495,
+    "scenes": {
+        "428": {
+            "id": 428,
+            "label": "Ruang Kelas Pintar Internasional / O.102 & O.104",
+            "zone": "Gedung O",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "428.jpg",
+            "default_pitch": 2.8,
+            "default_yaw": 157.6,
+            "hotspots": [
+                {
+                    "target_id": 430,
+                    "label": "Menuju Gedung O (Titik 1)",
+                    "kind": "walk",
+                    "yaw": 157.6,
+                    "pitch": -20,
+                    "target_yaw": 163.6,
+                    "target_pitch": -4.1
+                }
+            ]
+        },
+        "429": {
+            "id": 429,
+            "label": "Ruang Kelas Pintar Internasional / O.101 & O.103",
+            "zone": "Gedung O",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "429.jpg",
+            "default_pitch": 8.7,
+            "default_yaw": 165.5,
+            "hotspots": [
+                {
+                    "target_id": 430,
+                    "label": "Menuju Gedung O (Titik 1)",
+                    "kind": "walk",
+                    "yaw": 165.5,
+                    "pitch": -20,
+                    "target_yaw": 163.6,
+                    "target_pitch": -4.1
+                }
+            ]
+        },
+        "430": {
+            "id": 430,
+            "label": "Gedung O (Titik 1)",
+            "zone": "Gedung O",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "430.jpg",
+            "default_pitch": -4.1,
+            "default_yaw": 163.6,
+            "hotspots": [
+                {
+                    "target_id": 431,
+                    "label": "Menuju Gedung O (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 163.6,
+                    "pitch": -20,
+                    "target_yaw": 170,
+                    "target_pitch": -3.4
+                },
+                {
+                    "target_id": 428,
+                    "label": "Masuk Ruang Kelas Pintar Internasional / O.102 & O.104",
+                    "kind": "room",
+                    "yaw": 115.6,
+                    "pitch": -2,
+                    "target_yaw": -22.4,
+                    "target_pitch": 2.8
+                },
+                {
+                    "target_id": 429,
+                    "label": "Masuk Ruang Kelas Pintar Internasional / O.101 & O.103",
+                    "kind": "room",
+                    "yaw": -148.4,
+                    "pitch": -2,
+                    "target_yaw": -14.5,
+                    "target_pitch": 8.7
+                }
+            ]
+        },
+        "431": {
+            "id": 431,
+            "label": "Gedung O (Titik 2)",
+            "zone": "Gedung O",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "431.jpg",
+            "default_pitch": -3.4,
+            "default_yaw": 170,
+            "hotspots": [
+                {
+                    "target_id": 432,
+                    "label": "Menuju Lorong Depan Gedung O (Titik 1)",
+                    "kind": "walk",
+                    "yaw": 170,
+                    "pitch": -20,
+                    "target_yaw": 78.5,
+                    "target_pitch": 1.3
+                },
+                {
+                    "target_id": 430,
+                    "label": "Menuju Gedung O (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -10,
+                    "pitch": -20,
+                    "target_yaw": 115.6,
+                    "target_pitch": -4.1
+                }
+            ]
+        },
+        "432": {
+            "id": 432,
+            "label": "Lorong Depan Gedung O (Titik 1)",
+            "zone": "Gedung O",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "432.jpg",
+            "default_pitch": 1.3,
+            "default_yaw": 78.5,
+            "hotspots": [
+                {
+                    "target_id": 433,
+                    "label": "Menuju Lorong Depan Gedung O (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 78.5,
+                    "pitch": -20,
+                    "target_yaw": 167.6,
+                    "target_pitch": -0.6
+                },
+                {
+                    "target_id": 431,
+                    "label": "Menuju Gedung O (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -101.5,
+                    "pitch": -20,
+                    "target_yaw": -10,
+                    "target_pitch": -3.4
+                }
+            ]
+        },
+        "433": {
+            "id": 433,
+            "label": "Lorong Depan Gedung O (Titik 2)",
+            "zone": "Gedung O",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "433.jpg",
+            "default_pitch": -0.6,
+            "default_yaw": 167.6,
+            "hotspots": [
+                {
+                    "target_id": 435,
+                    "label": "Menuju Percabangan Gedung O dan Gedung A",
+                    "kind": "walk",
+                    "yaw": 167.6,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 432,
+                    "label": "Menuju Lorong Depan Gedung O (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -12.4,
+                    "pitch": -20,
+                    "target_yaw": -101.5,
+                    "target_pitch": 1.3
+                }
+            ]
+        },
+        "434": {
+            "id": 434,
+            "label": "Random (Dikecualikan)",
+            "zone": "Dikecualikan",
+            "floor": 1,
+            "type": "excluded",
+            "excluded": true,
+            "filename": "434.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": []
+        },
+        "435": {
+            "id": 435,
+            "label": "Percabangan Gedung O dan Gedung A",
+            "zone": "Persimpangan O & A",
+            "floor": 1,
+            "type": "junction",
+            "excluded": false,
+            "filename": "435.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 436,
+                    "label": "Menuju Gedung A",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 449,
+                    "label": "Menuju Percabangan Gedung O & A",
+                    "kind": "walk",
+                    "yaw": -75,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 495,
+                    "label": "Menuju Jalan Terusan Pintu Masuk FIB",
+                    "kind": "walk",
+                    "yaw": 75,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 433,
+                    "label": "Menuju Lorong Depan Gedung O (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -12.4,
+                    "target_pitch": -0.6
+                }
+            ]
+        },
+        "436": {
+            "id": 436,
+            "label": "Gedung A",
+            "zone": "Gedung A",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "436.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 435,
+                    "label": "Menuju Percabangan Gedung O dan Gedung A",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 437,
+                    "label": "Masuk Ruang Kelas A-102",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 438,
+                    "label": "Masuk Ruang Kelas A-101",
+                    "kind": "room",
+                    "yaw": 48,
+                    "pitch": -2,
+                    "target_yaw": -82.7,
+                    "target_pitch": -7.1
+                },
+                {
+                    "target_id": 439,
+                    "label": "Masuk Ruang Kelas B-101",
+                    "kind": "room",
+                    "yaw": -105,
+                    "pitch": -2,
+                    "target_yaw": 30.7,
+                    "target_pitch": 5.9
+                }
+            ]
+        },
+        "437": {
+            "id": 437,
+            "label": "Ruang Kelas A-102",
+            "zone": "Gedung A",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "437.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 436,
+                    "label": "Menuju Gedung A",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "438": {
+            "id": 438,
+            "label": "Ruang Kelas A-101",
+            "zone": "Gedung A",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "438.jpg",
+            "default_pitch": -7.1,
+            "default_yaw": -82.7,
+            "hotspots": [
+                {
+                    "target_id": 436,
+                    "label": "Menuju Gedung A",
+                    "kind": "walk",
+                    "yaw": 97.3,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "439": {
+            "id": 439,
+            "label": "Ruang Kelas B-101",
+            "zone": "Gedung B",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "439.jpg",
+            "default_pitch": 5.9,
+            "default_yaw": 78.7,
+            "hotspots": [
+                {
+                    "target_id": 436,
+                    "label": "Menuju Gedung A",
+                    "kind": "walk",
+                    "yaw": -101.3,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 440,
+                    "label": "Masuk Ruang Kelas B-102",
+                    "kind": "room",
+                    "yaw": 30.7,
+                    "pitch": -2,
+                    "target_yaw": -122.6,
+                    "target_pitch": -2.2
+                }
+            ]
+        },
+        "440": {
+            "id": 440,
+            "label": "Ruang Kelas B-102",
+            "zone": "Gedung B",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "440.jpg",
+            "default_pitch": -2.2,
+            "default_yaw": -170.6,
+            "hotspots": [
+                {
+                    "target_id": 439,
+                    "label": "Masuk Ruang Kelas B-101",
+                    "kind": "room",
+                    "yaw": 141.4,
+                    "pitch": -2,
+                    "target_yaw": -101.3,
+                    "target_pitch": 5.9
+                },
+                {
+                    "target_id": 441,
+                    "label": "Masuk Ruang Kelas B-103",
+                    "kind": "room",
+                    "yaw": -122.6,
+                    "pitch": -2,
+                    "target_yaw": -53.6,
+                    "target_pitch": 5.1
+                }
+            ]
+        },
+        "441": {
+            "id": 441,
+            "label": "Ruang Kelas B-103",
+            "zone": "Gedung B",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "441.jpg",
+            "default_pitch": 5.1,
+            "default_yaw": 174.4,
+            "hotspots": [
+                {
+                    "target_id": 440,
+                    "label": "Masuk Ruang Kelas B-102",
+                    "kind": "room",
+                    "yaw": 126.4,
+                    "pitch": -2,
+                    "target_yaw": 141.4,
+                    "target_pitch": -2.2
+                }
+            ]
+        },
+        "442": {
+            "id": 442,
+            "label": "Tangga Lantai 1 Gedung F",
+            "zone": "Gedung F",
+            "floor": 1,
+            "type": "stairs",
+            "excluded": false,
+            "filename": "442.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 443,
+                    "label": "Naik ke Lantai 2: Gedung F Dalam Tengah antara Lt. 1 & 2",
+                    "kind": "stairs_up",
+                    "yaw": 0,
+                    "pitch": 6,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 483,
+                    "label": "Menuju Pendopo Depan Gedung F (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "443": {
+            "id": 443,
+            "label": "Gedung F Dalam Tengah antara Lt. 1 & 2",
+            "zone": "Gedung F",
+            "floor": 2,
+            "type": "stairs",
+            "excluded": false,
+            "filename": "443.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 445,
+                    "label": "Naik ke Lantai 3: Depan Tangga Lantai 3 Gedung F",
+                    "kind": "stairs_up",
+                    "yaw": 0,
+                    "pitch": 6,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 442,
+                    "label": "Turun ke Lantai 1: Tangga Lantai 1 Gedung F",
+                    "kind": "stairs_down",
+                    "yaw": -180,
+                    "pitch": -14,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "444": {
+            "id": 444,
+            "label": "Ruang Kelas F-202",
+            "zone": "Gedung F",
+            "floor": 3,
+            "type": "room",
+            "excluded": false,
+            "filename": "444.jpg",
+            "default_pitch": -5.5,
+            "default_yaw": -46.8,
+            "hotspots": [
+                {
+                    "target_id": 448,
+                    "label": "Menuju Lantai 3 di Tengah F-201–203",
+                    "kind": "walk",
+                    "yaw": 133.2,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "445": {
+            "id": 445,
+            "label": "Depan Tangga Lantai 3 Gedung F",
+            "zone": "Gedung F",
+            "floor": 3,
+            "type": "stairs",
+            "excluded": false,
+            "filename": "445.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 448,
+                    "label": "Menuju Lantai 3 di Tengah F-201–203",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 443,
+                    "label": "Turun ke Lantai 2: Gedung F Dalam Tengah antara Lt. 1 & 2",
+                    "kind": "stairs_down",
+                    "yaw": -180,
+                    "pitch": -14,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "446": {
+            "id": 446,
+            "label": "Ruang Kelas F-201",
+            "zone": "Gedung F",
+            "floor": 3,
+            "type": "room",
+            "excluded": false,
+            "filename": "446.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 448,
+                    "label": "Menuju Lantai 3 di Tengah F-201–203",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "447": {
+            "id": 447,
+            "label": "Ruang Kelas F-203",
+            "zone": "Gedung F",
+            "floor": 3,
+            "type": "room",
+            "excluded": false,
+            "filename": "447.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 448,
+                    "label": "Menuju Lantai 3 di Tengah F-201–203",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "448": {
+            "id": 448,
+            "label": "Lantai 3 di Tengah F-201–203",
+            "zone": "Gedung F",
+            "floor": 3,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "448.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 445,
+                    "label": "Menuju Depan Tangga Lantai 3 Gedung F",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 446,
+                    "label": "Masuk Ruang Kelas F-201",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 444,
+                    "label": "Masuk Ruang Kelas F-202",
+                    "kind": "room",
+                    "yaw": 48,
+                    "pitch": -2,
+                    "target_yaw": -46.8,
+                    "target_pitch": -5.5
+                },
+                {
+                    "target_id": 447,
+                    "label": "Masuk Ruang Kelas F-203",
+                    "kind": "room",
+                    "yaw": -105,
+                    "pitch": -2,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "449": {
+            "id": 449,
+            "label": "Percabangan Gedung O & A",
+            "zone": "Persimpangan O & A",
+            "floor": 1,
+            "type": "junction",
+            "excluded": false,
+            "filename": "449.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 450,
+                    "label": "Menuju Gedung O (Arah Jalan ke H)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 435,
+                    "label": "Menuju Percabangan Gedung O dan Gedung A",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": 75,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "450": {
+            "id": 450,
+            "label": "Gedung O (Arah Jalan ke H)",
+            "zone": "Gedung O",
+            "floor": 1,
+            "type": "outdoor",
+            "excluded": false,
+            "filename": "450.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 451,
+                    "label": "Menuju Jalan ke Gedung H (Titik 1)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 449,
+                    "label": "Menuju Percabangan Gedung O & A",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "451": {
+            "id": 451,
+            "label": "Jalan ke Gedung H (Titik 1)",
+            "zone": "Jalan ke Gedung H",
+            "floor": 1,
+            "type": "outdoor",
+            "excluded": false,
+            "filename": "451.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 452,
+                    "label": "Menuju Jalan ke Gedung H (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 450,
+                    "label": "Menuju Gedung O (Arah Jalan ke H)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "452": {
+            "id": 452,
+            "label": "Jalan ke Gedung H (Titik 2)",
+            "zone": "Jalan ke Gedung H",
+            "floor": 1,
+            "type": "outdoor",
+            "excluded": false,
+            "filename": "452.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 453,
+                    "label": "Menuju Jalan ke Gedung H (Titik 3)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 451,
+                    "label": "Menuju Jalan ke Gedung H (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "453": {
+            "id": 453,
+            "label": "Jalan ke Gedung H (Titik 3)",
+            "zone": "Jalan ke Gedung H",
+            "floor": 1,
+            "type": "outdoor",
+            "excluded": false,
+            "filename": "453.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 454,
+                    "label": "Menuju Jalan ke Gedung H (Titik 4)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 452,
+                    "label": "Menuju Jalan ke Gedung H (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "454": {
+            "id": 454,
+            "label": "Jalan ke Gedung H (Titik 4)",
+            "zone": "Jalan ke Gedung H",
+            "floor": 1,
+            "type": "outdoor",
+            "excluded": false,
+            "filename": "454.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 455,
+                    "label": "Menuju Jalan ke Gedung H (Titik 5)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 453,
+                    "label": "Menuju Jalan ke Gedung H (Titik 3)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "455": {
+            "id": 455,
+            "label": "Jalan ke Gedung H (Titik 5)",
+            "zone": "Jalan ke Gedung H",
+            "floor": 1,
+            "type": "outdoor",
+            "excluded": false,
+            "filename": "455.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 456,
+                    "label": "Menuju Depan Gedung H (Titik 1)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 454,
+                    "label": "Menuju Jalan ke Gedung H (Titik 4)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "456": {
+            "id": 456,
+            "label": "Depan Gedung H (Titik 1)",
+            "zone": "Gedung H",
+            "floor": 1,
+            "type": "outdoor",
+            "excluded": false,
+            "filename": "456.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 457,
+                    "label": "Menuju Depan Gedung H (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 455,
+                    "label": "Menuju Jalan ke Gedung H (Titik 5)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "457": {
+            "id": 457,
+            "label": "Depan Gedung H (Titik 2)",
+            "zone": "Gedung H",
+            "floor": 1,
+            "type": "outdoor",
+            "excluded": false,
+            "filename": "457.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 463,
+                    "label": "Menuju Lantai 1 Gedung H",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 471,
+                    "label": "Menuju Lorong Sebelah Gedung Teater (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -75,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 456,
+                    "label": "Menuju Depan Gedung H (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "458": {
+            "id": 458,
+            "label": "Ruang Kelas H-102 & H-103",
+            "zone": "Gedung H",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "458.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 463,
+                    "label": "Menuju Lantai 1 Gedung H",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "459": {
+            "id": 459,
+            "label": "Teras Menuju Belakang Gedung H (Titik 1)",
+            "zone": "Gedung H",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "459.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 460,
+                    "label": "Menuju Teras Menuju Belakang Gedung H (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 463,
+                    "label": "Menuju Lantai 1 Gedung H",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "460": {
+            "id": 460,
+            "label": "Teras Menuju Belakang Gedung H (Titik 2)",
+            "zone": "Gedung H",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "460.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 461,
+                    "label": "Menuju Menuju Ruang Kelas H-104 & H-105",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 459,
+                    "label": "Menuju Teras Menuju Belakang Gedung H (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "461": {
+            "id": 461,
+            "label": "Menuju Ruang Kelas H-104 & H-105",
+            "zone": "Gedung H",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "461.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 460,
+                    "label": "Menuju Teras Menuju Belakang Gedung H (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 462,
+                    "label": "Masuk Ruang Kelas H-104 & H-105",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "462": {
+            "id": 462,
+            "label": "Ruang Kelas H-104 & H-105",
+            "zone": "Gedung H",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "462.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 461,
+                    "label": "Menuju Menuju Ruang Kelas H-104 & H-105",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "463": {
+            "id": 463,
+            "label": "Lantai 1 Gedung H",
+            "zone": "Gedung H",
+            "floor": 1,
+            "type": "junction",
+            "excluded": false,
+            "filename": "463.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 459,
+                    "label": "Menuju Teras Menuju Belakang Gedung H (Titik 1)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 464,
+                    "label": "Menuju Tangga Gedung H",
+                    "kind": "walk",
+                    "yaw": -75,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 457,
+                    "label": "Menuju Depan Gedung H (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 458,
+                    "label": "Masuk Ruang Kelas H-102 & H-103",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "464": {
+            "id": 464,
+            "label": "Tangga Gedung H",
+            "zone": "Gedung H",
+            "floor": 1,
+            "type": "stairs",
+            "excluded": false,
+            "filename": "464.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 468,
+                    "label": "Naik ke Lantai 2: Ruang Kelas H-202",
+                    "kind": "stairs_up",
+                    "yaw": 0,
+                    "pitch": 6,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 463,
+                    "label": "Menuju Lantai 1 Gedung H",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "465": {
+            "id": 465,
+            "label": "Ruang Kelas H-208",
+            "zone": "Gedung H",
+            "floor": 2,
+            "type": "room",
+            "excluded": false,
+            "filename": "465.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 466,
+                    "label": "Masuk Ruang Kelas H-207",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "466": {
+            "id": 466,
+            "label": "Ruang Kelas H-207",
+            "zone": "Gedung H",
+            "floor": 2,
+            "type": "room",
+            "excluded": false,
+            "filename": "466.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 467,
+                    "label": "Masuk Ruang Kelas H-206",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 465,
+                    "label": "Masuk Ruang Kelas H-208",
+                    "kind": "room",
+                    "yaw": 48,
+                    "pitch": -2,
+                    "target_yaw": 132,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "467": {
+            "id": 467,
+            "label": "Ruang Kelas H-206",
+            "zone": "Gedung H",
+            "floor": 2,
+            "type": "room",
+            "excluded": false,
+            "filename": "467.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 469,
+                    "label": "Masuk Ruang Kelas H-204",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 466,
+                    "label": "Masuk Ruang Kelas H-207",
+                    "kind": "room",
+                    "yaw": 48,
+                    "pitch": -2,
+                    "target_yaw": 48,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "468": {
+            "id": 468,
+            "label": "Ruang Kelas H-202",
+            "zone": "Gedung H",
+            "floor": 2,
+            "type": "room",
+            "excluded": false,
+            "filename": "468.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 464,
+                    "label": "Turun ke Lantai 1: Tangga Gedung H",
+                    "kind": "stairs_down",
+                    "yaw": -180,
+                    "pitch": -14,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 470,
+                    "label": "Masuk Ruang Kelas H-203",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": 48,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "469": {
+            "id": 469,
+            "label": "Ruang Kelas H-204",
+            "zone": "Gedung H",
+            "floor": 2,
+            "type": "room",
+            "excluded": false,
+            "filename": "469.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 470,
+                    "label": "Masuk Ruang Kelas H-203",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 467,
+                    "label": "Masuk Ruang Kelas H-206",
+                    "kind": "room",
+                    "yaw": 48,
+                    "pitch": -2,
+                    "target_yaw": 48,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "470": {
+            "id": 470,
+            "label": "Ruang Kelas H-203",
+            "zone": "Gedung H",
+            "floor": 2,
+            "type": "room",
+            "excluded": false,
+            "filename": "470.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 468,
+                    "label": "Masuk Ruang Kelas H-202",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 469,
+                    "label": "Masuk Ruang Kelas H-204",
+                    "kind": "room",
+                    "yaw": 48,
+                    "pitch": -2,
+                    "target_yaw": 48,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "471": {
+            "id": 471,
+            "label": "Lorong Sebelah Gedung Teater (Titik 1)",
+            "zone": "Lorong Teater",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "471.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 472,
+                    "label": "Menuju Lorong Sebelah Gedung Teater (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 457,
+                    "label": "Menuju Depan Gedung H (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -75,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 482,
+                    "label": "Menuju Pendopo Depan Gedung F (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "472": {
+            "id": 472,
+            "label": "Lorong Sebelah Gedung Teater (Titik 2)",
+            "zone": "Lorong Teater",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "472.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 473,
+                    "label": "Menuju Lorong Sebelah Gedung Teater (Titik 3)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 471,
+                    "label": "Menuju Lorong Sebelah Gedung Teater (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "473": {
+            "id": 473,
+            "label": "Lorong Sebelah Gedung Teater (Titik 3)",
+            "zone": "Lorong Teater",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "473.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 474,
+                    "label": "Menuju Gedung K",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 472,
+                    "label": "Menuju Lorong Sebelah Gedung Teater (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "474": {
+            "id": 474,
+            "label": "Gedung K",
+            "zone": "Gedung K",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "474.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 475,
+                    "label": "Menuju Tangga Lantai 1 Gedung K",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 473,
+                    "label": "Menuju Lorong Sebelah Gedung Teater (Titik 3)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "475": {
+            "id": 475,
+            "label": "Tangga Lantai 1 Gedung K",
+            "zone": "Gedung K",
+            "floor": 1,
+            "type": "stairs",
+            "excluded": false,
+            "filename": "475.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 476,
+                    "label": "Naik ke Lantai 2: Tangga Lantai 2 Gedung K (Titik 1)",
+                    "kind": "stairs_up",
+                    "yaw": 0,
+                    "pitch": 6,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 474,
+                    "label": "Menuju Gedung K",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "476": {
+            "id": 476,
+            "label": "Tangga Lantai 2 Gedung K (Titik 1)",
+            "zone": "Gedung K",
+            "floor": 2,
+            "type": "stairs",
+            "excluded": false,
+            "filename": "476.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 477,
+                    "label": "Menuju Tangga Lantai 2 Gedung K (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 475,
+                    "label": "Turun ke Lantai 1: Tangga Lantai 1 Gedung K",
+                    "kind": "stairs_down",
+                    "yaw": -180,
+                    "pitch": -14,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "477": {
+            "id": 477,
+            "label": "Tangga Lantai 2 Gedung K (Titik 2)",
+            "zone": "Gedung K",
+            "floor": 2,
+            "type": "stairs",
+            "excluded": false,
+            "filename": "477.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 478,
+                    "label": "Naik ke Lantai 3: Tangga Lantai 3 Gedung K (Titik 1)",
+                    "kind": "stairs_up",
+                    "yaw": 0,
+                    "pitch": 6,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 476,
+                    "label": "Menuju Tangga Lantai 2 Gedung K (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "478": {
+            "id": 478,
+            "label": "Tangga Lantai 3 Gedung K (Titik 1)",
+            "zone": "Gedung K",
+            "floor": 3,
+            "type": "stairs",
+            "excluded": false,
+            "filename": "478.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 479,
+                    "label": "Menuju Tangga Lantai 3 Gedung K (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 477,
+                    "label": "Turun ke Lantai 2: Tangga Lantai 2 Gedung K (Titik 2)",
+                    "kind": "stairs_down",
+                    "yaw": -180,
+                    "pitch": -14,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "479": {
+            "id": 479,
+            "label": "Tangga Lantai 3 Gedung K (Titik 2)",
+            "zone": "Gedung K",
+            "floor": 3,
+            "type": "stairs",
+            "excluded": false,
+            "filename": "479.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 478,
+                    "label": "Menuju Tangga Lantai 3 Gedung K (Titik 1)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 481,
+                    "label": "Masuk Ruang Kelas K-301",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 480,
+                    "label": "Masuk Ruang Kelas K-302",
+                    "kind": "room",
+                    "yaw": 48,
+                    "pitch": -2,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "480": {
+            "id": 480,
+            "label": "Ruang Kelas K-302",
+            "zone": "Gedung K",
+            "floor": 3,
+            "type": "room",
+            "excluded": false,
+            "filename": "480.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 479,
+                    "label": "Menuju Tangga Lantai 3 Gedung K (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "481": {
+            "id": 481,
+            "label": "Ruang Kelas K-301",
+            "zone": "Gedung K",
+            "floor": 3,
+            "type": "room",
+            "excluded": false,
+            "filename": "481.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 479,
+                    "label": "Menuju Tangga Lantai 3 Gedung K (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "482": {
+            "id": 482,
+            "label": "Pendopo Depan Gedung F (Titik 1)",
+            "zone": "Pendopo & Gedung F",
+            "floor": 1,
+            "type": "junction",
+            "excluded": false,
+            "filename": "482.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 483,
+                    "label": "Menuju Pendopo Depan Gedung F (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 471,
+                    "label": "Menuju Lorong Sebelah Gedung Teater (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -75,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 495,
+                    "label": "Menuju Jalan Terusan Pintu Masuk FIB",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "483": {
+            "id": 483,
+            "label": "Pendopo Depan Gedung F (Titik 2)",
+            "zone": "Pendopo & Gedung F",
+            "floor": 1,
+            "type": "junction",
+            "excluded": false,
+            "filename": "483.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 442,
+                    "label": "Menuju Tangga Lantai 1 Gedung F",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 484,
+                    "label": "Menuju Lorong Gedung I (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -75,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 482,
+                    "label": "Menuju Pendopo Depan Gedung F (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "484": {
+            "id": 484,
+            "label": "Lorong Gedung I (Titik 1)",
+            "zone": "Gedung I",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "484.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 485,
+                    "label": "Menuju Lorong Gedung I (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 483,
+                    "label": "Menuju Pendopo Depan Gedung F (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "485": {
+            "id": 485,
+            "label": "Lorong Gedung I (Titik 2)",
+            "zone": "Gedung I",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "485.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 488,
+                    "label": "Menuju Lorong Depan Gedung M",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 484,
+                    "label": "Menuju Lorong Gedung I (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 487,
+                    "label": "Masuk Ruang Kelas I-103",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "486": {
+            "id": 486,
+            "label": "Ruang Kelas I-104",
+            "zone": "Gedung I",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "486.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 487,
+                    "label": "Masuk Ruang Kelas I-103",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "487": {
+            "id": 487,
+            "label": "Ruang Kelas I-103",
+            "zone": "Gedung I",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "487.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 485,
+                    "label": "Menuju Lorong Gedung I (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 486,
+                    "label": "Masuk Ruang Kelas I-104",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": 132,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "488": {
+            "id": 488,
+            "label": "Lorong Depan Gedung M",
+            "zone": "Gedung M",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "488.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 489,
+                    "label": "Menuju Gedung M (Titik 1)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 485,
+                    "label": "Menuju Lorong Gedung I (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "489": {
+            "id": 489,
+            "label": "Gedung M (Titik 1)",
+            "zone": "Gedung M",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "489.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 490,
+                    "label": "Menuju Gedung M (Titik 2)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 488,
+                    "label": "Menuju Lorong Depan Gedung M",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "490": {
+            "id": 490,
+            "label": "Gedung M (Titik 2)",
+            "zone": "Gedung M",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "490.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 491,
+                    "label": "Menuju Gedung M (Titik 3)",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 489,
+                    "label": "Menuju Gedung M (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "491": {
+            "id": 491,
+            "label": "Gedung M (Titik 3)",
+            "zone": "Gedung M",
+            "floor": 1,
+            "type": "corridor",
+            "excluded": false,
+            "filename": "491.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 495,
+                    "label": "Menuju Jalan Terusan Pintu Masuk FIB",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 490,
+                    "label": "Menuju Gedung M (Titik 2)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 492,
+                    "label": "Masuk Ruang Kelas M-101 & M-102",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "492": {
+            "id": 492,
+            "label": "Ruang Kelas M-101 & M-102",
+            "zone": "Gedung M",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "492.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 491,
+                    "label": "Menuju Gedung M (Titik 3)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 493,
+                    "label": "Masuk Ruang Kelas M-104",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": 48,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "493": {
+            "id": 493,
+            "label": "Ruang Kelas M-104",
+            "zone": "Gedung M",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "493.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 492,
+                    "label": "Masuk Ruang Kelas M-101 & M-102",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 494,
+                    "label": "Masuk Ruang Kelas M-108",
+                    "kind": "room",
+                    "yaw": 48,
+                    "pitch": -2,
+                    "target_yaw": 132,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "494": {
+            "id": 494,
+            "label": "Ruang Kelas M-108",
+            "zone": "Gedung M",
+            "floor": 1,
+            "type": "room",
+            "excluded": false,
+            "filename": "494.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 493,
+                    "label": "Masuk Ruang Kelas M-104",
+                    "kind": "room",
+                    "yaw": -48,
+                    "pitch": -2,
+                    "target_yaw": -48,
+                    "target_pitch": 0
+                }
+            ]
+        },
+        "495": {
+            "id": 495,
+            "label": "Jalan Terusan Pintu Masuk FIB",
+            "zone": "Pintu Masuk FIB",
+            "floor": 1,
+            "type": "junction",
+            "excluded": false,
+            "filename": "495.jpg",
+            "default_pitch": 0,
+            "default_yaw": 0,
+            "hotspots": [
+                {
+                    "target_id": 435,
+                    "label": "Menuju Percabangan Gedung O dan Gedung A",
+                    "kind": "walk",
+                    "yaw": 0,
+                    "pitch": -20,
+                    "target_yaw": -75,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 482,
+                    "label": "Menuju Pendopo Depan Gedung F (Titik 1)",
+                    "kind": "walk",
+                    "yaw": -75,
+                    "pitch": -20,
+                    "target_yaw": 0,
+                    "target_pitch": 0
+                },
+                {
+                    "target_id": 491,
+                    "label": "Menuju Gedung M (Titik 3)",
+                    "kind": "walk",
+                    "yaw": -180,
+                    "pitch": -20,
+                    "target_yaw": -180,
+                    "target_pitch": 0
+                }
+            ]
+        }
+    }
+}

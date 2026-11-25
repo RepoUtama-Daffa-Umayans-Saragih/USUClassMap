@@ -70,7 +70,7 @@ class TrialAdminFotocopySeeder extends Seeder
                     'operating_days' => 'Senin - Minggu',
                     'phone' => self::TRIAL_PHONE_INTL,
                     'whatsapp' => self::TRIAL_WHATSAPP_DIGITS,
-                    'image_url' => null,
+                    'image_url' => $existingStore?->image_url ?: '/images/stores/preset-modern-copy.webp',
                     'google_maps_url' => $mapsUrl,
                     'google_place_id' => null,
                     'instagram' => null,
@@ -115,7 +115,7 @@ class TrialAdminFotocopySeeder extends Seeder
                     'whatsapp_url' => 'https://wa.me/' . self::TRIAL_WHATSAPP_DIGITS,
                     'instagram' => null,
                     'facebook' => null,
-                    'image_url' => null,
+                    'image_url' => $existingStore?->image_url ?: '/images/stores/preset-modern-copy.webp',
                     'rating' => 5.0,
                     'user_rating_count' => 1,
                     'is_active' => 1,
@@ -359,16 +359,8 @@ class TrialAdminFotocopySeeder extends Seeder
             $desiredByName[$row['name']] = $row;
         }
 
-        $idsToDelete = [];
-        foreach ($existing as $name => $row) {
-            if (!isset($desiredByName[$name])) {
-                $idsToDelete[] = $row->id;
-            }
-        }
+        // Jangan hapus item ekspansi katalog atau item kustom admin toko
         $deleted = 0;
-        foreach (array_chunk($idsToDelete, 200) as $chunk) {
-            $deleted += DB::table($table)->whereIn('id', $chunk)->delete();
-        }
 
         $updated = 0;
         $toInsert = [];

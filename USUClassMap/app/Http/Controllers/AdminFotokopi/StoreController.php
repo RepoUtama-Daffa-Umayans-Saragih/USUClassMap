@@ -7,6 +7,7 @@ use App\Models\FotocopyStore;
 use App\Models\PhotocopyPlace;
 use App\Models\User;
 use App\Models\WhatsappDispatchLog;
+use App\Services\Fotocopy\StoreMapSyncService;
 use App\Services\WhatsApp\WhatsAppManager;
 use App\Support\WhatsAppPhoneNormalizer;
 use Illuminate\Http\Request;
@@ -14,72 +15,39 @@ use Illuminate\Support\Str;
 
 class StoreController extends Controller
 {
+    public function __construct(
+        protected ?StoreMapSyncService $syncService = null
+    ) {
+        $this->syncService = $syncService ?? app(StoreMapSyncService::class);
+    }
+
     /**
-     * Sinkronkan data FotocopyStore ke PhotocopyPlace berdasarkan slug/nama (bukan raw ID)
-     * agar Peta User (/map) & Direktori Publik (/fotocopy) selalu akurat.
+     * Sinkronkan data FotocopyStore ke PhotocopyPlace agar Peta User (/map) & Direktori Publik (/fotocopy) selalu akurat.
      */
     protected function syncToPhotocopyPlace(FotocopyStore $store, ?string $oldName = null, ?string $oldSlug = null): void
     {
         try {
-            $hoursParts = array_map('trim', explode('-', $store->opening_hours ?? '07:30 - 20:30'));
-            $openTime = $hoursParts[0] ?? '07:30';
-            $closeTime = $hoursParts[1] ?? '20:30';
-
-            $place = PhotocopyPlace::where('slug', $store->slug)->first();
-            if (!$place && $oldSlug) {
-                $place = PhotocopyPlace::where('slug', $oldSlug)->first();
-            }
-            if (!$place && $oldName) {
-                $place = PhotocopyPlace::where('name', $oldName)->first();
-            }
-            if (!$place) {
-                $place = PhotocopyPlace::where('name', $store->name)->first();
-            }
-
-            $waDigits = WhatsAppPhoneNormalizer::normalize($store->whatsapp ?: $store->phone);
-            $phoneDisplay = $waDigits ? WhatsAppPhoneNormalizer::formatDisplay($waDigits) : $store->phone;
-            $phoneNational = $waDigits ? WhatsAppPhoneNormalizer::formatNational($waDigits) : $store->phone;
-
-            $payload = [
-                'name' => $store->name,
-                'slug' => $store->slug ?: (Str::slug($store->name) . '-' . Str::random(5)),
-                'location_name' => $store->location_name,
-                'latitude' => $store->latitude,
-                'longitude' => $store->longitude,
-                'open_time' => $openTime ?: '07:30',
-                'close_time' => $closeTime ?: '20:30',
-                'operating_days' => $store->operating_days,
-                'whatsapp' => $waDigits ?? $store->whatsapp,
-                'whatsapp_url' => $waDigits ? ('https://wa.me/' . $waDigits) : null,
-                'phone' => $phoneDisplay,
-                'phone_national' => $phoneNational,
-                'phone_international' => $phoneDisplay,
-                'instagram' => $store->instagram,
-                'facebook' => $store->facebook,
-                'rating' => $store->rating,
-                'is_active' => (bool) $store->is_open,
-                'business_status' => $store->is_open ? 'OPERATIONAL' : 'CLOSED_TEMPORARILY',
-                'description' => $store->description,
-            ];
-
-            if ($place) {
-                $place->update($payload);
-            } else {
-                PhotocopyPlace::create($payload);
-            }
+            $this->syncService->syncStoreToPlace($store, $oldName, $oldSlug);
         } catch (\Throwable $e) {
             logger()->warning('[USUClassMap Sync] Gagal menyinkronkan FotocopyStore ke PhotocopyPlace: ' . $e->getMessage());
         }
     }
     public function index(Request $request, WhatsAppManager $waManager)
     {
+        $scopedStoreId = auth()->user()?->scopedStoreId();
         $query = FotocopyStore::withCount(['services', 'orders']);
+
+        if ($scopedStoreId !== null) {
+            $query->where('id', $scopedStoreId);
+        }
 
         if ($request->filled('q')) {
             $q = $request->input('q');
-            $query->where('name', 'like', "%{$q}%")
-                ->orWhere('location_name', 'like', "%{$q}%")
-                ->orWhere('whatsapp', 'like', "%{$q}%");
+            $query->where(function ($sub) use ($q) {
+                $sub->where('name', 'like', "%{$q}%")
+                    ->orWhere('location_name', 'like', "%{$q}%")
+                    ->orWhere('whatsapp', 'like', "%{$q}%");
+            });
         }
 
         $stores = $query->latest()->paginate(10)->withQueryString();
@@ -93,6 +61,7 @@ class StoreController extends Controller
      */
     public function testWhatsApp(FotocopyStore $store, WhatsAppManager $waManager)
     {
+        $this->authorizeScopedStore($store);
         $targetDigits = WhatsAppPhoneNormalizer::normalize($store->whatsapp ?: $store->phone);
         if (!$targetDigits) {
             return redirect()->back()->with('error', "Toko '{$store->name}' belum memiliki nomor WhatsApp valid.");
@@ -158,14 +127,76 @@ class StoreController extends Controller
         return response()->json(['logs' => $logs]);
     }
 
+    protected function authorizeScopedStore(?FotocopyStore $store = null, bool $allowCreate = true): void
+    {
+        $scopedStoreId = auth()->user()?->scopedStoreId();
+        if ($scopedStoreId === null) {
+            return;
+        }
+
+        if (!$allowCreate && $store === null) {
+            abort(403, 'Akun admin toko hanya dapat mengelola toko miliknya sendiri.');
+        }
+
+        if ($store !== null && (int) $store->id !== $scopedStoreId) {
+            abort(403, 'Akses ditolak: Anda hanya dapat mengelola toko Anda sendiri.');
+        }
+    }
+
+    /**
+     * Daftar preset banner lokal untuk foto gerai mitra fotokopi.
+     *
+     * @return array<int, array{value: string, label: string}>
+     */
+    public static function storePresetOptions(): array
+    {
+        return [
+            ['value' => '/images/stores/preset-modern-copy.webp', 'label' => 'Preset 1 — Gerai Fotokopi & Print Modern'],
+            ['value' => '/images/stores/preset-campus-press.webp', 'label' => 'Preset 2 — Penerbitan, Buku & Skripsi'],
+            ['value' => '/images/stores/preset-atk-stationery.webp', 'label' => 'Preset 3 — Pusat ATK & Perlengkapan Kuliah'],
+        ];
+    }
+
+    /**
+     * Resolusi URL gambar toko dari file upload, checkbox hapus, atau preset lokal.
+     */
+    protected function resolveStoreImageUpdate(Request $request, ?string $currentImageUrl = null): ?string
+    {
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $storedPath = $request->file('image')->store('stores', 'public');
+
+            return '/storage/' . ltrim((string) $storedPath, '/');
+        }
+
+        if ($request->boolean('remove_image')) {
+            return null;
+        }
+
+        if ($request->filled('image_preset')) {
+            $preset = trim((string) $request->input('image_preset'));
+            if (str_starts_with($preset, '/images/stores/') && is_file(public_path(ltrim($preset, '/')))) {
+                return $preset;
+            }
+            if (str_starts_with($preset, 'http://') || str_starts_with($preset, 'https://')) {
+                return $preset;
+            }
+        }
+
+        return $currentImageUrl;
+    }
+
     public function create()
     {
+        $this->authorizeScopedStore(null, false);
         $cashiers = User::where('role', 'cashier_fotokopi')->get();
-        return view('features.fotocopy.admin.stores.create', compact('cashiers'));
+        $storePresets = self::storePresetOptions();
+
+        return view('features.fotocopy.admin.stores.create', compact('cashiers', 'storePresets'));
     }
 
     public function store(Request $request)
     {
+        $this->authorizeScopedStore(null, false);
         $validated = $request->validate([
             'name' => 'required|string|max:150',
             'location_name' => 'required|string|max:200',
@@ -181,7 +212,13 @@ class StoreController extends Controller
             'rating' => 'required|numeric|between:1,5',
             'is_open' => 'required|boolean',
             'description' => 'nullable|string|max:1000',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'image_preset' => 'nullable|string|max:255',
+            'remove_image' => 'nullable|boolean',
         ]);
+
+        unset($validated['image'], $validated['image_preset'], $validated['remove_image']);
+        $validated['image_url'] = $this->resolveStoreImageUpdate($request, null);
 
         $validated['slug'] = Str::slug($validated['name']) . '-' . Str::random(5);
         if (!empty($validated['whatsapp'])) {
@@ -201,12 +238,33 @@ class StoreController extends Controller
 
     public function edit(FotocopyStore $store)
     {
-        $cashiers = User::where('role', 'cashier_fotokopi')->get();
-        return view('features.fotocopy.admin.stores.edit', compact('store', 'cashiers'));
+        $this->authorizeScopedStore($store);
+        $scopedStoreId = auth()->user()?->scopedStoreId();
+        $cashiers = User::query()
+            ->when($scopedStoreId !== null, function ($q) use ($scopedStoreId, $store) {
+                $q->where(function ($sub) use ($scopedStoreId, $store) {
+                    $sub->where('role', 'cashier_fotokopi')
+                        ->where('store_id', $scopedStoreId);
+                    if ($store->user_id) {
+                        $sub->orWhere('id', $store->user_id);
+                    }
+                });
+            }, function ($q) use ($store) {
+                $q->where('role', 'cashier_fotokopi');
+                if ($store->user_id) {
+                    $q->orWhere('id', $store->user_id);
+                }
+            })
+            ->get();
+
+        $storePresets = self::storePresetOptions();
+
+        return view('features.fotocopy.admin.stores.edit', compact('store', 'cashiers', 'storePresets'));
     }
 
     public function update(Request $request, FotocopyStore $store)
     {
+        $this->authorizeScopedStore($store);
         $oldName = $store->name;
         $oldSlug = $store->slug;
 
@@ -225,7 +283,17 @@ class StoreController extends Controller
             'rating' => 'required|numeric|between:1,5',
             'is_open' => 'required|boolean',
             'description' => 'nullable|string|max:1000',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+            'image_preset' => 'nullable|string|max:255',
+            'remove_image' => 'nullable|boolean',
         ]);
+
+        unset($validated['image'], $validated['image_preset'], $validated['remove_image']);
+        $validated['image_url'] = $this->resolveStoreImageUpdate($request, $store->image_url);
+
+        if (auth()->user()?->scopedStoreId() !== null && empty($validated['user_id'])) {
+            $validated['user_id'] = $store->user_id;
+        }
 
         if (!empty($validated['whatsapp'])) {
             $normalizedWa = WhatsAppPhoneNormalizer::normalize($validated['whatsapp']);
@@ -244,19 +312,19 @@ class StoreController extends Controller
 
     public function destroy(FotocopyStore $store)
     {
-        $slug = $store->slug;
+        if (auth()->user()?->scopedStoreId() !== null) {
+            abort(403, 'Akun admin toko tidak diizinkan menghapus entitas toko.');
+        }
+
         $name = $store->name;
-        $store->delete();
 
         try {
-            $place = ($slug ? PhotocopyPlace::where('slug', $slug)->first() : null)
-                ?? PhotocopyPlace::where('name', $name)->first();
-            if ($place) {
-                $place->delete();
-            }
+            $this->syncService->deletePlaceForStore($store);
         } catch (\Throwable $e) {
             logger()->warning('[USUClassMap Sync] Gagal menghapus PhotocopyPlace: ' . $e->getMessage());
         }
+
+        $store->delete();
 
         return redirect()->route('admin-fotokopi.stores.index')
             ->with('success', "Mitra toko '{$name}' berhasil dihapus.");

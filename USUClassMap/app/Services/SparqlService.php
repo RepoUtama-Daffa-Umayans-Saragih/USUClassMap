@@ -738,7 +738,7 @@ SPARQL;
             $gedungId = $gedungUri ? (int) basename($gedungUri) : null;
 
             $photoPath = $b['pathFoto360']['value'] ?? null;
-            $photoUrl = $photoPath ? Storage::disk('public')->url($photoPath) : null;
+            $photoUrl = \App\Support\CampusMediaUrl::resolve($photoPath);
 
             $formatted[] = [
                 'uri' => $uri,
@@ -849,7 +849,7 @@ SPARQL;
     {
         return $schedules->map(function ($s) {
             $photoPath = $s->room?->photo_360_path;
-            $photoUrl = $photoPath ? Storage::disk('public')->url($photoPath) : null;
+            $photoUrl = \App\Support\CampusMediaUrl::resolve($photoPath);
 
             return [
                 'uri' => 'http://usuclassmap.usu.ac.id/resource/jadwal/' . $s->id,

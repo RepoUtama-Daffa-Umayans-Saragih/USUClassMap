@@ -3,3 +3,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes ucup-float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+@keyframes ucup-compass-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.ucup-float {
+    animation: ucup-float 3.2s ease-in-out infinite;
+    will-change: transform;
+}
+
+.ucup-compass-spin {
+    animation: ucup-compass-spin 2.2s linear infinite;
+    will-change: transform;
+}
+
+.ucup-safe-bottom {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ucup-float,
+    .ucup-compass-spin {
+        animation: none !important;
+    }
+}

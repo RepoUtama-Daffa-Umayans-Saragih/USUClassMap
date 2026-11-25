@@ -3,6 +3,7 @@
 namespace App\Services\Search;
 
 use App\Models\Building;
+use App\Models\PhotocopyPlace;
 
 /**
  * Engine 1: QueryIntentParserService
@@ -22,6 +23,13 @@ class QueryIntentParserService
     protected static ?array $cachedBuildings = null;
 
     /**
+     * Request-level cache of active photocopy shops for direct store-name recognition.
+     *
+     * @var array<int, array<string, mixed>>|null
+     */
+    protected static ?array $cachedPhotocopyShops = null;
+
+    /**
      * Indonesian conversational filler words removed when building clean search tokens.
      *
      * @var array<int, string>
@@ -36,7 +44,7 @@ class QueryIntentParserService
         'lihat', 'tampilkan', 'cek', 'coba', 'kira', 'kirakira', 'nih', 'deh', 'dong', 'yah',
         'ya', 'sih', 'aja', 'saja', 'gitu', 'begitu', 'tuh', 'kok', 'kah', 'oh', 'wah', 'eh',
         'nya', 'itu', 'ini', 'adalah', 'yaitu', 'atau', 'atay', 'sama', 'tapi', 'cuma',
-        'tempat', 'toko', 'kios', 'warung', 'gedung', 'gedungnya', 'fakultas', 'fakultasnya',
+        'tempat', 'toko', 'gerai', 'kios', 'warung', 'gedung', 'gedungnya', 'fakultas', 'fakultasnya',
         'ruang', 'ruangan', 'kelas', 'kelasku', 'kelasnya', 'kasih', 'tau', 'tahu',
     ];
 
@@ -82,10 +90,18 @@ class QueryIntentParserService
         'penghapus'    => 'penghapus',
         'stip'         => 'penghapus',
         'tipex'        => 'correction',
+        'tipec'        => 'correction',
+        'stipo'        => 'correction',
+        'typex'        => 'correction',
+        'type-x'       => 'correction',
         'tip-x'        => 'correction',
+        'tip-ex'       => 'correction',
         'tipe-x'       => 'correction',
+        'tipe-ex'      => 'correction',
         'tipx'         => 'correction',
         'tipeks'       => 'correction',
+        'correctiontape' => 'correction',
+        'pulpenpink'   => 'pulpen',
         'stapler'      => 'stapler',
         'staples'      => 'stapler',
         'hekter'       => 'stapler',
@@ -135,7 +151,7 @@ class QueryIntentParserService
         'skripsi', 'foto', 'pasfoto', 'amplop', 'klip', 'paperclip', 'folio',
         'notebook', 'note', 'sticky', 'correction', 'atk', 'rautan', 'lem',
         'gunting', 'cutter', 'kalkulator', 'tinta', 'spanduk', 'banner',
-        'stiker', 'kartu', 'poster', 'brosur', 'kuarto', 'duplex', 'hardcover',
+        'stiker', 'kartu', 'poster', 'brosur', 'sertifikat', 'kuarto', 'duplex', 'hardcover',
         'softcover', 'spiral', 'flashdisk', 'cd', 'dvd', 'idcard', 'lanyard',
         'mika', 'bufalo', 'buffalo', 'karton', 'doubletape', 'notes', 'postit',
     ];
@@ -228,6 +244,7 @@ class QueryIntentParserService
         $buildings = $this->getBuildingsCatalog();
         $spatialConstraints = $this->extractSpatialConstraints($normalized, $canonicalQuery, $buildings);
         $mentionedBuildings = $this->extractMentionedBuildings($normalized, $canonicalQuery, $buildings);
+        $mentionsPhotocopyShop = $this->mentionsSpecificPhotocopyShop($normalized);
 
         // If user asked for photocopy near/depan/samping a landmark, capture anchor_landmark
         $anchorLandmark = null;
@@ -257,29 +274,71 @@ class QueryIntentParserService
             $day,
             $courseTerms,
             $pricePreference,
-            $proximityPreference
+            $proximityPreference,
+            $mentionsPhotocopyShop
         );
 
+        // 7. Adaptive 3-mode signals (store | product | mixed)
+        $specificProductTerms = array_values(array_diff($itemTerms, ['fotocopy', 'atk']));
+        $specificProductSpecs = array_values(array_intersect($attributes, ['bolak-balik', 'duplex', 'warna', 'a4', 'f4', 'a3', 'hardcover', 'softcover', 'spiral']));
+        $hasSpecificProductIntent = !empty($specificProductTerms) || !empty($specificProductSpecs);
+
+        $nonStoreBuildings = array_values(array_filter(
+            $mentionedBuildings,
+            fn (array $b): bool => strtoupper((string) ($b['code'] ?? '')) !== 'USUPRESS'
+        ));
+        $nonStoreAnchor = (!empty($anchorLandmark) && strtoupper((string) ($anchorLandmark['code'] ?? '')) !== 'USUPRESS')
+            ? $anchorLandmark
+            : null;
+        $nonStoreSpatial = array_values(array_filter($spatialConstraints, function (array $sc): bool {
+            foreach ($sc['buildings'] ?? [] as $b) {
+                if (strtoupper((string) ($b['code'] ?? '')) !== 'USUPRESS') {
+                    return true;
+                }
+            }
+            return false;
+        }));
+
+        $hasSpecificLocationIntent = ($nonStoreAnchor !== null) || !empty($nonStoreSpatial) || !empty($nonStoreBuildings);
+        $hasSpecificStoreIntent = $mentionsPhotocopyShop;
+        $hasGenericStoreWord = (bool) preg_match('/\b(fotocopy|fotokopi|toko|gerai|tempat)\b/i', $canonicalQuery);
+        $hasLocationOrStoreIntent = $hasSpecificLocationIntent || $hasSpecificStoreIntent || $hasGenericStoreWord;
+
+        if ($rawQuery === '') {
+            $searchMode = 'store';
+        } elseif ($hasSpecificProductIntent && ($hasSpecificLocationIntent || $hasSpecificStoreIntent)) {
+            $searchMode = 'mixed';
+        } elseif ($hasSpecificProductIntent) {
+            $searchMode = 'product';
+        } else {
+            $searchMode = 'store';
+        }
+
         return [
-            'raw_query'            => $rawQuery,
-            'normalized_query'     => $normalized,
-            'canonical_query'      => $canonicalQuery,
-            'tokens'               => $searchTokens,
-            'canonical_tokens'     => $canonicalTokens,
-            'primary_intent'       => $primaryIntent,
-            'secondary_intents'    => $secondaryIntents,
-            'item_terms'           => $itemTerms,
-            'attributes'           => $attributes,
-            'price_preference'     => $pricePreference,
-            'max_price'            => $maxPrice,
-            'proximity_preference' => $proximityPreference,
-            'open_now'             => $openNow,
-            'bulk_requested'       => $bulkRequested,
-            'anchor_landmark'      => $anchorLandmark,
-            'spatial_constraints'  => $spatialConstraints,
-            'mentioned_buildings'  => $mentionedBuildings,
-            'day'                  => $day,
-            'course_terms'         => $courseTerms,
+            'raw_query'                    => $rawQuery,
+            'normalized_query'             => $normalized,
+            'canonical_query'              => $canonicalQuery,
+            'tokens'                       => $searchTokens,
+            'canonical_tokens'             => $canonicalTokens,
+            'primary_intent'               => $primaryIntent,
+            'secondary_intents'            => $secondaryIntents,
+            'search_mode'                  => $searchMode,
+            'has_location_or_store_intent' => $hasLocationOrStoreIntent,
+            'has_specific_location_intent' => $hasSpecificLocationIntent,
+            'has_specific_store_intent'    => $hasSpecificStoreIntent,
+            'has_specific_product_intent'  => $hasSpecificProductIntent,
+            'item_terms'                   => $itemTerms,
+            'attributes'                   => $attributes,
+            'price_preference'             => $pricePreference,
+            'max_price'                    => $maxPrice,
+            'proximity_preference'         => $proximityPreference,
+            'open_now'                     => $openNow,
+            'bulk_requested'               => $bulkRequested,
+            'anchor_landmark'              => $anchorLandmark,
+            'spatial_constraints'          => $spatialConstraints,
+            'mentioned_buildings'          => $mentionedBuildings,
+            'day'                          => $day,
+            'course_terms'                 => $courseTerms,
         ];
     }
 
@@ -316,11 +375,114 @@ class QueryIntentParserService
     }
 
     /**
+     * Return active photocopy places formatted for shop-name intent detection.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function getPhotocopyShopsCatalog(): array
+    {
+        if (self::$cachedPhotocopyShops !== null && !app()->runningUnitTests()) {
+            return self::$cachedPhotocopyShops;
+        }
+
+        $shops = PhotocopyPlace::query()
+            ->where('is_active', true)
+            ->orderBy('id')
+            ->get(['id', 'name', 'slug'])
+            ->map(fn (PhotocopyPlace $p): array => [
+                'id' => (int) $p->id,
+                'name' => (string) $p->name,
+                'slug' => (string) $p->slug,
+            ])
+            ->all();
+
+        self::$cachedPhotocopyShops = $shops;
+
+        return $shops;
+    }
+
+    /**
+     * Detect whether the query explicitly names a known USU photocopy store (e.g. "USUpress Penerbit", "USU Press").
+     */
+    protected function mentionsSpecificPhotocopyShop(string $normalized): bool
+    {
+        if ($normalized === '') {
+            return false;
+        }
+
+        if (preg_match('/\b(usupress|usu\s*press)\b/i', $normalized)) {
+            return true;
+        }
+
+        $compactQuery = preg_replace('/[^a-z0-9]/i', '', $normalized) ?? '';
+        if (strlen($compactQuery) < 5) {
+            return false;
+        }
+
+        $facultyStopwords = [
+            'fib', 'feb', 'ft', 'fh', 'fk', 'fp', 'ff', 'fkg', 'fkm', 'fmipa', 'mipa',
+            'fisip', 'fpsi', 'fkep', 'fhut', 'gkb', 'gdp', 'dlcb', 'vokasi', 'fasilkom',
+            'fasilkomti', 'rektorat', 'perpustakaan', 'perpus', 'auditorium', 'usu', 'medan',
+        ];
+        if (in_array($compactQuery, $facultyStopwords, true)) {
+            return false;
+        }
+
+        $genericWords = [
+            'fotocopy', 'fotokopi', 'foto', 'copy', 'percetakan', 'printing', 'print', 'cetak',
+            'toko', 'gerai', 'atk', 'center', 'corner', 'custom', 'stiker', 'poster', 'banner',
+            'medan', 'usu', 'perpustakaan', 'fakultas', 'hukum', 'fisip', 'fasilkom', 'ft', 'fk',
+            'fib', 'fp', 'pintu', 'dan', 'large', 'format', 'digital', 'expedisi', 'jt', 'multi', 'penerbit',
+        ];
+
+        foreach ($this->getPhotocopyShopsCatalog() as $shop) {
+            $baseName = trim((string) preg_replace('/\([^)]*\)/', '', $shop['name']));
+            $compactBase = preg_replace('/[^a-z0-9]/i', '', mb_strtolower($baseName, 'UTF-8')) ?? '';
+            $compactName = preg_replace('/[^a-z0-9]/i', '', mb_strtolower($shop['name'], 'UTF-8')) ?? '';
+            $compactSlug = preg_replace('/[^a-z0-9]/i', '', mb_strtolower($shop['slug'], 'UTF-8')) ?? '';
+
+            $distinctiveBaseTokens = array_values(array_filter(
+                preg_split('/[\s\-\(\)&\/.,]+/u', mb_strtolower($baseName, 'UTF-8')) ?: [],
+                fn (string $t): bool => mb_strlen($t, 'UTF-8') >= 2 && !in_array($t, $genericWords, true)
+            ));
+            $distinctiveCompact = preg_replace('/[^a-z0-9]/i', '', implode('', $distinctiveBaseTokens)) ?? '';
+
+            if ($distinctiveCompact !== '' && strlen($distinctiveCompact) >= 6 && str_contains($compactQuery, $distinctiveCompact)) {
+                return true;
+            }
+
+            $nameTokens = array_values(array_filter(
+                preg_split('/[\s\-\(\)&\/.,]+/u', mb_strtolower($shop['name'], 'UTF-8')) ?: [],
+                fn (string $t): bool => mb_strlen($t, 'UTF-8') >= 4 && !in_array($t, $genericWords, true)
+            ));
+
+            if (empty($nameTokens)) {
+                continue;
+            }
+
+            if ($compactBase !== '' && strlen($compactBase) >= 6 && str_contains($compactQuery, $compactBase)) {
+                return true;
+            }
+
+            if (strlen($compactQuery) >= 6 && (str_contains($compactName, $compactQuery) || str_contains($compactSlug, $compactQuery))) {
+                foreach ($nameTokens as $tok) {
+                    if (str_contains($compactQuery, $tok)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Clear static cache (useful across unit/feature test database resets).
      */
     public static function flushCache(): void
     {
         self::$cachedBuildings = null;
+        self::$cachedPhotocopyShops = null;
     }
 
     protected function normalizeText(string $text): string
@@ -336,7 +498,10 @@ class QueryIntentParserService
             '/\bsinar\s+dunia\b/u'  => 'sidu',
             '/\bpaper\s+one\b/u'    => 'paperone',
             '/\bbolak\s+balik\b/u'  => 'bolak-balik',
-            '/\btip[\s\-]?x\b/u'    => 'tipex',
+            '/\btip[\s\-]?e?[\s\-]?[xc]\b/u' => 'tipex',
+            '/\btype[\s\-]?x\b/u'           => 'tipex',
+            '/\bstipo\b/u'                  => 'tipex',
+            '/\bcorrection\s+(?:tape|pen|fluid)\b/u' => 'correction',
             '/\bhard\s+cover\b/u'   => 'hardcover',
             '/\bsoft\s+cover\b/u'   => 'softcover',
             '/\bfoto\s+kopi\b/u'    => 'fotocopy',
@@ -347,7 +512,7 @@ class QueryIntentParserService
             '/\b0[,.]5\s*mm\b/u'    => '0.5mm',
             '/\b0[,.]7\s*mm\b/u'    => '0.7mm',
             '/\bpas\s+foto\b/u'     => 'pasfoto',
-            '/\bsticky\s+note\b/u'  => 'sticky',
+            '/\bsticky\s+notes?\b/u' => 'sticky',
             '/\bfasilkom\s*[- ]\s*ti\b/u' => 'fasilkom-ti',
             '/\bperpus\s+usu\b/u'   => 'perpustakaan usu',
             '/\bgedung\s+pancasila\b/u' => 'gedung pancasila',
@@ -1041,14 +1206,12 @@ class QueryIntentParserService
         ?string $day,
         array $courseTerms,
         ?string $pricePreference,
-        ?string $proximityPreference
+        ?string $proximityPreference,
+        bool $mentionsPhotocopyShop = false
     ): array {
         $intents = [];
 
         $hasExplicitRouteVerb = (bool) preg_match('/\b(rute\s+ke|arahkan\s+(?:rute\s+)?ke|navigasi\s+ke|jalan\s+ke|cara\s+ke|arah\s+ke|antar\s+ke)\b/i', $normalized);
-        $hasFotocopyCue = !empty($itemTerms)
-            || (bool) preg_match('/\b(fotocopy|percetakan|toko|atk|alat\s+tulis)\b/i', $canonicalQuery)
-            || (($pricePreference !== null) && !empty($itemTerms));
 
         $hasDirectionalSpatial = false;
         foreach ($spatialConstraints as $c) {
@@ -1058,6 +1221,11 @@ class QueryIntentParserService
             }
         }
         $hasSpatialMemoryPhrase = (bool) preg_match('/\b(ingatnya|ingetnya|lupa\s+nama|gedung\s+(?:mana|apa|yg|yang)|sebelah\s+mana|di\s+mana\s+ya|patokan)\b/i', $normalized);
+
+        $hasFotocopyCue = !empty($itemTerms)
+            || (bool) preg_match('/\b(fotocopy|percetakan|toko|atk|alat\s+tulis)\b/i', $canonicalQuery)
+            || (($pricePreference !== null) && !empty($itemTerms))
+            || ($mentionsPhotocopyShop && !$hasDirectionalSpatial && !$hasSpatialMemoryPhrase);
 
         if ($hasExplicitRouteVerb && (!empty($mentionedBuildings) || $hasFotocopyCue)) {
             $intents[] = 'route_navigation';

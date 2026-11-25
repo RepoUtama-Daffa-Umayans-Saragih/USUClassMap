@@ -1,18 +1,18 @@
 {
     "version": 1,
-    "generated_at": "2026-11-24T23:09:20+07:00",
-    "content_hash": "67447b8a8cba47f42f4692e81657b867ba5193add3c14547ab3c44443ff548dd",
+    "generated_at": "2026-11-25T16:42:24+07:00",
+    "content_hash": "a1c04dab5f01f1344e4b818e6ddf88fe38127d17b3de471f1aefe03ea3107752",
     "counts": {
         "buildings": 77,
         "rooms": 133,
-        "room_media": 0,
+        "room_media": 266,
         "courses": 142,
         "lecturers": 132,
         "schedules": 318,
-        "fotocopy_stores": 32,
-        "photocopy_places": 32,
-        "fotocopy_services": 2689,
-        "photocopy_items": 2689,
+        "fotocopy_stores": 33,
+        "photocopy_places": 33,
+        "fotocopy_services": 3493,
+        "photocopy_items": 3493,
         "campus_routing_overrides": 0,
         "photo_360_calibrations": 11
     },
@@ -30,6 +30,7 @@
         "campus_routing_overrides.json",
         "photo_360_calibrations.json",
         "schedules.rdf",
-        "campus_routing_graph.json"
+        "campus_routing_graph.json",
+        "fib_walk_graph.json"
     ]
 }

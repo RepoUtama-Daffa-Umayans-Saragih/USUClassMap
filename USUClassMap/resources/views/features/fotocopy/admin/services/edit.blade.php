@@ -39,7 +39,7 @@
 
                 <div>
                     <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">Kategori Utama *</label>
-                    <select name="category" required class="w-full text-xs rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 p-2.5">
+                    <select id="service-category-select" name="category" required class="w-full text-xs rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 p-2.5">
                         @foreach(['Print', 'Fotocopy', 'Jilid', 'Finishing', 'Digital', 'ATK'] as $cat)
                             <option value="{{ $cat }}" {{ old('category', $service->category) === $cat ? 'selected' : '' }}>{{ $cat }}</option>
                         @endforeach
@@ -99,14 +99,49 @@
                 <input type="text" name="description" maxlength="255" value="{{ old('description', $service->description) }}" class="w-full text-xs rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 p-2.5">
             </div>
 
-            <div class="flex flex-col sm:flex-row sm:items-center gap-4 p-3.5 rounded-xl bg-gray-50 border border-gray-200">
-                @if($service->image_url)
-                    <img src="{{ $service->image_url }}" alt="{{ $service->name }}" class="w-16 h-16 rounded-xl object-contain bg-white border border-gray-200 p-1 shrink-0">
-                @endif
-                <div class="flex-1">
-                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1">Ganti Foto Produk (Opsional)</label>
-                    <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp" class="w-full text-xs">
-                    @error('image')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
+            @php
+                $categoryDefaultUrlsResolved = $categoryDefaultUrls ?? \App\Http\Controllers\AdminFotokopi\ServiceController::categoryDefaultUrls();
+                $presetImagesResolved = $presetImages ?? \App\Http\Controllers\AdminFotokopi\ServiceController::presetImageOptions();
+                $currentImageUrl = $service->image_url ?: ($categoryDefaultUrlsResolved[$service->category] ?? asset('storage/fotocopy_catalog/print-hitam-putih-a4-70gsm.webp'));
+            @endphp
+            <div class="p-4 rounded-2xl bg-gray-50 border border-gray-200/80 space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                    <label class="block text-xs font-bold text-gray-700 uppercase tracking-wider">Foto Produk / Layanan (JPG/PNG/WEBP Maks 3MB)</label>
+                    <span class="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Auto-Sync Katalog Publik</span>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:items-start gap-4">
+                    <div class="w-24 h-24 rounded-xl bg-white border border-gray-200 overflow-hidden flex items-center justify-center shrink-0 p-1">
+                        <img
+                            id="service-image-preview"
+                            src="{{ $currentImageUrl }}"
+                            alt="{{ $service->name }}"
+                            class="w-full h-full object-contain"
+                        >
+                    </div>
+                    <div class="flex-1 w-full space-y-2.5">
+                        <input
+                            type="file"
+                            id="service-image-input"
+                            name="image"
+                            accept="image/jpeg,image/png,image/webp"
+                            class="w-full text-xs rounded-xl border border-gray-200 bg-white p-2 cursor-pointer"
+                        >
+                        <div>
+                            <label for="service-image-preset" class="block text-[11px] font-semibold text-gray-600 mb-1">Atau Pilih Gambar Preset Lokal:</label>
+                            <select id="service-image-preset" name="image_preset" class="w-full text-xs rounded-xl border-gray-200 focus:border-emerald-500 focus:ring-emerald-500 p-2 border bg-white">
+                                <option value="">-- Pertahankan Gambar Saat Ini --</option>
+                                @foreach($presetImagesResolved as $pImg)
+                                    <option value="{{ $pImg['path'] }}" data-url="{{ $pImg['url'] }}" {{ old('image_preset', $service->image_path) === $pImg['path'] ? 'selected' : '' }}>{{ $pImg['label'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <label class="inline-flex items-center gap-2 text-xs font-semibold text-red-600 cursor-pointer pt-0.5">
+                            <input type="checkbox" id="service-remove-image" name="remove_image" value="1" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                            <span>Hapus foto custom &amp; kembali ke gambar default kategori</span>
+                        </label>
+                        @error('image')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
+                        @error('image_preset')<p class="text-[11px] text-red-500 mt-1">{{ $message }}</p>@enderror
+                    </div>
                 </div>
             </div>
 
@@ -127,4 +162,85 @@
             </div>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const catSelect = document.getElementById('service-category-select');
+            const imgInput = document.getElementById('service-image-input');
+            const presetSelect = document.getElementById('service-image-preset');
+            const removeCheckbox = document.getElementById('service-remove-image');
+            const previewEl = document.getElementById('service-image-preview');
+            const categoryDefaultUrls = @json($categoryDefaultUrlsResolved);
+            const initialServiceUrl = @json($currentImageUrl);
+            let activeObjectUrl = null;
+
+            function refreshPreview() {
+                if (!previewEl) return;
+                if (imgInput && imgInput.files && imgInput.files[0]) {
+                    return;
+                }
+                if (removeCheckbox && removeCheckbox.checked) {
+                    const cat = catSelect ? catSelect.value : 'Print';
+                    previewEl.src = categoryDefaultUrls[cat] || categoryDefaultUrls.Print || initialServiceUrl;
+                    return;
+                }
+                if (presetSelect && presetSelect.value) {
+                    const opt = presetSelect.options[presetSelect.selectedIndex];
+                    if (opt && opt.dataset && opt.dataset.url) {
+                        previewEl.src = opt.dataset.url;
+                        return;
+                    }
+                }
+                previewEl.src = initialServiceUrl;
+            }
+
+            if (imgInput) {
+                imgInput.addEventListener('change', () => {
+                    if (activeObjectUrl) {
+                        URL.revokeObjectURL(activeObjectUrl);
+                        activeObjectUrl = null;
+                    }
+                    const file = imgInput.files && imgInput.files[0];
+                    if (file && previewEl) {
+                        if (removeCheckbox) removeCheckbox.checked = false;
+                        activeObjectUrl = URL.createObjectURL(file);
+                        previewEl.src = activeObjectUrl;
+                    } else {
+                        refreshPreview();
+                    }
+                });
+            }
+
+            if (presetSelect) {
+                presetSelect.addEventListener('change', () => {
+                    if (presetSelect.value && removeCheckbox) {
+                        removeCheckbox.checked = false;
+                    }
+                    refreshPreview();
+                });
+            }
+
+            if (removeCheckbox) {
+                removeCheckbox.addEventListener('change', () => {
+                    if (removeCheckbox.checked) {
+                        if (activeObjectUrl) {
+                            URL.revokeObjectURL(activeObjectUrl);
+                            activeObjectUrl = null;
+                        }
+                        if (imgInput) imgInput.value = '';
+                        if (presetSelect) presetSelect.value = '';
+                    }
+                    refreshPreview();
+                });
+            }
+
+            if (catSelect) {
+                catSelect.addEventListener('change', () => {
+                    if (removeCheckbox && removeCheckbox.checked) {
+                        refreshPreview();
+                    }
+                });
+            }
+        });
+    </script>
 </x-layouts.admin-fotokopi>

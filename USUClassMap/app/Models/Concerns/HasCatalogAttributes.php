@@ -7,15 +7,24 @@ use App\Support\CatalogBehaviorClassifier;
 trait HasCatalogAttributes
 {
     /**
-     * URL gambar lokal katalog (dari public/storage/...).
+     * URL gambar lokal katalog (dari public/storage/... atau URL/path publik).
      */
     public function getImageUrlAttribute(): ?string
     {
-        if (empty($this->image_path)) {
+        $raw = trim((string) ($this->image_path ?? ''));
+        if ($raw === '') {
             return null;
         }
 
-        return asset('storage/' . ltrim((string) $this->image_path, '/'));
+        if (str_starts_with($raw, 'http://') || str_starts_with($raw, 'https://')) {
+            return $raw;
+        }
+
+        if (str_starts_with($raw, '/')) {
+            return asset(ltrim($raw, '/'));
+        }
+
+        return asset('storage/' . ltrim($raw, '/'));
     }
 
     /**

@@ -10,9 +10,12 @@
         "description": "Gedung Biro Pusat Administrasi Rektorat Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0030.webp",
+        "door_photo_path": "images/doors/from-360/bldg-rektorat.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":59.17,\"yaw\":120,\"pitch\":0,\"hfov\":79.9,\"min_pitch\":-24.9,\"max_pitch\":24.9,\"width\":1600,\"height\":263,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 2,
@@ -25,9 +28,12 @@
         "description": "Gedung Auditorium Universitas Sumatera Utara untuk acara wisuda, seminar, dan pertemuan akbar.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0032.webp",
+        "door_photo_path": "images/doors/from-360/bldg-auditorium.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":39.6,\"yaw\":210,\"pitch\":0,\"hfov\":62,\"min_pitch\":-16.6,\"max_pitch\":16.6,\"width\":1600,\"height\":176,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 3,
@@ -40,9 +46,12 @@
         "description": "Gedung Perpustakaan Pusat Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0054.webp",
+        "door_photo_path": "images/doors/from-360/bldg-perpus-usu.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.5,\"yaw\":180,\"pitch\":0,\"hfov\":66.8,\"min_pitch\":-20.8,\"max_pitch\":20.8,\"width\":1600,\"height\":220,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 4,
@@ -55,9 +64,12 @@
         "description": "Gedung Kuliah Bersama (GKB) untuk perkuliahan MKWK dan MKWU antar fakultas.",
         "floor_count": 4,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0021.webp",
+        "door_photo_path": "images/doors/from-360/bldg-gkb.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":58.73,\"yaw\":270,\"pitch\":0,\"hfov\":79.3,\"min_pitch\":-24.7,\"max_pitch\":24.7,\"width\":1600,\"height\":261,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 5,
@@ -70,9 +82,12 @@
         "description": "Digital Learning & Collaborative Building (DLCB) Universitas Sumatera Utara.",
         "floor_count": 4,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0019.webp",
+        "door_photo_path": "images/doors/from-360/bldg-dlcb.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.27,\"yaw\":30,\"pitch\":0,\"hfov\":66.5,\"min_pitch\":-20.7,\"max_pitch\":20.7,\"width\":1600,\"height\":219,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 6,
@@ -85,9 +100,12 @@
         "description": "Pusat Sistem Informasi (PSI) pengelola infrastruktur IT dan server jaringan USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0029.webp",
+        "door_photo_path": "images/doors/from-360/bldg-psi-usu.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":47.02,\"yaw\":240,\"pitch\":0,\"hfov\":63.5,\"min_pitch\":-19.7,\"max_pitch\":19.7,\"width\":1600,\"height\":209,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 7,
@@ -100,9 +118,12 @@
         "description": "Gedung Lembaga Penelitian dan Pengabdian kepada Masyarakat (LPPM) USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261123-wa0007.webp",
+        "door_photo_path": "images/doors/from-360/bldg-lppm-usu.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":62.77,\"yaw\":120,\"pitch\":0,\"hfov\":84.7,\"min_pitch\":-26.4,\"max_pitch\":26.4,\"width\":1600,\"height\":279,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 8,
@@ -115,9 +136,12 @@
         "description": "Pusat percetakan dan penerbitan buku ilmiah Universitas Sumatera Utara Press.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0028.webp",
+        "door_photo_path": "images/doors/from-360/bldg-usupress.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":47.25,\"yaw\":270,\"pitch\":0,\"hfov\":63.8,\"min_pitch\":-19.8,\"max_pitch\":19.8,\"width\":1600,\"height\":210,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 9,
@@ -130,9 +154,12 @@
         "description": "Unit Manajemen Mutu penjaminan standar mutu akademik dan pelayanan Universitas Sumatera Utara.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261123-wa0009.webp",
+        "door_photo_path": "images/doors/from-360/bldg-umm-usu.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":62.1,\"yaw\":180,\"pitch\":0,\"hfov\":83.8,\"min_pitch\":-26.1,\"max_pitch\":26.1,\"width\":1600,\"height\":276,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 10,
@@ -145,9 +172,12 @@
         "description": "Pusat landmark dan administrasi koordinasi Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261123-wa0008.webp",
+        "door_photo_path": "images/doors/from-360/bldg-usu-pusat.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":58.37,\"yaw\":330,\"pitch\":0,\"hfov\":78.8,\"min_pitch\":-24.5,\"max_pitch\":24.5,\"width\":1511,\"height\":245,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 11,
@@ -160,9 +190,12 @@
         "description": "Kompleks perkuliahan Universitas Sumatera Utara (Zona Kampus Selatan).",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0020.webp",
+        "door_photo_path": "images/doors/from-360/bldg-usu-selatan.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":56.7,\"yaw\":210,\"pitch\":0,\"hfov\":76.5,\"min_pitch\":-23.8,\"max_pitch\":23.8,\"width\":1600,\"height\":252,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 12,
@@ -175,9 +208,12 @@
         "description": "Gedung utama Fakultas Ilmu Komputer dan Teknologi Informasi USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fasilkom/img-20261110-wa0065.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fasilkom-ti.webp",
+        "photo_360_meta": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":54.9,\"yaw\":330,\"pitch\":0,\"hfov\":74.1,\"min_pitch\":-23.1,\"max_pitch\":23.1,\"width\":1600,\"height\":244,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 13,
@@ -190,9 +226,12 @@
         "description": "Gedung B FASILKOM-TI ruang kelas kuliah dan laboratorium rekayasa perangkat lunak.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fasilkom/img-20261123-wa0057.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fasilkom-b.webp",
+        "photo_360_meta": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":64.58,\"yaw\":150,\"pitch\":0,\"hfov\":87.2,\"min_pitch\":-27.1,\"max_pitch\":27.1,\"width\":1600,\"height\":287,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 14,
@@ -205,9 +244,12 @@
         "description": "Gedung utama Fakultas Kedokteran Universitas Sumatera Utara.",
         "floor_count": 4,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261123-wa0010.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fk.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":63.45,\"yaw\":90,\"pitch\":0,\"hfov\":85.7,\"min_pitch\":-26.6,\"max_pitch\":26.6,\"width\":1600,\"height\":282,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 15,
@@ -220,9 +262,12 @@
         "description": "Gedung utama dan administrasi Fakultas Kedokteran Gigi USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0055.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fkg.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":53.1,\"yaw\":210,\"pitch\":0,\"hfov\":71.7,\"min_pitch\":-22.3,\"max_pitch\":22.3,\"width\":1600,\"height\":236,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 16,
@@ -235,9 +280,12 @@
         "description": "Gedung perkuliahan dan administrasi Fakultas Kesehatan Masyarakat USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fkm/img-20261123-wa0027.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fkm.webp",
+        "photo_360_meta": "{\"pool\":\"fkm\",\"haov\":360,\"vaov\":51.85,\"yaw\":0,\"pitch\":0,\"hfov\":70,\"min_pitch\":-21.8,\"max_pitch\":21.8,\"width\":1597,\"height\":230,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 17,
@@ -250,9 +298,12 @@
         "description": "Gedung perkuliahan dan laboratorium terpadu Fakultas Farmasi USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/farmasi/img-20261113-wa0043.webp",
+        "door_photo_path": "images/doors/from-360/bldg-ff.webp",
+        "photo_360_meta": "{\"pool\":\"farmasi\",\"haov\":360,\"vaov\":53.77,\"yaw\":270,\"pitch\":0,\"hfov\":72.6,\"min_pitch\":-22.6,\"max_pitch\":22.6,\"width\":1600,\"height\":239,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 18,
@@ -265,9 +316,12 @@
         "description": "Gedung Departemen dan Laboratorium Teknik Mesin Fakultas Teknik USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/elektro/img-20261113-wa0056.webp",
+        "door_photo_path": "images/doors/from-360/bldg-ft-mesin.webp",
+        "photo_360_meta": "{\"pool\":\"elektro\",\"haov\":360,\"vaov\":62.77,\"yaw\":240,\"pitch\":0,\"hfov\":84.7,\"min_pitch\":-26.4,\"max_pitch\":26.4,\"width\":1600,\"height\":279,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 19,
@@ -280,9 +334,12 @@
         "description": "Gedung Departemen Teknik Kimia Fakultas Teknik Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/teknik-industri/img-20261123-wa0011.webp",
+        "door_photo_path": "images/doors/from-360/bldg-ft-kimia.webp",
+        "photo_360_meta": "{\"pool\":\"teknik-industri\",\"haov\":360,\"vaov\":62.55,\"yaw\":0,\"pitch\":0,\"hfov\":84.4,\"min_pitch\":-26.3,\"max_pitch\":26.3,\"width\":1600,\"height\":278,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 20,
@@ -295,9 +352,12 @@
         "description": "Gedung Departemen Teknik Lingkungan Fakultas Teknik USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/teknik-industri/img-20261123-wa0006.webp",
+        "door_photo_path": "images/doors/from-360/bldg-ft-lingkungan.webp",
+        "photo_360_meta": "{\"pool\":\"teknik-industri\",\"haov\":360,\"vaov\":46.12,\"yaw\":210,\"pitch\":0,\"hfov\":62.3,\"min_pitch\":-19.4,\"max_pitch\":19.4,\"width\":1600,\"height\":205,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 21,
@@ -310,9 +370,12 @@
         "description": "Gedung utama perkuliahan Fakultas Ekonomi dan Bisnis Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0030.webp",
+        "door_photo_path": "images/doors/from-360/bldg-feb.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":59.17,\"yaw\":300,\"pitch\":0,\"hfov\":79.9,\"min_pitch\":-24.9,\"max_pitch\":24.9,\"width\":1600,\"height\":263,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 22,
@@ -325,9 +388,12 @@
         "description": "Gedung perkuliahan program pascasarjana Magister Manajemen FEB USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0032.webp",
+        "door_photo_path": "images/doors/from-360/bldg-mm-feb.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":39.6,\"yaw\":90,\"pitch\":0,\"hfov\":62,\"min_pitch\":-16.6,\"max_pitch\":16.6,\"width\":1600,\"height\":176,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 23,
@@ -340,9 +406,12 @@
         "description": "Gedung utama Fakultas Hukum Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/hukum/img-20261113-wa0026.webp",
+        "door_photo_path": "images/doors/real/fh-r203-r204.webp",
+        "photo_360_meta": "{\"pool\":\"hukum\",\"haov\":360,\"vaov\":58.05,\"yaw\":0,\"pitch\":0,\"hfov\":78.4,\"min_pitch\":-24.4,\"max_pitch\":24.4,\"width\":1600,\"height\":258,\"door_source\":\"real\"}"
     },
     {
         "id": 24,
@@ -355,9 +424,12 @@
         "description": "Gedung perkuliahan dan administrasi Fakultas Ilmu Sosial dan Ilmu Politik USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fisip/img-20261113-wa0047.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fisip.webp",
+        "photo_360_meta": "{\"pool\":\"fisip\",\"haov\":360,\"vaov\":46.58,\"yaw\":0,\"pitch\":0,\"hfov\":62.9,\"min_pitch\":-19.6,\"max_pitch\":19.6,\"width\":1600,\"height\":207,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 25,
@@ -370,9 +442,12 @@
         "description": "Pusat konsultasi perpajakan dan riset fiskal FISIP USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0054.webp",
+        "door_photo_path": "images/doors/from-360/bldg-tax-center.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.5,\"yaw\":30,\"pitch\":0,\"hfov\":66.8,\"min_pitch\":-20.8,\"max_pitch\":20.8,\"width\":1600,\"height\":220,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 26,
@@ -385,9 +460,12 @@
         "description": "Gedung program pascasarjana Magister Studi Pembangunan USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fisip/img-20261113-wa0048.webp",
+        "door_photo_path": "images/doors/from-360/bldg-msp-fisip.webp",
+        "photo_360_meta": "{\"pool\":\"fisip\",\"haov\":360,\"vaov\":43.65,\"yaw\":180,\"pitch\":0,\"hfov\":62,\"min_pitch\":-18.3,\"max_pitch\":18.3,\"width\":1600,\"height\":194,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 27,
@@ -400,9 +478,12 @@
         "description": "Gedung perkuliahan dan administrasi Fakultas Ilmu Budaya USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-495.webp",
+        "door_photo_path": "images/doors/real/fib-o-101.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}"
     },
     {
         "id": 28,
@@ -415,9 +496,12 @@
         "description": "Gedung Dekanat dan ruang kuliah Fakultas Psikologi Universitas Sumatera Utara.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-11-17 14:26:59",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/psikologi/img-20261113-wa0017.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fpsi.webp",
+        "photo_360_meta": "{\"pool\":\"psikologi\",\"haov\":360,\"vaov\":39.38,\"yaw\":210,\"pitch\":0,\"hfov\":62,\"min_pitch\":-16.5,\"max_pitch\":16.5,\"width\":1600,\"height\":175,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 29,
@@ -430,9 +514,12 @@
         "description": "Gedung Departemen Keteknikan Pertanian Fakultas Pertanian USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0021.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fp-teknik.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":58.73,\"yaw\":180,\"pitch\":0,\"hfov\":79.3,\"min_pitch\":-24.7,\"max_pitch\":24.7,\"width\":1600,\"height\":261,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 30,
@@ -445,9 +532,12 @@
         "description": "Gedung Dekanat dan ruang kuliah terpadu Fakultas Vokasi USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0019.webp",
+        "door_photo_path": "images/doors/from-360/bldg-vokasi.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.27,\"yaw\":180,\"pitch\":0,\"hfov\":66.5,\"min_pitch\":-20.7,\"max_pitch\":20.7,\"width\":1600,\"height\":219,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 31,
@@ -460,9 +550,12 @@
         "description": "Perpustakaan cabang FMIPA penyedia literatur sains dan teknologi.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fmipa/img-20261113-wa0036.webp",
+        "door_photo_path": "images/doors/from-360/bldg-perpus-mipa.webp",
+        "photo_360_meta": "{\"pool\":\"fmipa\",\"haov\":360,\"vaov\":49.76,\"yaw\":120,\"pitch\":0,\"hfov\":67.2,\"min_pitch\":-20.9,\"max_pitch\":20.9,\"width\":1599,\"height\":221,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 32,
@@ -475,9 +568,12 @@
         "description": "Gedung kantor administrasi unit pelaksana teknis kampus USU (Zona Utara).",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0029.webp",
+        "door_photo_path": "images/doors/from-360/bldg-kantor-adm-1.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":47.02,\"yaw\":90,\"pitch\":0,\"hfov\":63.5,\"min_pitch\":-19.7,\"max_pitch\":19.7,\"width\":1600,\"height\":209,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 33,
@@ -490,9 +586,12 @@
         "description": "Gedung kantor pelayanan akademik dan tata usaha unit kampus USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261123-wa0007.webp",
+        "door_photo_path": "images/doors/from-360/bldg-kantor-adm-2.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":62.77,\"yaw\":330,\"pitch\":0,\"hfov\":84.7,\"min_pitch\":-26.4,\"max_pitch\":26.4,\"width\":1600,\"height\":279,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 34,
@@ -505,9 +604,12 @@
         "description": "Gedung perkantoran pengelola fasilitas dan sarana prasarana USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0028.webp",
+        "door_photo_path": "images/doors/from-360/bldg-kantor-adm-3.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":47.25,\"yaw\":210,\"pitch\":0,\"hfov\":63.8,\"min_pitch\":-19.8,\"max_pitch\":19.8,\"width\":1600,\"height\":210,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 35,
@@ -520,9 +622,12 @@
         "description": "Gedung kantor layanan administrasi pendukung perkuliahan USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261123-wa0009.webp",
+        "door_photo_path": "images/doors/from-360/bldg-kantor-adm-4.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":62.1,\"yaw\":0,\"pitch\":0,\"hfov\":83.8,\"min_pitch\":-26.1,\"max_pitch\":26.1,\"width\":1600,\"height\":276,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 36,
@@ -535,9 +640,12 @@
         "description": "Gedung kantor staf dan pengelola operasional kampus USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261123-wa0008.webp",
+        "door_photo_path": "images/doors/from-360/bldg-kantor-adm-5.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":58.37,\"yaw\":120,\"pitch\":0,\"hfov\":78.8,\"min_pitch\":-24.5,\"max_pitch\":24.5,\"width\":1511,\"height\":245,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 37,
@@ -550,9 +658,12 @@
         "description": "Gedung kantor layanan umum dan urusan rumah tangga kampus USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0020.webp",
+        "door_photo_path": "images/doors/from-360/bldg-kantor-adm-6.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":56.7,\"yaw\":30,\"pitch\":0,\"hfov\":76.5,\"min_pitch\":-23.8,\"max_pitch\":23.8,\"width\":1600,\"height\":252,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 38,
@@ -565,9 +676,12 @@
         "description": "Gedung kantor pengawasan operasional dan pemeliharaan gedung USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261123-wa0010.webp",
+        "door_photo_path": "images/doors/from-360/bldg-kantor-adm-7.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":63.45,\"yaw\":150,\"pitch\":0,\"hfov\":85.7,\"min_pitch\":-26.6,\"max_pitch\":26.6,\"width\":1600,\"height\":282,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 39,
@@ -580,9 +694,12 @@
         "description": "Masjid As-Syifa' di lingkungan Fakultas Farmasi Universitas Sumatera Utara.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/farmasi/img-20261113-wa0045.webp",
+        "door_photo_path": "images/doors/from-360/bldg-msj-assyifa.webp",
+        "photo_360_meta": "{\"pool\":\"farmasi\",\"haov\":360,\"vaov\":51.85,\"yaw\":60,\"pitch\":0,\"hfov\":70,\"min_pitch\":-21.8,\"max_pitch\":21.8,\"width\":1597,\"height\":230,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 40,
@@ -595,9 +712,12 @@
         "description": "Masjid Al-Ikhlas di lingkungan Fakultas Kedokteran Gigi USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0055.webp",
+        "door_photo_path": "images/doors/from-360/bldg-msj-alikhlas.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":53.1,\"yaw\":60,\"pitch\":0,\"hfov\":71.7,\"min_pitch\":-22.3,\"max_pitch\":22.3,\"width\":1600,\"height\":236,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 41,
@@ -610,9 +730,12 @@
         "description": "Gereja GBKP Majelis Runggun Pembangunan di kawasan kampus USU.",
         "floor_count": 2,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0030.webp",
+        "door_photo_path": "images/doors/from-360/bldg-gbkp-pembangunan.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":59.17,\"yaw\":0,\"pitch\":0,\"hfov\":79.9,\"min_pitch\":-24.9,\"max_pitch\":24.9,\"width\":1600,\"height\":263,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 42,
@@ -625,9 +748,12 @@
         "description": "Kantin sentra kuliner mahasiswa di area FISIP USU.",
         "floor_count": 1,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fisip/img-20261113-wa0046.webp",
+        "door_photo_path": "images/doors/from-360/bldg-kantin-fisip.webp",
+        "photo_360_meta": "{\"pool\":\"fisip\",\"haov\":360,\"vaov\":58.73,\"yaw\":240,\"pitch\":0,\"hfov\":79.3,\"min_pitch\":-24.7,\"max_pitch\":24.7,\"width\":1600,\"height\":261,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 43,
@@ -640,9 +766,12 @@
         "description": "Kantin mahasiswa Fakultas Pertanian Universitas Sumatera Utara.",
         "floor_count": 1,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0032.webp",
+        "door_photo_path": "images/doors/from-360/bldg-kantin-fp.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":39.6,\"yaw\":270,\"pitch\":0,\"hfov\":62,\"min_pitch\":-16.6,\"max_pitch\":16.6,\"width\":1600,\"height\":176,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 44,
@@ -655,9 +784,12 @@
         "description": "Area gazebo dan fasilitas ruang terbuka tempat duduk mahasiswa USU.",
         "floor_count": 1,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0054.webp",
+        "door_photo_path": "images/doors/from-360/bldg-gazebo-taman.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.5,\"yaw\":330,\"pitch\":0,\"hfov\":66.8,\"min_pitch\":-20.8,\"max_pitch\":20.8,\"width\":1600,\"height\":220,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 45,
@@ -670,9 +802,12 @@
         "description": "Gedung perkuliahan Politeknik Negeri Medan di dalam kompleks kampus USU.",
         "floor_count": 4,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0021.webp",
+        "door_photo_path": "images/doors/from-360/bldg-polmed.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":58.73,\"yaw\":30,\"pitch\":0,\"hfov\":79.3,\"min_pitch\":-24.7,\"max_pitch\":24.7,\"width\":1600,\"height\":261,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 46,
@@ -685,9 +820,12 @@
         "description": "Akomodasi dan fasilitas penginapan di sekitar kawasan kampus USU.",
         "floor_count": 3,
         "created_at": "2026-08-25 22:11:56",
-        "updated_at": "2026-08-25 22:11:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0019.webp",
+        "door_photo_path": "images/doors/from-360/bldg-papakoel.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":49.27,\"yaw\":120,\"pitch\":0,\"hfov\":66.5,\"min_pitch\":-20.7,\"max_pitch\":20.7,\"width\":1600,\"height\":219,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 47,
@@ -700,9 +838,12 @@
         "description": "Gedung Perkuliahan FASILKOM-TI USU",
         "floor_count": 3,
         "created_at": "2026-08-31 12:36:00",
-        "updated_at": "2026-08-31 12:36:00",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fasilkom/img-20261123-wa0058.webp",
+        "door_photo_path": "images/doors/from-360/bldg-gd-fasilkom.webp",
+        "photo_360_meta": "{\"pool\":\"fasilkom\",\"haov\":360,\"vaov\":61.65,\"yaw\":180,\"pitch\":0,\"hfov\":83.2,\"min_pitch\":-25.9,\"max_pitch\":25.9,\"width\":1600,\"height\":274,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 48,
@@ -715,9 +856,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-23 20:52:32",
-        "updated_at": "2026-11-23 20:52:32",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-436.webp",
+        "door_photo_path": "images/doors/real/fib-a-101-koridor.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}"
     },
     {
         "id": 50,
@@ -730,9 +874,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 06:54:35",
-        "updated_at": "2026-11-24 06:54:35",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-430.webp",
+        "door_photo_path": "images/doors/real/fib-o-101.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":163.6,\"pitch\":-4.1,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}"
     },
     {
         "id": 51,
@@ -745,9 +892,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 06:57:18",
-        "updated_at": "2026-11-24 06:57:18",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-484.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fib-i.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 52,
@@ -760,9 +910,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 06:58:35",
-        "updated_at": "2026-11-24 06:58:35",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-433.webp",
+        "door_photo_path": "images/doors/real/fib-o-102.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":167.6,\"pitch\":-0.6,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}"
     },
     {
         "id": 53,
@@ -775,9 +928,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 09:52:11",
-        "updated_at": "2026-11-24 09:52:11",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-436.webp",
+        "door_photo_path": "images/doors/real/fib-a-102.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}"
     },
     {
         "id": 54,
@@ -790,9 +946,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 09:53:51",
-        "updated_at": "2026-11-24 09:53:51",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-441.webp",
+        "door_photo_path": "images/doors/real/fib-b-102.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":174.4,\"pitch\":5.1,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}"
     },
     {
         "id": 55,
@@ -805,9 +964,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 09:56:09",
-        "updated_at": "2026-11-24 09:56:09",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-489.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fib-m.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 56,
@@ -820,9 +982,12 @@
         "description": null,
         "floor_count": 3,
         "created_at": "2026-11-24 09:57:48",
-        "updated_at": "2026-11-24 09:57:48",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-474.webp",
+        "door_photo_path": "images/doors/real/fib-k-301.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}"
     },
     {
         "id": 57,
@@ -835,9 +1000,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 09:58:59",
-        "updated_at": "2026-11-24 09:58:59",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-482.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fib-f.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 58,
@@ -850,9 +1018,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:00:38",
-        "updated_at": "2026-11-24 10:00:38",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-491.webp",
+        "door_photo_path": "images/doors/real/fib-h-205-detail.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}"
     },
     {
         "id": 59,
@@ -865,9 +1036,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:01:43",
-        "updated_at": "2026-11-24 10:01:43",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-456.webp",
+        "door_photo_path": "images/doors/real/fib-h-102.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}"
     },
     {
         "id": 60,
@@ -880,9 +1054,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:02:57",
-        "updated_at": "2026-11-24 10:02:57",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-442.webp",
+        "door_photo_path": "images/doors/real/fib-laboratorium-koridor.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":0,\"pitch\":0,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}"
     },
     {
         "id": 61,
@@ -895,9 +1072,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:04:20",
-        "updated_at": "2026-11-24 10:04:20",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fib/scene-439.webp",
+        "door_photo_path": "images/doors/real/fib-b-101.webp",
+        "photo_360_meta": "{\"pool\":\"fib\",\"haov\":360,\"vaov\":180,\"yaw\":78.7,\"pitch\":5.9,\"hfov\":95,\"min_pitch\":-85,\"max_pitch\":85,\"width\":2560,\"height\":1280,\"door_source\":\"real\"}"
     },
     {
         "id": 62,
@@ -910,9 +1090,12 @@
         "description": null,
         "floor_count": 2,
         "created_at": "2026-11-24 10:08:52",
-        "updated_at": "2026-11-24 10:08:52",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/farmasi/img-20261113-wa0044.webp",
+        "door_photo_path": "images/doors/from-360/bldg-ff-lt-2.webp",
+        "photo_360_meta": "{\"pool\":\"farmasi\",\"haov\":360,\"vaov\":59.85,\"yaw\":180,\"pitch\":0,\"hfov\":80.8,\"min_pitch\":-25.1,\"max_pitch\":25.1,\"width\":1600,\"height\":266,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 63,
@@ -925,9 +1108,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:11:07",
-        "updated_at": "2026-11-24 10:11:07",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/hukum/img-20261113-wa0024.webp",
+        "door_photo_path": "images/doors/real/fh-r203-r204.webp",
+        "photo_360_meta": "{\"pool\":\"hukum\",\"haov\":360,\"vaov\":49.73,\"yaw\":270,\"pitch\":0,\"hfov\":67.1,\"min_pitch\":-20.9,\"max_pitch\":20.9,\"width\":1600,\"height\":221,\"door_source\":\"real\"}"
     },
     {
         "id": 64,
@@ -940,9 +1126,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:12:48",
-        "updated_at": "2026-11-24 10:12:48",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0029.webp",
+        "door_photo_path": "images/doors/from-360/bldg-gdp.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":47.02,\"yaw\":300,\"pitch\":0,\"hfov\":63.5,\"min_pitch\":-19.7,\"max_pitch\":19.7,\"width\":1600,\"height\":209,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 66,
@@ -955,9 +1144,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 10:23:42",
-        "updated_at": "2026-11-24 10:23:42",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261123-wa0007.webp",
+        "door_photo_path": "images/doors/real/gl-4a.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":62.77,\"yaw\":120,\"pitch\":0,\"hfov\":84.7,\"min_pitch\":-26.4,\"max_pitch\":26.4,\"width\":1600,\"height\":279,\"door_source\":\"real\"}"
     },
     {
         "id": 67,
@@ -970,9 +1162,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:04:57",
-        "updated_at": "2026-11-24 14:04:57",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fisip/img-20261113-wa0052.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fisip-mkwu.webp",
+        "photo_360_meta": "{\"pool\":\"fisip\",\"haov\":360,\"vaov\":54.45,\"yaw\":270,\"pitch\":0,\"hfov\":73.5,\"min_pitch\":-22.9,\"max_pitch\":22.9,\"width\":1600,\"height\":242,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 68,
@@ -985,9 +1180,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:05:56",
-        "updated_at": "2026-11-24 14:05:56",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261113-wa0028.webp",
+        "door_photo_path": "images/doors/from-360/bldg-feb-gb.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":47.25,\"yaw\":90,\"pitch\":0,\"hfov\":63.8,\"min_pitch\":-19.8,\"max_pitch\":19.8,\"width\":1600,\"height\":210,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 69,
@@ -1000,9 +1198,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:08:24",
-        "updated_at": "2026-11-24 14:08:24",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261123-wa0009.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fp-kompos.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":62.1,\"yaw\":270,\"pitch\":0,\"hfov\":83.8,\"min_pitch\":-26.1,\"max_pitch\":26.1,\"width\":1600,\"height\":276,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 70,
@@ -1015,9 +1216,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:09:30",
-        "updated_at": "2026-11-24 14:09:30",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/campus-root/img-20261123-wa0008.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fp-mkwu.webp",
+        "photo_360_meta": "{\"pool\":\"campus-root\",\"haov\":360,\"vaov\":58.37,\"yaw\":60,\"pitch\":0,\"hfov\":78.8,\"min_pitch\":-24.5,\"max_pitch\":24.5,\"width\":1511,\"height\":245,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 71,
@@ -1030,9 +1234,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:12:31",
-        "updated_at": "2026-11-24 14:12:31",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fmipa/img-20261113-wa0037.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fmipa-u4.webp",
+        "photo_360_meta": "{\"pool\":\"fmipa\",\"haov\":360,\"vaov\":57.86,\"yaw\":180,\"pitch\":0,\"hfov\":78.1,\"min_pitch\":-24.3,\"max_pitch\":24.3,\"width\":1599,\"height\":257,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 72,
@@ -1045,9 +1252,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:13:40",
-        "updated_at": "2026-11-24 14:13:40",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fmipa/img-20261113-wa0040.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fmipa-u5.webp",
+        "photo_360_meta": "{\"pool\":\"fmipa\",\"haov\":360,\"vaov\":52.65,\"yaw\":0,\"pitch\":0,\"hfov\":71.1,\"min_pitch\":-22.1,\"max_pitch\":22.1,\"width\":1600,\"height\":234,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 73,
@@ -1060,9 +1270,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:15:52",
-        "updated_at": "2026-11-24 14:15:52",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/elektro/img-20261113-wa0060.webp",
+        "door_photo_path": "images/doors/from-360/bldg-ft-elektro-k.webp",
+        "photo_360_meta": "{\"pool\":\"elektro\",\"haov\":360,\"vaov\":57.23,\"yaw\":330,\"pitch\":0,\"hfov\":77.3,\"min_pitch\":-24,\"max_pitch\":24,\"width\":1560,\"height\":248,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 74,
@@ -1075,9 +1288,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:17:21",
-        "updated_at": "2026-11-24 14:17:21",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/teknik-industri/img-20261123-wa0005.webp",
+        "door_photo_path": "images/doors/real/ft-teknik-industri-smartroom.webp",
+        "photo_360_meta": "{\"pool\":\"teknik-industri\",\"haov\":360,\"vaov\":53.1,\"yaw\":120,\"pitch\":0,\"hfov\":71.7,\"min_pitch\":-22.3,\"max_pitch\":22.3,\"width\":1600,\"height\":236,\"door_source\":\"real\"}"
     },
     {
         "id": 75,
@@ -1090,9 +1306,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:20:51",
-        "updated_at": "2026-11-24 14:20:51",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/elektro/img-20261113-wa0063.webp",
+        "door_photo_path": "images/doors/from-360/bldg-ft-sipil-sc.webp",
+        "photo_360_meta": "{\"pool\":\"elektro\",\"haov\":360,\"vaov\":54.52,\"yaw\":0,\"pitch\":0,\"hfov\":73.6,\"min_pitch\":-22.9,\"max_pitch\":22.9,\"width\":1598,\"height\":242,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 76,
@@ -1105,9 +1324,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:22:03",
-        "updated_at": "2026-11-24 14:22:03",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/f-kep/img-20261123-wa0037.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fkep.webp",
+        "photo_360_meta": "{\"pool\":\"f-kep\",\"haov\":360,\"vaov\":60.52,\"yaw\":0,\"pitch\":0,\"hfov\":81.7,\"min_pitch\":-25.4,\"max_pitch\":25.4,\"width\":1600,\"height\":269,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 77,
@@ -1120,9 +1342,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:22:46",
-        "updated_at": "2026-11-24 14:22:46",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fkm/img-20261123-wa0025.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fkm-b.webp",
+        "photo_360_meta": "{\"pool\":\"fkm\",\"haov\":360,\"vaov\":60.73,\"yaw\":120,\"pitch\":0,\"hfov\":82,\"min_pitch\":-25.5,\"max_pitch\":25.5,\"width\":1553,\"height\":262,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 78,
@@ -1135,9 +1360,12 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:23:17",
-        "updated_at": "2026-11-24 14:23:17",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/fkm/img-20261123-wa0036.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fkm-e.webp",
+        "photo_360_meta": "{\"pool\":\"fkm\",\"haov\":360,\"vaov\":59.4,\"yaw\":180,\"pitch\":0,\"hfov\":80.2,\"min_pitch\":-24.9,\"max_pitch\":24.9,\"width\":1600,\"height\":264,\"door_source\":\"rectilinear_360\"}"
     },
     {
         "id": 79,
@@ -1150,8 +1378,11 @@
         "description": null,
         "floor_count": 1,
         "created_at": "2026-11-24 14:24:30",
-        "updated_at": "2026-11-24 14:24:30",
+        "updated_at": "2026-11-25 16:41:33",
         "entrance_lat": null,
-        "entrance_lng": null
+        "entrance_lng": null,
+        "photo_360_path": "images/foto-360p/psikologi/img-20261113-wa0015.webp",
+        "door_photo_path": "images/doors/from-360/bldg-fpsi-c.webp",
+        "photo_360_meta": "{\"pool\":\"psikologi\",\"haov\":360,\"vaov\":63.26,\"yaw\":270,\"pitch\":0,\"hfov\":85.4,\"min_pitch\":-26.6,\"max_pitch\":26.6,\"width\":1599,\"height\":281,\"door_source\":\"rectilinear_360\"}"
     }
 ]

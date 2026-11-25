@@ -1,57 +1,100 @@
 /**
- * Rexa Copilot — Logic Controller & State Management (Alpine.js)
- * Fase 3: Integrasi Frontend, Parsing [MAP_ACTION], dan Mesin Fallback Offline.
+ * Tanya Ucup — Pemandu Cerdas Kampus USU (Alpine.js Controller)
+ * Mengelola state UI responsif, deteksi GPS real-time, teaser kontekstual,
+ * riwayat multi-turn, kartu interaktif (Fotokopi, Spasial + FIB 360°, Jadwal), & fallback offline.
  */
 
 window.usuCopilot = function () {
+    const initialPath = typeof window !== 'undefined' ? window.location.pathname : '/';
+    const isFotocopyPath = /^\/fotocopy/i.test(initialPath);
+    const isOrderPath = /^\/fotocopy\/[^/]+\/order/i.test(initialPath);
+
+    let initialTeaserDismissed = false;
+    try {
+        initialTeaserDismissed = sessionStorage.getItem('usu_ucup_teaser_dismissed') === '1';
+    } catch (e) {}
+
     return {
         // State UI
         isOpen: false,
         isLoading: false,
         isOffline: false,
         inputMessage: '',
+        thinkingText: 'Ucup lagi nyari info kampus USU...',
+        showScrollToBottom: false,
 
-        // State Dimensi & Resizing (Desktop)
-        chatWidth: 400,
-        chatHeight: 560,
+        // Context Halaman & Teaser Mascot
+        currentPath: initialPath,
+        isOrderPage: isOrderPath,
+        teaserDismissed: initialTeaserDismissed,
+
+        // GPS Live Status
+        gpsActive: false,
+        gpsDetecting: false,
+        gpsAccuracy: null,
+
+        // State Dimensi & Resizing (Desktop >= 640px)
+        chatWidth: 395,
+        chatHeight: 590,
         isResizing: false,
         isExpanded: false,
-        isDesktop: typeof window !== 'undefined' ? window.innerWidth >= 768 : true,
-        preExpandWidth: 400,
-        preExpandHeight: 560,
+        isDesktop: typeof window !== 'undefined' ? window.innerWidth >= 640 : true,
+        preExpandWidth: 395,
+        preExpandHeight: 590,
 
-        // Saran Cepat (Quick Chips)
-        quickPrompts: [
-            'Cari pulpen pink murah terdekat',
-            'Kelas saya di depan FIB samping FMIPA',
-            'Jadwal Pancasila hari Senin',
-            'Dimana Gedung Fasilkom-TI?',
-        ],
+        // 4 Quick Action Chips Kontekstual
+        quickPrompts: isFotocopyPath
+            ? [
+                'Cari pulpen pink murah terdekat',
+                'Print A4 termurah yang buka sekarang',
+                'Kelas saya di depan FIB di samping fakultas B',
+                'Jadwal kuliah hari ini',
+            ]
+            : [
+                'Kelas saya di depan FIB di samping fakultas B',
+                'Jadwal kuliah hari ini',
+                'Cari pulpen pink murah terdekat',
+                'Print A4 termurah yang buka sekarang',
+            ],
 
-        // Daftar Pesan Chat
+        // Daftar Pesan Chat (kosong -> menampilkan Welcome Hero Ucup)
         messages: [],
 
         /**
-         * Inisialisasi komponen: Muat riwayat dari sessionStorage atau tampilkan sambutan awal.
+         * Pesan speech bubble teaser sesuai halaman aktif.
+         */
+        get teaserText() {
+            if (/^\/map/i.test(this.currentPath)) {
+                return 'Bingung cari kelas atau rute? Tanya Ucup!';
+            }
+            if (/^\/fotocopy/i.test(this.currentPath)) {
+                return 'Cari print / ATK murah terdekat? Klik Ucup!';
+            }
+            return 'Halo! Aku Ucup, pemandu kampus USU';
+        },
+
+        /**
+         * Inisialisasi komponen: muat riwayat, ukuran tersimpan, dan pemanasan GPS pasif.
          */
         init() {
             this.loadHistory();
             this.loadSavedSize();
+            this.syncGpsStateFromCache();
+            this.warmGpsFix(false);
 
-            // Dengarkan event resize window untuk update breakpoint dan clamp dimensi
             window.addEventListener('resize', () => {
-                this.isDesktop = window.innerWidth >= 768;
+                this.isDesktop = window.innerWidth >= 640;
                 if (this.isDesktop) {
-                    const maxWidth = Math.min(760, window.innerWidth - 32);
-                    const maxHeight = Math.min(820, window.innerHeight - 96);
+                    const maxWidth = Math.min(720, window.innerWidth - 32);
+                    const maxHeight = Math.min(780, Math.round(window.innerHeight * 0.82));
                     if (this.chatWidth > maxWidth) this.chatWidth = maxWidth;
                     if (this.chatHeight > maxHeight) this.chatHeight = maxHeight;
                 }
             });
 
-            // Dengarkan event eksternal jika ada tombol lain di halaman yang ingin membuka chatbot
             window.addEventListener('open-copilot', (e) => {
                 this.isOpen = true;
+                this.warmGpsFix(false);
                 if (e.detail && e.detail.prompt) {
                     this.inputMessage = e.detail.prompt;
                     this.sendMessage();
@@ -62,40 +105,143 @@ window.usuCopilot = function () {
         },
 
         /**
-         * Buka atau perkecil jendela chat.
+         * Tutup speech bubble teaser di sesi aktif.
+         */
+        dismissTeaser() {
+            this.teaserDismissed = true;
+            try {
+                sessionStorage.setItem('usu_ucup_teaser_dismissed', '1');
+            } catch (e) {}
+        },
+
+        /**
+         * Baca GPS terbaru (< 5 menit) dari map engine atau sessionStorage.
+         */
+        getCachedGpsFix() {
+            try {
+                const liveFix = window.USUClassMap?.getLastGpsFix?.();
+                if (liveFix && Number.isFinite(Number(liveFix.lat)) && Number.isFinite(Number(liveFix.lng))) {
+                    const age = Date.now() - Number(liveFix.timestamp || Date.now());
+                    if (age < 300000) return liveFix;
+                }
+                for (const key of ['usu_last_gps', 'usu_last_gps_fix']) {
+                    const raw = sessionStorage.getItem(key);
+                    if (!raw) continue;
+                    const parsed = JSON.parse(raw);
+                    if (parsed && Number.isFinite(Number(parsed.lat)) && Number.isFinite(Number(parsed.lng))) {
+                        const age = Date.now() - Number(parsed.timestamp || 0);
+                        if (age < 300000) return parsed;
+                    }
+                }
+            } catch (e) {}
+            return null;
+        },
+
+        syncGpsStateFromCache() {
+            const cached = this.getCachedGpsFix();
+            if (cached) {
+                this.gpsActive = true;
+                this.gpsAccuracy = Number.isFinite(Number(cached.accuracy)) ? Math.round(Number(cached.accuracy)) : null;
+                return true;
+            }
+            return false;
+        },
+
+        warmGpsFix(forceFresh = false) {
+            if (!forceFresh && this.syncGpsStateFromCache()) return;
+            if (!window.isSecureContext || !navigator.geolocation) return;
+
+            this.gpsDetecting = true;
+
+            const saveFix = (pos) => {
+                this.gpsDetecting = false;
+                const lat = Number(pos?.coords?.latitude);
+                const lng = Number(pos?.coords?.longitude);
+                const acc = Math.round(Number(pos?.coords?.accuracy || 30));
+                if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+
+                this.gpsActive = true;
+                this.gpsAccuracy = acc;
+
+                try {
+                    const payload = JSON.stringify({
+                        lat,
+                        lng,
+                        accuracy: acc,
+                        timestamp: Date.now(),
+                    });
+                    sessionStorage.setItem('usu_last_gps', payload);
+                    sessionStorage.setItem('usu_last_gps_fix', payload);
+                } catch (e) {}
+            };
+
+            const onFail = () => {
+                this.gpsDetecting = false;
+            };
+
+            navigator.geolocation.getCurrentPosition(
+                saveFix,
+                () => {
+                    navigator.geolocation.getCurrentPosition(
+                        saveFix,
+                        onFail,
+                        { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
+                    );
+                },
+                { enableHighAccuracy: true, timeout: 6000, maximumAge: forceFresh ? 0 : 30000 }
+            );
+        },
+
+        requestGpsManually() {
+            this.warmGpsFix(true);
+        },
+
+        /**
+         * Buka atau tutup jendela chat Tanya Ucup.
          */
         toggleChat() {
             this.isOpen = !this.isOpen;
             if (this.isOpen) {
-                this.$nextTick(() => this.scrollToBottom());
+                this.syncGpsStateFromCache();
+                this.warmGpsFix(false);
+                this.$nextTick(() => {
+                    this.scrollToBottom();
+                    if (this.isDesktop && this.$refs.chatInput) {
+                        this.$refs.chatInput.focus();
+                    }
+                });
+            }
+        },
+
+        closeChat() {
+            if (this.isOpen) {
+                this.isOpen = false;
             }
         },
 
         /**
-         * Memuat preferensi ukuran chat dari localStorage
+         * Memuat preferensi ukuran chat desktop dari localStorage.
          */
         loadSavedSize() {
             try {
                 const saved = localStorage.getItem('usuclassmap_copilot_size');
                 if (saved) {
                     const parsed = JSON.parse(saved);
-                    const maxWidth = Math.min(760, window.innerWidth - 32);
-                    const maxHeight = Math.min(820, window.innerHeight - 96);
+                    const maxWidth = Math.min(720, window.innerWidth - 32);
+                    const maxHeight = Math.min(780, Math.round(window.innerHeight * 0.82));
                     if (parsed.width) {
-                        this.chatWidth = Math.min(maxWidth, Math.max(320, parseInt(parsed.width, 10)));
+                        this.chatWidth = Math.min(maxWidth, Math.max(360, parseInt(parsed.width, 10)));
                     }
                     if (parsed.height) {
-                        this.chatHeight = Math.min(maxHeight, Math.max(380, parseInt(parsed.height, 10)));
+                        this.chatHeight = Math.min(maxHeight, Math.max(420, parseInt(parsed.height, 10)));
                     }
                     this.isExpanded = !!parsed.isExpanded;
                 }
-            } catch (e) {
-                // fallback to default
-            }
+            } catch (e) {}
         },
 
         /**
-         * Menyimpan ukuran chat ke localStorage
+         * Menyimpan ukuran chat ke localStorage.
          */
         saveSize() {
             try {
@@ -105,12 +251,12 @@ window.usuCopilot = function () {
                     isExpanded: this.isExpanded,
                 }));
             } catch (e) {
-                console.warn('[Rexa Copilot] Gagal menyimpan ukuran chat:', e);
+                console.warn('[Tanya Ucup] Gagal menyimpan ukuran chat:', e);
             }
         },
 
         /**
-         * Mulai geser ukuran jendela chat (Left, Top, atau Corner)
+         * Mulai geser ukuran jendela chat di desktop.
          */
         startResize(type, event) {
             if (!this.isDesktop) return;
@@ -127,21 +273,18 @@ window.usuCopilot = function () {
 
             const onPointerMove = (e) => {
                 if (!this.isResizing) return;
-
-                const maxWidth = Math.min(760, window.innerWidth - 32);
-                const maxHeight = Math.min(820, window.innerHeight - 96);
+                const maxWidth = Math.min(720, window.innerWidth - 32);
+                const maxHeight = Math.min(780, Math.round(window.innerHeight * 0.82));
 
                 if (type === 'left' || type === 'corner') {
                     const deltaX = startX - e.clientX;
-                    this.chatWidth = Math.round(Math.min(maxWidth, Math.max(320, startW + deltaX)));
+                    this.chatWidth = Math.round(Math.min(maxWidth, Math.max(360, startW + deltaX)));
                 }
-
                 if (type === 'top' || type === 'corner') {
                     const deltaY = startY - e.clientY;
-                    this.chatHeight = Math.round(Math.min(maxHeight, Math.max(380, startH + deltaY)));
+                    this.chatHeight = Math.round(Math.min(maxHeight, Math.max(420, startH + deltaY)));
                 }
-
-                if (this.isExpanded && (this.chatWidth !== 560 || this.chatHeight !== 680)) {
+                if (this.isExpanded && (this.chatWidth !== 480)) {
                     this.isExpanded = false;
                 }
             };
@@ -159,22 +302,22 @@ window.usuCopilot = function () {
         },
 
         /**
-         * Toggle ukuran cepat antara normal dan mode lebar
+         * Toggle ukuran cepat desktop (395px <-> 480px).
          */
         toggleExpand() {
             if (!this.isDesktop) return;
-            const maxW = Math.min(760, window.innerWidth - 32);
-            const maxH = Math.min(820, window.innerHeight - 96);
+            const maxW = Math.min(720, window.innerWidth - 32);
+            const maxH = Math.min(780, Math.round(window.innerHeight * 0.82));
 
             if (!this.isExpanded) {
                 this.preExpandWidth = this.chatWidth;
                 this.preExpandHeight = this.chatHeight;
-                this.chatWidth = Math.min(560, maxW);
+                this.chatWidth = Math.min(480, maxW);
                 this.chatHeight = Math.min(680, maxH);
                 this.isExpanded = true;
             } else {
-                this.chatWidth = Math.min(this.preExpandWidth || 400, maxW);
-                this.chatHeight = Math.min(this.preExpandHeight || 560, maxH);
+                this.chatWidth = Math.min(this.preExpandWidth || 395, maxW);
+                this.chatHeight = Math.min(this.preExpandHeight || 590, maxH);
                 this.isExpanded = false;
             }
             this.saveSize();
@@ -182,15 +325,32 @@ window.usuCopilot = function () {
         },
 
         /**
-         * Reset ukuran ke default (400x560px)
+         * Reset ukuran desktop ke default (395x590px).
          */
         resetSize() {
             if (!this.isDesktop) return;
-            this.chatWidth = 400;
-            this.chatHeight = 560;
+            this.chatWidth = 395;
+            this.chatHeight = Math.min(590, Math.round(window.innerHeight * 0.82));
             this.isExpanded = false;
             this.saveSize();
             this.$nextTick(() => this.scrollToBottom());
+        },
+
+        /**
+         * Hitung label status berpikir kontekstual dari query pengguna.
+         */
+        computeThinkingLabel(query) {
+            const q = String(query || '').toLowerCase();
+            if (/(pulpen|pena|pensil|print|cetak|fotocopy|fotokopi|jilid|kertas|hvs|atk|scan|laminat|toko|murah|tipec|tipex|tipe-x|tip-x|stipo|correction|stabilo|highlighter|usupress|usu\s*press|penerbit)/i.test(q)) {
+                return 'Ucup lagi ngecek seluruh mitra fotokopi USU...';
+            }
+            if (/(depan|seberang|sebrang|samping|sebelah|belakang|antara|ingat|rute|arah|jalan|gedung|fakultas|fib|feb|fmipa|fasilkom|gkb|fisip|peta|dimana)/i.test(q)) {
+                return 'Ucup lagi baca peta & posisi gedung...';
+            }
+            if (/(jadwal|kuliah|kelas|dosen|sks|ruang|senin|selasa|rabu|kamis|jumat|sabtu|hari ini)/i.test(q)) {
+                return 'Ucup lagi buka jadwal kampus...';
+            }
+            return 'Ucup lagi nyari info kampus USU...';
         },
 
         /**
@@ -202,7 +362,29 @@ window.usuCopilot = function () {
         },
 
         /**
-         * Format jam pesan saat ini (misal: "14:05").
+         * Handler input textarea: Enter kirim, Shift+Enter baris baru.
+         */
+        handleInputKeydown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                this.sendMessage();
+            }
+        },
+
+        autoResizeInput(el) {
+            if (!el) return;
+            el.style.height = 'auto';
+            el.style.height = Math.min(84, Math.max(38, el.scrollHeight)) + 'px';
+        },
+
+        handleMessagesScroll(el) {
+            if (!el) return;
+            const distFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+            this.showScrollToBottom = distFromBottom > 120;
+        },
+
+        /**
+         * Format jam pesan saat ini (misal: "08:35").
          */
         getCurrentTime() {
             const now = new Date();
@@ -216,22 +398,14 @@ window.usuCopilot = function () {
             try {
                 const saved = sessionStorage.getItem('usuclassmap_copilot_messages');
                 if (saved) {
-                    this.messages = JSON.parse(saved);
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed)) {
+                        this.messages = parsed;
+                        return;
+                    }
                 }
-            } catch (e) {
-                this.messages = [];
-            }
-
-            // Jika belum ada riwayat, tambahkan pesan sambutan default dari Rexa
-            if (this.messages.length === 0) {
-                this.messages.push({
-                    id: 'welcome-' + Date.now(),
-                    role: 'assistant',
-                    content: 'Halo! Saya **Rexa Kampus**, asisten AI cerdas USUClassMap. Ada jadwal kuliah, ruangan, atau lokasi gedung di kampus USU yang ingin kamu cari hari ini?',
-                    time: this.getCurrentTime(),
-                    mapAction: null,
-                });
-            }
+            } catch (e) {}
+            this.messages = [];
         },
 
         /**
@@ -239,51 +413,48 @@ window.usuCopilot = function () {
          */
         saveHistory() {
             try {
-                // Simpan maksimal 20 pesan terakhir agar efisien
                 const trimmed = this.messages.slice(-20);
                 sessionStorage.setItem('usuclassmap_copilot_messages', JSON.stringify(trimmed));
             } catch (e) {
-                console.warn('[Rexa Copilot] Gagal menyimpan riwayat chat:', e);
+                console.warn('[Tanya Ucup] Gagal menyimpan riwayat chat:', e);
             }
         },
 
         /**
-         * Bersihkan riwayat chat dan kembalikan ke pesan sambutan awal.
+         * Bersihkan riwayat chat agar kembali menampilkan Welcome Hero Ucup.
          */
         clearChat() {
-            sessionStorage.removeItem('usuclassmap_copilot_messages');
-            this.messages = [
-                {
-                    id: 'welcome-' + Date.now(),
-                    role: 'assistant',
-                    content: 'Riwayat percakapan telah dibersihkan. Silakan tanyakan hal baru seputar gedung dan jadwal kuliah USU!',
-                    time: this.getCurrentTime(),
-                    mapAction: null,
-                },
-            ];
+            try {
+                sessionStorage.removeItem('usuclassmap_copilot_messages');
+            } catch (e) {}
+            this.messages = [];
             this.isOffline = false;
+            this.showScrollToBottom = false;
         },
 
         /**
-         * Fungsi Utama: Kirim Pesan ke Backend Laravel (/copilot/chat)
+         * Fungsi Utama: Kirim Pesan ke Backend Laravel (/copilot/chat).
          */
         async sendMessage() {
             const rawText = this.inputMessage.trim();
             if (!rawText || this.isLoading) return;
 
-            // 1. Tambahkan pesan user ke daftar chat
-            const userMsg = {
+            this.messages.push({
                 id: 'user-' + Date.now(),
                 role: 'user',
                 content: rawText,
                 time: this.getCurrentTime(),
-            };
-            this.messages.push(userMsg);
+            });
             this.inputMessage = '';
+            if (this.$refs.chatInput) {
+                this.$refs.chatInput.style.height = '38px';
+            }
+
+            this.thinkingText = this.computeThinkingLabel(rawText);
             this.isLoading = true;
             this.$nextTick(() => this.scrollToBottom());
 
-            // 2. Siapkan riwayat percakapan untuk payload API (maksimal 6 pesan terakhir)
+            // Siapkan riwayat percakapan untuk payload API (maksimal 6 pesan terakhir, slice aman 1200 char)
             const apiHistory = this.messages
                 .slice(-7, -1)
                 .map((m) => ({
@@ -291,28 +462,19 @@ window.usuCopilot = function () {
                     content: String(m.content || '').slice(0, 1200),
                 }));
 
-            // Ambil koordinat GPS terakhir jika tersedia dari peta atau sessionStorage
             let gpsLat = null;
             let gpsLng = null;
             try {
-                const liveFix = window.USUClassMap?.getLastGpsFix?.();
-                if (liveFix && Number.isFinite(Number(liveFix.lat)) && Number.isFinite(Number(liveFix.lng))) {
-                    gpsLat = Number(liveFix.lat);
-                    gpsLng = Number(liveFix.lng);
-                } else {
-                    const cachedFixRaw = sessionStorage.getItem('usu_last_gps_fix');
-                    if (cachedFixRaw) {
-                        const cachedFix = JSON.parse(cachedFixRaw);
-                        if (cachedFix && Number.isFinite(Number(cachedFix.lat)) && Number.isFinite(Number(cachedFix.lng))) {
-                            gpsLat = Number(cachedFix.lat);
-                            gpsLng = Number(cachedFix.lng);
-                        }
-                    }
+                const cached = this.getCachedGpsFix();
+                if (cached) {
+                    gpsLat = Number(cached.lat);
+                    gpsLng = Number(cached.lng);
+                    this.gpsActive = true;
+                    this.gpsAccuracy = Number.isFinite(Number(cached.accuracy)) ? Math.round(Number(cached.accuracy)) : null;
                 }
             } catch (e) {}
 
             try {
-                // 3. Panggil Endpoint Backend Laravel Grounded Copilot
                 const response = await window.axios.post('/copilot/chat', {
                     message: rawText,
                     history: apiHistory,
@@ -333,40 +495,37 @@ window.usuCopilot = function () {
                     const advisoryNote = response.data.advisory_note || null;
                     const intent = response.data.intent || 'general_campus_qa';
 
-                    // Parsing fallback jika tag [MAP_ACTION: {...}] masih tersisa di dalam teks
                     const actionRegex = /\[MAP_ACTION:\s*(\{.*?\})\]/s;
                     const match = replyText.match(actionRegex);
                     if (match) {
                         try {
                             mapAction = JSON.parse(match[1]);
                         } catch (err) {
-                            console.warn('[Rexa Copilot] Gagal parse JSON dari tag MAP_ACTION:', err);
+                            console.warn('[Tanya Ucup] Gagal parse JSON dari tag MAP_ACTION:', err);
                         }
                         replyText = replyText.replace(actionRegex, '').trim();
                     }
 
-                    // Tambahkan balasan AI ke daftar pesan
                     this.messages.push({
                         id: 'bot-' + Date.now(),
                         role: 'assistant',
                         content: replyText,
                         time: this.getCurrentTime(),
-                        intent: intent,
+                        intent,
                         advisory_note: advisoryNote,
-                        cards: cards,
-                        actions: actions,
-                        mapAction: mapAction,
-                        facultySummary: facultySummary,
-                        quickReplies: quickReplies,
-                        mapActions: mapActions,
-                        schedules: schedules,
+                        cards,
+                        actions,
+                        mapAction,
+                        facultySummary,
+                        quickReplies,
+                        mapActions,
+                        schedules,
                         showAllSchedules: false,
                         searchKeyword: rawText,
                     });
 
                     this.isOffline = false;
 
-                    // Jika ada aksi focus peta (bukan fotocopy auto-redirect), picu peta otomatis di layar lebar
                     if (mapAction && mapAction.type !== 'start_route' && window.innerWidth >= 1024 && window.USUClassMap) {
                         this.triggerMapAction(mapAction, false);
                     }
@@ -374,12 +533,10 @@ window.usuCopilot = function () {
                     throw new Error(response.data?.message || 'Gagal memproses respon AI');
                 }
             } catch (error) {
-                console.warn('[Rexa Copilot] Terjadi kesalahan koneksi backend. Beralih ke Mesin Offline:', error);
+                console.warn('[Tanya Ucup] Terjadi kesalahan koneksi backend. Beralih ke Mesin Offline:', error);
                 this.isOffline = true;
 
-                // 4. Eksekusi Engine Offline (Regex Fallback) jika server AI tidak merespon
                 const fallbackResponse = this.prosesOffline(rawText);
-
                 this.messages.push({
                     id: 'bot-fallback-' + Date.now(),
                     role: 'assistant',
@@ -399,10 +556,27 @@ window.usuCopilot = function () {
         },
 
         /**
-         * Menghubungkan Aksi Chatbot dengan Peta Leaflet (window.USUClassMap)
-         *
-         * @param {Object} action Objek aksi koordinat peta
-         * @param {Boolean} autoCloseMobile Apakah drawer ditutup di layar mobile
+         * URL Jalan Virtual 360° FIB bila gedung thuộc zona FIB.
+         */
+        getFibWalkUrl(buildingData) {
+            if (!buildingData) return null;
+            const code = String(buildingData.code || '').toUpperCase().trim();
+            const fac = String(buildingData.faculty || '').toUpperCase().trim();
+            if (code === 'FIB') return '/virtual-walk/fib?scene=495';
+            if (code === 'FIB-O') return '/virtual-walk/fib?scene=430';
+            if (code === 'FIB-A' || code === 'A FIB') return '/virtual-walk/fib?scene=436';
+            if (code === 'FIB-B') return '/virtual-walk/fib?scene=439';
+            if (code === 'FIB-F') return '/virtual-walk/fib?scene=482';
+            if (code === 'FIB-H') return '/virtual-walk/fib?scene=456';
+            if (code === 'FIB-I') return '/virtual-walk/fib?scene=484';
+            if (code === 'FIB-K') return '/virtual-walk/fib?scene=474';
+            if (code === 'FIB-M') return '/virtual-walk/fib?scene=489';
+            if (code.startsWith('FIB') || fac === 'FIB') return '/virtual-walk/fib?scene=495';
+            return null;
+        },
+
+        /**
+         * Menghubungkan Aksi Chatbot dengan Peta (window.USUClassMap).
          */
         triggerMapAction(action, autoCloseMobile = true) {
             if (!action) return;
@@ -410,7 +584,7 @@ window.usuCopilot = function () {
             if (action.type === 'start_route' && action.target_key) {
                 if (window.USUClassMap && typeof window.USUClassMap.startRouteTo === 'function') {
                     window.USUClassMap.startRouteTo(action.target_key);
-                    if (autoCloseMobile && window.innerWidth < 768) {
+                    if (autoCloseMobile && window.innerWidth < 640) {
                         this.isOpen = false;
                     }
                 } else {
@@ -419,7 +593,6 @@ window.usuCopilot = function () {
                 return;
             }
 
-            // Periksa ketersediaan API global USUClassMap (dari map.js)
             if (window.USUClassMap && typeof window.USUClassMap.focusBuildingWithTarget === 'function') {
                 window.USUClassMap.focusBuildingWithTarget(
                     action.building_id || null,
@@ -433,8 +606,7 @@ window.usuCopilot = function () {
                     action.course_name || null
                 );
 
-                // Pada perangkat mobile, tutup widget agar peta terlihat leluasa
-                if (autoCloseMobile && window.innerWidth < 768) {
+                if (autoCloseMobile && window.innerWidth < 640) {
                     this.isOpen = false;
                 }
             } else if (action.building_id) {
@@ -443,7 +615,29 @@ window.usuCopilot = function () {
         },
 
         /**
-         * Fokuskan kartu gedung (dari Smart Spatial Search) secara in-page di /map atau redirect ke /map?focus_building=...
+         * Arahkan navigasi rute ke gedung kelas dari kartu jadwal.
+         */
+        routeScheduleBuilding(sched) {
+            const buildingId = sched?.map_action?.building_id || sched?.building_id || null;
+            if (buildingId) {
+                const targetKey = 'building:' + buildingId;
+                if (window.USUClassMap && typeof window.USUClassMap.startRouteTo === 'function') {
+                    window.USUClassMap.startRouteTo(targetKey);
+                    if (window.innerWidth < 640) {
+                        this.isOpen = false;
+                    }
+                } else {
+                    window.location.href = '/map?route_to=' + encodeURIComponent(targetKey);
+                }
+                return;
+            }
+            if (sched?.map_action) {
+                this.triggerMapAction(sched.map_action, true);
+            }
+        },
+
+        /**
+         * Fokuskan kartu gedung (dari Smart Spatial Search).
          */
         focusCardBuilding(card) {
             const d = card?.data;
@@ -456,7 +650,7 @@ window.usuCopilot = function () {
                     d.longitude ? parseFloat(d.longitude) : null,
                     null, null, null, null, null
                 );
-                if (window.innerWidth < 768) {
+                if (window.innerWidth < 640) {
                     this.isOpen = false;
                 }
             } else if (d.actions?.focus_url) {
@@ -473,7 +667,7 @@ window.usuCopilot = function () {
             const routeUrl = d?.actions?.route_url;
             if (targetKey && window.USUClassMap && typeof window.USUClassMap.startRouteTo === 'function') {
                 window.USUClassMap.startRouteTo(targetKey);
-                if (window.innerWidth < 768) {
+                if (window.innerWidth < 640) {
                     this.isOpen = false;
                 }
             } else if (routeUrl) {
@@ -482,7 +676,7 @@ window.usuCopilot = function () {
         },
 
         /**
-         * Penanganan aksi chip quick reply (query chat lanjutan atau filter sidebar peta)
+         * Penanganan aksi chip quick reply.
          */
         handleQuickReply(item) {
             if (!item) return;
@@ -497,7 +691,7 @@ window.usuCopilot = function () {
                         searchInput.dispatchEvent(new Event('input', { bubbles: true }));
                     }
                 }
-                if (window.innerWidth < 768) {
+                if (window.innerWidth < 640) {
                     this.isOpen = false;
                 }
             } else if (item.query) {
@@ -506,9 +700,6 @@ window.usuCopilot = function () {
             }
         },
 
-        /**
-         * Kirim query tindak lanjut dari kartu fakultas ke chat
-         */
         askFollowUp(query) {
             if (!query) return;
             this.inputMessage = query;
@@ -516,24 +707,18 @@ window.usuCopilot = function () {
         },
 
         /**
-         * Mesin Pencarian Lokal / Offline (Regex Pattern Matching)
-         * Digunakan sebagai pertahanan terakhir jika koneksi AWS Bedrock terputus atau timeout.
-         *
-         * @param {string} query Pertanyaan user
-         * @return {Object} { text: string, mapAction: ?Object }
+         * Mesin Pencarian Lokal / Offline (Regex Pattern Matching).
          */
         prosesOffline(query) {
             const cleanQuery = query.toLowerCase().trim();
 
-            // 1. Guardrail Check (100% Read-Only)
             if (/(hapus|delete|tambah|insert|buat|update|ubah|ganti|drop|kprs|nilai)/i.test(cleanQuery)) {
                 return {
-                    text: '⚠️ **Mode Read-Only Aktif:**\nMaaf, Rexa adalah asisten pencarian informasi dengan izin baca saja. Segala bentuk perubahan, penambahan, atau penghapusan jadwal tidak dapat dilakukan melalui asisten ini.',
+                    text: '⚠️ **Mode Read-Only Aktif:**\nMaaf, Ucup adalah pemandu & asisten pencarian informasi dengan izin baca saja. Perubahan atau penghapusan jadwal tidak bisa dilakukan lewat sini.',
                     mapAction: null,
                 };
             }
 
-            // 2. Deteksi Gedung FASILKOM-TI
             if (/(fasilkom|ilmu komputer|teknologi informasi|fikti)/i.test(cleanQuery)) {
                 return {
                     text: '📍 **Gedung Fasilkom-TI USU**\nFakultas Ilmu Komputer dan Teknologi Informasi berlokasi di area tengah kampus USU (dekat Jl. Alumni). Gedung ini menaungi ruang kuliah seperti C-102, C-103, D-104, dan D-106.',
@@ -546,7 +731,6 @@ window.usuCopilot = function () {
                 };
             }
 
-            // 3. Deteksi Gedung FIB (Fakultas Ilmu Budaya)
             if (/(fib|ilmu budaya|sastra|gedung fib)/i.test(cleanQuery)) {
                 return {
                     text: '📍 **Gedung FIB (Fakultas Ilmu Budaya) USU**\nGedung ini digunakan untuk perkuliahan rumpun bahasa, budaya, serta kelas MKWU (seperti Ruang H 104, H 105, dll).',
@@ -559,50 +743,41 @@ window.usuCopilot = function () {
                 };
             }
 
-            // 4. Deteksi Pertanyaan Dosen
             if (/(dosen|rudy sofyan|rusdi|pengajar)/i.test(cleanQuery)) {
                 return {
-                    text: '👨‍🏫 **Informasi Dosen (Mode Offline):**\nUntuk melihat daftar lengkap jadwal mengajar dosen yang bersangkutan, Anda dapat mengetikkan nama beliau pada kolom pencarian di panel kiri peta.',
+                    text: '👨‍🏫 **Informasi Dosen (Mode Offline):**\nUntuk melihat daftar lengkap jadwal mengajar dosen tersebut, kamu bisa mengetikkan nama beliau pada kolom pencarian di panel kiri peta.',
                     mapAction: null,
                 };
             }
 
-            // 5. Deteksi Jadwal Pribadi
             if (/(jadwal saya|kelasku|kuliahku)/i.test(cleanQuery)) {
                 return {
-                    text: '📅 **Jadwal Kuliah Anda:**\nPastikan Anda sudah login ke akun USUClassMap. Jadwal Anda akan otomatis ditandai dengan **highlight emas** pada daftar ruangan di peta.',
+                    text: '📅 **Jadwal Kuliahmu:**\nPastikan kamu sudah login ke akun USUClassMap ya. Jadwalmu akan otomatis ditandai pin oranye dengan highlight emas pada peta!',
                     mapAction: null,
                 };
             }
 
-            // 6. Jawaban Default Offline
             return {
-                text: '*(Mode Offline Aktif)*\nKoneksi ke otak AI AWS Bedrock sedang mengalami kendala atau offline. Namun, Anda tetap dapat menelusuri gedung dan jadwal kuliah secara langsung menggunakan fitur pencarian di sidebar kiri atau mengeklik pin pada peta.',
+                text: '*(Mode Offline Aktif)*\nKoneksi ke server lagi terputus nih, tapi kamu tetap bisa cari gedung dan jadwal kuliah langsung lewat kolom pencarian di peta atau halaman fotokopi.',
                 mapAction: null,
             };
         },
 
         /**
-         * Parser teks markdown (tebal, miring, list, dan tabel) menjadi HTML yang aman dan responsif.
+         * Parser teks markdown (tebal, miring, list, dan tabel) menjadi HTML aman.
          */
         formatMessage(text) {
             if (!text) return '';
 
-            // 1. Escape tag HTML mentah untuk keamanan (XSS protection)
             let safe = text
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;');
 
-            // 2. Bold **teks**
             safe = safe.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-
-            // 3. Italic *teks*
             safe = safe.replace(/\*(.*?)\*/g, '<em>$1</em>');
 
-            // 4. Parser Tabel Markdown (| kolom | kolom |)
             const tablePlaceholders = [];
-            // Regex mendeteksi blok tabel markdown (header baris, pemisah baris, dan baris data)
             const sepTokens = ['-', ':', '\\s', '\\|'].join('');
             const tableRegex = new RegExp('((?:^[ \\t]*\\|.+?\\|[ \\t]*\\r?\\n)(?:^[ \\t]*\\|[' + sepTokens + ']+?\\|[ \\t]*\\r?\\n)(?:^[ \\t]*\\|.+?\\|[ \\t]*(?:\\r?\\n|$))+)', 'gm');
 
@@ -620,18 +795,18 @@ window.usuCopilot = function () {
                 const headers = parseRow(lines[0]);
                 const bodyRows = lines.slice(2);
 
-                let tableHtml = '<div class="overflow-x-auto my-2.5 border border-gray-200 rounded-xl custom-scrollbar shadow-2xs">' +
+                let tableHtml = '<div class="overflow-x-auto my-2.5 border border-emerald-200/80 rounded-xl custom-scrollbar shadow-2xs">' +
                     '<table class="min-w-full text-left text-[11px] border-collapse bg-white">' +
-                    '<thead class="bg-emerald-50 text-emerald-950 font-bold border-b border-gray-200"><tr>' +
+                    '<thead class="bg-[#E8F5EE] text-[#154D32] font-bold border-b border-emerald-200/70"><tr>' +
                     headers.map(h => `<th class="px-3 py-1.5 whitespace-nowrap">${h}</th>`).join('') +
                     '</tr></thead>' +
-                    '<tbody class="divide-y divide-gray-150">';
+                    '<tbody class="divide-y divide-gray-100">';
 
                 bodyRows.forEach(row => {
                     const cells = parseRow(row);
-                    tableHtml += '<tr class="hover:bg-emerald-50/40 transition-colors">';
+                    tableHtml += '<tr class="hover:bg-[#FAF6EC]/70 transition-colors">';
                     cells.forEach(c => {
-                        tableHtml += `<td class="px-3 py-1.5 whitespace-nowrap text-gray-700">${c}</td>`;
+                        tableHtml += `<td class="px-3 py-1.5 whitespace-nowrap text-[#14261C]">${c}</td>`;
                     });
                     tableHtml += '</tr>';
                 });
@@ -643,13 +818,9 @@ window.usuCopilot = function () {
                 return placeholder;
             });
 
-            // 5. Bullet points (- item atau * item)
             safe = safe.replace(/^[•\-\*]\s+(.*)$/gm, '<li class="ml-3.5 list-disc">$1</li>');
-
-            // 6. Newlines to <br>
             safe = safe.replace(/\n/g, '<br>');
 
-            // 7. Kembalikan tabel HTML yang telah diparsing rapi
             tablePlaceholders.forEach((html, idx) => {
                 safe = safe.replace(`@@MD_TABLE_${idx}@@`, html);
             });
@@ -664,12 +835,12 @@ window.usuCopilot = function () {
             const container = document.getElementById('copilot-messages');
             if (container) {
                 container.scrollTop = container.scrollHeight;
+                this.showScrollToBottom = false;
             }
         },
     };
 };
 
-// Registrasi otomatis ke Alpine.js (kompatibel sebelum & sesudah Alpine.start)
 if (typeof window !== 'undefined') {
     if (window.Alpine) {
         window.Alpine.data('usuCopilot', window.usuCopilot);

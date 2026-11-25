@@ -3,9 +3,29 @@
 
     @include('features.fotocopy.partials.catalog-filter-script')
     @php
+        $opStatusInit = $operationalStatus ?? [
+            'is_open_now' => (bool) ($isOpen ?? $place->is_open_now),
+            'status_label' => ($isOpen ?? $place->is_open_now) ? 'Buka' : 'Tutup',
+            'detail_text' => '',
+            'hours_label' => ($place->open_time ?: '08:00') . ' - ' . ($place->close_time ?: '21:00') . ' WIB',
+            'open_time' => (string) ($place->open_time ?: '08:00'),
+            'close_time' => (string) ($place->close_time ?: '21:00'),
+            'operating_days' => (string) ($place->operating_days ?: 'Senin - Sabtu'),
+        ];
         $usuOrderConfig = [
+            'placeId' => (int) $place->id,
             'placeName' => $place->name,
             'placeWa' => $place->whatsapp,
+            'placeLat' => $place->latitude !== null ? (float) $place->latitude : null,
+            'placeLng' => $place->longitude !== null ? (float) $place->longitude : null,
+            'openTime' => (string) ($opStatusInit['open_time'] ?? ($place->open_time ?: '08:00')),
+            'closeTime' => (string) ($opStatusInit['close_time'] ?? ($place->close_time ?: '21:00')),
+            'operatingDays' => (string) ($opStatusInit['operating_days'] ?? ($place->operating_days ?: 'Senin - Sabtu')),
+            'isActive' => (bool) ($place->is_active ?? true),
+            'isManualOpen' => (bool) ($place->is_open ?? true),
+            'businessStatus' => strtoupper((string) ($place->business_status ?? '')),
+            'wibClock' => (string) ($wibClock ?? now('Asia/Jakarta')->format('H:i')),
+            'initialOperationalStatus' => $opStatusInit,
             'submitUrl' => route('fotocopy.order.store', $place->id),
             'csrfToken' => csrf_token(),
         ];
@@ -21,6 +41,24 @@
             const MAX_PDF_SLOTS = 10;
             const MAX_FILE_BYTES = 25 * 1024 * 1024;
             const MAX_TOTAL_BYTES = 80 * 1024 * 1024;
+            const GPS_TTL_MS = 5 * 60 * 1000;
+            const DAY_NAMES = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const WEEKDAY_MAP = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
+
+            const haversineMeters = (lat1, lng1, lat2, lng2) => {
+                const R = 6371000;
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLng = (lng2 - lng1) * Math.PI / 180;
+                const a = Math.sin(dLat / 2) ** 2 +
+                    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            };
+
+            const formatDist = (meters) => {
+                if (!Number.isFinite(meters)) return 'Tidak tersedia';
+                if (meters < 1000) return Math.max(1, Math.round(meters)) + ' m';
+                return (meters / 1000).toFixed(2) + ' km';
+            };
 
             return {
                 ...window.usuCatalogFilter(window.usuFotocopyCatalog),
@@ -54,6 +92,21 @@
                 placeName: cfg.placeName || '',
                 placeWa: cfg.placeWa || '',
 
+                // Real-Time WIB & Auto-GPS state
+                wibClock: cfg.wibClock || '',
+                opStatus: cfg.initialOperationalStatus || {
+                    is_open_now: true,
+                    status_label: 'Buka',
+                    detail_text: '',
+                    hours_label: (cfg.openTime || '08:00') + ' - ' + (cfg.closeTime || '21:00') + ' WIB'
+                },
+                gpsState: 'detecting', // 'detecting' | 'active' | 'denied'
+                gpsDistanceLabel: 'Mendeteksi GPS...',
+                gpsErrorText: '',
+                gpsFix: null,
+                gpsWatchId: null,
+                wibTimerId: null,
+
                 // In-page PDF preview modal state
                 previewModalOpen: false,
                 previewFile: {
@@ -66,7 +119,194 @@
                 },
 
                 init() {
-                    window.addEventListener('beforeunload', () => this.revokeAllPreviewUrls());
+                    this.refreshOperationalStatus();
+                    this.wibTimerId = setInterval(() => this.refreshOperationalStatus(), 30000);
+                    this.hydrateCachedGps();
+                    this.detectGpsTwoStage();
+                    window.addEventListener('beforeunload', () => {
+                        this.revokeAllPreviewUrls();
+                        if (this.wibTimerId) clearInterval(this.wibTimerId);
+                        if (this.gpsWatchId !== null && navigator.geolocation) {
+                            try { navigator.geolocation.clearWatch(this.gpsWatchId); } catch (e) {}
+                        }
+                    });
+                },
+
+                hydrateCachedGps() {
+                    try {
+                        const raw = sessionStorage.getItem('usu_last_gps_fix') || sessionStorage.getItem('usu_last_gps');
+                        if (!raw) return;
+                        const parsed = JSON.parse(raw);
+                        const lat = Number(parsed?.lat);
+                        const lng = Number(parsed?.lng);
+                        const ts = Number(parsed?.timestamp || 0);
+                        if (!Number.isFinite(lat) || !Number.isFinite(lng) || (Date.now() - ts) >= GPS_TTL_MS) return;
+                        this.applyGpsFix({ lat, lng, accuracy: Number(parsed?.accuracy || 35), timestamp: ts });
+                    } catch (e) {}
+                },
+
+                applyGpsFix(fix) {
+                    if (!fix) return;
+                    this.gpsFix = fix;
+                    this.gpsState = 'active';
+                    this.gpsErrorText = '';
+                    try {
+                        const payload = JSON.stringify({
+                            lat: fix.lat,
+                            lng: fix.lng,
+                            accuracy: fix.accuracy,
+                            timestamp: fix.timestamp || Date.now()
+                        });
+                        sessionStorage.setItem('usu_last_gps_fix', payload);
+                        sessionStorage.setItem('usu_last_gps', payload);
+                    } catch (e) {}
+
+                    const sLat = Number(cfg.placeLat);
+                    const sLng = Number(cfg.placeLng);
+                    if (!Number.isFinite(sLat) || !Number.isFinite(sLng)) {
+                        this.gpsDistanceLabel = 'GPS aktif';
+                        return;
+                    }
+                    const meters = haversineMeters(fix.lat, fix.lng, sLat, sLng);
+                    const mins = Math.max(1, Math.round(meters / 75));
+                    this.gpsDistanceLabel = formatDist(meters) + ' (~' + mins + ' mnt jalan kaki)';
+                },
+
+                handlePositionUpdate(pos) {
+                    const lat = Number(pos?.coords?.latitude);
+                    const lng = Number(pos?.coords?.longitude);
+                    const acc = Number(pos?.coords?.accuracy || 35);
+                    if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+                    if (this.gpsFix && (Date.now() - (this.gpsFix.timestamp || 0)) >= 2000) {
+                        const moved = haversineMeters(this.gpsFix.lat, this.gpsFix.lng, lat, lng);
+                        if (moved < 15 && acc >= (this.gpsFix.accuracy || 999)) return;
+                    }
+                    this.applyGpsFix({ lat, lng, accuracy: acc, timestamp: Date.now() });
+                },
+
+                startGpsWatch() {
+                    if (!navigator.geolocation || this.gpsWatchId !== null) return;
+                    try {
+                        this.gpsWatchId = navigator.geolocation.watchPosition(
+                            (pos) => this.handlePositionUpdate(pos),
+                            () => {},
+                            { enableHighAccuracy: false, maximumAge: 30000, timeout: 15000 }
+                        );
+                    } catch (e) {}
+                },
+
+                detectGpsTwoStage() {
+                    if (!navigator.geolocation) {
+                        if (!this.gpsFix) {
+                            this.gpsState = 'denied';
+                            this.gpsDistanceLabel = 'GPS tidak didukung browser';
+                            this.gpsErrorText = 'Perangkat/browser tidak mendukung geolokasi otomatis.';
+                        }
+                        return;
+                    }
+                    if (!this.gpsFix) {
+                        this.gpsState = 'detecting';
+                        this.gpsDistanceLabel = 'Mendeteksi GPS...';
+                    }
+                    navigator.geolocation.getCurrentPosition(
+                        (pos) => {
+                            this.handlePositionUpdate(pos);
+                            this.startGpsWatch();
+                        },
+                        () => {
+                            navigator.geolocation.getCurrentPosition(
+                                (pos2) => {
+                                    this.handlePositionUpdate(pos2);
+                                    this.startGpsWatch();
+                                },
+                                (err2) => {
+                                    if (!this.gpsFix) {
+                                        this.gpsState = 'denied';
+                                        this.gpsDistanceLabel = 'GPS belum aktif';
+                                        this.gpsErrorText = Number(err2?.code) === 1
+                                            ? 'Izin lokasi ditolak browser. Klik Aktifkan GPS untuk melihat jarak toko.'
+                                            : 'Sinyal GPS gagal diambil otomatis. Klik coba lagi.';
+                                    }
+                                },
+                                { enableHighAccuracy: false, timeout: 8000, maximumAge: 180000 }
+                            );
+                        },
+                        { enableHighAccuracy: true, timeout: 6000, maximumAge: 60000 }
+                    );
+                },
+
+                refreshOperationalStatus() {
+                    const parts = new Intl.DateTimeFormat('en-GB', {
+                        timeZone: 'Asia/Jakarta',
+                        weekday: 'short',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                    }).formatToParts(new Date());
+                    const map = {};
+                    parts.forEach((p) => { map[p.type] = p.value; });
+                    const hour = Number(map.hour || 0) % 24;
+                    const minute = Number(map.minute || 0);
+                    const dow = Object.prototype.hasOwnProperty.call(WEEKDAY_MAP, map.weekday) ? WEEKDAY_MAP[map.weekday] : new Date().getDay();
+                    const minutesNow = (hour * 60) + minute;
+                    this.wibClock = String(hour).padStart(2, '0') + ':' + String(minute).padStart(2, '0');
+
+                    const parseMin = (hhmm, fb) => {
+                        const m = String(hhmm || '').replace('.', ':').match(/(\d{1,2}):(\d{2})/);
+                        return m ? (Math.min(23, Number(m[1])) * 60) + Math.min(59, Number(m[2])) : fb;
+                    };
+                    const isOpDay = (days, d) => {
+                        const l = String(days || '').toLowerCase().trim();
+                        if (!l || l.includes('setiap hari') || l.includes('senin - minggu') || l.includes('senin-minggu') || l.includes('24 jam')) return true;
+                        if (l.includes('senin - jumat') || l.includes('senin-jumat')) return d >= 1 && d <= 5;
+                        return d !== 0;
+                    };
+                    const nextDayLabel = (days, d) => {
+                        for (let offset = 1; offset <= 7; offset++) {
+                            const cand = (d + offset) % 7;
+                            if (isOpDay(days, cand)) return offset === 1 ? 'besok' : DAY_NAMES[cand];
+                        }
+                        return 'Senin';
+                    };
+
+                    const bStatus = String(cfg.businessStatus || '').toUpperCase();
+                    let isOpen = false;
+                    let detailText = '';
+                    const openTime = String(cfg.openTime || '08:00');
+                    const closeTime = String(cfg.closeTime || '21:00');
+                    const opDays = String(cfg.operatingDays || 'Senin - Sabtu');
+
+                    if (bStatus === 'CLOSED_PERMANENTLY') {
+                        detailText = 'Tutup permanen';
+                    } else if (bStatus === 'CLOSED_TEMPORARILY' || !cfg.isActive || !cfg.isManualOpen) {
+                        detailText = 'Tutup sementara';
+                    } else {
+                        const openMin = parseMin(openTime, 480);
+                        const closeMin = parseMin(closeTime, 1260);
+                        const opDayNow = isOpDay(opDays, dow);
+                        if (opDayNow) {
+                            isOpen = closeMin < openMin
+                                ? (minutesNow >= openMin || minutesNow < closeMin)
+                                : (minutesNow >= openMin && minutesNow < closeMin);
+                        }
+                        if (isOpen) {
+                            detailText = 'Buka sampai ' + closeTime + ' WIB';
+                        } else if (!opDayNow) {
+                            detailText = 'Tutup hari ini • Buka ' + nextDayLabel(opDays, dow) + ' pukul ' + openTime + ' WIB';
+                        } else if (minutesNow < openMin) {
+                            detailText = 'Belum buka • Buka pukul ' + openTime + ' WIB';
+                        } else {
+                            const nxt = isOpDay(opDays, (dow + 1) % 7) ? 'besok' : nextDayLabel(opDays, dow);
+                            detailText = 'Sudah tutup • Buka ' + nxt + ' pukul ' + openTime + ' WIB';
+                        }
+                    }
+
+                    this.opStatus = {
+                        is_open_now: isOpen,
+                        status_label: isOpen ? 'Buka' : 'Tutup',
+                        hours_label: openTime + ' - ' + closeTime + ' WIB',
+                        detail_text: detailText
+                    };
                 },
 
                 defaultPrintServiceId() {
@@ -856,8 +1096,19 @@
                 <div>
                     <div class="flex items-center gap-2 flex-wrap">
                         <h1 class="text-lg sm:text-2xl font-black text-gray-900 leading-tight">{{ $place->name }}</h1>
-                        <span class="{{ $isOpen ? 'bg-[#10A760]' : 'bg-gray-400' }} text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
-                            {{ $isOpen ? 'Buka' : 'Tutup' }}
+                        <span
+                            id="order-status-badge"
+                            :data-open-status="opStatus.is_open_now ? 'open' : 'closed'"
+                            :class="opStatus.is_open_now ? 'bg-[#10A760]' : 'bg-[#DC2626]'"
+                            class="{{ $isOpen ? 'bg-[#10A760]' : 'bg-[#DC2626]' }} text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full"
+                            x-text="opStatus.status_label"
+                        >{{ $isOpen ? 'Buka' : 'Tutup' }}</span>
+                        <span
+                            id="store-live-wib-badge"
+                            class="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-700"
+                        >
+                            <i class="fa-regular fa-clock text-[#10A760]"></i>
+                            <span>WIB <span x-text="wibClock">{{ $wibClock ?? now('Asia/Jakarta')->format('H:i') }}</span></span>
                         </span>
                     </div>
                     <p class="text-xs text-gray-500 mt-1 flex items-center gap-2 flex-wrap">
@@ -868,14 +1119,35 @@
                         <span>•</span>
                         <span class="flex items-center gap-1">
                             <i class="fa-regular fa-clock text-[#10A760]"></i>
-                            <span>{{ $place->open_time }} - {{ $place->close_time }}</span>
+                            <span x-text="opStatus.hours_label">{{ $operationalStatus['hours_label'] ?? ($place->open_time . ' - ' . $place->close_time . ' WIB') }}</span>
+                        </span>
+                        <span>•</span>
+                        <span
+                            id="store-live-gps-badge"
+                            class="inline-flex items-center gap-1 font-semibold"
+                            :class="gpsState === 'active' ? 'text-[#10A760]' : (gpsState === 'denied' ? 'text-amber-600' : 'text-gray-500')"
+                        >
+                            <i class="fa-solid fa-location-crosshairs text-[11px]" :class="gpsState === 'detecting' ? 'animate-spin' : ''"></i>
+                            <span x-text="gpsDistanceLabel">Mendeteksi GPS...</span>
                         </span>
                         <span>•</span>
                         <span class="flex items-center gap-1 text-emerald-700 font-semibold">
                             <i class="fa-brands fa-whatsapp text-[#25D366]"></i>
                             <span>{{ \App\Support\WhatsAppPhoneNormalizer::formatDisplay($place->whatsapp ?: $place->phone) }}</span>
                         </span>
+                        <template x-if="opStatus.detail_text">
+                            <span class="inline-flex items-center gap-1 text-[11px] font-semibold" :class="opStatus.is_open_now ? 'text-emerald-700' : 'text-[#DC2626]'">
+                                <span>•</span>
+                                <span x-text="opStatus.detail_text"></span>
+                            </span>
+                        </template>
                     </p>
+                    <div x-show="gpsState === 'denied'" x-cloak class="mt-2 inline-flex flex-wrap items-center gap-2 px-2.5 py-1 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-900">
+                        <span x-text="gpsErrorText"></span>
+                        <button type="button" @click="detectGpsTwoStage()" class="px-2 py-0.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold text-[10px] cursor-pointer">
+                            Aktifkan GPS
+                        </button>
+                    </div>
                 </div>
             </div>
 

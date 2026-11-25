@@ -66,8 +66,8 @@ class RoomController extends Controller
         $data = $request->validated();
 
         if ($request->hasFile('photo_360')) {
-            // Delete old photo if exists
-            if ($room->photo_360_path) {
+            // Delete old uploaded photo on public storage disk if exists
+            if ($room->photo_360_path && !\App\Support\CampusMediaUrl::isPublicStaticImage($room->photo_360_path)) {
                 Storage::disk('public')->delete($room->photo_360_path);
             }
             $file = $request->file('photo_360');
@@ -85,7 +85,7 @@ class RoomController extends Controller
 
     public function destroy(Room $room)
     {
-        if ($room->photo_360_path) {
+        if ($room->photo_360_path && !\App\Support\CampusMediaUrl::isPublicStaticImage($room->photo_360_path)) {
             Storage::disk('public')->delete($room->photo_360_path);
         }
         $room->delete();

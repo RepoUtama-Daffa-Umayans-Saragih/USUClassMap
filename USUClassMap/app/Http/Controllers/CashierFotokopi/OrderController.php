@@ -29,7 +29,7 @@ class OrderController extends Controller
         $user = auth()->user();
 
         // Cari toko yang dikelola kasir ini, atau ambil toko default pertama jika belum di-assign
-        $myStore = FotocopyStore::where('user_id', $user->id)->first() ?? FotocopyStore::first();
+        $myStore = $user->resolveAssignedFotocopyStore() ?? FotocopyStore::first();
 
         $query = FotocopyOrder::with(['items', 'store', 'files', 'whatsappLogs']);
 
@@ -81,6 +81,8 @@ class OrderController extends Controller
      */
     public function updateStatus(Request $request, FotocopyOrder $order)
     {
+        $this->authorizeStoreAccess($order);
+
         $validated = $request->validate([
             'order_status' => 'required|in:Menunggu,Diproses,Selesai,Dibatalkan',
             'payment_status' => 'nullable|in:pending,paid',
@@ -127,7 +129,7 @@ class OrderController extends Controller
     public function createPos()
     {
         $user = auth()->user();
-        $myStore = FotocopyStore::where('user_id', $user->id)->first() ?? FotocopyStore::first();
+        $myStore = $user->resolveAssignedFotocopyStore() ?? FotocopyStore::first();
         $services = FotocopyService::where('store_id', $myStore->id)
             ->where('is_available', true)
             ->orderByRaw("CASE WHEN item_type = 'jasa' THEN 0 ELSE 1 END")
@@ -147,7 +149,7 @@ class OrderController extends Controller
     public function storePos(Request $request, PdfMetadataInspectorService $pdfInspector)
     {
         $user = auth()->user();
-        $myStore = FotocopyStore::where('user_id', $user->id)->first() ?? FotocopyStore::first();
+        $myStore = $user->resolveAssignedFotocopyStore() ?? FotocopyStore::first();
 
         $validated = $request->validate([
             'customer_name' => 'required|string|max:150',
@@ -456,12 +458,12 @@ class OrderController extends Controller
             abort(403);
         }
 
-        if ($user->isAdmin() || $user->isAdminFotokopi()) {
+        if ($user->isAdmin() || ($user->isAdminFotokopi() && $user->scopedStoreId() === null)) {
             return;
         }
 
-        $myStore = FotocopyStore::where('user_id', $user->id)->first();
-        if ($myStore && (int) $order->store_id !== (int) $myStore->id) {
+        $myStore = $user->resolveAssignedFotocopyStore();
+        if (!$myStore || (int) $order->store_id !== (int) $myStore->id) {
             abort(403, 'Akses ditolak: pesanan ini milik mitra toko lain.');
         }
     }

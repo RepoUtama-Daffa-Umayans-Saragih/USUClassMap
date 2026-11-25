@@ -82,7 +82,7 @@ class FotocopyStore extends Model
             return $this->image_url;
         }
 
-        return 'https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=800&q=80';
+        return asset('images/stores/preset-modern-copy.webp');
     }
 
     /**
@@ -100,11 +100,12 @@ class FotocopyStore extends Model
     }
 
     /**
-     * Check if currently open.
+     * Check if currently open using real-time WIB OperationalStatusService.
      */
     public function isOpenNow(): bool
     {
-        return (bool) $this->is_open;
+        $status = app(\App\Services\OperationalStatusService::class)->evaluatePhotocopyStatus($this);
+        return (bool) ($status['is_open_now'] ?? false);
     }
 
     /**
@@ -112,8 +113,9 @@ class FotocopyStore extends Model
      */
     public function getCurrentScheduleStatusAttribute(): string
     {
-        return $this->is_open
-            ? "Buka ⋅ {$this->opening_hours}"
-            : "Tutup ⋅ Buka besok ({$this->opening_hours})";
+        $status = app(\App\Services\OperationalStatusService::class)->evaluatePhotocopyStatus($this);
+        return $status['is_open_now']
+            ? "Buka ⋅ {$status['detail_text']}"
+            : "Tutup ⋅ {$status['detail_text']}";
     }
 }

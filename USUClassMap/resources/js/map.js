@@ -1457,12 +1457,12 @@ function initMapEngine() {
     };
 
     // =========================================================================
-    // 13. PHOTOCOPY LAYER (31 MITRA FOTOKOPI USU INTEGRATION)
+    // 13. PHOTOCOPY LAYER (MITRA FOTOKOPI USU INTEGRATION)
     // =========================================================================
     async function loadPhotocopyPlaces() {
         if (allPhotocopyPlaces.length > 0) return allPhotocopyPlaces;
         try {
-            const resp = await fetch('/api/copy-shops?per_page=50');
+            const resp = await fetch('/api/copy-shops?per_page=200');
             const json = await resp.json();
             allPhotocopyPlaces = json.data || [];
             const badgeEl = document.getElementById('fotocopy-count-badge');

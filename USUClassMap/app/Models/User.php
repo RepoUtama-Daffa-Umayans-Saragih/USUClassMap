@@ -18,6 +18,7 @@ class User extends Authenticatable
         'profile_photo_path',
         'password',
         'role',
+        'store_id',
     ];
 
     protected $hidden = [
@@ -71,6 +72,30 @@ class User extends Authenticatable
     public function isCashierFotokopi(): bool
     {
         return in_array($this->role, ['superadmin', 'cashier_fotokopi', 'admin_fotokopi', 'admin_usuclassmap']);
+    }
+
+    public function assignedStore(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(FotocopyStore::class, 'store_id');
+    }
+
+    public function scopedStoreId(): ?int
+    {
+        return ($this->role === 'admin_fotokopi' && !empty($this->store_id))
+            ? (int) $this->store_id
+            : null;
+    }
+
+    public function resolveAssignedFotocopyStore(): ?FotocopyStore
+    {
+        if (!empty($this->store_id)) {
+            $store = FotocopyStore::find((int) $this->store_id);
+            if ($store) {
+                return $store;
+            }
+        }
+
+        return FotocopyStore::where('user_id', $this->id)->first();
     }
 
     public function fotocopyStores()

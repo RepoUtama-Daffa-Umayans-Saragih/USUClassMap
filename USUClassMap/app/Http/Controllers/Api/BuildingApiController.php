@@ -4,12 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Building;
+use App\Services\OperationalStatusService;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class BuildingApiController extends Controller
 {
+    public function __construct(
+        protected ?OperationalStatusService $operationalStatus = null
+    ) {
+        $this->operationalStatus = $operationalStatus ?? app(OperationalStatusService::class);
+    }
+
     /**
      * Get all campus buildings with GPS coordinates, rooms, and contextual schedules.
      *
@@ -18,6 +25,7 @@ class BuildingApiController extends Controller
     public function index(): JsonResponse
     {
         $user = Auth::user();
+        $nowWib = Carbon::now(OperationalStatusService::TIMEZONE);
 
         $buildings = Building::with([
             'rooms' => function ($query) {
@@ -27,7 +35,9 @@ class BuildingApiController extends Controller
             'rooms.schedules.lecturer'
         ])->orderBy('name')->get();
 
-        $data = $buildings->map(function ($b) use ($user) {
+        $data = $buildings->map(function ($b) use ($user, $nowWib) {
+            $opStatus = $this->operationalStatus->evaluateBuildingStatus($b, $nowWib);
+
             return [
                 'id' => $b->id,
                 'name' => $b->name,
@@ -37,15 +47,21 @@ class BuildingApiController extends Controller
                 'latitude' => (float) $b->latitude,
                 'longitude' => (float) $b->longitude,
                 'description' => $b->description,
+                'photo_360' => $b->photo_360_url,
+                'door_photo' => $b->door_photo_url,
+                'photo_360_meta' => $b->photo_360_meta,
                 'floor_count' => (int) $b->floor_count,
                 'rooms_count' => $b->rooms->count(),
+                'operational_status' => $opStatus,
                 'rooms' => $b->rooms->map(function ($r) use ($user) {
                     return [
                         'id' => $r->id,
                         'name' => $r->name,
                         'floor' => (int) $r->floor,
                         'capacity' => (int) $r->capacity,
-                        'photo_360' => $r->photo_360_path ? Storage::disk('public')->url($r->photo_360_path) : null,
+                        'photo_360' => $r->photo_360_url,
+                        'door_photo' => $r->door_photo_url,
+                        'photo_360_meta' => $r->photo_360_meta,
                         'schedules' => $r->schedules->map(function ($s) use ($user) {
                             $isMyClass = false;
                             if ($user && !empty($user->semester) && $s->semester === $user->semester) {
@@ -79,6 +95,7 @@ class BuildingApiController extends Controller
 
         return response()->json([
             'status' => 'success',
+            'evaluated_at_wib' => $nowWib->format('H:i'),
             'count' => $data->count(),
             'data' => $data,
         ]);
@@ -93,6 +110,7 @@ class BuildingApiController extends Controller
     public function show(Building $building): JsonResponse
     {
         $building->load(['rooms.schedules.course', 'rooms.schedules.lecturer']);
+        $opStatus = $this->operationalStatus->evaluateBuildingStatus($building);
 
         return response()->json([
             'status' => 'success',
@@ -103,8 +121,15 @@ class BuildingApiController extends Controller
                 'latitude' => (float) $building->latitude,
                 'longitude' => (float) $building->longitude,
                 'description' => $building->description,
+                'photo_360' => $building->photo_360_url,
+                'door_photo' => $building->door_photo_url,
+                'photo_360_meta' => $building->photo_360_meta,
                 'floor_count' => (int) $building->floor_count,
-                'rooms' => $building->rooms,
+                'operational_status' => $opStatus,
+                'rooms' => $building->rooms->map(fn ($r) => array_merge($r->toArray(), [
+                    'photo_360' => $r->photo_360_url,
+                    'door_photo' => $r->door_photo_url,
+                ]))->values(),
             ],
         ]);
     }

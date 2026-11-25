@@ -155,15 +155,15 @@
                                 <span>Gedung (<span id="bmap-ref-buildings-count">47</span>)</span>
                             </button>
 
-                            <!-- Toggle Reference Layer: 31 Photocopy Partners -->
+                            <!-- Toggle Reference Layer: Photocopy Partners -->
                             <button 
                                 type="button" 
                                 id="bmap-ref-photocopy-btn"
                                 class="bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl text-xs font-bold text-gray-700 hover:text-emerald-700 shadow-md border border-gray-200 hover:border-emerald-500 flex items-center gap-1.5 transition-all cursor-pointer"
-                                title="Tampilkan / Sembunyikan 31 Lokasi Mitra Fotokopi & Percetakan USU"
+                                title="Tampilkan / Sembunyikan Lokasi Mitra Fotokopi & Percetakan USU"
                             >
                                 <i class="fa-solid fa-print text-emerald-600"></i>
-                                <span>Fotokopi (<span id="bmap-ref-photocopy-count">31</span>)</span>
+                                <span>Fotokopi (<span id="bmap-ref-photocopy-count">{{ \App\Models\PhotocopyPlace::where('is_active', true)->count() }}</span>)</span>
                             </button>
                         </div>
 
@@ -324,7 +324,7 @@
             async function fetchReferencePhotocopy() {
                 if (cachedPhotocopy.length > 0) return cachedPhotocopy;
                 try {
-                    const res = await fetch('/api/copy-shops?per_page=50');
+                    const res = await fetch('/api/copy-shops?per_page=200');
                     const json = await res.json();
                     cachedPhotocopy = json.data || [];
                     if (refPhotocopyCount) refPhotocopyCount.textContent = cachedPhotocopy.length;

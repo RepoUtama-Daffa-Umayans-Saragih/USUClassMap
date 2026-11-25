@@ -25,7 +25,7 @@ class AiCopilotController extends Controller
 
     /**
      * Endpoint utama POST /copilot/chat untuk menerima input pengguna
-     * dan mengembalikan balasan grounded + interactive cards dari Rexa Copilot.
+     * dan mengembalikan balasan grounded + interactive cards dari Tanya Ucup.
      *
      * @param Request $request
      * @return JsonResponse
@@ -94,7 +94,7 @@ class AiCopilotController extends Controller
 
             return response()->json([
                 'status'             => 'error',
-                'message'            => 'Maaf, Rexa mengalami gangguan teknis tak terduga. Silakan coba lagi sebentar.',
+                'message'            => 'Maaf, Ucup mengalami gangguan teknis tak terduga. Silakan coba lagi sebentar.',
                 'fallback_available' => true,
             ], 500);
         }

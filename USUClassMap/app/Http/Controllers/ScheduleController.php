@@ -95,9 +95,8 @@ class ScheduleController extends Controller
                         'nama' => $schedule->room->name ?? '-',
                         'floor' => $schedule->room->floor ?? 1,
                         'lantai' => $schedule->room->floor ?? 1,
-                        'foto_360' => $schedule->room->photo_360_path
-                            ? asset('storage/' . $schedule->room->photo_360_path)
-                            : null,
+                        'foto_360' => \App\Support\CampusMediaUrl::resolve($schedule->room->photo_360_path),
+                        'foto_pintu' => $schedule->room->door_photo_url,
                     ],
                     'gedung' => [
                         'id' => $schedule->room->building->id ?? null,
